@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="Web site created using create-react-app"
+    />
+    <title>ZYVO</title>
+    <link rel="icon" href="/fevicon.ico" type="image/x-icon" />
+
+    <!-- <link href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css" rel="stylesheet" /> -->
+    <link
+      rel="preload"
+      href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- <link href="/stylesheet.css" rel="stylesheet" type="text/css" />
+    <link href="/css/animation.css" rel="stylesheet" type="text/css" />
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/roundslider.min.css" rel="stylesheet" type="text/css" />
+    <link href="/css/changes.css" rel="stylesheet" type="text/css" />
+    <link href="/css/sunil.css" rel="stylesheet" type="text/css" />
+    <link href="/css/guest.css" rel="stylesheet" type="text/css" />
+    <link href="/css/guest-mobile.css" rel="stylesheet" type="text/css" />
+    <link href="/css/guest-responsive.css" rel="stylesheet" type="text/css" />
+    <link href="/css/custom.css" rel="stylesheet" type="text/css" />-->
+
+    <link href="/css/countrycode-flag.css" rel="stylesheet" />
+    <link
+      rel="preload"
+      href="/css/bootstrap.min.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript><link rel="stylesheet" href="/css/bootstrap.min.css" /></noscript>
+
+    <!-- ✅ Lazy-loaded CSS (converted to non-blocking) -->
+    <link
+      rel="preload"
+      href="/css/guest.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/css/guest-mobile.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/css/guest-responsive.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/css/custom.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/css/sunil.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/css/changes.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/css/animation.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/css/countrycode-flag.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/css/roundslider.min.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="/stylesheet.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.min.css"
+    />
+
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" /> -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.jsx"></script>
+    <script
+      crossorigin
+      src="https://applepay.cdn-apple.com/jsapi/1.latest/apple-pay-sdk.js"
+    ></script>
+    <!-- <script src="/js/jquery.js" type="text/javascript" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js" defer></script>
+    <script src="/js/bootstrap.bundle.min.js" type="text/javascript" defer></script>
+    <script src="/js/roundslider.min.js" type="text/javascript" defer></script>
+    <script src="/js/countrycode-flag-jquery.min.js" defer></script>
+    <script src="/js/guest.js" type="text/javascript" defer></script>
+    <script src="/js/animation.js" type="text/javascript" defer></script> -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"
+      defer
+    ></script>
+
+    <script>
+      window.addEventListener("load", () => {
+        const scripts = [
+          "/js/jquery.js",
+          "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js",
+          "/js/bootstrap.bundle.min.js",
+          "/js/roundslider.min.js",
+          "/js/countrycode-flag-jquery.min.js",
+          "/js/guest.js",
+          "/js/animation.js",
+        ];
+        scripts.forEach((src) => {
+          const s = document.createElement("script");
+          s.src = src;
+          s.defer = true;
+          document.body.appendChild(s);
+        });
+      });
+    </script>
+  </body>
+</html>
