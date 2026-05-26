@@ -17,7 +17,7 @@ import CheckOutForm from "./CheckoutForm";
 import visa from "../../../src/assets/gallery/visa.svg";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { KEYS, imageBase } from "../../config/Constant";
+import { KEYS, baseURL, imageBase } from "../../config/Constant";
 import moment from "moment";
 import useCommon from "../../hooks/useCommon";
 import { toast } from "react-toastify";
@@ -28,6 +28,9 @@ import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
 const Checkout = ({ setExtendedTime }) => {
+  const token = JSON.parse(localStorage.getItem(KEYS.USER_INFO))?.access_token;
+  console.log(token, "test *********");
+
   const { userInfo } = useSelector(({ user }) => user);
   const { gatewayApple } = useSelector(({ user }) => user);
   // console.log(gatewayApple, "*****1123*****");
@@ -104,139 +107,144 @@ const Checkout = ({ setExtendedTime }) => {
 
   // apple pay rajan
 
-  // const initiateApplePaySession = () => {
-  //   // 2. Define payment details
-  //   const paymentRequest = {
-  //     countryCode: "US", // Change to your target country
-  //     currencyCode: "USD", // Change to your currency code
-  //     supportedNetworks: ["visa", "mastercard", "amex", "discover"],
-  //     merchantCapabilities: ["supports3DS"], // 3D Secure is mandatory
-  //     total: {
-  //       label: "Zyvo App Checkout",
-  //       amount: String(amount), // Apple requires string format (e.g., "25.00")
-  //     },
-  //   };
-
-  //   // 3. Start the native Apple Pay Session (using API version 3)
-  //   const session = new window.ApplePaySession(3, paymentRequest);
-
-  //   // 4. STEP A: Triggers automatically. Send Apple's URL to your backend team's endpoint.
-  //   session.onvalidatemerchant = async (event) => {
-  //     try {
-  //       // Point this to your backend team's live endpoint
-  //       const response = await fetch(
-  //         "https://your-backend-api.com/api/apple-pay/validate",
-  //         {
-  //           method: "POST",
-  //           headers: { "Content-Type": "application/json" },
-  //           body: JSON.stringify({ validationUrl: event.validationURL }),
-  //         }
-  //       );
-
-  //       const merchantSessionDetails = await response.json();
-
-  //       // Complete validation handshake to display native credit cards list
-  //       session.completeMerchantValidation(merchantSessionDetails);
-  //     } catch (err) {
-  //       console.error("Merchant validation failed:", err);
-  //       session.abort();
-  //     }
-  //   };
-
-  //   // 5. STEP B: Triggers when the user authorizes payment with FaceID / TouchID
-  //   session.onpaymentauthorized = async (event) => {
-  //     const paymentToken = event.payment.token;
-
-  //     try {
-  //       // Send this payment token to your backend processing endpoint
-  //       const response = await fetch(
-  //         "https://your-backend-api.com/api/apple-pay/charge",
-  //         {
-  //           method: "POST",
-  //           headers: { "Content-Type": "application/json" },
-  //           body: JSON.stringify({ token: paymentToken }),
-  //         }
-  //       );
-
-  //       const paymentResult = await response.json();
-
-  //       if (paymentResult.success) {
-  //         // Tell Safari the payment went through perfectly!
-  //         session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
-  //         onPaymentSuccess(paymentResult);
-  //       } else {
-  //         session.completePayment(window.ApplePaySession.STATUS_FAILURE);
-  //       }
-  //     } catch (err) {
-  //       session.completePayment(window.ApplePaySession.STATUS_FAILURE);
-  //     }
-  //   };
-
-  //   // Open the native Apple Pay popup sheet from the browser
-  //   session.begin();
-  // };
   const initiateApplePaySession = () => {
-    // 🚀 TURN THIS FALSE so we can try to launch the real Apple Pay sheet on Safari!
-    const isMockTestingMode = false;
-
-    if (isMockTestingMode) {
-      console.log(
-        "Development Mode: Bypassing browser Apple Pay engine restriction."
-      );
-      alert("Apple Pay Sheet Simulated!");
-      return;
-    }
-
-    // --- NATIVE APPLE PAY ENGINE ---
+    // 2. Define payment details
     const paymentRequest = {
-      countryCode: "US",
-      currencyCode: "USD",
+      countryCode: "US", // Change to your target country
+      currencyCode: "USD", // Change to your currency code
       supportedNetworks: ["visa", "mastercard", "amex", "discover"],
-      merchantCapabilities: ["supports3DS"],
+      merchantCapabilities: ["supports3DS"], // 3D Secure is mandatory
       total: {
-        label: "Zyvo Booking Test",
+        label: "Zyvo App Checkout",
+        // amount: String(amount), // Apple requires string format (e.g., "25.00")
         amount: "10.00",
       },
     };
 
-    try {
-      // This creates the native Apple window object
-      const session = new window.ApplePaySession(3, paymentRequest);
+    // 3. Start the native Apple Pay Session (using API version 3)
+    const session = new window.ApplePaySession(3, paymentRequest);
 
-      // We mock the merchant validation block internally so you don't need the backend API yet!
-      session.onvalidatemerchant = (event) => {
-        console.log("Apple Pay requested validation URL:", event.validationURL);
+    // 4. STEP A: Triggers automatically. Send Apple's URL to your backend team's endpoint.
+    session.onvalidatemerchant = async (event) => {
+      try {
+        // Point this to your backend team's live endpoint
+        const response = await fetch(`${baseURL}apple-pay/validate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            validationUrl: event.validationURL,
+          }),
+        });
 
-        const dummyMerchantSession = {
-          epochTimestamp: Date.now(),
-          expiresAt: Date.now() + 3600000,
-          merchantSessionIdentifier: "mock_session_id",
-          nonce: "mock_nonce",
-          merchantIdentifier: "merchant.com.testvsao",
-          domainName: "zyvo-4.vercel.app",
-          displayName: "Zyvo Test",
-          signature: "mock_signature",
-        };
+        const merchantSessionDetails = await response.json();
 
-        // Force Safari to pass validation and show your wallet cards
-        session.completeMerchantValidation(dummyMerchantSession);
-      };
+        // Complete validation handshake to display native credit cards list
+        session.completeMerchantValidation(merchantSessionDetails);
+      } catch (err) {
+        console.error("Merchant validation failed:", err);
+        session.abort();
+      }
+    };
 
-      session.onpaymentauthorized = (event) => {
-        console.log("Mock Payment Authorized:", event.payment);
-        session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
-        alert("Mock Apple Pay Transaction Complete!");
-      };
+    // 5. STEP B: Triggers when the user authorizes payment with FaceID / TouchID
+    session.onpaymentauthorized = async (event) => {
+      const paymentToken = event.payment.token;
 
-      // This launches the sheet
-      session.begin();
-    } catch (error) {
-      console.error("Native browser session initialization failed:", error);
-      alert(
-        "Apple Pay Engine could not start. Make sure you are on HTTPS (Vercel) and not Localhost!"
-      );
-    }
+      try {
+        // Send this payment token to your backend processing endpoint
+        const response = await fetch(`${baseURL}apple-pay/charge`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            token: paymentToken,
+          }),
+        });
+
+        const paymentResult = await response.json();
+
+        if (paymentResult.success) {
+          // Tell Safari the payment went through perfectly!
+          session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
+          onPaymentSuccess(paymentResult);
+        } else {
+          session.completePayment(window.ApplePaySession.STATUS_FAILURE);
+        }
+      } catch (err) {
+        session.completePayment(window.ApplePaySession.STATUS_FAILURE);
+      }
+    };
+
+    // Open the native Apple Pay popup sheet from the browser
+    session.begin();
   };
+  // const initiateApplePaySession = () => {
+  //   // 🚀 TURN THIS FALSE so we can try to launch the real Apple Pay sheet on Safari!
+  //   const isMockTestingMode = false;
+
+  //   if (isMockTestingMode) {
+  //     console.log(
+  //       "Development Mode: Bypassing browser Apple Pay engine restriction."
+  //     );
+  //     alert("Apple Pay Sheet Simulated!");
+  //     return;
+  //   }
+
+  //   // --- NATIVE APPLE PAY ENGINE ---
+  //   const paymentRequest = {
+  //     countryCode: "US",
+  //     currencyCode: "USD",
+  //     supportedNetworks: ["visa", "mastercard", "amex", "discover"],
+  //     merchantCapabilities: ["supports3DS"],
+  //     total: {
+  //       label: "Zyvo Booking Test",
+  //       amount: "10.00",
+  //     },
+  //   };
+
+  //   try {
+  //     // This creates the native Apple window object
+  //     const session = new window.ApplePaySession(3, paymentRequest);
+
+  //     // We mock the merchant validation block internally so you don't need the backend API yet!
+  //     session.onvalidatemerchant = (event) => {
+  //       console.log("Apple Pay requested validation URL:", event.validationURL);
+
+  //       const dummyMerchantSession = {
+  //         epochTimestamp: Date.now(),
+  //         expiresAt: Date.now() + 3600000,
+  //         merchantSessionIdentifier: "mock_session_id",
+  //         nonce: "mock_nonce",
+  //         merchantIdentifier: "merchant.com.testvsao",
+  //         domainName: "zyvo-4.vercel.app",
+  //         displayName: "Zyvo Test",
+  //         signature: "mock_signature",
+  //       };
+
+  //       // Force Safari to pass validation and show your wallet cards
+  //       session.completeMerchantValidation(dummyMerchantSession);
+  //     };
+
+  //     session.onpaymentauthorized = (event) => {
+  //       console.log("Mock Payment Authorized:", event.payment);
+  //       session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
+  //       alert("Mock Apple Pay Transaction Complete!");
+  //     };
+
+  //     // This launches the sheet
+  //     session.begin();
+  //   } catch (error) {
+  //     console.error("Native browser session initialization failed:", error);
+  //     alert(
+  //       "Apple Pay Engine could not start. Make sure you are on HTTPS (Vercel) and not Localhost!"
+  //     );
+  //   }
+  // };
   // If the user isn't using Safari or doesn't have an Apple device, hide the button completely
   // if (!isApplePaySupported) {
   //   return null;
