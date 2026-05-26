@@ -28,7 +28,9 @@ import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
 const Checkout = ({ setExtendedTime }) => {
-  const token = JSON.parse(localStorage.getItem(KEYS.USER_INFO))?.access_token;
+  const token = JSON.parse(
+    sessionStorage.getItem(KEYS.USER_INFO)
+  )?.access_token;
   console.log(token, "test *********");
 
   const { userInfo } = useSelector(({ user }) => user);
