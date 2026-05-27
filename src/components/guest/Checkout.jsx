@@ -51,8 +51,8 @@ const Checkout = ({ setExtendedTime }) => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
 
   useEffect(() => {
     if (!id) {
@@ -585,8 +585,10 @@ const Checkout = ({ setExtendedTime }) => {
 
           navigate("/booking-details", {
             state: {
-              ...paymentResult,
-              // ...response?.data,
+              booking: {
+                ...paymentResult,
+              },
+
               bookingDate,
               startTime: start_time,
               endTime: end_time,
@@ -829,7 +831,7 @@ const Checkout = ({ setExtendedTime }) => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                  // style={{ minWidth: "320px " }}
+                // style={{ minWidth: "320px " }}
                 >
                   {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
                 <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
@@ -1726,8 +1728,8 @@ const Checkout = ({ setExtendedTime }) => {
                               ? "60%"
                               : "0%"
                             : showDropdown2
-                            ? "25%"
-                            : "0%",
+                              ? "25%"
+                              : "0%",
                         }}
                       >
                         <Button
@@ -1834,7 +1836,7 @@ const Checkout = ({ setExtendedTime }) => {
                 </h5>
                 <p style={{ fontSize: "15px" }}>
                   {isExpanded ||
-                  (checkoutData?.property_description?.length || 0) <= 200
+                    (checkoutData?.property_description?.length || 0) <= 200
                     ? checkoutData?.property_description
                     : `${checkoutData?.property_description?.slice(0, 200)}...`}
                 </p>
@@ -1873,9 +1875,8 @@ const Checkout = ({ setExtendedTime }) => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                              open === "collapseOne" ? "" : " "
-                            }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
+                              }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -1938,9 +1939,8 @@ const Checkout = ({ setExtendedTime }) => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseTwo" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
