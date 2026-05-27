@@ -535,14 +535,28 @@ const Checkout = ({ setExtendedTime }) => {
 
         const paymentResult = await response.json();
         console.log(paymentResult, "paymetn resupt***");
-        if (paymentResult) {
+        if (paymentResult && paymentResult.success) {
           // Tell Safari the payment went through perfectly!
           session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
-          onPaymentSuccess(paymentResult);
+
+          if (typeof onPaymentSuccess === "function") {
+            onPaymentSuccess(paymentResult);
+          }
+          // onPaymentSuccess(paymentResult);
+
+          // navigate("/booking-details", {
+          //   state: {
+          //     ...response?.data,
+          //     bookingDate,
+          //     startTime: startTime,
+          //     endTime: endTime,
+          //     checkoutData,
+          //   },
+          // });
 
           navigate("/booking-details", {
             state: {
-              ...response?.data,
+              ...paymentResult, // Spreads 'success', 'message', 'payment_intent_id', etc.
               bookingDate,
               startTime: startTime,
               endTime: endTime,
