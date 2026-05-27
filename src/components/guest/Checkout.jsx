@@ -472,7 +472,20 @@ const Checkout = ({ setExtendedTime }) => {
       setVisibleCount(newCount);
     }
   };
+  function getFormattedBookingTimes({
+    booking_date,
+    booking_start,
+    booking_end,
+  }) {
+    const formattedStartTime = formatTo24Hour(booking_start);
+    const formattedEndTime = formatTo24Hour(booking_end);
 
+    const startDateTime = `${booking_date}T${formattedStartTime}`;
+    const endDateTime = `${booking_date}T${formattedEndTime}`;
+
+    const adjustedTimes = adjustEndTimeIfNeeded(startDateTime, endDateTime);
+    return adjustedTimes;
+  }
   const initiateApplePaySession = () => {
     // 2. Define payment details
     const paymentRequest = {
@@ -518,6 +531,12 @@ const Checkout = ({ setExtendedTime }) => {
     session.onpaymentauthorized = async (event) => {
       const paymentToken = event.payment.token;
 
+      const { start_time, end_time } = getFormattedBookingTimes({
+        booking_date: bookingDate,
+        booking_start: checkoutData?.startTime,
+        booking_end: checkoutData?.endTime,
+      });
+
       try {
         // Send this payment token to your backend processing endpoint
         const response = await fetch(`${baseURL}apple-pay/charge`, {
@@ -535,8 +554,8 @@ const Checkout = ({ setExtendedTime }) => {
 
             property_id: checkoutData?.property_id,
             booking_date: bookingDate,
-            booking_start: startTime,
-            booking_end: endTime,
+            booking_start: start_time,
+            booking_end: end_time,
             booking_amount: checkoutData?.totalPrice.toString(),
             total_amount: totalAmnt,
             service_fee: checkoutData?.service_fee.toString(),
@@ -627,21 +646,6 @@ const Checkout = ({ setExtendedTime }) => {
       start_time: formatDateTime(start),
       end_time: formatDateTime(end),
     };
-  }
-
-  function getFormattedBookingTimes({
-    booking_date,
-    booking_start,
-    booking_end,
-  }) {
-    const formattedStartTime = formatTo24Hour(booking_start);
-    const formattedEndTime = formatTo24Hour(booking_end);
-
-    const startDateTime = `${booking_date}T${formattedStartTime}`;
-    const endDateTime = `${booking_date}T${formattedEndTime}`;
-
-    const adjustedTimes = adjustEndTimeIfNeeded(startDateTime, endDateTime);
-    return adjustedTimes;
   }
 
   // -----------------------------------
