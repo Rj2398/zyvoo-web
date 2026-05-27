@@ -530,6 +530,21 @@ const Checkout = ({ setExtendedTime }) => {
             token: paymentToken,
             amount: Math.round(totalAmnt * 100),
             user_id: user_id,
+
+            //
+
+            property_id: checkoutData?.property_id,
+            booking_date: bookingDate,
+            booking_start: startTime,
+            booking_end: endTime,
+            booking_amount: checkoutData?.totalPrice.toString(),
+            total_amount: totalAmnt,
+            customer_id: customer_id,
+            card_id: card_id,
+            service_fee: checkoutData?.service_fee.toString(),
+            tax: checkoutData?.tax.toString(),
+            discount_amount: checkoutData?.bulk_discount_hour.toString(),
+            addons: selectedAddons,
           }),
         });
 
@@ -556,7 +571,7 @@ const Checkout = ({ setExtendedTime }) => {
 
           navigate("/booking-details", {
             state: {
-              ...paymentResult, // Spreads 'success', 'message', 'payment_intent_id', etc.
+              ...paymentResult.data?.booking_datails,
               bookingDate,
               startTime: startTime,
               endTime: endTime,
