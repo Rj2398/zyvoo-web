@@ -571,7 +571,7 @@ const Checkout = ({ setExtendedTime }) => {
 
           navigate("/booking-details", {
             state: {
-              ...paymentResult.data?.booking_datails,
+              ...paymentResult.booking_datails,
               bookingDate,
               startTime: startTime,
               endTime: endTime,
