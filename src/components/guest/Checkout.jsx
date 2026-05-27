@@ -570,17 +570,6 @@ const Checkout = ({ setExtendedTime }) => {
 
           if (typeof onPaymentSuccess === "function") {
             onPaymentSuccess(paymentResult);
-
-              navigate("/booking-details", {
-            state: {
-              // ...paymentResult?.booking_datails,
-              ...response?.data,
-              bookingDate,
-              startTime: start_time,
-              endTime: end_time,
-              checkoutData,
-            },
-          });
           }
           // onPaymentSuccess(paymentResult);
 
@@ -594,7 +583,16 @@ const Checkout = ({ setExtendedTime }) => {
           //   },
           // });
 
-        
+          navigate("/booking-details", {
+            state: {
+              ...paymentResult,
+              // ...response?.data,
+              bookingDate,
+              startTime: start_time,
+              endTime: end_time,
+              checkoutData,
+            },
+          });
         } else {
           session.completePayment(window.ApplePaySession.STATUS_FAILURE);
         }
