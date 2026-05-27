@@ -95,7 +95,7 @@ const BookingDetails = () => {
   );
 
   useEffect(() => {
-    if (!bookingData.booking ||!bookingData.booking_datails) {
+    if (!bookingData) {
       toast.error("Please book a property first");
       navigate("/");
     }
