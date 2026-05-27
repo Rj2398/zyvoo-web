@@ -582,11 +582,11 @@ const Checkout = ({ setExtendedTime }) => {
           //     checkoutData,
           //   },
           // });
-
+      const bookingDetails=paymentResult?.booking_details
           navigate("/booking-details", {
             state: {
               booking: {
-                ...paymentResult,
+                ...bookingDetails
               },
 
               bookingDate,
