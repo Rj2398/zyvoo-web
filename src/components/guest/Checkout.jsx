@@ -539,6 +539,16 @@ const Checkout = ({ setExtendedTime }) => {
           // Tell Safari the payment went through perfectly!
           session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
           onPaymentSuccess(paymentResult);
+
+          navigate("/booking-details", {
+            state: {
+              ...response?.data,
+              bookingDate,
+              startTime: startTime,
+              endTime: endTime,
+              checkoutData,
+            },
+          });
         } else {
           session.completePayment(window.ApplePaySession.STATUS_FAILURE);
         }
