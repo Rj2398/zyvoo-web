@@ -540,7 +540,7 @@ const Checkout = ({ setExtendedTime }) => {
             booking_amount: checkoutData?.totalPrice.toString(),
             total_amount: totalAmnt,
             customer_id: customer_id,
-            card_id: card_id,
+            // card_id: card_id,
             service_fee: checkoutData?.service_fee.toString(),
             tax: checkoutData?.tax.toString(),
             discount_amount: checkoutData?.bulk_discount_hour.toString(),
@@ -571,7 +571,7 @@ const Checkout = ({ setExtendedTime }) => {
 
           navigate("/booking-details", {
             state: {
-              ...paymentResult.booking_datails,
+              ...paymentResult?.booking_datails,
               bookingDate,
               startTime: startTime,
               endTime: endTime,
