@@ -109,82 +109,6 @@ const Checkout = ({ setExtendedTime }) => {
 
   // apple pay rajan
 
-  const initiateApplePaySession = () => {
-    // 2. Define payment details
-    const paymentRequest = {
-      countryCode: "US", // Change to your target country
-      currencyCode: "USD", // Change to your currency code
-      supportedNetworks: ["visa", "mastercard", "amex", "discover"],
-      merchantCapabilities: ["supports3DS"], // 3D Secure is mandatory
-      total: {
-        label: "Zyvo App Checkout",
-        // amount: String(amount), // Apple requires string format (e.g., "25.00")
-        amount: "10.00",
-      },
-    };
-
-    // 3. Start the native Apple Pay Session (using API version 3)
-    const session = new window.ApplePaySession(3, paymentRequest);
-
-    // 4. STEP A: Triggers automatically. Send Apple's URL to your backend team's endpoint.
-    session.onvalidatemerchant = async (event) => {
-      try {
-        // Point this to your backend team's live endpoint
-        const response = await fetch(`${baseURL}apple-pay/validate`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            validationUrl: event.validationURL,
-          }),
-        });
-
-        const merchantSessionDetails = await response.json();
-
-        // Complete validation handshake to display native credit cards list
-        session.completeMerchantValidation(merchantSessionDetails);
-      } catch (err) {
-        console.error("Merchant validation failed:", err);
-        session.abort();
-      }
-    };
-
-    // 5. STEP B: Triggers when the user authorizes payment with FaceID / TouchID
-    session.onpaymentauthorized = async (event) => {
-      const paymentToken = event.payment.token;
-
-      try {
-        // Send this payment token to your backend processing endpoint
-        const response = await fetch(`${baseURL}apple-pay/charge`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            token: paymentToken,
-          }),
-        });
-
-        const paymentResult = await response.json();
-
-        if (paymentResult.success) {
-          // Tell Safari the payment went through perfectly!
-          session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
-          onPaymentSuccess(paymentResult);
-        } else {
-          session.completePayment(window.ApplePaySession.STATUS_FAILURE);
-        }
-      } catch (err) {
-        session.completePayment(window.ApplePaySession.STATUS_FAILURE);
-      }
-    };
-
-    // Open the native Apple Pay popup sheet from the browser
-    session.begin();
-  };
   // const initiateApplePaySession = () => {
   //   // 🚀 TURN THIS FALSE so we can try to launch the real Apple Pay sheet on Safari!
   //   const isMockTestingMode = false;
@@ -545,6 +469,83 @@ const Checkout = ({ setExtendedTime }) => {
     } else {
       setVisibleCount(newCount);
     }
+  };
+
+  const initiateApplePaySession = () => {
+    // 2. Define payment details
+    const paymentRequest = {
+      countryCode: "US",
+      currencyCode: "USD",
+      supportedNetworks: ["visa", "mastercard", "amex", "discover"],
+      merchantCapabilities: ["supports3DS"],
+      total: {
+        label: "Zyvo App Checkout",
+        amount: totalAmnt.toFixed(2), // This automatically forces a two-decimal string format like "25.00"
+      },
+    };
+
+    // 3. Start the native Apple Pay Session (using API version 3)
+    const session = new window.ApplePaySession(3, paymentRequest);
+
+    // 4. STEP A: Triggers automatically. Send Apple's URL to your backend team's endpoint.
+    session.onvalidatemerchant = async (event) => {
+      try {
+        // Point this to your backend team's live endpoint
+        const response = await fetch(`${baseURL}apple-pay/validate`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            validationUrl: event.validationURL,
+          }),
+        });
+
+        const merchantSessionDetails = await response.json();
+
+        // Complete validation handshake to display native credit cards list
+        session.completeMerchantValidation(merchantSessionDetails);
+      } catch (err) {
+        console.error("Merchant validation failed:", err);
+        session.abort();
+      }
+    };
+
+    // 5. STEP B: Triggers when the user authorizes payment with FaceID / TouchID
+    session.onpaymentauthorized = async (event) => {
+      const paymentToken = event.payment.token;
+
+      try {
+        // Send this payment token to your backend processing endpoint
+        const response = await fetch(`${baseURL}apple-pay/charge`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            token: paymentToken,
+            amount: Math.round(totalAmnt * 100),
+          }),
+        });
+
+        const paymentResult = await response.json();
+
+        if (paymentResult.success) {
+          // Tell Safari the payment went through perfectly!
+          session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
+          onPaymentSuccess(paymentResult);
+        } else {
+          session.completePayment(window.ApplePaySession.STATUS_FAILURE);
+        }
+      } catch (err) {
+        session.completePayment(window.ApplePaySession.STATUS_FAILURE);
+      }
+    };
+
+    // Open the native Apple Pay popup sheet from the browser
+    session.begin();
   };
 
   const showLess = () => {
