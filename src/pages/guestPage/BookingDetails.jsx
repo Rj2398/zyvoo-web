@@ -94,12 +94,12 @@ const BookingDetails = () => {
       : ""
   );
 
-  // useEffect(() => {
-  //   if (!bookingData) {
-  //     toast.error("Please book a property first");
-  //     navigate("/");
-  //   }
-  // }, [bookingData]);
+  useEffect(() => {
+    if (!bookingData.booking || !bookingData?.checkoutData) {
+      toast.error("Please book a property first");
+      navigate("/");
+    }
+  }, [bookingData]);
 
   const handleOpenModal = () => setShowModal(true);
   const handleCancel = () => setShowModal(false);
