@@ -20,6 +20,8 @@ const BookingDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const bookingData = location.state || {};
+
+  console.log(bookingData,"my data")
   const { checkoutData } = location.state || {};
   const booking = bookingData.booking;
   const { details } = useSelector(({ user }) => user);
@@ -93,7 +95,7 @@ const BookingDetails = () => {
   );
 
   useEffect(() => {
-    if (!bookingData.booking) {
+    if (!bookingData.booking ||!bookingData.booking_datails) {
       toast.error("Please book a property first");
       navigate("/");
     }
