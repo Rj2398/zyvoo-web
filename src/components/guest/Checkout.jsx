@@ -566,7 +566,7 @@ const Checkout = ({ setExtendedTime }) => {
         });
 
         const paymentResult = await response.json();
-        console.log(paymentResult, "paymetn resupt***");
+        console.log(paymentResult?.booking_details, "paymetn resupt***");
         if (paymentResult && paymentResult.success) {
           // Tell Safari the payment went through perfectly!
           session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
