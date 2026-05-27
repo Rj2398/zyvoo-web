@@ -31,7 +31,9 @@ const Checkout = ({ setExtendedTime }) => {
   const token = JSON.parse(
     sessionStorage.getItem(KEYS.USER_INFO)
   )?.access_token;
-  console.log(token, "test *********");
+
+  const user_id = JSON.parse(sessionStorage.getItem(KEYS.USER_INFO))?.user_id;
+  console.log(user_id, "test *********");
 
   const { userInfo } = useSelector(({ user }) => user);
   const { gatewayApple } = useSelector(({ user }) => user);
@@ -527,6 +529,7 @@ const Checkout = ({ setExtendedTime }) => {
           body: JSON.stringify({
             token: paymentToken,
             amount: Math.round(totalAmnt * 100),
+            user_id: user_id,
           }),
         });
 
