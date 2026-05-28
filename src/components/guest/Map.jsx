@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import markerImage from "../../assets/marker.png";
+import { GOOGLE_KEY } from "../../config/Constant";
 
 export default function Map({ lat, lng,locationImg ,bookingData}) {
+
+  
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const [address, setAddress] = useState("Fetching address...");
@@ -52,7 +55,7 @@ export default function Map({ lat, lng,locationImg ,bookingData}) {
   };
 
   const openGoogleMaps = () => {
-    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+   const googleMapsUrl = `https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
     window.open(googleMapsUrl, "_blank"); // Open in a new tab
   };
 
@@ -89,7 +92,7 @@ export default function Map({ lat, lng,locationImg ,bookingData}) {
         }}
       >
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyC9NuN_f-wESHh3kihTvpbvdrmKlTQurxw" }}
+          bootstrapURLKeys={{key:GOOGLE_KEY}}
           defaultCenter={defaultProps.center}
           defaultZoom={defaultProps.zoom}
           onGoogleApiLoaded={({ map, maps }) => {
