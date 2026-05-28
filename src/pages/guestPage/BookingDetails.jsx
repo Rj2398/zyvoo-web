@@ -16,18 +16,24 @@ import { FiArrowLeft } from "react-icons/fi";
 import { PiClockCountdownFill } from "react-icons/pi";
 
 const BookingDetails = () => {
-      const {userInfo} = useSelector(({user})=>user)
+  const { userInfo } = useSelector(({ user }) => user);
   const location = useLocation();
   const navigate = useNavigate();
   const bookingData = location.state || {};
 
-  console.log(bookingData,"my data")
+  console.log(bookingData, "my data");
   const { checkoutData } = location.state || {};
   const booking = bookingData.booking;
   const { details } = useSelector(({ user }) => user);
 
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO))|| JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
-  const userId =userInfo?.user_id ? String(userInfo?.user_id) : null|| userData?.user_id ? String(userData?.user_id) : null;
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userId = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || userData?.user_id
+    ? String(userData?.user_id)
+    : null;
 
   const bookingDetails = details ?? checkoutData;
 
@@ -79,7 +85,7 @@ const BookingDetails = () => {
 
   const [hours, setHours] = useState(bookingDetails?.hoursValue);
   const [totalPrice, setTotalPrice] = useState(bookingDetails?.totalPrice);
-  const [totalHrs, setTotalHrs] = useState(bookingDetails?.hoursValue||0);
+  const [totalHrs, setTotalHrs] = useState(bookingDetails?.hoursValue || 0);
 
   const [startTime, setStartTime] = useState(startTime1);
   const [endTime, setEndTime] = useState(endTime1);
@@ -191,7 +197,7 @@ const BookingDetails = () => {
         </div>
       </div>
 
-      <div className="mob-search-filter border-start-0 border-end-0" >
+      <div className="mob-search-filter border-start-0 border-end-0">
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-12">
@@ -239,7 +245,7 @@ const BookingDetails = () => {
             flexDirection: "row",
             gap: "20px",
             flexWrap: "wrap",
-              padding:!isMobileWidth && "60px 50px "
+            padding: !isMobileWidth && "60px 50px ",
           }}
         >
           <div
@@ -249,7 +255,6 @@ const BookingDetails = () => {
               flex: "1 1 70%",
               minWidth: "300px",
               marginTop: isMobileWidth ? "0px" : "24px",
-          
             }}
           >
             {!isMobileWidth && (
@@ -257,23 +262,23 @@ const BookingDetails = () => {
                 <Link to="/homeGuest">
                   <button
                     style={{
-                     border: "none",
-                          fontSize: "25px",
-                          color: "#000000",
-                          background: "none",
+                      border: "none",
+                      fontSize: "25px",
+                      color: "#000000",
+                      background: "none",
                     }}
                   >
                     <FiArrowLeft
                       style={{
-                         fontWeight: "400",
-                            border: "none",
-                            fontSize: "16px",
-                            marginRight: "10px",
-                            backgroundColor: "black",
-                            color: "white",
-                            borderRadius: "50%",
-                            padding: "8px", 
-                            boxSizing: "content-box",  // Prevents padding from affecting borderRadius
+                        fontWeight: "400",
+                        border: "none",
+                        fontSize: "16px",
+                        marginRight: "10px",
+                        backgroundColor: "black",
+                        color: "white",
+                        borderRadius: "50%",
+                        padding: "8px",
+                        boxSizing: "content-box", // Prevents padding from affecting borderRadius
                       }}
                     />
                     New Booking Confirmed
@@ -320,7 +325,8 @@ const BookingDetails = () => {
                     <img
                       className="chat-right-top-profile-image"
                       src={imageBase + bookingDetails?.host_profile_image}
-                      loading="lazy" alt="Host"
+                      loading="lazy"
+                      alt="Host"
                       style={{
                         width: "clamp(50px, 7vw, 60px)",
                         height: "clamp(50px, 7vw, 60px)",
@@ -339,7 +345,8 @@ const BookingDetails = () => {
                     <img
                       className="chat-right-top-batch-image"
                       src="/images/bookings/verify-star.svg"
-                      loading="lazy" alt="Verified"
+                      loading="lazy"
+                      alt="Verified"
                       style={{
                         width: "clamp(14px, 2vw, 16px)",
                         height: "clamp(14px, 2vw, 16px)",
@@ -349,7 +356,8 @@ const BookingDetails = () => {
                     {bookingDetails?.is_star_host && (
                       <Image
                         src="/images/locations-grid/profile/batch.svg"
-                        loading="lazy" alt="Batch"
+                        loading="lazy"
+                        alt="Batch"
                         style={{
                           position: "absolute",
                           top: "20px",
@@ -373,7 +381,8 @@ const BookingDetails = () => {
                   >
                     <img
                       src="/images/guides-articles/time.svg"
-                      loading="lazy" alt="Response time"
+                      loading="lazy"
+                      alt="Response time"
                       style={{
                         width: "clamp(14px, 2vw, 16px)",
                         height: "clamp(14px, 2vw, 16px)",
@@ -477,7 +486,8 @@ const BookingDetails = () => {
                   <div className="chat-right-bottom-in-image ">
                     <img
                       src={imageBase + bookingDetails?.images?.[0]}
-                      loading="lazy" alt="image"
+                      loading="lazy"
+                      alt="image"
                     />
                   </div>
                   <div className="chat-right-bottom-in-text">
@@ -485,7 +495,8 @@ const BookingDetails = () => {
                     <p>
                       <img
                         src="/images/locations-grid/star-icon.svg"
-                        loading="lazy" alt="Rating"
+                        loading="lazy"
+                        alt="Rating"
                       />
                       <span>
                         {" "}
@@ -505,7 +516,8 @@ const BookingDetails = () => {
                     >
                       <img
                         src="/images/locations-grid/location-icon.svg"
-                        loading="lazy" alt="Location"
+                        loading="lazy"
+                        alt="Location"
                       />
                       {bookingDetails?.distance_miles || "0"} miles away
                     </p>
@@ -636,7 +648,13 @@ const BookingDetails = () => {
                     fontSize: "clamp(14px, 2vw, 18px)",
                   }}
                 >
-                      <img src="/images/checkout/checkcalendar.png" loading="lazy" alt="calendarImg" width={20}  style={{marginRight:'10px'}}/>
+                  <img
+                    src="/images/checkout/checkcalendar.png"
+                    loading="lazy"
+                    alt="calendarImg"
+                    width={20}
+                    style={{ marginRight: "10px" }}
+                  />
                   <span
                     style={{
                       fontSize: "clamp(12px, 1.5vw, 15px)",
@@ -644,7 +662,7 @@ const BookingDetails = () => {
                       color: "black",
                     }}
                   >
-                    {bookingDate}
+                    {bookingDate || bookingData?.bookingDate}
                   </span>
                 </div>
 
@@ -696,7 +714,8 @@ const BookingDetails = () => {
                       color: "black",
                     }}
                   >
-                    From {startTime1} to {endTime1}
+                    From {startTime1 || bookingData?.startTime} to{" "}
+                    {endTime1 || bookingData?.endTime}
                   </span>
                 </div>
                 <br />
@@ -755,7 +774,7 @@ const BookingDetails = () => {
                 fontWeight: "500",
                 color: "black",
                 // fontSize: "clamp(16px, 2vw, 18px)",
-                marginTop:'10px'
+                marginTop: "10px",
               }}
             >
               Cancellation Policies
@@ -773,7 +792,7 @@ const BookingDetails = () => {
               }}
             >
               <div>
-                <p style={{ fontSize: "14px",color:'black' }}>
+                <p style={{ fontSize: "14px", color: "black" }}>
                   {`Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                   Incidunt expedita, quam voluptatibus rerum iste, quidem
                   quibusdam delectus impedit mollitia totam placeat. Tenetur
@@ -813,7 +832,7 @@ const BookingDetails = () => {
                           display: "flex",
                           justifyContent: "center",
                           alignItems: "center",
-                          borderRadius:"10px"
+                          borderRadius: "10px",
                         }
                       : {
                           position: "absolute",
@@ -823,7 +842,7 @@ const BookingDetails = () => {
                         }
                   }
                 >
-                  <div style={{position:"relative"}}>
+                  <div style={{ position: "relative" }}>
                     {/* Close Button */}
 
                     {isMobileWidth && (
@@ -892,7 +911,8 @@ const BookingDetails = () => {
                         >
                           <img
                             src="/images/location/included/1.svg"
-                            loading="lazy" alt="Parking Icon"
+                            loading="lazy"
+                            alt="Parking Icon"
                             className="me-2"
                             style={{
                               width: "25px",
@@ -926,11 +946,11 @@ const BookingDetails = () => {
                           className="accordion-body"
                           style={{
                             borderRadius: "10px",
-                          backgroundColor: "#F8F9FA",
-                          margin: "10px",
-                          padding: "10px",
-                          fontSize: "14px",
-                          color:'black'
+                            backgroundColor: "#F8F9FA",
+                            margin: "10px",
+                            padding: "10px",
+                            fontSize: "14px",
+                            color: "black",
                           }}
                         >
                           {bookingDetails?.parking_rules ||
@@ -955,7 +975,8 @@ const BookingDetails = () => {
                       >
                         <img
                           src="/images/location/included/7.svg"
-                          loading="lazy" alt="Host Rules Icon"
+                          loading="lazy"
+                          alt="Host Rules Icon"
                           className="me-2"
                           style={{
                             width: "25px",
@@ -992,7 +1013,7 @@ const BookingDetails = () => {
                           margin: "10px",
                           padding: "10px",
                           fontSize: "14px",
-                          color:'black'
+                          color: "black",
                         }}
                       >
                         {bookingDetails?.host_rules ||
@@ -1015,7 +1036,7 @@ const BookingDetails = () => {
                   maxWidth: "266px",
                   margin: "16px 0",
                   fontSize: "16px",
-                  fontWeight: '500',
+                  fontWeight: "500",
                   padding: "10px 25px 10px 25px",
                 }}
               >
@@ -1051,7 +1072,8 @@ const BookingDetails = () => {
                   <div className="chat-right-bottom-in-image ">
                     <img
                       src={imageBase + bookingDetails?.images?.[0]}
-                      loading="lazy" alt="image"
+                      loading="lazy"
+                      alt="image"
                     />
                   </div>
                   <div className="chat-right-bottom-in-text">
@@ -1059,7 +1081,8 @@ const BookingDetails = () => {
                     <p>
                       <img
                         src="/images/locations-grid/star-icon.svg"
-                        loading="lazy" alt="Rating"
+                        loading="lazy"
+                        alt="Rating"
                       />
                       <span>
                         {" "}
@@ -1079,7 +1102,8 @@ const BookingDetails = () => {
                     >
                       <img
                         src="/images/locations-grid/location-icon.svg"
-                        loading="lazy" alt="Location"
+                        loading="lazy"
+                        alt="Location"
                       />
                       {bookingDetails?.distance_miles || "0"} miles away
                     </p>
@@ -1151,7 +1175,7 @@ const BookingDetails = () => {
                       borderTop: "1px solid #eee",
                       fontWeight: "400",
                       fontSize: "17px",
-                      color:'black'
+                      color: "black",
                     }}
                   >
                     Total{" "}
@@ -1160,26 +1184,29 @@ const BookingDetails = () => {
                 </ul>
               </div>
               {!isMobileWidth && (
-                <div style={{width:'100% !important'}}>
+                <div style={{ width: "100% !important" }}>
                   <div
                     className="location-right-shield"
-                    style={{ display: "flex", flexDirection: "column",width:'102% !important'}}
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "102% !important",
+                    }}
                   >
                     <span
                       className="info-wrap"
                       style={{
                         display: "flex",
                         marginBottom: "15px",
-                      
                       }}
                     >
                       <img
                         src="/images/create-profile/info.svg"
-                        loading="lazy" alt="Info"
+                        loading="lazy"
+                        alt="Info"
                         style={{
                           width: "clamp(14px, 2vw, 16px)",
                           marginRight: "8px",
-                         
                         }}
                       />
 
@@ -1201,16 +1228,16 @@ const BookingDetails = () => {
                         alignItems: "center",
                         fontSize: "16px",
                         margin: "10px 0",
-                         gap:'0px'
+                        gap: "0px",
                       }}
                     >
                       <img
                         src="/images/location/zyvo-shield.svg"
-                        loading="lazy" alt="ZYVO Shield"
+                        loading="lazy"
+                        alt="ZYVO Shield"
                         style={{
                           width: "clamp(20px, 3vw, 24px)",
                           marginRight: "10px",
-                         
                         }}
                       />
                       ZYVO Shield
@@ -1228,7 +1255,15 @@ const BookingDetails = () => {
                 </div>
               )}
               {!isMobileWidth && (
-                <div style={{background:'#FFFFFF',boxShadow:' 0 4px 12px rgba(0, 0, 0, -2.85)',border:'1px solid #E4E4E4',padding:'10px',borderRadius:'20px'}}>
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow: " 0 4px 12px rgba(0, 0, 0, -2.85)",
+                    border: "1px solid #E4E4E4",
+                    padding: "10px",
+                    borderRadius: "20px",
+                  }}
+                >
                   <div style={{ textAlign: "center", marginBottom: "15px" }}>
                     <span
                       style={{
@@ -1246,7 +1281,7 @@ const BookingDetails = () => {
                       flexDirection: "column",
                       alignItems: "center",
                       marginBottom: "15px",
-                      marginTop:'-15px'
+                      marginTop: "-15px",
                     }}
                   >
                     <div
@@ -1255,13 +1290,13 @@ const BookingDetails = () => {
                         display: "flex",
                         alignItems: "center",
                         marginBottom: "15px",
-                       
                       }}
                     >
                       <img
                         className="chat-right-top-profile-image"
                         src={imageBase + bookingDetails?.host_profile_image}
-                        loading="lazy" alt="Host"
+                        loading="lazy"
+                        alt="Host"
                         style={{
                           width: "clamp(50px, 7vw, 60px)",
                           height: "clamp(50px, 7vw, 60px)",
@@ -1280,7 +1315,8 @@ const BookingDetails = () => {
                       <img
                         className="chat-right-top-batch-image"
                         src="/images/bookings/verify-star.svg"
-                        loading="lazy" alt="Verified"
+                        loading="lazy"
+                        alt="Verified"
                         style={{
                           width: "clamp(14px, 2vw, 16px)",
                           height: "clamp(14px, 2vw, 16px)",
@@ -1290,7 +1326,8 @@ const BookingDetails = () => {
                       {bookingDetails?.is_star_host && (
                         <Image
                           src="/images/locations-grid/profile/batch.svg"
-                          loading="lazy" alt="Batch"
+                          loading="lazy"
+                          alt="Batch"
                           style={{
                             position: "absolute",
                             top: "20px",
@@ -1300,12 +1337,15 @@ const BookingDetails = () => {
                           }}
                         />
                       )}
-                     
-                 
                     </div>
-                   
-                         <div style={{border:'1px solid #ccc',width:'98%',marginBottom:'15px'}}>
-                          </div>
+
+                    <div
+                      style={{
+                        border: "1px solid #ccc",
+                        width: "98%",
+                        marginBottom: "15px",
+                      }}
+                    ></div>
                     <MessageHost
                       type={"Host"}
                       style={{ width: "100%", marginBottom: "10px" }}
@@ -1338,10 +1378,12 @@ const BookingDetails = () => {
                       <p style={{ marginTop: "5px"}}>Typically respond within 1 hr</p>
                     </div> */}
 
-                     <div className="d-flex justify-content-center mb-3">
-                                      <PiClockCountdownFill size={24} color="#979797"/>
-                                      <span className="fs-6 ms-2">Typically respond within 1 hr</span>
-                                    </div>
+                    <div className="d-flex justify-content-center mb-3">
+                      <PiClockCountdownFill size={24} color="#979797" />
+                      <span className="fs-6 ms-2">
+                        Typically respond within 1 hr
+                      </span>
+                    </div>
 
                     <button
                       onClick={() => setShowReportForm(true)}
@@ -1354,7 +1396,7 @@ const BookingDetails = () => {
                         backgroundColor: "white",
                         fontSize: "17px",
                         cursor: "pointer",
-                        color:'black'
+                        color: "black",
                       }}
                     >
                       Report an Issue
@@ -1374,46 +1416,43 @@ const BookingDetails = () => {
                       </div>
                     )}
                   </div>
-
-              
-                </div> 
+                </div>
               )}
 
-               
-      {
-        !isMobileWidth && (
-          <div  style={{textAlign:'center'}}>
-               <button
-                      onClick={handleOpenModal}
-                      style={{
-                        width: "80%",
-                        padding: "clamp(8px, 1.5vw, 10px)",
-                        borderRadius: "5px",
-                        border: "1px solid black",
-                        marginTop: "15px",
-                        backgroundColor: "white",
-                        fontSize: "17px",
-                        cursor: "pointer",
-                        color:'black'
-                      }}
-                    >
-                      Cancel Booking
-                    </button>
+              {!isMobileWidth && (
+                <div style={{ textAlign: "center" }}>
+                  <button
+                    onClick={handleOpenModal}
+                    style={{
+                      width: "80%",
+                      padding: "clamp(8px, 1.5vw, 10px)",
+                      borderRadius: "5px",
+                      border: "1px solid black",
+                      marginTop: "15px",
+                      backgroundColor: "white",
+                      fontSize: "17px",
+                      cursor: "pointer",
+                      color: "black",
+                    }}
+                  >
+                    Cancel Booking
+                  </button>
 
-                    <CancelPopup
-                      isOpen={showModal}
-                      userId={userId}
-                      booking_Id={bookingData?.booking?.id}
-                      amount={totalAmount}
-                      onCancel={handleCancel}
-                      onClose={() => {
-                        handleCancel();
-                      }}
-                      onConfirm={() => {
-                        handleCancel();
-                      }}
-                    />
-                    </div>)}
+                  <CancelPopup
+                    isOpen={showModal}
+                    userId={userId}
+                    booking_Id={bookingData?.booking?.id}
+                    amount={totalAmount}
+                    onCancel={handleCancel}
+                    onClose={() => {
+                      handleCancel();
+                    }}
+                    onConfirm={() => {
+                      handleCancel();
+                    }}
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
