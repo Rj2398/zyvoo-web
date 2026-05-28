@@ -22,6 +22,14 @@ const BookingDetails = () => {
   const bookingData = location.state || {};
 
   console.log(bookingData, "my data");
+
+  const formatTime = (dateTime) => {
+    return new Date(dateTime).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
   const { checkoutData } = location.state || {};
   const booking = bookingData.booking;
   const { details } = useSelector(({ user }) => user);
@@ -714,8 +722,8 @@ const BookingDetails = () => {
                       color: "black",
                     }}
                   >
-                    From {startTime1 || bookingData?.startTime} to{" "}
-                    {endTime1 || bookingData?.endTime}
+                    From {startTime1 || formatTime(bookingData.startTime)} to{" "}
+                    {endTime1 || formatTime(bookingData?.endTime)}
                   </span>
                 </div>
                 <br />
