@@ -524,6 +524,7 @@ const Checkout = ({ setExtendedTime }) => {
 
     // 4. STEP A: Triggers automatically. Send Apple's URL to your backend team's endpoint.
     session.onvalidatemerchant = async (event) => {
+      console.log("Merchant validation started for URL:", event.validationURL);
       try {
         // Point this to your backend team's live endpoint
         const response = await fetch(`${baseURL}apple-pay/validate`, {
