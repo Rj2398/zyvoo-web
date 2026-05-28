@@ -146,7 +146,7 @@ export default function Map({ lat, lng, locationImg, bookingData }) {
           >
             <strong>Selected Location</strong> <br />
             {address} <br />
-            <small style={{ color: "#777" }}>💡 Shake phone to reset map</small>
+            {/* <small style={{ color: "#777" }}>💡 Shake phone to reset map</small> */}
           </div>
         )}
       </div>
