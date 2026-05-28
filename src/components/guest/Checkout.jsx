@@ -27,7 +27,6 @@ import SavedCardsDropdown from "./SavedCardsDropdown";
 import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
-
 const formatDateTime = (dateString) => {
   const date = new Date(dateString);
 
@@ -43,7 +42,10 @@ const formatDateTime = (dateString) => {
   hours = hours % 12;
   hours = hours ? hours : 12;
 
-  return `${year}-${month}-${day} ${String(hours).padStart(2, "0")}:${minutes} ${ampm}`;
+  return `${year}-${month}-${day} ${String(hours).padStart(
+    2,
+    "0"
+  )}:${minutes} ${ampm}`;
 };
 const Checkout = ({ setExtendedTime }) => {
   const token = JSON.parse(
@@ -69,8 +71,8 @@ const Checkout = ({ setExtendedTime }) => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-      ? String(userData?.user_id)
-      : null;
+    ? String(userData?.user_id)
+    : null;
 
   useEffect(() => {
     if (!id) {
@@ -546,6 +548,8 @@ const Checkout = ({ setExtendedTime }) => {
     };
 
     // 5. STEP B: Triggers when the user authorizes payment with FaceID / TouchID
+
+    console.log(session, "check autherize payment*******");
     session.onpaymentauthorized = async (event) => {
       const paymentToken = event.payment.token;
 
@@ -580,11 +584,11 @@ const Checkout = ({ setExtendedTime }) => {
           }),
         });
 
-         const { start_time, end_time } = getFormattedBookingTimes({
-        booking_date: bookingDate,
-        booking_start: checkoutData?.startTime,
-        booking_end: checkoutData?.endTime,
-      });
+        const { start_time, end_time } = getFormattedBookingTimes({
+          booking_date: bookingDate,
+          booking_start: checkoutData?.startTime,
+          booking_end: checkoutData?.endTime,
+        });
 
         const paymentResult = await response.json();
         console.log(paymentResult?.booking_details, "paymetn resupt***");
@@ -607,13 +611,13 @@ const Checkout = ({ setExtendedTime }) => {
           //     checkoutData,
           //   },
           // });
-          const bookingDetails=paymentResult?.booking_details
+          const bookingDetails = paymentResult?.booking_details;
           navigate("/booking-details", {
             state: {
               booking: {
                 ...bookingDetails,
-                 booking_start: formatDateTime(bookingDetails.booking_start),
-                    booking_end: formatDateTime(bookingDetails.booking_end),
+                booking_start: formatDateTime(bookingDetails.booking_start),
+                booking_end: formatDateTime(bookingDetails.booking_end),
               },
 
               bookingDate,
@@ -858,7 +862,7 @@ const Checkout = ({ setExtendedTime }) => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                // style={{ minWidth: "320px " }}
+                  // style={{ minWidth: "320px " }}
                 >
                   {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
                 <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
@@ -1755,8 +1759,8 @@ const Checkout = ({ setExtendedTime }) => {
                               ? "60%"
                               : "0%"
                             : showDropdown2
-                              ? "25%"
-                              : "0%",
+                            ? "25%"
+                            : "0%",
                         }}
                       >
                         <Button
@@ -1863,7 +1867,7 @@ const Checkout = ({ setExtendedTime }) => {
                 </h5>
                 <p style={{ fontSize: "15px" }}>
                   {isExpanded ||
-                    (checkoutData?.property_description?.length || 0) <= 200
+                  (checkoutData?.property_description?.length || 0) <= 200
                     ? checkoutData?.property_description
                     : `${checkoutData?.property_description?.slice(0, 200)}...`}
                 </p>
@@ -1902,8 +1906,9 @@ const Checkout = ({ setExtendedTime }) => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
-                              }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                              open === "collapseOne" ? "" : " "
+                            }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -1966,8 +1971,9 @@ const Checkout = ({ setExtendedTime }) => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
-                            }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                            open === "collapseTwo" ? "" : "collapsed"
+                          }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
