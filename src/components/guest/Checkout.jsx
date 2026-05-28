@@ -45,6 +45,7 @@ const Checkout = ({ setExtendedTime }) => {
   const checkoutData = location.state?.objectTobeNavigated || {};
   const id = checkoutData?.property_id;
 
+  console.log(checkoutData, "checkout data********");
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
     JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));

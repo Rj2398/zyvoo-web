@@ -27,19 +27,24 @@ import loactionImg from "../../assets/locationImg.png";
 // import { now } from "moment";
 
 function Location() {
-  const { userInfo } = useSelector(({ user }) => user)
+  const { userInfo } = useSelector(({ user }) => user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   const { id } = useParams();
   const propertyId = id;
   const location = useLocation();
   const { distance } = location.state || {};
   const dayTabRef = useRef(null);
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
 
-  const userId = userInfo?.user_id ? String(userInfo?.user_id) : null || userData?.user_id ? String(userData?.user_id) : null;
+  const userId = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || userData?.user_id
+    ? String(userData?.user_id)
+    : null;
   const [currentLocation, setCurrentLocation] = useState({
     latitude: null,
     longitude: null,
@@ -185,8 +190,9 @@ function Location() {
     } else {
       const days = Math.floor(cancellationTime / 24);
       const hours = cancellationTime % 24;
-      return `Cancel for free within ${days} days${hours > 0 ? ` and ${hours} hour(s)` : ""
-        }`;
+      return `Cancel for free within ${days} days${
+        hours > 0 ? ` and ${hours} hour(s)` : ""
+      }`;
     }
   }
 
@@ -272,7 +278,6 @@ function Location() {
   };
 
   const handleValidation = async () => {
-
     if (buttonText != "Proceed to Checkout") {
       if (dayTabRef.current) {
         const tab = new Tab(dayTabRef.current);
@@ -469,100 +474,170 @@ function Location() {
         </div>
         {/* <!-- MOBILE --> */}
 
-        <div className="location-wrap location-detail"
+        <div
+          className="location-wrap location-detail"
           style={{
             margin: isMobileWidth ? "0px" : "2% 5% 5% 5%",
             backgroundColor: "white",
-            backgroundImage: "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)",
+            backgroundImage:
+              "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)",
             backgroundSize: "20px 20px",
             display: "flex",
             flexDirection: "row", // Ensures children are arranged in a row
             justifyContent: "space-between", // Adjust as needed
             alignItems: "flex-start",
-          }} >
+          }}
+        >
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-12">
                 <div className="location-top">
-                  <h1> {propertyDetails?.property_title}
+                  <h1>
+                    {" "}
+                    {propertyDetails?.property_title}
                     <ul>
                       <li>
-                        <img src="/images/locations-grid/star-icon.svg" loading="lazy" alt="" />{" "}
+                        <img
+                          src="/images/locations-grid/star-icon.svg"
+                          loading="lazy"
+                          alt=""
+                        />{" "}
                         <span>5.0</span> (30 reviews)
                       </li>
                     </ul>
                   </h1>
                   <ul>
                     <li>
-                      <img src="/images/locations-grid/star-icon.svg" loading="lazy" alt="reviews_total_rating" />
-                      <span> {formatReview(propertyDetails?.reviews_total_rating)} </span>{" "}
+                      <img
+                        src="/images/locations-grid/star-icon.svg"
+                        loading="lazy"
+                        alt="reviews_total_rating"
+                      />
+                      <span>
+                        {" "}
+                        {formatReview(
+                          propertyDetails?.reviews_total_rating
+                        )}{" "}
+                      </span>{" "}
                       ({propertyDetails?.reviews_total_count} reviews)
                     </li>
                     <li>
-                      <img src="/images/location/time.svg" loading="lazy" alt="min_booking_hours" />
+                      <img
+                        src="/images/location/time.svg"
+                        loading="lazy"
+                        alt="min_booking_hours"
+                      />
                       {parseFloat(propertyDetails?.min_booking_hours)} hr
                     </li>
                     <li>
-                      <img src="/images/location/size.svg" loading="lazy" alt="property_size" />
+                      <img
+                        src="/images/location/size.svg"
+                        loading="lazy"
+                        alt="property_size"
+                      />
                       {propertyDetails?.property_size} sqft
                     </li>
 
-                    {(propertyDetails?.is_instant_book || propertyDetails?.is_instant_book != 0) && (
-                      <li> <i className="fa-solid fa-bolt"></i> Instant book </li>
+                    {(propertyDetails?.is_instant_book ||
+                      propertyDetails?.is_instant_book != 0) && (
+                      <li>
+                        {" "}
+                        <i className="fa-solid fa-bolt"></i> Instant book{" "}
+                      </li>
                     )}
 
                     <li className="location-top-share">
-                      <a onClick={() => setShowShareModal((prev) => !prev)} href="#" >
-                        <i className="fa-solid fa-share-nodes " style={{ color: "#ccc" }} ></i>
+                      <a
+                        onClick={() => setShowShareModal((prev) => !prev)}
+                        href="#"
+                      >
+                        <i
+                          className="fa-solid fa-share-nodes "
+                          style={{ color: "#ccc" }}
+                        ></i>
                         Share
                       </a>
                     </li>
 
                     <li>
-                      <a onClick={() => {
-                        if (userId) {
-                          if (!propertyDetails?.is_in_wishlist) {
-                            setShowAddWishlistModal(true);
-                            setPropertyDetails((prev) => ({
-                              ...prev,
-                              is_in_wishlist: true, // ✅ Update wishlist state
-                            }));
+                      <a
+                        onClick={() => {
+                          if (userId) {
+                            if (!propertyDetails?.is_in_wishlist) {
+                              setShowAddWishlistModal(true);
+                              setPropertyDetails((prev) => ({
+                                ...prev,
+                                is_in_wishlist: true, // ✅ Update wishlist state
+                              }));
+                            }
+                          } else {
+                            handleModalToggle("login", true);
                           }
-                        } else {
-                          handleModalToggle("login", true);
-                        }
-                      }}
-                        style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "5px" }}>
-                        <i className="fa-solid fa-heart" style={{ color: propertyDetails?.is_in_wishlist ? "red" : "" }} ></i>
+                        }}
+                        style={{
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
+                        }}
+                      >
+                        <i
+                          className="fa-solid fa-heart"
+                          style={{
+                            color: propertyDetails?.is_in_wishlist ? "red" : "",
+                          }}
+                        ></i>
                         Wishlist
                       </a>
                     </li>
                   </ul>
                 </div>
 
-                <div className={`top-grid-images-${propertyDetails?.images?.length > 5 ? 5 : propertyDetails?.images?.length}`} onClick={() => setShowPropertyImages(true)}
-                  style={{ height: isMobileWidth ? '200px' : '450px' }} >
+                <div
+                  className={`top-grid-images-${
+                    propertyDetails?.images?.length > 5
+                      ? 5
+                      : propertyDetails?.images?.length
+                  }`}
+                  onClick={() => setShowPropertyImages(true)}
+                  style={{ height: isMobileWidth ? "200px" : "450px" }}
+                >
                   <div className="top-grid-images-left">
                     {propertyDetails?.images?.[0] && (
-                      <img src={`https://zyvo.tgastaging.com/${propertyDetails?.images?.[0]}`}
-                        loading="lazy" alt="Main Property" style={{
+                      <img
+                        src={`https://zyvo.tgastaging.com/${propertyDetails?.images?.[0]}`}
+                        loading="lazy"
+                        alt="Main Property"
+                        style={{
                           width: "100%",
                           height: "100%",
                           objectFit: "cover",
                           display: "block",
-                        }} />
+                        }}
+                      />
                     )}
                   </div>
 
-                  <div className="top-grid-images-right" onClick={() => setShowPropertyImages(true)}>
+                  <div
+                    className="top-grid-images-right"
+                    onClick={() => setShowPropertyImages(true)}
+                  >
                     {propertyDetails?.images?.slice(1, 5).map((item, index) => (
-                      <img key={index} src={`https://zyvo.tgastaging.com/${item}`} loading="lazy" alt="Main Property" />
+                      <img
+                        key={index}
+                        src={`https://zyvo.tgastaging.com/${item}`}
+                        loading="lazy"
+                        alt="Main Property"
+                      />
                     ))}
                   </div>
                 </div>
 
                 {propertyDetails?.images?.length > 5 && (
-                  <div style={{ textAlign: "right", cursor: "pointer" }} onClick={() => setShowPropertyImages(true)} >
+                  <div
+                    style={{ textAlign: "right", cursor: "pointer" }}
+                    onClick={() => setShowPropertyImages(true)}
+                  >
                     see more
                   </div>
                 )}
@@ -574,13 +649,24 @@ function Location() {
                   <div className="location-right-top">
                     <h2>
                       ${parseFloat(propertyDetails?.hourly_rate)}/hr <br />{" "}
-                      <span> {parseFloat(propertyDetails?.min_booking_hours)} hr minimum </span>
+                      <span>
+                        {" "}
+                        {parseFloat(propertyDetails?.min_booking_hours)} hr
+                        minimum{" "}
+                      </span>
                     </h2>
                     <hr />
                     <div className="location-right-top-in">
-                      <p> {parseFloat(propertyDetails?.bulk_discount_hour)}+ hour discount{" "}
+                      <p>
+                        {" "}
+                        {parseFloat(propertyDetails?.bulk_discount_hour)}+ hour
+                        discount{" "}
                         <span className="info-wrap">
-                          <img src="/images/create-profile/info.svg" loading="lazy" alt="" />
+                          <img
+                            src="/images/create-profile/info.svg"
+                            loading="lazy"
+                            alt=""
+                          />
                           <span className="info-in">
                             Lorem ipsum dolor sit amet consectetur adipisicing
                             elit. Earum quae iste voluptatem at labore fuga
@@ -593,58 +679,118 @@ function Location() {
                       </p>
                     </div>
                   </div>
-                  <div className="location-right-hour-day" style={{ padding: isMobileWidth ? "5px" : "12px" }}>
-                    <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist" >
+                  <div
+                    className="location-right-hour-day"
+                    style={{ padding: isMobileWidth ? "5px" : "12px" }}
+                  >
+                    <ul
+                      className="nav nav-pills mb-3"
+                      id="pills-tab"
+                      role="tablist"
+                    >
                       <li className="nav-item" role="presentation">
-                        <button className="nav-link active" id="pills-hourly-tab" data-bs-toggle="pill"
-                          data-bs-target="#pills-hourly" type="button" role="tab"
-                          aria-controls="pills-hourly" aria-selected="false" >
+                        <button
+                          className="nav-link active"
+                          id="pills-hourly-tab"
+                          data-bs-toggle="pill"
+                          data-bs-target="#pills-hourly"
+                          type="button"
+                          role="tab"
+                          aria-controls="pills-hourly"
+                          aria-selected="false"
+                        >
                           Choose Hours
                         </button>
                       </li>
                       <li className="nav-item" role="presentation">
-                        <button className="nav-link" id="pills-dates-tab" data-bs-toggle="pill"
-                          data-bs-target="#pills-dates" type="button" role="tab"
-                          aria-controls="pills-dates" aria-selected="false" ref={dayTabRef} >
+                        <button
+                          className="nav-link"
+                          id="pills-dates-tab"
+                          data-bs-toggle="pill"
+                          data-bs-target="#pills-dates"
+                          type="button"
+                          role="tab"
+                          aria-controls="pills-dates"
+                          aria-selected="false"
+                          ref={dayTabRef}
+                        >
                           Choose Day
                         </button>
                       </li>
                     </ul>
                     <div className="tab-content" id="pills-tabContent">
-                      <div className="tab-pane show active" id="pills-hourly" role="tabpanel"
-                        aria-labelledby="pills-hourly-tab" >
+                      <div
+                        className="tab-pane show active"
+                        id="pills-hourly"
+                        role="tabpanel"
+                        aria-labelledby="pills-hourly-tab"
+                      >
                         <div className="hour-slider-wrap">
-                          <div className="hour-slider" id="slider" style={{
-                            position: "relative",
-                            width: "280px", height: "280px",
-                          }} >
-                            <img src={main} loading="lazy" alt="Main Background" style={{
-                              position: "absolute",
-                              top: "50%",
-                              left: "50%",
-                              transform: "translate(-50%, -50%)",
-                              width: "93%",
-                              height: "93%",
-                              zIndex: 3,
-                              pointerEvents: "none",
-                            }} />
+                          <div
+                            className="hour-slider"
+                            id="slider"
+                            style={{
+                              position: "relative",
+                              width: "280px",
+                              height: "280px",
+                            }}
+                          >
+                            <img
+                              src={main}
+                              loading="lazy"
+                              alt="Main Background"
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                width: "93%",
+                                height: "93%",
+                                zIndex: 3,
+                                pointerEvents: "none",
+                              }}
+                            />
 
-                            <img src={dotted} loading="lazy" alt="Dotted Overlay" style={{
-                              position: "absolute", top: "auto", left: "auto", width: "90%", height: "90%"
-                            }} />
+                            <img
+                              src={dotted}
+                              loading="lazy"
+                              alt="Dotted Overlay"
+                              style={{
+                                position: "absolute",
+                                top: "auto",
+                                left: "auto",
+                                width: "90%",
+                                height: "90%",
+                              }}
+                            />
                             {/* Centered Hours Value and Label */}
-                            <div style={{
-                              position: "absolute",
-                              top: "50%",
-                              left: "50%",
-                              transform: "translate(-50%, -50%)",
-                              zIndex: 3,
-                              textAlign: "center",
-                            }} >
-                              <div style={{ fontSize: "3rem", color: "black", fontWeight: "bold", lineHeight: "1" }} >
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                zIndex: 3,
+                                textAlign: "center",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  fontSize: "3rem",
+                                  color: "black",
+                                  fontWeight: "bold",
+                                  lineHeight: "1",
+                                }}
+                              >
                                 {hoursValue}
                               </div>
-                              <div style={{ fontSize: "2rem", color: "black", marginTop: "0.2rem" }}>
+                              <div
+                                style={{
+                                  fontSize: "2rem",
+                                  color: "black",
+                                  marginTop: "0.2rem",
+                                }}
+                              >
                                 Hours
                               </div>
                             </div>
@@ -661,7 +807,9 @@ function Location() {
                                 progressColorFrom="#4aeab1"
                                 progressColorTo="#4aeab1"
                                 direction={1}
-                                dataIndex={parseInt(propertyDetails?.min_booking_hours)}
+                                dataIndex={parseInt(
+                                  propertyDetails?.min_booking_hours
+                                )}
                                 label=" " // Keep a non-empty label (space)
                                 labelColor="transparent" // Make it invisible
                                 valueColor="transparent" // Make the number invisible
@@ -680,11 +828,21 @@ function Location() {
 
                           <div className="hour-slider-in">
                             <p>
-                              <img src="/images/filters/time.svg" loading="lazy" alt="" />
-                              {hoursValue == 1 ? "1 hour" : `${hoursValue} hours`}
+                              <img
+                                src="/images/filters/time.svg"
+                                loading="lazy"
+                                alt=""
+                              />
+                              {hoursValue == 1
+                                ? "1 hour"
+                                : `${hoursValue} hours`}
                             </p>
                             <p>
-                              <img src="/images/location/price.svg" loading="lazy" alt="" />
+                              <img
+                                src="/images/location/price.svg"
+                                loading="lazy"
+                                alt=""
+                              />
                               {isNaN(totalPrice) ? `$ ${0}` : `$ ${totalPrice}`}
                             </p>
                           </div>
@@ -701,9 +859,16 @@ function Location() {
                             type="button"
                             className="location-right-btn "
                             style={{
-                              opacity: propertyDetails?.host_id === userId ? 0.1 : 1,
-                              cursor: propertyDetails?.host_id === userId ? "not-allowed" : "pointer",
-                              backgroundColor: propertyDetails?.host_id === userId ? "#ccc" : ""
+                              opacity:
+                                propertyDetails?.host_id === userId ? 0.1 : 1,
+                              cursor:
+                                propertyDetails?.host_id === userId
+                                  ? "not-allowed"
+                                  : "pointer",
+                              backgroundColor:
+                                propertyDetails?.host_id === userId
+                                  ? "#ccc"
+                                  : "",
                             }}
                             onClick={() => {
                               if (!userId) {
@@ -711,30 +876,40 @@ function Location() {
                                 return;
                               }
 
-                              if (Number(propertyDetails?.host_id) === Number(userId)) {
+                              if (
+                                Number(propertyDetails?.host_id) ===
+                                Number(userId)
+                              ) {
                                 toast.error("You can’t book your own listing.");
                                 return;
                               }
 
                               handleValidation();
                             }}
-                          // disabled
+                            // disabled
                           >
                             {buttonText}
                           </button>
                         </div>
                       </div>
-                      <div className="tab-pane"
+                      <div
+                        className="tab-pane"
                         id="pills-dates"
                         role="tabpanel"
                         aria-labelledby="pills-dates-tab"
                       >
                         <div id="daypicker">
-                          <DayPicker mode="single" selected={dateSelected} onSelect={setDateSelected}
+                          <DayPicker
+                            mode="single"
+                            selected={dateSelected}
+                            onSelect={setDateSelected}
                             disabled={{ before: new Date() }}
                           />
                         </div>
-                        <div className="time-slot" style={{ position: "relative" }} >
+                        <div
+                          className="time-slot"
+                          style={{ position: "relative" }}
+                        >
                           <div style={{ width: "fit-content" }}>
                             {/* <img style={{ marginRight: "8px", width: "20px", height: "20px", }}
                                 src="/images/filters/datepicker/time.svg" loading="lazy" alt="Time Icon" /> */}
@@ -745,7 +920,11 @@ function Location() {
                           </div>
                         </div>
                         <>
-                          <button type="submit" className="location-right-btn" onClick={handleValidation} >
+                          <button
+                            type="submit"
+                            className="location-right-btn"
+                            onClick={handleValidation}
+                          >
                             {buttonText}
                           </button>
                         </>
@@ -757,7 +936,11 @@ function Location() {
                   </div>
                   <div className="location-right-shield">
                     <span className="info-wrap">
-                      <img src="/images/create-profile/info.svg" loading="lazy" alt="" />
+                      <img
+                        src="/images/create-profile/info.svg"
+                        loading="lazy"
+                        alt=""
+                      />
                       <span className="info-in">
                         Your safety and peace of mind are our top priorities.
                         ZYVO is proud to provide comprehensive liability
@@ -765,7 +948,11 @@ function Location() {
                       </span>
                     </span>
                     <h2>
-                      <img src="/images/location/zyvo-shield.svg" loading="lazy" alt="" />
+                      <img
+                        src="/images/location/zyvo-shield.svg"
+                        loading="lazy"
+                        alt=""
+                      />
                       ZYVO Shield
                     </h2>
                     <p>
@@ -778,7 +965,13 @@ function Location() {
               <div className="col-lg-8 col-md-6 order-md-first order-lg-first">
                 <div className="location-left">
                   <div>
-                    <h5 style={{ display: "inline-block", fontWeight: "600", fontSize: isMobileWidth ? '18px' : '' }}>
+                    <h5
+                      style={{
+                        display: "inline-block",
+                        fontWeight: "600",
+                        fontSize: isMobileWidth ? "18px" : "",
+                      }}
+                    >
                       About the Space
                     </h5>
                     <p>
@@ -794,20 +987,20 @@ function Location() {
 
                     {propertyDetails?.property_description?.split(/\s+/)
                       .length > 100 && (
-                        <button
-                          onClick={() => setIsExpanded(!isExpanded)}
-                          style={{
-                            background: "none",
-                            color: "#5EE6A0",
-                            border: "none",
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                            marginTop: '12px'
-                          }}
-                        >
-                          {isExpanded ? "Read Less" : "Read More"}
-                        </button>
-                      )}
+                      <button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        style={{
+                          background: "none",
+                          color: "#5EE6A0",
+                          border: "none",
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          marginTop: "12px",
+                        }}
+                      >
+                        {isExpanded ? "Read Less" : "Read More"}
+                      </button>
+                    )}
                   </div>
 
                   <hr />
@@ -844,23 +1037,44 @@ function Location() {
                           <div className="accordion-item border rounded mb-2">
                             <h2 className="accordion-header" id="headingOne">
                               <button
-                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"}`}
+                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                                  open === "collapseOne" ? "" : "collapsed"
+                                }`}
                                 type="button"
                                 onClick={() => toggleAccordion("collapseOne")}
                                 style={{ padding: "12px" }}
                               >
-                                <img src="/images/location/included/1.svg" loading="lazy" alt="Parking Icon"
-                                  className="me-2" style={{ width: "20px", height: "20px" }} />
+                                <img
+                                  src="/images/location/included/1.svg"
+                                  loading="lazy"
+                                  alt="Parking Icon"
+                                  className="me-2"
+                                  style={{ width: "20px", height: "20px" }}
+                                />
                                 <span className="flex-grow-1">Parking</span>
-                                <img src={`/images/dropdown.svg`} alt={`Dropdown Icon`}
-                                  className="ms-auto" style={{ width: "12px", transform: open === "collapseOne" ? "" : "rotate(0deg)" }} />
+                                <img
+                                  src={`/images/dropdown.svg`}
+                                  alt={`Dropdown Icon`}
+                                  className="ms-auto"
+                                  style={{
+                                    width: "12px",
+                                    transform:
+                                      open === "collapseOne"
+                                        ? ""
+                                        : "rotate(0deg)",
+                                  }}
+                                />
                               </button>
                             </h2>
                           </div>
                           {open === "collapseOne" && (
-                            <div className="shadow" style={{ borderRadius: "10px" }} >
+                            <div
+                              className="shadow"
+                              style={{ borderRadius: "10px" }}
+                            >
                               {" "}
-                              <div className="accordion-body"
+                              <div
+                                className="accordion-body"
                                 style={{
                                   borderRadius: "10px",
                                   // backgroundColor: "#F8F9FA",
@@ -868,7 +1082,8 @@ function Location() {
                                   padding: "10px",
                                 }}
                               >
-                                {propertyDetails.parking_rules || " this is parking rules "}
+                                {propertyDetails.parking_rules ||
+                                  " this is parking rules "}
                               </div>
                             </div>
                           )}
@@ -876,20 +1091,34 @@ function Location() {
 
                         <div className="accordion-item border rounded mb-2">
                           <h2 className="accordion-header" id="headingTwo">
-                            <button className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"}`}
+                            <button
+                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                                open === "collapseTwo" ? "" : "collapsed"
+                              }`}
                               type="button"
                               onClick={() => toggleAccordion("collapseTwo")}
                               style={{ padding: "12px" }}
                             >
                               <img
                                 src="/images/location/included/7.svg"
-                                loading="lazy" alt="Host Rules Icon"
+                                loading="lazy"
+                                alt="Host Rules Icon"
                                 className="me-2"
                                 style={{ width: "20px", height: "20px" }}
                               />
                               <span className="flex-grow-1">Host rules</span>
-                              <img src={`/images/dropdown.svg`} alt={`Dropdown Icon`}
-                                className="ms-auto" style={{ width: "12px", transform: open === "collapseTwo" ? "" : "rotate(0deg)" }} />
+                              <img
+                                src={`/images/dropdown.svg`}
+                                alt={`Dropdown Icon`}
+                                className="ms-auto"
+                                style={{
+                                  width: "12px",
+                                  transform:
+                                    open === "collapseTwo"
+                                      ? ""
+                                      : "rotate(0deg)",
+                                }}
+                              />
                             </button>
                           </h2>
                         </div>
@@ -917,39 +1146,58 @@ function Location() {
                   </div>
 
                   <hr />
-                  <h5 style={{ fontSize: isMobileWidth ? "18px" : "" }}>Add-ons from the host</h5>
+                  <h5 style={{ fontSize: isMobileWidth ? "18px" : "" }}>
+                    Add-ons from the host
+                  </h5>
                   <div className="location-addons">
                     <p>
                       Host provided services, items or options. Available at
                       checkin.
                     </p>
                     <div className="location-addons-in">
-                      {propertyDetails?.add_ons?.slice(0, showPropertyAddOns ? propertyDetails.add_ons.length : 3).map((item, index) => {
-                        // if (index <= 3) {
-                        const isSelected = selectedAddons.some(
-                          (addon) => addon.name === item.name
-                        );
+                      {propertyDetails?.add_ons
+                        ?.slice(
+                          0,
+                          showPropertyAddOns
+                            ? propertyDetails.add_ons.length
+                            : 3
+                        )
+                        .map((item, index) => {
+                          // if (index <= 3) {
+                          const isSelected = selectedAddons.some(
+                            (addon) => addon.name === item.name
+                          );
 
-                        return (
-                          <div className="location-addons-item" key={index}
-                            onClick={() => handleAddonClick(item)}
-                            style={{
-                              border: isSelected ? "1px solid #4aeab1" : "0.5px solid #cdc7c7",
-                              width: isMobileWidth ? "100%" : "48%"
-                            }} >
-                            <h4>
-                              {`${item.name}`} <br />
-                              <span> ${`${parseFloat(item.price)}`} / Item </span>
-                            </h4>
-                          </div>
-                        );
-                        // }}
-                      })}
+                          return (
+                            <div
+                              className="location-addons-item"
+                              key={index}
+                              onClick={() => handleAddonClick(item)}
+                              style={{
+                                border: isSelected
+                                  ? "1px solid #4aeab1"
+                                  : "0.5px solid #cdc7c7",
+                                width: isMobileWidth ? "100%" : "48%",
+                              }}
+                            >
+                              <h4>
+                                {`${item.name}`} <br />
+                                <span>
+                                  {" "}
+                                  ${`${parseFloat(item.price)}`} / Item{" "}
+                                </span>
+                              </h4>
+                            </div>
+                          );
+                          // }}
+                        })}
                     </div>
 
                     {propertyDetails?.add_ons?.length > 4 && (
-                      <a style={{ cursor: "pointer", color: "black" }}
-                        onClick={() => setShowPropertyAddOns((prev) => !prev)} >
+                      <a
+                        style={{ cursor: "pointer", color: "black" }}
+                        onClick={() => setShowPropertyAddOns((prev) => !prev)}
+                      >
                         {showPropertyAddOns ? "Show less" : "Show More"}
                       </a>
                     )}
@@ -961,57 +1209,101 @@ function Location() {
                 <div className="address-location" style={{}}>
                   <div className="location-left">
                     <h5>Address & Location</h5>
-                    {!isMobileWidth && (<p> <u>{propertyDetails?.address}</u> </p>)}
+                    {!isMobileWidth && (
+                      <p>
+                        {" "}
+                        <u>{propertyDetails?.address}</u>{" "}
+                      </p>
+                    )}
                   </div>
                   {propertyDetails?.latitude && propertyDetails?.longitude && (
-                    <div className="address-location-map" style={{ position: "relative" }} >
-                      <Map lat={propertyDetails?.latitude} lng={propertyDetails?.longitude} locationImg={loactionImg} />
+                    <div
+                      className="address-location-map"
+                      style={{ position: "relative" }}
+                    >
+                      <Map
+                        lat={propertyDetails?.latitude}
+                        lng={propertyDetails?.longitude}
+                        locationImg={loactionImg}
+                      />
                     </div>
                   )}
                 </div>
                 {isMobileWidth ? (
-                  <div className="location-reviews" style={{ marginTop: "30%" }} >
+                  <div
+                    className="location-reviews"
+                    style={{ marginTop: "30%" }}
+                  >
                     <div className="location-reviews-top">
                       <h1>Reviews ({propertyDetails?.reviews_total_count})</h1>
-                      <div style={{ display: "flex", justifyContent: 'space-between', width: "100%" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          width: "100%",
+                        }}
+                      >
                         <span style={{ alignContent: "start" }}>
-                          <img src="/images/locations-grid/star-icon.svg" loading="lazy" alt="star" />
+                          <img
+                            src="/images/locations-grid/star-icon.svg"
+                            loading="lazy"
+                            alt="star"
+                          />
                           <b>{propertyDetails?.reviews_total_rating}</b> Rating
                         </span>
-                        <div className="chat-left-top-dropdown dropdown" style={{ alignItems: "end" }}>
-                          <span className="dropdown-toggle" role="button"
+                        <div
+                          className="chat-left-top-dropdown dropdown"
+                          style={{ alignItems: "end" }}
+                        >
+                          <span
+                            className="dropdown-toggle"
+                            role="button"
                             onClick={() => setDropdownOpen(!dropdownOpen)}
-                            aria-expanded={dropdownOpen} >
+                            aria-expanded={dropdownOpen}
+                          >
                             Sort by: {selectedFilter}
-                            <img src="/images/dropdown.svg" loading="lazy" alt="" />
+                            <img
+                              src="/images/dropdown.svg"
+                              loading="lazy"
+                              alt=""
+                            />
                           </span>
                           {dropdownOpen && (
                             <div className="chat-left-top-dropdown-list dropdown-menu show">
                               <ul>
                                 <li>
-                                  <a href="#" onClick={(e) => {
-                                    e.preventDefault();
-                                    setSelectedFilter("Highest Review");
-                                    setDropdownOpen(false);
-                                  }} >
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setSelectedFilter("Highest Review");
+                                      setDropdownOpen(false);
+                                    }}
+                                  >
                                     Highest Review
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" onClick={(e) => {
-                                    e.preventDefault();
-                                    setSelectedFilter("Lowest Review");
-                                    setDropdownOpen(false);
-                                  }} >
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setSelectedFilter("Lowest Review");
+                                      setDropdownOpen(false);
+                                    }}
+                                  >
                                     Lowest Review
                                   </a>
                                 </li>
                                 <li>
-                                  <a href="#" onClick={(e) => {
-                                    e.preventDefault();
-                                    setSelectedFilter("Recent Reviews");
-                                    setDropdownOpen(false);
-                                  }} >
+                                  <a
+                                    href="#"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      setSelectedFilter("Recent Reviews");
+                                      setDropdownOpen(false);
+                                    }}
+                                  >
                                     Recent Reviews
                                   </a>
                                 </li>
@@ -1035,15 +1327,20 @@ function Location() {
                         No Review Found
                       </div>
                     ) : (
-                      (showMore ? filteredReviews : filteredReviews.slice(0, 2)).map((item, index) => (
-                        <div key={index}
+                      (showMore
+                        ? filteredReviews
+                        : filteredReviews.slice(0, 2)
+                      ).map((item, index) => (
+                        <div
+                          key={index}
                           className="location-reviews-list"
                           style={{ borderBottom: "1px solid black" }}
                         >
                           <div className="location-reviews-list-left">
                             <img
                               src={`${imageBase}${item?.profile_image}`}
-                              loading="lazy" alt="profile_image"
+                              loading="lazy"
+                              alt="profile_image"
                             />
                             <h2>
                               {item?.reviewer_name} <br />
@@ -1081,7 +1378,8 @@ function Location() {
                         <span>
                           <img
                             src="/images/locations-grid/star-icon.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           <b>{propertyDetails?.reviews_total_rating}</b> Rating
                         </span>
@@ -1095,7 +1393,11 @@ function Location() {
                           aria-expanded={dropdownOpen}
                         >
                           {selectedFilter}
-                          <img src="/images/dropdown.svg" loading="lazy" alt="" />
+                          <img
+                            src="/images/dropdown.svg"
+                            loading="lazy"
+                            alt=""
+                          />
                         </span>
                         {dropdownOpen && (
                           <div className="chat-left-top-dropdown-list dropdown-menu show">
@@ -1159,15 +1461,12 @@ function Location() {
                         ? filteredReviews
                         : filteredReviews.slice(0, 2)
                       ).map((item, index) => (
-                        <div
-                          key={index}
-                          className="location-reviews-list"
-
-                        >
+                        <div key={index} className="location-reviews-list">
                           <div className="location-reviews-list-left">
                             <img
                               src={`${imageBase}${item?.profile_image}`}
-                              loading="lazy" alt="profile_image"
+                              loading="lazy"
+                              alt="profile_image"
                             />
                             <h2>
                               {item?.reviewer_name} <br />
@@ -1230,7 +1529,11 @@ function Location() {
                   <div className="explore-guides-articles-in">
                     <a>
                       <div className="explore-guides-articles-image">
-                        <img src="/images/locations-grid/1.svg" loading="lazy" alt="" />
+                        <img
+                          src="/images/locations-grid/1.svg"
+                          loading="lazy"
+                          alt=""
+                        />
                       </div>
                       <h3>Sea view</h3>
                       <p>4 saved</p>
@@ -1241,7 +1544,11 @@ function Location() {
                   <div className="explore-guides-articles-in">
                     <a>
                       <div className="explore-guides-articles-image">
-                        <img src="/images/locations-grid/2.svg" loading="lazy" alt="" />
+                        <img
+                          src="/images/locations-grid/2.svg"
+                          loading="lazy"
+                          alt=""
+                        />
                       </div>
                       <h3>Cabin in Peshastin</h3>
                       <p>4 saved</p>
