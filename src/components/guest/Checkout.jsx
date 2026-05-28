@@ -27,26 +27,6 @@ import SavedCardsDropdown from "./SavedCardsDropdown";
 import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
 
-const formatDateTime = (dateString) => {
-  const date = new Date(dateString);
-
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-
-  let hours = date.getHours();
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-
-  const ampm = hours >= 12 ? "PM" : "AM";
-
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-
-  return `${year}-${month}-${day} ${String(hours).padStart(
-    2,
-    "0"
-  )}:${minutes} ${ampm}`;
-};
 const Checkout = ({ setExtendedTime }) => {
   const token = JSON.parse(
     sessionStorage.getItem(KEYS.USER_INFO)
@@ -524,7 +504,6 @@ const Checkout = ({ setExtendedTime }) => {
 
     // 4. STEP A: Triggers automatically. Send Apple's URL to your backend team's endpoint.
     session.onvalidatemerchant = async (event) => {
-      console.log("Merchant validation started for URL:", event.validationURL);
       try {
         // Point this to your backend team's live endpoint
         const response = await fetch(`${baseURL}apple-pay/validate`, {
@@ -549,11 +528,9 @@ const Checkout = ({ setExtendedTime }) => {
     };
 
     // 5. STEP B: Triggers when the user authorizes payment with FaceID / TouchID
-
-    console.log(session, "check autherize payment*******");
     session.onpaymentauthorized = async (event) => {
       const paymentToken = event.payment.token;
-
+      console.log(paymentToken, "paymentTokenpaymentTokenpaymentToken");
       const { start_time, end_time } = getFormattedBookingTimes({
         booking_date: bookingDate,
         booking_start: checkoutData?.startTime,
@@ -572,6 +549,9 @@ const Checkout = ({ setExtendedTime }) => {
             token: paymentToken,
             amount: Math.round(totalAmnt * 100),
             user_id: user_id,
+
+            //
+
             property_id: checkoutData?.property_id,
             booking_date: bookingDate,
             booking_start: start_time,
@@ -585,18 +565,11 @@ const Checkout = ({ setExtendedTime }) => {
           }),
         });
 
-        const { start_time, end_time } = getFormattedBookingTimes({
-          booking_date: bookingDate,
-          booking_start: checkoutData?.startTime,
-          booking_end: checkoutData?.endTime,
-        });
-
         const paymentResult = await response.json();
         console.log(paymentResult?.booking_details, "paymetn resupt***");
         if (paymentResult && paymentResult.success) {
           // Tell Safari the payment went through perfectly!
           session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
-          toast.success("Booked successfully.");
 
           if (typeof onPaymentSuccess === "function") {
             onPaymentSuccess(paymentResult);
@@ -612,15 +585,10 @@ const Checkout = ({ setExtendedTime }) => {
           //     checkoutData,
           //   },
           // });
-          const bookingDetails = paymentResult?.booking_details;
+
           navigate("/booking-details", {
             state: {
-              booking: {
-                ...bookingDetails,
-                booking_start: formatDateTime(bookingDetails.booking_start),
-                booking_end: formatDateTime(bookingDetails.booking_end),
-              },
-
+              ...paymentResult?.booking_datails,
               bookingDate,
               startTime: start_time,
               endTime: end_time,
