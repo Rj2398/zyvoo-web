@@ -1,43 +1,118 @@
+
 import React, { useEffect, useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import markerImage from "../../assets/marker.png";
-import { GOOGLE_KEY } from "../../config/Constant";
-
-export default function Map({ lat, lng,locationImg ,bookingData}) {
-
-  
+ 
+export default function Map({ lat, lng, locationImg, bookingData }) {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
   const [address, setAddress] = useState("Fetching address...");
-
   const [isMobileWidth, setIsMobileWidth] = useState(false);
-
-  useEffect(() => {
-    const checkWindowWidth = () => {
-      setIsMobileWidth(window.innerWidth <= 768);
-    };
-
-    checkWindowWidth(); // run on mount
-    window.addEventListener("resize", checkWindowWidth);
-
-    return () => window.removeEventListener("resize", checkWindowWidth);
-  }, []);
-
+ 
+  // Store the initial incoming props to know what to "reload" back to
+  const initialLat = lat ? parseFloat(lat) : 22.572645;
+  const initialLng = lng ? parseFloat(lng) : 88.363892;
+ 
   const [markerPosition, setMarkerPosition] = useState({
-    lat: lat ? parseFloat(lat) : 22.572645,
-    lng: lng ? parseFloat(lng) : 88.363892,
+    lat: initialLat,
+    lng: initialLng,
   });
-
+ 
   const defaultProps = {
     center: markerPosition,
     zoom: 13,
   };
-
+ 
+  // Helper function to handle a reset/reload action
+  const resetMapToDefault = () => {
+    const defaultPos = { lat: initialLat, lng: initialLng };
+    setMarkerPosition(defaultPos);
+ 
+    if (markerRef.current) {
+      markerRef.current.setPosition(defaultPos);
+    }
+    if (mapRef.current) {
+      mapRef.current.panTo(defaultPos);
+    }
+    fetchAddress(initialLat, initialLng);
+ 
+    // Provide visual/haptic feedback that the shake worked
+    alert("🔄 Map reset to original location via shake!");
+  };
+ 
+  // 1. Window Resize Effect
+  useEffect(() => {
+    const checkWindowWidth = () => {
+      setIsMobileWidth(window.innerWidth <= 768);
+    };
+    checkWindowWidth();
+    window.addEventListener("resize", checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
+  }, []);
+ 
+  // 2. Shake Detection Effect
+  useEffect(() => {
+    let lastX = null,
+      lastY = null,
+      lastZ = null;
+    let lastTime = 0;
+    const SHAKE_THRESHOLD = 15; // Adjust this number higher if it triggers too easily
+ 
+    const handleDeviceMotion = (event) => {
+      const acceleration = event.accelerationIncludingGravity;
+      if (!acceleration) return;
+ 
+      const currentTime = window.performance.now();
+      // Only check every 100ms to reduce processing overhead
+      if (currentTime - lastTime > 100) {
+        const diffTime = currentTime - lastTime;
+        lastTime = currentTime;
+ 
+        const { x, y, z } = acceleration;
+ 
+        if (lastX !== null && lastY !== null && lastZ !== null) {
+          // Calculate the speed of the shake movement
+          const speed =
+            (Math.abs(x + y + z - lastX - lastY - lastZ) / diffTime) * 10000;
+ 
+          if (speed > SHAKE_THRESHOLD) {
+            resetMapToDefault();
+          }
+        }
+ 
+        lastX = x;
+        lastY = y;
+        lastZ = z;
+      }
+    };
+ 
+    // Request permission for iOS 13+ devices
+    if (
+      typeof DeviceMotionEvent !== "undefined" &&
+      typeof DeviceMotionEvent.requestPermission === "function"
+    ) {
+      DeviceMotionEvent.requestPermission()
+        .then((permissionState) => {
+          if (permissionState === "granted") {
+            window.addEventListener("devicemotion", handleDeviceMotion);
+          }
+        })
+        .catch(console.error);
+    } else {
+      // Standard Android / Older Browsers
+      window.addEventListener("devicemotion", handleDeviceMotion);
+    }
+ 
+    return () => {
+      window.removeEventListener("devicemotion", handleDeviceMotion);
+    };
+  }, [initialLat, initialLng]);
+ 
   const fetchAddress = (latitude, longitude) => {
     if (!window.google || !window.google.maps) return;
     const geocoder = new window.google.maps.Geocoder();
     const latlng = { lat: latitude, lng: longitude };
-
+ 
     geocoder.geocode({ location: latlng }, (results, status) => {
       if (status === "OK" && results[0]) {
         const newAddress = results[0].formatted_address;
@@ -53,48 +128,37 @@ export default function Map({ lat, lng,locationImg ,bookingData}) {
       }
     });
   };
-
+ 
   const openGoogleMaps = () => {
-   const googleMapsUrl = `https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
-    window.open(googleMapsUrl, "_blank"); // Open in a new tab
+    const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+    window.open(googleMapsUrl, "_blank");
   };
-
+ 
   return (
     <>
       {(isMobileWidth || bookingData) && (
         <div
           style={{
-            // position: "absolute",
-            // top: 20,
-            // left: 20,
-            // backgroundColor: "#fff",
-            // padding: "10px",
-            // boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
-            // borderRadius: "5px",
-            // borderBottom: "2px solid black",
             marginBottom: "10px",
-            textDecoration : "underline"
+            textDecoration: "underline",
+            cursor: "pointer",
           }}
           onClick={openGoogleMaps}
         >
-          {/* <strong>Selected Location</strong> <br /> */}
           {address} <br />
         </div>
       )}
-
+ 
       <div
         style={{
           height: isMobileWidth ? "300px" : "400px",
           width: "100%",
           position: "relative",
-          marginBottom: "0px",
           borderRadius: isMobileWidth ? "10px" : "",
         }}
       >
         <GoogleMapReact
-          // bootstrapURLKeys={{key:GOOGLE_KEY}}
           bootstrapURLKeys={{ key: "AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs" }}
-          
           defaultCenter={defaultProps.center}
           defaultZoom={defaultProps.zoom}
           onGoogleApiLoaded={({ map, maps }) => {
@@ -102,9 +166,16 @@ export default function Map({ lat, lng,locationImg ,bookingData}) {
             map.setOptions({
               styles: [
                 { elementType: "labels", stylers: [{ visibility: "off" }] },
-                { featureType: "road", elementType: "geometry", stylers: [{ visibility: "on" }]},
-                { featureType: "poi", stylers: [{ visibility: "off" }]},
-                { featureType: "administrative", stylers: [{ visibility: "off" }]},
+                {
+                  featureType: "road",
+                  elementType: "geometry",
+                  stylers: [{ visibility: "on" }],
+                },
+                { featureType: "poi", stylers: [{ visibility: "off" }] },
+                {
+                  featureType: "administrative",
+                  stylers: [{ visibility: "off" }],
+                },
               ],
             });
             markerRef.current = new maps.Marker({
@@ -113,11 +184,11 @@ export default function Map({ lat, lng,locationImg ,bookingData}) {
               title: "Selected Location",
               draggable: false,
               icon: {
-                url:(locationImg ||  bookingData) ? locationImg:markerImage,
+                url: locationImg || bookingData ? locationImg : markerImage,
                 scaledSize: new window.google.maps.Size(35, 40),
               },
             });
-
+ 
             markerRef.current.addListener("click", (event) => {
               const latLng = event.latLng || markerRef.current.getPosition();
               const newLat = latLng.lat();
@@ -125,7 +196,7 @@ export default function Map({ lat, lng,locationImg ,bookingData}) {
               setMarkerPosition({ lat: newLat, lng: newLng });
               fetchAddress(newLat, newLng);
             });
-
+ 
             fetchAddress(markerPosition.lat, markerPosition.lng);
           }}
           yesIWantToUseGoogleMapApiInternals
@@ -137,9 +208,7 @@ export default function Map({ lat, lng,locationImg ,bookingData}) {
             }
           }}
         />
-
-        {/* Address Box - kept exactly as you had it */}
-
+ 
         {!isMobileWidth && !bookingData && (
           <div
             style={{
@@ -154,12 +223,179 @@ export default function Map({ lat, lng,locationImg ,bookingData}) {
           >
             <strong>Selected Location</strong> <br />
             {address} <br />
+            <small style={{ color: "#777" }}>💡 Shake phone to reset map</small>
           </div>
         )}
       </div>
     </>
   );
 }
+
+
+
+
+// import React, { useEffect, useRef, useState } from "react";
+// import GoogleMapReact from "google-map-react";
+// import markerImage from "../../assets/marker.png";
+// import { GOOGLE_KEY } from "../../config/Constant";
+
+// export default function Map({ lat, lng,locationImg ,bookingData}) {
+
+  
+//   const mapRef = useRef(null);
+//   const markerRef = useRef(null);
+//   const [address, setAddress] = useState("Fetching address...");
+
+//   const [isMobileWidth, setIsMobileWidth] = useState(false);
+
+//   useEffect(() => {
+//     const checkWindowWidth = () => {
+//       setIsMobileWidth(window.innerWidth <= 768);
+//     };
+
+//     checkWindowWidth(); // run on mount
+//     window.addEventListener("resize", checkWindowWidth);
+
+//     return () => window.removeEventListener("resize", checkWindowWidth);
+//   }, []);
+
+//   const [markerPosition, setMarkerPosition] = useState({
+//     lat: lat ? parseFloat(lat) : 22.572645,
+//     lng: lng ? parseFloat(lng) : 88.363892,
+//   });
+
+//   const defaultProps = {
+//     center: markerPosition,
+//     zoom: 13,
+//   };
+
+//   const fetchAddress = (latitude, longitude) => {
+//     if (!window.google || !window.google.maps) return;
+//     const geocoder = new window.google.maps.Geocoder();
+//     const latlng = { lat: latitude, lng: longitude };
+
+//     geocoder.geocode({ location: latlng }, (results, status) => {
+//       if (status === "OK" && results[0]) {
+//         const newAddress = results[0].formatted_address;
+//         setAddress(newAddress);
+//         if (markerRef.current) {
+//           markerRef.current.setTitle(newAddress);
+//         }
+//       } else {
+//         setAddress("Address not found");
+//         if (markerRef.current) {
+//           markerRef.current.setTitle("Address not found");
+//         }
+//       }
+//     });
+//   };
+
+//   const openGoogleMaps = () => {
+//    const googleMapsUrl = `https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+//     window.open(googleMapsUrl, "_blank"); // Open in a new tab
+//   };
+
+//   return (
+//     <>
+//       {(isMobileWidth || bookingData) && (
+//         <div
+//           style={{
+//             // position: "absolute",
+//             // top: 20,
+//             // left: 20,
+//             // backgroundColor: "#fff",
+//             // padding: "10px",
+//             // boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+//             // borderRadius: "5px",
+//             // borderBottom: "2px solid black",
+//             marginBottom: "10px",
+//             textDecoration : "underline"
+//           }}
+//           onClick={openGoogleMaps}
+//         >
+//           {/* <strong>Selected Location</strong> <br /> */}
+//           {address} <br />
+//         </div>
+//       )}
+
+//       <div
+//         style={{
+//           height: isMobileWidth ? "300px" : "400px",
+//           width: "100%",
+//           position: "relative",
+//           marginBottom: "0px",
+//           borderRadius: isMobileWidth ? "10px" : "",
+//         }}
+//       >
+//         <GoogleMapReact
+//           // bootstrapURLKeys={{key:GOOGLE_KEY}}
+//           bootstrapURLKeys={{ key: "AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs" }}
+          
+//           defaultCenter={defaultProps.center}
+//           defaultZoom={defaultProps.zoom}
+//           onGoogleApiLoaded={({ map, maps }) => {
+//             mapRef.current = map;
+//             map.setOptions({
+//               styles: [
+//                 { elementType: "labels", stylers: [{ visibility: "off" }] },
+//                 { featureType: "road", elementType: "geometry", stylers: [{ visibility: "on" }]},
+//                 { featureType: "poi", stylers: [{ visibility: "off" }]},
+//                 { featureType: "administrative", stylers: [{ visibility: "off" }]},
+//               ],
+//             });
+//             markerRef.current = new maps.Marker({
+//               position: markerPosition,
+//               map,
+//               title: "Selected Location",
+//               draggable: false,
+//               icon: {
+//                 url:(locationImg ||  bookingData) ? locationImg:markerImage,
+//                 scaledSize: new window.google.maps.Size(35, 40),
+//               },
+//             });
+
+//             markerRef.current.addListener("click", (event) => {
+//               const latLng = event.latLng || markerRef.current.getPosition();
+//               const newLat = latLng.lat();
+//               const newLng = latLng.lng();
+//               setMarkerPosition({ lat: newLat, lng: newLng });
+//               fetchAddress(newLat, newLng);
+//             });
+
+//             fetchAddress(markerPosition.lat, markerPosition.lng);
+//           }}
+//           yesIWantToUseGoogleMapApiInternals
+//           onClick={({ lat, lng }) => {
+//             setMarkerPosition({ lat, lng });
+//             if (markerRef.current) {
+//               markerRef.current.setPosition({ lat, lng });
+//               fetchAddress(lat, lng);
+//             }
+//           }}
+//         />
+
+//         {/* Address Box - kept exactly as you had it */}
+
+//         {!isMobileWidth && !bookingData && (
+//           <div
+//             style={{
+//               position: "absolute",
+//               top: 20,
+//               left: 20,
+//               backgroundColor: "#fff",
+//               padding: "10px",
+//               boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+//               borderRadius: "5px",
+//             }}
+//           >
+//             <strong>Selected Location</strong> <br />
+//             {address} <br />
+//           </div>
+//         )}
+//       </div>
+//     </>
+//   );
+// }
 
 // import React, { useRef, useState } from "react";
 // import GoogleMapReact from "google-map-react";
