@@ -79,7 +79,7 @@ export default function Map({ lat, lng, locationImg, bookingData }) {
         }}
       >
         <GoogleMapReact
-          bootstrapURLKeys={{ key: "AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs" }}
+          bootstrapURLKeys={{ key: "AIzaSyC9NuN_f-wESHh3kihTvpbvdrmKlTQurxw" }}
           defaultCenter={defaultProps.center}
           defaultZoom={defaultProps.zoom}
           onGoogleApiLoaded={({ map, maps }) => {

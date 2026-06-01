@@ -12,9 +12,9 @@ export const KEYS = {
   KEEP_LOGIN: "KEEP_LOGIN",
 };
 
-// export const GOOGLE_KEY = "AIzaSyC9NuN_f-wESHh3kihTvpbvdrmKlTQurxw";
+export const GOOGLE_KEY = "AIzaSyC9NuN_f-wESHh3kihTvpbvdrmKlTQurxw";
 
-export const GOOGLE_KEY="AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs"
+// export const GOOGLE_KEY="AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs"
 
 export const StripePublicKey =
   "pk_test_51OJYBTBtvbMCJV4HYgcTe7suuWdRm8p0YqsRVOT7VU8z1CmCeMwK1MSIYRp0NQRaBiH26gE3VgmENFKybIgNJVrd00UGnNavL3";
