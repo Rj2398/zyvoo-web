@@ -962,7 +962,7 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
 
 
         <GoogleMapReact
-          bootstrapURLKeys={{ key: GOOGLE_KEY }}
+          bootstrapURLKeys={{ key: "AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs" }}
           defaultCenter={defaultCenter} // optional now
           center={center} // ✅ always valid
           defaultZoom={12}
