@@ -84,7 +84,7 @@ function WishList() {
                 <div key={index} className="col-lg-3 col-md-6">
                   <div className="explore-guides-articles-in">
                     <button type="button" hidden={!isEditing} onClick={() => handleWishlistDelete(item?.wishlist_id)}>
-                      <i className="fa-regular fa-xmark"></i>
+                      <i className="fa-solid fa-xmark"></i>
                     </button>
                     <Link to="/wishlistDetails" state={{ wishlist_id: item?.wishlist_id, wishlistname: item?.wishlist_name,}}>
                       <div className="explore-guides-articles-image wishlist-image">

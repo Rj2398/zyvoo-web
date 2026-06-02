@@ -33,7 +33,7 @@ function HelpCenter() {
                 <div className="mob-search-filter-in">
                   <div className="mob-search-bar-back">
                     <Link to="/profile">
-                      <i className="fa-regular fa-arrow-left"></i>
+                      <i className="fa-solid fa-arrow-left"></i>
                     </Link>
                   </div>
                 </div>
@@ -78,7 +78,7 @@ function HelpCenter() {
                     Guides for Guests{" "}
                     <Link to="/explore-guides">
                       Browse all Guides{" "}
-                      <i className="fa-regular fa-chevron-right"></i>
+                      <i className="fa-solid fa-chevron-right"></i>
                     </Link>
                   </h2>
                 </div>
@@ -106,7 +106,7 @@ function HelpCenter() {
                     Top Articles{" "}
                     <Link to="/explore-articles">
                       Browse all Articles{" "}
-                      <i className="fa-regular fa-chevron-right"></i>
+                     <i className="fa-solid fa-chevron-right"></i>
                     </Link>
                   </h2>
                 </div>

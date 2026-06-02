@@ -14,7 +14,7 @@ function Notifications() {
 
   const { guestNotifications, hostNotifications, markNotification } = useCommon();
 
-  const notificationSvgMap = { booking: 1, booking_auto_cancelled:1, zyvo: 2, payment: 3, };
+  const notificationSvgMap = { booking: 1, booking_auto_cancelled:1, zyvo: 2, payout: 3, };
 
   const [notificationArr, setNotificationArr] = useState([]);
   const [useTypes, setUserTypes] = useState(localStorage.getItem(KEYS.USER_TYPE));
@@ -132,7 +132,7 @@ function Notifications() {
                         padding: "5px",
                         marginLeft: "auto",
                       }}>
-                      <i className="fa-regular fa-xmark"></i>
+                     <i className="fa-solid fa-xmark"></i>
                     </Button>
                   </Card>
                 ))}
