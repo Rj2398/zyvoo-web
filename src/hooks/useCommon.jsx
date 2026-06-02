@@ -32,8 +32,8 @@ export default function useCommon() {
           message: data?.message,
         };
       } catch (error) {
-        if(error.message=="No properties found for the given filters."){
-           await dispatch(setGuestHome([]));
+        if (error.message == "No properties found for the given filters.") {
+          await dispatch(setGuestHome([]));
         }
         if (error?.response?.data?.message === "Unauthenticated.") {
           LogoutError();
@@ -295,7 +295,6 @@ export default function useCommon() {
     },
   });
 
-
   const { mutateAsync: getAllSavedCard } = useMutation({
     mutationKey: ["get_user_cards", "user"],
     mutationFn: async (payload) => {
@@ -316,7 +315,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
