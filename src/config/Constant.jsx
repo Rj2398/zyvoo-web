@@ -12,7 +12,7 @@ export const KEYS = {
   KEEP_LOGIN: "KEEP_LOGIN",
 };
 
-export const GOOGLE_KEY = "AIzaSyC9NuN_f-wESHh3kihTvpbvdrmKlTQurxw";
+export const GOOGLE_KEY = "AIzaSyDcDl4RoLc2oLDDpkJqdhWOWHP0B4qBEqk";
 
 // export const GOOGLE_KEY="AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs"
 
