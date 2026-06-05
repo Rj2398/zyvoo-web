@@ -268,7 +268,8 @@ function ProfileHost() {
                     <a href="mob-filter.html">
                       <img
                         src="/images/mobile/filters/filter.svg"
-                        loading="lazy" alt=""
+                        loading="lazy"
+                        alt=""
                       />
                     </a>
                   </div>
@@ -290,7 +291,8 @@ function ProfileHost() {
                         <div className="user-profile-upload-image">
                           <img
                             src="/images/create-profile/profile.png"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                         </div>
                         <button
@@ -323,7 +325,8 @@ function ProfileHost() {
                           <span className="info-wrap">
                             <img
                               src="/images/create-profile/info.svg"
-                              loading="lazy" alt=""
+                              loading="lazy"
+                              alt=""
                             />
                             <span className="info-in">
                               Before you can book or host on the platform the
@@ -339,7 +342,8 @@ function ProfileHost() {
                       <div className="complete-your-profile-right-bottom-image">
                         <img
                           src="/images/create-profile/mail.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                       </div>
                       <div className="complete-your-profile-right-bottom-data">
@@ -355,7 +359,8 @@ function ProfileHost() {
                       <div className="complete-your-profile-right-bottom-image">
                         <img
                           src="/images/create-profile/call.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                       </div>
                       <div className="complete-your-profile-right-bottom-data">
@@ -371,7 +376,8 @@ function ProfileHost() {
                       <div className="complete-your-profile-right-bottom-image">
                         <img
                           src="/images/create-profile/identity.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                       </div>
                       <div className="complete-your-profile-right-bottom-data">
@@ -423,7 +429,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/filters/where-icons.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   Alaska, US
                                 </a>
@@ -432,7 +439,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/filters/where-icons.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   California, US
                                 </a>
@@ -441,7 +449,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/filters/where-icons.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   Delaware, US
                                 </a>
@@ -450,7 +459,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/filters/where-icons.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   Florida, US
                                 </a>
@@ -459,7 +469,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/filters/where-icons.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   New York, US
                                 </a>
@@ -484,7 +495,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/create-profile/list-icons/work.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   Lawyer
                                 </a>
@@ -493,7 +505,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/create-profile/list-icons/work.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   Lawyer
                                 </a>
@@ -518,7 +531,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/create-profile/list-icons/languages.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   English
                                 </a>
@@ -527,7 +541,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/create-profile/list-icons/languages.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   English
                                 </a>
@@ -552,7 +567,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/create-profile/list-icons/hobbies.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   Sports
                                 </a>
@@ -561,7 +577,8 @@ function ProfileHost() {
                                 <a href="#">
                                   <img
                                     src="/images/create-profile/list-icons/hobbies.svg"
-                                    loading="lazy" alt=""
+                                    loading="lazy"
+                                    alt=""
                                   />
                                   Sports
                                 </a>
@@ -764,7 +781,8 @@ function ProfileHost() {
                                   >
                                     <img
                                       src="/images/payment-methods/visa.svg"
-                                      loading="lazy" alt="Visa"
+                                      loading="lazy"
+                                      alt="Visa"
                                       style={{ width: "30px", height: "auto" }}
                                     />
                                     <h4
@@ -1362,7 +1380,8 @@ function ProfileHost() {
                                 >
                                   <img
                                     src="/images/payment-methods/visa.svg"
-                                    loading="lazy" alt="Visa"
+                                    loading="lazy"
+                                    alt="Visa"
                                     style={{ width: "30px", height: "auto" }}
                                   />
                                   <h4
@@ -1530,7 +1549,8 @@ function ProfileHost() {
                       <a href="notifications.html">
                         <img
                           src="/images/create-profile/mob-profile/1.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                         Notifications
                         <i className="fa-solid fa-chevron-right"></i>
@@ -1543,7 +1563,8 @@ function ProfileHost() {
                       <a href="help-center.html">
                         <img
                           src="/images/create-profile/mob-profile/2.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                         Visit the Help Center
                         <i className="fa-solid fa-chevron-right"></i>
@@ -1553,7 +1574,8 @@ function ProfileHost() {
                       <a href="feedback.html">
                         <img
                           src="/images/create-profile/mob-profile/3.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                         Give us feedback
                         <i className="fa-solid fa-chevron-right"></i>
@@ -1566,7 +1588,8 @@ function ProfileHost() {
                       <a href="terms-of-services.html">
                         <img
                           src="/images/create-profile/mob-profile/4.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                         Terms of services
                         <i className="fa-solid fa-chevron-right"></i>
@@ -1576,7 +1599,8 @@ function ProfileHost() {
                       <a href="privacy-policy.html">
                         <img
                           src="/images/create-profile/mob-profile/4.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                         Privacy policy
                         <i className="fa-solid fa-chevron-right"></i>
@@ -1591,7 +1615,8 @@ function ProfileHost() {
                     >
                       <img
                         src="/images/create-profile/mob-profile/logout.svg"
-                        loading="lazy" alt=""
+                        loading="lazy"
+                        alt=""
                       />
                       Logout
                     </button>

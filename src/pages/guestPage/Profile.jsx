@@ -23,28 +23,53 @@ import LanguageModal from "../LanguageModal";
 import { toast } from "react-toastify";
 
 function Profile() {
-  const { getUserProfile, ProfileImg, addHobby, deleteHobby, addPet, deletePet, addWork, deleteWork, deleteLanguage, addLanguage, addPlace, deletePlace, addAboutMe, addName, addStreet, addCity, addState, addZip } = useProfile();
-    const {userInfo} = useSelector(({user})=>user)
+  const {
+    getUserProfile,
+    ProfileImg,
+    addHobby,
+    deleteHobby,
+    addPet,
+    deletePet,
+    addWork,
+    deleteWork,
+    deleteLanguage,
+    addLanguage,
+    addPlace,
+    deletePlace,
+    addAboutMe,
+    addName,
+    addStreet,
+    addCity,
+    addState,
+    addZip,
+  } = useProfile();
+  const { userInfo } = useSelector(({ user }) => user);
   const profileData = useSelector((state) => state.profile);
-  
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO))|| JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
-  const useTypes = localStorage.getItem("USER_TYPE");
-  
-   const GoogleApi= GOOGLE_KEY;
-   const [isMobileWidth, setIsMobileWidth] = useState(false);
-  
-    useEffect(() => {
-      const checkWindowWidth = () => {
-        setIsMobileWidth(window.innerWidth <= 768);
-      };
-  
-      checkWindowWidth(); // run on mount
-      window.addEventListener("resize", checkWindowWidth);
-  
-      return () => window.removeEventListener("resize", checkWindowWidth);
-    }, []);
 
-  const userId = userInfo?.user_id ? String(userInfo?.user_id) : null||userData?.user_id ? String(userData?.user_id) : null;
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const useTypes = localStorage.getItem("USER_TYPE");
+
+  const GoogleApi = GOOGLE_KEY;
+  const [isMobileWidth, setIsMobileWidth] = useState(false);
+
+  useEffect(() => {
+    const checkWindowWidth = () => {
+      setIsMobileWidth(window.innerWidth <= 768);
+    };
+
+    checkWindowWidth(); // run on mount
+    window.addEventListener("resize", checkWindowWidth);
+
+    return () => window.removeEventListener("resize", checkWindowWidth);
+  }, []);
+
+  const userId = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || userData?.user_id
+    ? String(userData?.user_id)
+    : null;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [aboutMe, setAboutMe] = useState(profileData?.profileData?.about_me);
@@ -123,8 +148,6 @@ function Profile() {
     handleGetProfile();
   }, []);
 
-
-
   useEffect(() => {
     if (profileData?.profileData?.profile_image) {
       setPreview(profileData?.profileData?.profile_image);
@@ -199,7 +222,6 @@ function Profile() {
       toast.success("About me updated successfully.");
     } else {
       setIsAddingAboutMe(true);
-     
     }
   };
 
@@ -279,74 +301,71 @@ function Profile() {
   const handleAdd = async (type) => {
     if (type === "hobby" && newHobby.trim()) {
       if (newHobby.length < 3 || newHobby.length > 20) {
-      toast.error("Please enter between 3 and 20 characters.");
-      return;
+        toast.error("Please enter between 3 and 20 characters.");
+        return;
+      }
+      await addHobby({ user_id: userId, hobby_name: newHobby }); // Call API action
+      setHobbies([...hobbies, newHobby]);
+      setNewHobby("");
+      setIsAddingHobby(false);
+      toast.success("Hobby added successfully.");
     }
-        await addHobby({ user_id: userId, hobby_name: newHobby }); // Call API action
-        setHobbies([...hobbies, newHobby]);
-        setNewHobby("");
-        setIsAddingHobby(false);
-        toast.success("Hobby added successfully.");
-      }
-      if (type === "pet" && newPet.trim()) {
-        if (newPet.length < 3 || newPet.length > 20) {
+    if (type === "pet" && newPet.trim()) {
+      if (newPet.length < 3 || newPet.length > 20) {
         toast.error("Please enter between 3 and 20 characters.");
         return;
       }
-        await addPet({ user_id: userId, pet_name: newPet }); // Call API action
-        setPets([...pets, newPet]);
-        setNewPet("");
-        setIsAddingPet(false);
-        toast.success("Pet added successfully.");
-      }
-      if (type === "work" && newWork.trim()) {
-  
-        if (newWork.length < 3 || newWork.length > 20) {
+      await addPet({ user_id: userId, pet_name: newPet }); // Call API action
+      setPets([...pets, newPet]);
+      setNewPet("");
+      setIsAddingPet(false);
+      toast.success("Pet added successfully.");
+    }
+    if (type === "work" && newWork.trim()) {
+      if (newWork.length < 3 || newWork.length > 20) {
         toast.error("Please enter between 3 and 20 characters.");
         return;
       }
-        await addWork({ user_id: userId, work_name: newWork }); // Call API action
-        setWorks([...works, newWork]);
-        setNewWork("");
-        setIsAddingWork(false);
-        toast.success("Work added successfully.");
-      }
-      if (
-        type === "language" &&
-        selectedLanguage &&
-        !languages.includes(selectedLanguage)
-      ) {
-        await addLanguage({ user_id: userId, language_name: selectedLanguage });
-        setLanguages([...languages, selectedLanguage]);
-        setSelectedLanguage("");
-        setIsAddingLanguage(false);
-        toast.success("Language added successfully.");
-      }
-      if (type === "place") {
-        await addPlace({ user_id: userId, place_name: selectedPlace });
-        setPlaces([...places, selectedPlace]);
-        setSelectedPlace("");
-        setIsAddingPlace(false);
-        toast.success("Place added successfully.");
-      }
-    };
+      await addWork({ user_id: userId, work_name: newWork }); // Call API action
+      setWorks([...works, newWork]);
+      setNewWork("");
+      setIsAddingWork(false);
+      toast.success("Work added successfully.");
+    }
+    if (
+      type === "language" &&
+      selectedLanguage &&
+      !languages.includes(selectedLanguage)
+    ) {
+      await addLanguage({ user_id: userId, language_name: selectedLanguage });
+      setLanguages([...languages, selectedLanguage]);
+      setSelectedLanguage("");
+      setIsAddingLanguage(false);
+      toast.success("Language added successfully.");
+    }
+    if (type === "place") {
+      await addPlace({ user_id: userId, place_name: selectedPlace });
+      setPlaces([...places, selectedPlace]);
+      setSelectedPlace("");
+      setIsAddingPlace(false);
+      toast.success("Place added successfully.");
+    }
+  };
 
   const getAddressPart = (components, type, short = false) => {
-    const component = components.find(c => c.types.includes(type));
+    const component = components.find((c) => c.types.includes(type));
     if (!component) return "";
     return short ? component.short_name : component.long_name;
   };
-
- 
 
   const handleAddressSubmit = async (type) => {
     if (type === "street") {
       if (isAddingStreet) {
         try {
           await addStreet({ user_id: userId, street_address: streetAddress });
-          city && await addCity({ user_id: userId, city: city });
-          state && await addState({ user_id: userId, state: state });
-          zipCode && await addZip({ user_id: userId, zip_code: zipCode });
+          city && (await addCity({ user_id: userId, city: city }));
+          state && (await addState({ user_id: userId, state: state }));
+          zipCode && (await addZip({ user_id: userId, zip_code: zipCode }));
           setIsAddingStreet(false);
           toast.success("Street address added successfully.");
         } catch (error) {
@@ -369,7 +388,7 @@ function Profile() {
       if (isAddingState) {
         await addState({ user_id: userId, state: state });
         setIsAddingState(false);
-        toast.success("State added successFully")
+        toast.success("State added successFully");
       } else {
         setIsAddingState(true);
       }
@@ -394,7 +413,7 @@ function Profile() {
     const selectedFile = event.target.files[0];
 
     if (!selectedFile) return;
-    const localPreview = URL.createObjectURL(selectedFile);    // Set a local preview immediately
+    const localPreview = URL.createObjectURL(selectedFile); // Set a local preview immediately
     setPreview(localPreview);
 
     const formData = new FormData();
@@ -413,7 +432,7 @@ function Profile() {
 
   const handleLogout = () => {
     dispatch(clearUser()); // Clear Redux user state
-    toast.success("Logout Successfully.")
+    toast.success("Logout Successfully.");
     navigate("/");
     setShowLogoutModal(false);
   };
@@ -451,20 +470,23 @@ function Profile() {
       <main>
         {/* <!-- MOBILE --> */}
 
-        <div className="complete-your-profile"
+        <div
+          className="complete-your-profile"
           style={{
             backgroundColor: "white",
-            backgroundImage: "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)",
+            backgroundImage:
+              "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)",
             backgroundSize: "20px 20px",
             display: "flex",
             flexDirection: "row", // Ensures children are arranged in a row
             justifyContent: "space-between", // Adjust as needed
             alignItems: "flex-start", // Align items to the top
-            padding: ! isMobileWidth ?"10px 30px 15px 30px":'0px'
-          }} >
+            padding: !isMobileWidth ? "10px 30px 15px 30px" : "0px",
+          }}
+        >
           <div className="container-fluid">
             <div className="row">
-              {isMobileWidth && useTypes==="host" && (
+              {/* {isMobileWidth && useTypes==="host" && (
                 <>
                     <div className="col-lg-8 col-md-6 order-lg-first">
                       <div className="complete-your-profile-left">
@@ -499,16 +521,20 @@ function Profile() {
                 
                 </>
               )
-              }
+              } */}
               <div className="col-lg-4 col-md-6">
                 <div className="complete-your-profile-right">
                   <div className="complete-your-profile-right-top">
                     <div className="user-profile-upload-name">
                       <div className="user-profile-upload">
                         <div className="user-profile-upload-image">
-                          <img src={ preview ? typeof preview === "object"
-                            ? `${imageBase + preview?.profile_image_url}` : `${imageBase + preview}` 
-                              : uploadImg 
+                          <img
+                            src={
+                              preview
+                                ? typeof preview === "object"
+                                  ? `${imageBase + preview?.profile_image_url}`
+                                  : `${imageBase + preview}`
+                                : uploadImg
                             }
                             style={{
                               height: "100%",
@@ -519,48 +545,77 @@ function Profile() {
                             }}
                           />
                         </div>
-                        <button style={{  width: isMobileWidth?'25px':"30px", height:isMobileWidth?'25px':"30px",}} type="button" onClick={() => setShowFileUploadModal(true)} >
+                        <button
+                          style={{
+                            width: isMobileWidth ? "25px" : "30px",
+                            height: isMobileWidth ? "25px" : "30px",
+                          }}
+                          type="button"
+                          onClick={() => setShowFileUploadModal(true)}
+                        >
                           <i className="fa-solid fa-pen"></i>
                         </button>
                       </div>
                       <div className="user-profile-name">
-                        <div style={{
+                        <div
+                          style={{
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
                             gap: "9",
-                          }} >
+                          }}
+                        >
                           <h2>
                             Hey{" "}
-                            {firstName && lastName ? `${firstName} ${lastName}` : useTypes == "host" ? "Host" : "Guest"}!
+                            {firstName && lastName
+                              ? `${firstName} ${lastName}`
+                              : useTypes == "host"
+                              ? "Host"
+                              : "Guest"}
+                            !
                           </h2>
-                          <button type="button" onClick={() => {
+                          <button
+                            type="button"
+                            onClick={() => {
                               setIsAddingName(!isAddingName);
                             }}
                             style={{
-                              width: isMobileWidth?'28px':"30px",
-                              height:isMobileWidth?'28px':"30px",
+                              width: isMobileWidth ? "28px" : "30px",
+                              height: isMobileWidth ? "28px" : "30px",
                               borderRadius: "50%",
                               backgroundColor: "#4aeab1",
                               color: "#3a4b4c",
                               fontSize: "14px",
                               border: "3px solid #fff",
-                            }} >
-                            <i className="fa-solid fa-pen" style={{fontSize: "14px"}}></i>
+                            }}
+                          >
+                            <i
+                              className="fa-solid fa-pen"
+                              style={{ fontSize: "14px" }}
+                            ></i>
                           </button>
                         </div>
                         {isAddingName && (
                           <div className="user-name-dropdown">
                             <form onSubmit={handleNameSubmit}>
-                              <div className="user-profile-upload-image"
+                              <div
+                                className="user-profile-upload-image"
                                 style={{
                                   display: "flex",
                                   justifyContent: "center",
                                   alignItems: "center",
                                   position: "relative",
-                                  marginBottom: "5px"
-                                }} >
-                                <img src={ preview ? imageBase + (preview?.profile_image_url ? preview?.profile_image_url : preview) : "/images/nav-section/user-profile1.png"
+                                  marginBottom: "5px",
+                                }}
+                              >
+                                <img
+                                  src={
+                                    preview
+                                      ? imageBase +
+                                        (preview?.profile_image_url
+                                          ? preview?.profile_image_url
+                                          : preview)
+                                      : "/images/nav-section/user-profile1.png"
                                   }
                                   style={{
                                     width: "100px",
@@ -568,24 +623,27 @@ function Profile() {
                                     borderRadius: "100%",
                                   }}
                                 />
-                                <div 
-                                // type="submit" 
-                                style={{
-                                  position: "absolute",
-                                  bottom: "1px",
-                                  right: "35%",
-                                  width: "25px",
-                                  height: "25px",
-                                  borderRadius: "50%",
-                                  backgroundColor: "#4aeab1",
-                                  color: "#3a4b4c",
-                                  fontSize: "12px",
-                                  border: "2px solid #fff",
-                                  display: "flex",
-                                  justifyContent: "center",
-                                  alignItems: "center",
-                                  // cursor: "pointer",
-                                }}><i className="fa-solid fa-check"></i></div>
+                                <div
+                                  // type="submit"
+                                  style={{
+                                    position: "absolute",
+                                    bottom: "1px",
+                                    right: "35%",
+                                    width: "25px",
+                                    height: "25px",
+                                    borderRadius: "50%",
+                                    backgroundColor: "#4aeab1",
+                                    color: "#3a4b4c",
+                                    fontSize: "12px",
+                                    border: "2px solid #fff",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    // cursor: "pointer",
+                                  }}
+                                >
+                                  <i className="fa-solid fa-check"></i>
+                                </div>
                               </div>
                               <label>
                                 <input
@@ -603,10 +661,7 @@ function Profile() {
                                   required
                                 />
                               </label>
-                              <input
-                                type="submit"
-                                value="Save Changes"
-                              />
+                              <input type="submit" value="Save Changes" />
                             </form>
                           </div>
                         )}
@@ -616,8 +671,9 @@ function Profile() {
                           <span className="info-wrap">
                             <img
                               src="/images/create-profile/info.svg"
-                              loading="lazy" alt="info-wrap"
-                              style={{marginBottom:'7px'}}
+                              loading="lazy"
+                              alt="info-wrap"
+                              style={{ marginBottom: "7px" }}
                             />
                             <span className="info-in">
                               Before you can book or host on the platform the
@@ -633,7 +689,8 @@ function Profile() {
                       <div className="complete-your-profile-right-bottom-image">
                         <img
                           src="/images/create-profile/mail.svg"
-                          loading="lazy" alt="info-wrap"
+                          loading="lazy"
+                          alt="info-wrap"
                         />
                       </div>
                       <div className="complete-your-profile-right-bottom-data">
@@ -643,25 +700,37 @@ function Profile() {
                             Verified <i className="fa-solid fa-badge-check"></i>
                           </p>
                         ) : (
-                          <a onClick={() => setVerifyEmailModal(true)} style={{ cursor: "pointer" }} >
+                          <a
+                            onClick={() => setVerifyEmailModal(true)}
+                            style={{ cursor: "pointer" }}
+                          >
                             <u>Confirm now</u>
                           </a>
                         )}
-
                       </div>
                     </div>
                     <div className="complete-your-profile-right-bottom-in">
                       <div className="complete-your-profile-right-bottom-image">
-                        <img src="/images/create-profile/call.svg"
-                          loading="lazy" alt="complete-your-profile-right-bottom"
+                        <img
+                          src="/images/create-profile/call.svg"
+                          loading="lazy"
+                          alt="complete-your-profile-right-bottom"
                         />
                       </div>
                       <div className="complete-your-profile-right-bottom-data">
                         <h1>Phone Number</h1>
                         {isPhoneVerified ? (
-                          <p> Verified <i className="fa-solid fa-badge-check"></i> </p>
+                          <p>
+                            {" "}
+                            Verified <i className="fa-solid fa-badge-check"></i>{" "}
+                          </p>
                         ) : (
-                          <a onClick={() => { setVerifyPhoneModal(true)}} style={{ cursor: "pointer" }}>
+                          <a
+                            onClick={() => {
+                              setVerifyPhoneModal(true);
+                            }}
+                            style={{ cursor: "pointer" }}
+                          >
                             <u>Confirm now</u>
                           </a>
                         )}
@@ -669,8 +738,10 @@ function Profile() {
                     </div>
                     <div className="complete-your-profile-right-bottom-in">
                       <div className="complete-your-profile-right-bottom-image">
-                        <img src="/images/create-profile/identity.svg"
-                          loading="lazy" alt="complete-your-profile-right-bottom"
+                        <img
+                          src="/images/create-profile/identity.svg"
+                          loading="lazy"
+                          alt="complete-your-profile-right-bottom"
                         />
                       </div>
                       <div className="complete-your-profile-right-bottom-data">
@@ -696,51 +767,77 @@ function Profile() {
               </div>
               <div className="col-lg-8 col-md-6 order-lg-first">
                 <div className="complete-your-profile-left">
-                  <form onSubmit={(e) => e.preventDefault()}>                  
-                 { !(useTypes == "host" && isMobileWidth) && (
-                  <>
-                   <h2>
-                      About Me{" "}
-                      <button type="button" className={`${isAddingAboutMe ? "check" : ""}`}
-                        onClick={handleAboutMeSubmit}>
-                        <i className={`fa-solid ${ isAddingAboutMe ? "fa-check" : "fa-pen" }`}></i>
-                      </button>
-                    </h2>
-                    <div className="about-me">
-                      <textarea value={aboutMe} onChange={(e) => setAboutMe(e.target.value)}
-                        disabled={!isAddingAboutMe}
-                      />
-                    </div>
-                  </>
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    {isMobileWidth && (
+                      <>
+                        <h2>
+                          About Me{" "}
+                          <button
+                            type="button"
+                            className={`${isAddingAboutMe ? "check" : ""}`}
+                            onClick={handleAboutMeSubmit}
+                          >
+                            <i
+                              className={`fa-solid ${
+                                isAddingAboutMe ? "fa-check" : "fa-pen"
+                              }`}
+                            ></i>
+                          </button>
+                        </h2>
+                        <div className="about-me">
+                          <textarea
+                            value={aboutMe}
+                            onChange={(e) => setAboutMe(e.target.value)}
+                            disabled={!isAddingAboutMe}
+                          />
+                        </div>
+                      </>
                     )}
                     <div className="user-data-list-wrap">
                       <h2>Where I live*</h2>
                       <div className="user-data-list-inner">
                         {places.map((location, index) => (
-                          <div key={index} className="user-data-list-item" style={{
-                            // width: "50%", 
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "1px"
-                          }} >
-                            <input type="text" placeholder="Enter your location" value={location}
-                              disabled style={{ flex: 1, minWidth: 0}}
-                              />
-                            <button type="button" onClick={() => handleDelete("place", index)} >
+                          <div
+                            key={index}
+                            className="user-data-list-item"
+                            style={{
+                              // width: "50%",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "1px",
+                            }}
+                          >
+                            <input
+                              type="text"
+                              placeholder="Enter your location"
+                              value={location}
+                              disabled
+                              style={{ flex: 1, minWidth: 0 }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleDelete("place", index)}
+                            >
                               <i className="fa-solid fa-xmark"></i>
                             </button>
                           </div>
                         ))}
                         {isAddingPlace && (
-                          <div className="user-data-list-item"   style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "1px",
-                            minWidth : "250px"
-                          }} >
-                            <Autocomplete apiKey={GOOGLE_KEY} 
-                              onPlaceSelected={(place) => setSelectedPlace(place.formatted_address)}
-                              options={{ types: ["(cities)"], }}
+                          <div
+                            className="user-data-list-item"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "1px",
+                              minWidth: "250px",
+                            }}
+                          >
+                            <Autocomplete
+                              apiKey={GOOGLE_KEY}
+                              onPlaceSelected={(place) =>
+                                setSelectedPlace(place.formatted_address)
+                              }
+                              options={{ types: ["(cities)"] }}
                               placeholder="Search for a place..."
                               className="google-autocomplete"
                               onChange={(e) => {
@@ -748,23 +845,39 @@ function Profile() {
                                   setSelectedPlace("");
                                 }
                               }}
-                              style={{ padding: "8px", borderRadius: "20px" , flex: 1, fontSize: isMobileWidth && '12px', minWidth: 0,}}
+                              style={{
+                                padding: "8px",
+                                borderRadius: "20px",
+                                flex: 1,
+                                fontSize: isMobileWidth && "12px",
+                                minWidth: 0,
+                              }}
                             />
                             {selectedPlace && (
-                              <button type="button" className="check" onClick={() => handleAdd("place")}>
+                              <button
+                                type="button"
+                                className="check"
+                                onClick={() => handleAdd("place")}
+                              >
                                 <i className="fa-solid fa-check"></i>
                               </button>
                             )}
                             {!selectedPlace && (
-                              <button type="button" onClick={() => setIsAddingPlace(false)}>
+                              <button
+                                type="button"
+                                onClick={() => setIsAddingPlace(false)}
+                              >
                                 <i className="fa-solid fa-xmark"></i>
                               </button>
                             )}
                           </div>
                         )}
                         {!isAddingPlace && places.length <= 1 && (
-                          <button type="button" className="add-new-btn" 
-                            onClick={() => setIsAddingPlace(true)} >
+                          <button
+                            type="button"
+                            className="add-new-btn"
+                            onClick={() => setIsAddingPlace(true)}
+                          >
                             Add New <i className="fa-solid fa-plus"></i>
                           </button>
                         )}
@@ -816,7 +929,8 @@ function Profile() {
                                   <a>
                                     <img
                                       src="/images/create-profile/list-icons/work.svg"
-                                      loading="lazy" alt="work"
+                                      loading="lazy"
+                                      alt="work"
                                     />
                                     Lawyer
                                   </a>
@@ -825,7 +939,8 @@ function Profile() {
                                   <a>
                                     <img
                                       src="/images/create-profile/list-icons/work.svg"
-                                      loading="lazy" alt="Lawyer"
+                                      loading="lazy"
+                                      alt="Lawyer"
                                     />
                                     Lawyer
                                   </a>
@@ -872,9 +987,15 @@ function Profile() {
                         )}
                       </div>
                       <h2>Languages I speak*</h2>
-                      <div className="user-data-list-inner" style={{flexWrap: isMobileWidth ? 'nowrap' : 'wrap'}}>
+                      <div
+                        className="user-data-list-inner"
+                        style={{ flexWrap: isMobileWidth ? "nowrap" : "wrap" }}
+                      >
                         {languages.map((language, index) => (
-                          <div className="user-data-list-item languages" key={index} >
+                          <div
+                            className="user-data-list-item languages"
+                            key={index}
+                          >
                             <input type="text" value={language} readOnly />
                             <button
                               type="button"
@@ -888,7 +1009,8 @@ function Profile() {
                                   <a>
                                     <img
                                       src="/images/create-profile/list-icons/languages.svg"
-                                      loading="lazy" alt=""
+                                      loading="lazy"
+                                      alt=""
                                     />
                                     English
                                   </a>
@@ -897,7 +1019,8 @@ function Profile() {
                                   <a>
                                     <img
                                       src="/images/create-profile/list-icons/languages.svg"
-                                      loading="lazy" alt=""
+                                      loading="lazy"
+                                      alt=""
                                     />
                                     English
                                   </a>
@@ -908,7 +1031,6 @@ function Profile() {
                         ))}
                         {isAddingLanguage && languages.length <= 1 && (
                           <div className="user-data-list-item languages">
-
                             <input
                               type="text"
                               value={selectedLanguage}
@@ -952,30 +1074,42 @@ function Profile() {
                       <h2>Hobbies</h2>
                       <div className="user-data-list-inner">
                         {hobbies.map((hobby, index) => (
-                          <div key={index} className="user-data-list-item hobbies" >
-                            <input type="text" value={hobbies[index]} placeholder="Hobbies"
+                          <div
+                            key={index}
+                            className="user-data-list-item hobbies"
+                          >
+                            <input
+                              type="text"
+                              value={hobbies[index]}
+                              placeholder="Hobbies"
                               onChange={(e) =>
                                 handleEdit("hobby", index, e.target.value)
-                              }/>
-                            <button type="button" 
+                              }
+                            />
+                            <button
+                              type="button"
                               onClick={() =>
                                 editingIndex.type === "hobby" &&
                                 editingIndex.index === index
-                                  ? handleUpdate("hobby", index) : handleDelete("hobby", index)
+                                  ? handleUpdate("hobby", index)
+                                  : handleDelete("hobby", index)
                               }
                               className={`${
-                                editingIndex.type === "hobby" && 
-                                editingIndex.index === index ? "check" : "icon-btn"
+                                editingIndex.type === "hobby" &&
+                                editingIndex.index === index
+                                  ? "check"
+                                  : "icon-btn"
                               }`}
                             >
-                              <i className={`fa-solid ${
+                              <i
+                                className={`fa-solid ${
                                   editingIndex.type === "hobby" &&
                                   editingIndex === index
-                                    ? "fa-check" : "fa-xmark"
+                                    ? "fa-check"
+                                    : "fa-xmark"
                                 }`}
                               ></i>
                             </button>
-                            
                           </div>
                         ))}
                         {isAddingHobby && (
@@ -1105,7 +1239,10 @@ function Profile() {
                       </div>
                       <h2>Email</h2>
                       <div className="user-data-list-inner">
-                        <div className="user-data-list-item input-field"  style={{width :isMobileWidth && "100%"}}>
+                        <div
+                          className="user-data-list-item input-field"
+                          style={{ width: isMobileWidth && "100%" }}
+                        >
                           <input
                             type="text"
                             placeholder="Enter Your Email"
@@ -1113,8 +1250,10 @@ function Profile() {
                             disabled
                           />
                           <button
-                           style={{  width: isMobileWidth?'25px':"30px",
-                              height:isMobileWidth?'25px':"30px",}}
+                            style={{
+                              width: isMobileWidth ? "25px" : "30px",
+                              height: isMobileWidth ? "25px" : "30px",
+                            }}
                             type="button"
                             className="edit-field"
                             onClick={() => setUpdateEmailShow(true)}
@@ -1125,7 +1264,10 @@ function Profile() {
                       </div>
                       <h2>Phone Number</h2>
                       <div className="user-data-list-inner">
-                        <div className="user-data-list-item input-field" style={{width :isMobileWidth && "100%"}}>
+                        <div
+                          className="user-data-list-item input-field"
+                          style={{ width: isMobileWidth && "100%" }}
+                        >
                           <input
                             type="text"
                             placeholder="Enter Your Phone Number"
@@ -1136,8 +1278,10 @@ function Profile() {
                             type="button"
                             className="edit-field"
                             onClick={() => setShowUpdateModal(true)}
-                            style={{  width: isMobileWidth?'25px':"30px",
-                              height:isMobileWidth?'25px':"30px",}}
+                            style={{
+                              width: isMobileWidth ? "25px" : "30px",
+                              height: isMobileWidth ? "25px" : "30px",
+                            }}
                           >
                             <i className="fa-solid fa-pen"></i>
                           </button>
@@ -1145,7 +1289,10 @@ function Profile() {
                       </div>
                       <h2>Password</h2>
                       <div className="user-data-list-inner">
-                        <div className="user-data-list-item input-field" style={{width :isMobileWidth && "100%"}}>
+                        <div
+                          className="user-data-list-item input-field"
+                          style={{ width: isMobileWidth && "100%" }}
+                        >
                           <input
                             type="password"
                             placeholder="Enter Your Password"
@@ -1156,8 +1303,10 @@ function Profile() {
                             type="button"
                             className="edit-field"
                             onClick={() => setShowChangePasswordModal(true)}
-                            style={{  width: isMobileWidth?'25px':"30px",
-                              height:isMobileWidth?'25px':"30px",}}
+                            style={{
+                              width: isMobileWidth ? "25px" : "30px",
+                              height: isMobileWidth ? "25px" : "30px",
+                            }}
                           >
                             <i className="fa-solid fa-pen"></i>
                           </button>
@@ -1172,47 +1321,71 @@ function Profile() {
                           flex: "flex-start",
                         }}
                       >
-                        
-                        {console.log(streetAddress?.split(/[^a-zA-Z0-9\s]/)[1]?.trim()?.split(/\s+/)?.slice(0, 2) ?.join(" "),"streetAddress")}
-                        
+                        {console.log(
+                          streetAddress
+                            ?.split(/[^a-zA-Z0-9\s]/)[1]
+                            ?.trim()
+                            ?.split(/\s+/)
+                            ?.slice(0, 2)
+                            ?.join(" "),
+                          "streetAddress"
+                        )}
+
                         <div className="user-data-list-item input-field">
-                          <Autocomplete apiKey={GoogleApi} readOnly={!isAddingStreet}
-                            value={streetAddress} 
+                          <Autocomplete
+                            apiKey={GoogleApi}
+                            readOnly={!isAddingStreet}
+                            value={streetAddress}
                             //  value={streetAddress?.split(/[^a-zA-Z0-9\s]/)?.[1]?.trim()?.split(/\s+/)?.slice(0, 2)?.join(" ")}
                             onPlaceSelected={(place) => {
-                              if (!place?.address_components) return;  
-                              const components = place.address_components;      
-                                const streetNumber = getAddressPart(components, "street_number");
-                                const route = getAddressPart(components, "route");
-                                const city = getAddressPart(components, "locality");
-                                const state = getAddressPart(components, "administrative_area_level_1", true);
-                                const zipCode = getAddressPart(components, "postal_code");     
-                                const street = `${streetNumber} ${route}`;
+                              if (!place?.address_components) return;
+                              const components = place.address_components;
+                              const streetNumber = getAddressPart(
+                                components,
+                                "street_number"
+                              );
+                              const route = getAddressPart(components, "route");
+                              const city = getAddressPart(
+                                components,
+                                "locality"
+                              );
+                              const state = getAddressPart(
+                                components,
+                                "administrative_area_level_1",
+                                true
+                              );
+                              const zipCode = getAddressPart(
+                                components,
+                                "postal_code"
+                              );
+                              const street = `${streetNumber} ${route}`;
 
-                                setCity(city);
-                                setState(state);
-                                setZipCode(zipCode)
-                                setStreetAddress(route);
-                              
-                              }}
-
-                                options={{
-                                        types: ["address"],
-                                        fields: ["address_components", "geometry"],
-                                }}
-
-                                onChange={(e) => {
-                                if (isAddingStreet) {
-                                  setStreetAddress(e.target.value);
-                                }
-                              }}
-                                placeholder="Street"
-                                
-                              >  
-                              </Autocomplete>   
-                            <button     type="button"
-                              className={`${isAddingStreet ? "check" : "edit-field"}`}
-                            onClick={() => !isAddingStreet ? setIsAddingStreet(true) : handleAddressSubmit("street")}
+                              setCity(city);
+                              setState(state);
+                              setZipCode(zipCode);
+                              setStreetAddress(route);
+                            }}
+                            options={{
+                              types: ["address"],
+                              fields: ["address_components", "geometry"],
+                            }}
+                            onChange={(e) => {
+                              if (isAddingStreet) {
+                                setStreetAddress(e.target.value);
+                              }
+                            }}
+                            placeholder="Street"
+                          ></Autocomplete>
+                          <button
+                            type="button"
+                            className={`${
+                              isAddingStreet ? "check" : "edit-field"
+                            }`}
+                            onClick={() =>
+                              !isAddingStreet
+                                ? setIsAddingStreet(true)
+                                : handleAddressSubmit("street")
+                            }
                             style={{
                               width: isMobileWidth ? "25px" : "30px",
                               height: isMobileWidth ? "25px" : "30px",
@@ -1225,7 +1398,6 @@ function Profile() {
                             />
                           </button>
                         </div>
-
 
                         <div
                           className="user-data-list-item input-field"
@@ -1243,9 +1415,10 @@ function Profile() {
                             className={`${
                               isAddingCity ? "check" : "edit-field"
                             }`}
-
-                             style={{  width: isMobileWidth?'25px':"30px",
-                              height:isMobileWidth?'25px':"30px",}}
+                            style={{
+                              width: isMobileWidth ? "25px" : "30px",
+                              height: isMobileWidth ? "25px" : "30px",
+                            }}
                             onClick={() => handleAddressSubmit("city")}
                           >
                             <i
@@ -1268,8 +1441,10 @@ function Profile() {
                             className={`${
                               isAddingState ? "check" : "edit-field"
                             }`}
-                             style={{  width: isMobileWidth?'25px':"30px",
-                              height:isMobileWidth?'25px':"30px",}}
+                            style={{
+                              width: isMobileWidth ? "25px" : "30px",
+                              height: isMobileWidth ? "25px" : "30px",
+                            }}
                             onClick={() => handleAddressSubmit("state")}
                           >
                             <i
@@ -1295,8 +1470,10 @@ function Profile() {
                             className={`${
                               isAddingZip ? "check" : "edit-field"
                             }`}
-                             style={{  width: isMobileWidth?'25px':"30px",
-                              height:isMobileWidth?'25px':"30px",}}
+                            style={{
+                              width: isMobileWidth ? "25px" : "30px",
+                              height: isMobileWidth ? "25px" : "30px",
+                            }}
                             onClick={() => handleAddressSubmit("zip")}
                           >
                             <i
@@ -1330,7 +1507,8 @@ function Profile() {
                         <Link to="/notifications">
                           <img
                             src="/images/create-profile/mob-profile/1.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           Notifications
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1343,7 +1521,8 @@ function Profile() {
                         <Link to="/helpCenter">
                           <img
                             src="/images/create-profile/mob-profile/2.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           Visit the Help Center
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1353,7 +1532,8 @@ function Profile() {
                         <Link to="/feedback">
                           <img
                             src="/images/create-profile/mob-profile/3.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           Give us feedback
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1366,7 +1546,8 @@ function Profile() {
                         <Link to="/terms-condition">
                           <img
                             src="/images/create-profile/mob-profile/4.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           Terms of services
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1376,7 +1557,8 @@ function Profile() {
                         <Link to="/privacy-policy">
                           <img
                             src="/images/create-profile/mob-profile/4.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           Privacy policy
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1387,7 +1569,8 @@ function Profile() {
                         <Link to="/faq">
                           <img
                             src="/images/create-profile/mob-profile/4.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           FAQ's
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1398,11 +1581,12 @@ function Profile() {
                       <button
                         type="button"
                         onClick={() => setShowLogoutModal(true)}
-                        style={isMobileWidth ? {paddingRight: "12px"} : {}}
+                        style={isMobileWidth ? { paddingRight: "12px" } : {}}
                       >
                         <img
                           src="/images/create-profile/mob-profile/logout.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                         Logout
                       </button>
@@ -1424,7 +1608,11 @@ function Profile() {
                     <ul>
                       <li>
                         <Link to="/payment-host">
-                          <img src="/images/notifications/1.svg" loading="lazy" alt="" />
+                          <img
+                            src="/images/notifications/1.svg"
+                            loading="lazy"
+                            alt=""
+                          />
                           Payments and Withdrawals
                           <i className="fa-solid fa-chevron-right"></i>
                         </Link>
@@ -1433,20 +1621,28 @@ function Profile() {
                         <Link to="/booking">
                           <img
                             src="/images/create-profile/mob-profile/booking.svg"
-                            loading="lazy" alt="booking"
+                            loading="lazy"
+                            alt="booking"
                           />
                           Bookings
                           <i className="fa-solid fa-chevron-right"></i>
                         </Link>
                       </li>
-                      <li onClick={() => navigate("/homeHost", {state: {
-                        openAddProperty: true
-                      }})}
-                      style={{cursor: 'pointer'}}>
+                      <li
+                        onClick={() =>
+                          navigate("/homeHost", {
+                            state: {
+                              openAddProperty: true,
+                            },
+                          })
+                        }
+                        style={{ cursor: "pointer" }}
+                      >
                         <Link>
                           <img
                             src="/images/create-profile/mob-profile/create-listing.svg"
-                            loading="lazy" alt="create-listing"
+                            loading="lazy"
+                            alt="create-listing"
                           />
                           Create New Listing
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1460,7 +1656,8 @@ function Profile() {
                         >
                           <img
                             src="/images/create-profile/languages.svg"
-                            loading="lazy" alt="languages"
+                            loading="lazy"
+                            alt="languages"
                           />
                           Language
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1471,7 +1668,8 @@ function Profile() {
                         <Link to="/notifications">
                           <img
                             src="/images/create-profile/mob-profile/1.svg"
-                            loading="lazy" alt="mob-profile"
+                            loading="lazy"
+                            alt="mob-profile"
                           />
                           Notifications
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1484,7 +1682,8 @@ function Profile() {
                         <Link to="/helpCenter" state={{ useTypes: "host" }}>
                           <img
                             src="/images/create-profile/mob-profile/2.svg"
-                            loading="lazy" alt="helpCenter"
+                            loading="lazy"
+                            alt="helpCenter"
                           />
                           Visit the Help Center
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1494,7 +1693,8 @@ function Profile() {
                         <Link to="/feedback">
                           <img
                             src="/images/create-profile/mob-profile/3.svg"
-                            loading="lazy" alt="feedback"
+                            loading="lazy"
+                            alt="feedback"
                           />
                           Give us feedback
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1507,7 +1707,8 @@ function Profile() {
                         <Link to="/terms-condition">
                           <img
                             src="/images/create-profile/mob-profile/4.svg"
-                            loading="lazy" alt="terms-condition"
+                            loading="lazy"
+                            alt="terms-condition"
                           />
                           Terms of services
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1517,7 +1718,8 @@ function Profile() {
                         <Link to="/privacy-policy">
                           <img
                             src="/images/create-profile/mob-profile/4.svg"
-                            loading="lazy" alt="privacy-policy"
+                            loading="lazy"
+                            alt="privacy-policy"
                           />
                           Privacy policy
                           <i className="fa-solid fa-chevron-right"></i>
@@ -1528,11 +1730,12 @@ function Profile() {
                       <button
                         type="button"
                         onClick={() => setShowLogoutModal(true)}
-                        style={{marginRight: isMobileWidth ? "18px" : ""}}
+                        style={{ marginRight: isMobileWidth ? "18px" : "" }}
                       >
                         <img
                           src="/images/create-profile/mob-profile/logout.svg"
-                          loading="lazy" alt="logout"
+                          loading="lazy"
+                          alt="logout"
                         />
                         Logout
                       </button>
@@ -1548,14 +1751,14 @@ function Profile() {
         <MobFooter />
         {/* <!-- MOBILE --> */}
       </main>
-    <Modal
-  show={showFileUploadModal}
-  onHide={() => setShowFileUploadModal(false)}
-   centered
-  className="custom-modal"
->
-  <style>
-    {`
+      <Modal
+        show={showFileUploadModal}
+        onHide={() => setShowFileUploadModal(false)}
+        centered
+        className="custom-modal"
+      >
+        <style>
+          {`
 
 .custom-modal {
   position: fixed;
@@ -1687,70 +1890,65 @@ function Profile() {
         }
       }
     `}
-  </style>
+        </style>
 
-  <Modal.Header
-    className="profile-close-btn"
-    closeButton
-    style={{ border: "none", padding: "10px", fontWeight: "500" }}
-  />
-
-  <Modal.Title
-    className="w-100 text-center"
-    style={{ fontSize: "18px", marginTop: "10px" }}
-  >
-    Add Profile picture
-  </Modal.Title>
-
-  <hr style={{ width: "80%", margin: "10px auto" }} />
-
-  <Modal.Body className="text-center">
-    <div className="upload-options" htmlFor="camera-input">
-      
-    {isMobileWidth && (
-      <label htmlFor="camera-input" className="upload-option">
-        <img src={cameraImg} loading="lazy" alt="Upload" />
-        <span>Take Photo</span>
-        <input
-          id="camera-input"
-          type="file"
-          accept="image/*"
-          capture="user"
-          onChange={handleFileChange}
-          style={{ display: "none" }}
+        <Modal.Header
+          className="profile-close-btn"
+          closeButton
+          style={{ border: "none", padding: "10px", fontWeight: "500" }}
         />
-      </label>
-      )}
 
-      <label htmlFor="file-upload" className="upload-option">
-        <img
-          style={{ borderRadius: "50%" }}
-          src={
-            preview
-              ? typeof preview === "object"
-                ? `${imageBase + preview?.profile_image_url}`
-                : `${imageBase + preview}`
-              : uploadImg
-          }
-          loading="lazy" alt="Upload"
-        />
-        <span>Upload from Device</span>
-        <input
-          id="file-upload"
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={handleFileChange}
-        />
-      </label>
-    </div>
-  </Modal.Body>
-</Modal>
+        <Modal.Title
+          className="w-100 text-center"
+          style={{ fontSize: "18px", marginTop: "10px" }}
+        >
+          Add Profile picture
+        </Modal.Title>
 
+        <hr style={{ width: "80%", margin: "10px auto" }} />
 
+        <Modal.Body className="text-center">
+          <div className="upload-options" htmlFor="camera-input">
+            {isMobileWidth && (
+              <label htmlFor="camera-input" className="upload-option">
+                <img src={cameraImg} loading="lazy" alt="Upload" />
+                <span>Take Photo</span>
+                <input
+                  id="camera-input"
+                  type="file"
+                  accept="image/*"
+                  capture="user"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                />
+              </label>
+            )}
 
-
-
+            <label htmlFor="file-upload" className="upload-option">
+              <img
+                style={{ borderRadius: "50%" }}
+                src={
+                  preview
+                    ? typeof preview === "object"
+                      ? `${imageBase + preview?.profile_image_url}`
+                      : `${imageBase + preview}`
+                    : uploadImg
+                }
+                loading="lazy"
+                alt="Upload"
+              />
+              <span>Upload from Device</span>
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                onChange={handleFileChange}
+              />
+            </label>
+          </div>
+        </Modal.Body>
+      </Modal>
 
       <ForgotWithEmail
         USERID={userId}
@@ -1784,9 +1982,7 @@ function Profile() {
         handleClose={() => setShowUpdateModal(false)}
       />
 
-      <LanguageModal
-        isProfile={true}
-      />
+      <LanguageModal isProfile={true} />
       <AuthModal />
 
       {showSuccess && (
@@ -1839,7 +2035,6 @@ function Profile() {
                 boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Slight shadow for depth
               }}
             >
-              
               x
             </button>
 
@@ -1918,9 +2113,9 @@ function Profile() {
           <div
             style={{
               width: "100%",
-              borderRadius:isMobileWidth?"20px": "13px",
+              borderRadius: isMobileWidth ? "20px" : "13px",
               backgroundColor: "white",
-              padding:isMobileWidth?"10px":"20px",
+              padding: isMobileWidth ? "10px" : "20px",
               maxWidth: "350px",
             }}
           >
@@ -1937,8 +2132,8 @@ function Profile() {
                   color: "white",
                   border: "none",
                   borderRadius: "50%",
-                  width:isMobileWidth?"20px": "25px",
-                  height: isMobileWidth?"20px": "25px",
+                  width: isMobileWidth ? "20px" : "25px",
+                  height: isMobileWidth ? "20px" : "25px",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
@@ -1953,32 +2148,38 @@ function Profile() {
               <h3
                 style={{
                   fontWeight: "500",
-                  fontSize:isMobileWidth?"16px": "28px",
+                  fontSize: isMobileWidth ? "16px" : "28px",
                   color: "#000000",
-                  marginBottom:isMobileWidth?"0px": "10px",
+                  marginBottom: isMobileWidth ? "0px" : "10px",
                   fontFamily: "sans-serif poppins",
                 }}
               >
                 Logout
               </h3>
 
+              <hr />
 
-              <hr/>
-
-              <div style={{ margin:isMobileWidth?"-6px": "20px 0" }}>
+              <div style={{ margin: isMobileWidth ? "-6px" : "20px 0" }}>
                 <img
                   src="/images/popups/logout.svg"
-                  loading="lazy" alt="Logout"
+                  loading="lazy"
+                  alt="Logout"
                   style={{
-                    width: isMobileWidth?"70px": "90px",
-                    height:isMobileWidth?"70px": "90px",
-                    marginBottom:"10px",
+                    width: isMobileWidth ? "70px" : "90px",
+                    height: isMobileWidth ? "70px" : "90px",
+                    marginBottom: "10px",
                   }}
                 />
               </div>
 
-              <p style={{ margin: isMobileWidth ? "10px auto": "30px",fontSize:isMobileWidth?'14px':'',width:isMobileWidth ? '58%' :'', textAlign:"center"
-               }}>
+              <p
+                style={{
+                  margin: isMobileWidth ? "10px auto" : "30px",
+                  fontSize: isMobileWidth ? "14px" : "",
+                  width: isMobileWidth ? "58%" : "",
+                  textAlign: "center",
+                }}
+              >
                 Are you sure you want to logout?
               </p>
 
@@ -1993,7 +2194,7 @@ function Profile() {
                 <button
                   onClick={handleLogout}
                   style={{
-                    padding: isMobileWidth?"10px 40px":"10px 50px",
+                    padding: isMobileWidth ? "10px 40px" : "10px 50px",
                     borderRadius: "50px",
                     border: "none",
                     backgroundColor: "#4AEAB1",
@@ -2009,7 +2210,7 @@ function Profile() {
                     setShowLogoutModal(false);
                   }}
                   style={{
-                    padding: isMobileWidth?"10px 26px": "10px 37px",
+                    padding: isMobileWidth ? "10px 26px" : "10px 37px",
                     border: "1px solid #4AEAB1",
                     borderRadius: "50px",
                     backgroundColor: "#fff",
@@ -2062,15 +2263,15 @@ export default Profile;
 //   const useTypes = localStorage.getItem("USER_TYPE");
 
 //    const [isMobileWidth, setIsMobileWidth] = useState(false);
-  
+
 //     useEffect(() => {
 //       const checkWindowWidth = () => {
 //         setIsMobileWidth(window.innerWidth <= 768);
 //       };
-  
+
 //       checkWindowWidth(); // run on mount
 //       window.addEventListener("resize", checkWindowWidth);
-  
+
 //       return () => window.removeEventListener("resize", checkWindowWidth);
 //     }, []);
 
@@ -2323,7 +2524,7 @@ export default Profile;
 //         setIsAddingPet(false);
 //       }
 //       if (type === "work" && newWork.trim()) {
-  
+
 //         if (newWork.length < 3 || newWork.length > 20) {
 //         toast.error("Please enter between 3 and 20 characters.");
 //         return;
@@ -2564,8 +2765,8 @@ export default Profile;
 //                                     borderRadius: "100%",
 //                                   }}
 //                                 />
-//                                 <div 
-//                                 // type="submit" 
+//                                 <div
+//                                 // type="submit"
 //                                 style={{
 //                                   position: "absolute",
 //                                   bottom: "1px",
@@ -3681,12 +3882,10 @@ export default Profile;
 //       /* ---------- RESPONSIVE STYLES FOR MOBILE ---------- */
 //       @media (max-width: 576px) {
 
-
-           
 //         .custom-modal .modal-dialog {
 //           width: 100% !important;  /* Full width on small screens */
 //           margin: 0 auto;
-        
+
 //         }
 
 //  .custom-modal .modal-dialog {
@@ -3706,13 +3905,12 @@ export default Profile;
 //   padding:0 !important;
 // }
 
-
 //  .btn-close {
 //        display:none !important;
 //       }
 
 //         .upload-options {
-//           gap: 100px;   
+//           gap: 100px;
 //         margin-top:0px;
 //         }
 
@@ -3794,11 +3992,6 @@ export default Profile;
 //     </div>
 //   </Modal.Body>
 // </Modal>
-
-
-
-
-
 
 //       <ForgotWithEmail
 //         USERID={userId}
@@ -3887,7 +4080,7 @@ export default Profile;
 //                 boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", // Slight shadow for depth
 //               }}
 //             >
-              
+
 //               x
 //             </button>
 
