@@ -47,7 +47,11 @@ const ContactUs = () => {
                 <p>Our Customer Service Team are also available On.</p>
                 <div className="contact-support-in">
                   <div className="icon">
-                    <img src="/images/contact-page/call.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/contact-page/call.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                   </div>
                   <h3>
                     Contact Number <br />{" "}
@@ -58,7 +62,11 @@ const ContactUs = () => {
                 </div>
                 <div className="contact-support-in">
                   <div className="icon">
-                    <img src="/images/contact-page/mail.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/contact-page/mail.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                   </div>
                   <h3>
                     Email Address <br />
@@ -73,7 +81,11 @@ const ContactUs = () => {
                 </div>
                 <div className="contact-support-in">
                   <div className="icon">
-                    <img src="/images/contact-page/location.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/contact-page/location.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                   </div>
                   <h3>
                     Location <br />

@@ -99,24 +99,12 @@ const Footer = () => {
                     />
 
                     <button type="submit" className="news-btn-submit">
-                      {/* <i className="fa-solid fa-paper-plane"></i> */}
-                      {/* <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      
-    >
-      <path d="M3 11.5L21 3L16 21L11 14L3 11.5Z" fill="#2A4145" />
-    </svg> */}
-                      {/* <img src="/images/footer/newlettericon.png"  style={{background:'grey'}} /> */}
                       <i
                         className="fa-solid fa-paper-plane"
-                        style={{
-                          transform: "rotate(25deg)",
-                          color: "#3A4B4C",
-                        }}
+                        // style={{
+                        //   transform: "rotate(25deg)",
+                        //   color: "#3A4B4C",
+                        // }}
                       ></i>
                     </button>
                   </form>
@@ -234,7 +222,7 @@ const Footer = () => {
               </div>
 
               <div className="footer-inner-bottom">
-                <p>Zyvo © Copyright 2025</p>
+                <p>Zyvo © Copyright 2026</p>
                 <div className="logo" style={{ marginLeft: "53%" }}>
                   <Link to="/homeGuest">
                     {" "}

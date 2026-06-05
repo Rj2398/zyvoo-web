@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Carousel, Col, Dropdown, Image, Modal, Row, } from "react-bootstrap";
+import { Carousel, Col, Dropdown, Image, Modal, Row } from "react-bootstrap";
 import HostListingItem from "../../components/host/addBusiness/HostListingItem";
 import { SlArrowRight } from "react-icons/sl";
 import { FaStar } from "react-icons/fa";
@@ -16,7 +16,10 @@ function HostListing() {
   const [expanded, setExpanded] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { host_listing, filter_host_reviews, isLoading } = useCommon();
-  const [currentLocation, setCurrentLocation] = useState({ latitude: null, longitude: null, });
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: null,
+    longitude: null,
+  });
 
   const [currentHostData, setCurrentHostData] = useState(null);
   const [reviewData, setReviewData] = useState(null);
@@ -26,16 +29,23 @@ function HostListing() {
 
   const [showAll, setShowAll] = useState(false);
 
-  const visibleData = showAll ? currentHostData?.properties : currentHostData?.properties?.slice(0, 8);
+  const visibleData = showAll
+    ? currentHostData?.properties
+    : currentHostData?.properties?.slice(0, 8);
 
   useEffect(() => {
     const getLocation = () => {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            setCurrentLocation({latitude: position.coords.latitude,longitude: position.coords.longitude});
+            setCurrentLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
           },
-          (error) => {console.error(error.message);}
+          (error) => {
+            console.error(error.message);
+          }
         );
       } else {
         console.error("Geolocation is not supported by your browser.");
@@ -48,7 +58,11 @@ function HostListing() {
     const fetchHostData = async () => {
       if (hostId) {
         try {
-          const res = await host_listing({host_id: hostId, latitude: currentLocation?.latitude, longitude: currentLocation?.longitude});
+          const res = await host_listing({
+            host_id: hostId,
+            latitude: currentLocation?.latitude,
+            longitude: currentLocation?.longitude,
+          });
           if (res?.code == 200) {
             setCurrentHostData(res?.data);
           }
@@ -92,7 +106,11 @@ function HostListing() {
 
     if (hostId && nextPage <= totalPages) {
       try {
-        const res = await filter_host_reviews({host_id: hostId, filter: selectedSort, page: nextPage});
+        const res = await filter_host_reviews({
+          host_id: hostId,
+          filter: selectedSort,
+          page: nextPage,
+        });
         if (res?.code === 200) {
           setReviewData((prev) => [...prev, ...res.data]);
           setCurrentPage(nextPage);
@@ -103,8 +121,10 @@ function HostListing() {
     }
   };
 
-  const sortLabels = { 
-    highest_review: "Highest Review", lowest_review: "Lowest Review", recent_review: "Recent Reviews",
+  const sortLabels = {
+    highest_review: "Highest Review",
+    lowest_review: "Lowest Review",
+    recent_review: "Recent Reviews",
   };
 
   const formatReviewCount = (count) => {
@@ -123,29 +143,29 @@ function HostListing() {
     }
   };
 
-  
-function formatReview(value) {
-  const num = Number(value);
-  if (isNaN(num)) return "";
-  return num > 0 ? num.toFixed(1) : "0";
-}
+  function formatReview(value) {
+    const num = Number(value);
+    if (isNaN(num)) return "";
+    return num > 0 ? num.toFixed(1) : "0";
+  }
 
-  const [isMobileWidth,setIsMobileWidth]=useState(false)
+  const [isMobileWidth, setIsMobileWidth] = useState(false);
 
   useEffect(() => {
     const checkWindowWidth = () => {
       setIsMobileWidth(window.innerWidth <= 768);
     };
- 
+
     checkWindowWidth(); // run on mount
-    window.addEventListener('resize', checkWindowWidth);
- 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
+
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   if (isLoading) {
     return (
-      <div style={{ 
+      <div
+        style={{
           height: "100vh",
           display: "flex",
           justifyContent: "center",
@@ -162,10 +182,12 @@ function formatReview(value) {
 
   return (
     <>
-      <main className="mb-0"
+      <main
+        className="mb-0"
         style={{
           backgroundColor: "white",
-          backgroundImage: " radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px",
+          backgroundImage:
+            " radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px",
           backgroundSize: "20px 20px",
         }}
       >
@@ -188,21 +210,42 @@ function formatReview(value) {
         {/* <!-- MOBILE -->*/}
         <div className="host-listing-wrap help-center-wrap location-grid-map-wrap">
           <div className="container-fluid">
-            <div className={`${isMobileWidth ? "" : "row"} m-0 p-0 m-lg-4`} style={{ justifyContent: "space-between" }}>
+            <div
+              className={`${isMobileWidth ? "" : "row"} m-0 p-0 m-lg-4`}
+              style={{ justifyContent: "space-between" }}
+            >
               <div className={isMobileWidth ? "" : "row gap-5"}>
                 <Col lg={3} md={4} className="px-5 px-sm-2 px-lg-0">
-                  <div className="p-1 p-lg-4 " style={{ 
+                  <div
+                    className="p-1 p-lg-4 "
+                    style={{
                       textAlign: "center",
                       border: "1px solid #ddd",
                       borderRadius: "10px",
-                    }} >
-                    <div className="profile-img-cover-main" style={{width: isMobileWidth ? "70px" : "", height: isMobileWidth ? "70px" : ""}}>
-                      <Image src={ currentHostData?.host?.profile_picture ? imageBase + currentHostData?.host?.profile_picture : "/images/chat/profile/1.svg" } loading="lazy" alt="Host"
+                    }}
+                  >
+                    <div
+                      className="profile-img-cover-main"
+                      style={{
+                        width: isMobileWidth ? "70px" : "",
+                        height: isMobileWidth ? "70px" : "",
+                      }}
+                    >
+                      <Image
+                        src={
+                          currentHostData?.host?.profile_picture
+                            ? imageBase + currentHostData?.host?.profile_picture
+                            : "/images/chat/profile/1.svg"
+                        }
+                        loading="lazy"
+                        alt="Host"
                         roundedCircle
                         style={{
                           width: "100%",
                           height: "100%",
-                          border: isMobileWidth ? "2px solid #EBEDED" : "8px solid #EBEDED",
+                          border: isMobileWidth
+                            ? "2px solid #EBEDED"
+                            : "8px solid #EBEDED",
                           borderRadius: "50%",
                           padding: "5px",
                           objectFit: "cover",
@@ -210,7 +253,10 @@ function formatReview(value) {
                       />
 
                       {currentHostData?.is_star_host && (
-                        <Image src="/images/locations-grid/profile/batch.svg" loading="lazy" alt="Batch"
+                        <Image
+                          src="/images/locations-grid/profile/batch.svg"
+                          loading="lazy"
+                          alt="Batch"
                           style={{
                             position: "absolute",
                             bottom: "0",
@@ -220,18 +266,47 @@ function formatReview(value) {
                         />
                       )}
                     </div>
-                    <hr style={{margin: isMobileWidth ? "0" : ""}}/>
-                    <h2 style={{ fontSize: isMobileWidth ? "18px" : "20px", margin: isMobileWidth ? "5px 0" : "10px 0", color: "#000", fontWeight: "500"}}>
+                    <hr style={{ margin: isMobileWidth ? "0" : "" }} />
+                    <h2
+                      style={{
+                        fontSize: isMobileWidth ? "18px" : "20px",
+                        margin: isMobileWidth ? "5px 0" : "10px 0",
+                        color: "#000",
+                        fontWeight: "500",
+                      }}
+                    >
                       {currentHostData?.host?.name || "No Name Available"}
                     </h2>
-                    <p style={{ color: "#000", fontSize: "18px", margin: isMobileWidth ? "0" : "",padding: isMobileWidth ? "0" : "" }}>Host</p>
+                    <p
+                      style={{
+                        color: "#000",
+                        fontSize: "18px",
+                        margin: isMobileWidth ? "0" : "",
+                        padding: isMobileWidth ? "0" : "",
+                      }}
+                    >
+                      Host
+                    </p>
                   </div>
                 </Col>
                 {isMobileWidth && <hr />}
                 <Col md={7}>
-                  <div style={{ padding: isMobileWidth ? "0" :"15px", borderRadius: "10px" }}>
-                    <h3 style={{ marginBottom: "25px",fontSize: isMobileWidth ? "18px" : "22px" }}>About Host</h3>
-                    <div style={{
+                  <div
+                    style={{
+                      padding: isMobileWidth ? "0" : "15px",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    <h3
+                      style={{
+                        marginBottom: "25px",
+                        fontSize: isMobileWidth ? "18px" : "22px",
+                      }}
+                    >
+                      About Host
+                    </h3>
+                    <div
+                      style={{
                         display: "flex",
                         alignItems: "center",
                         gap: "20px",
@@ -241,31 +316,97 @@ function formatReview(value) {
                       }}
                     >
                       {currentHostData?.about_host?.host_profession && (
-                        <div style={{ display: "flex", alignItems: "center", padding:"7px 14px", border:"1px solid gray", borderRadius:"50px", fontSize: isMobileWidth ? "12px" : "" }}>
-                          <Image src="/images/create-profile/work.svg" loading="lazy" alt="Work" style={{ marginRight: "8px" }} />
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            padding: "7px 14px",
+                            border: "1px solid gray",
+                            borderRadius: "50px",
+                            fontSize: isMobileWidth ? "12px" : "",
+                          }}
+                        >
+                          <Image
+                            src="/images/create-profile/work.svg"
+                            loading="lazy"
+                            alt="Work"
+                            style={{
+                              marginRight: "8px",
+                              width: 20,
+                              height: 20,
+                            }}
+                          />
                           {currentHostData?.about_host?.host_profession}
                         </div>
                       )}
 
                       {currentHostData?.about_host?.location && (
-                        <div style={{ display: "flex", alignItems: "center", padding:"7px 14px", border:"1px solid gray", borderRadius:"50px",fontSize: isMobileWidth ? "12px" : "" }}>
-                          <Image src="/images/create-profile/location.svg" loading="lazy" alt="Location" style={{ marginRight: "8px" }} /> 
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            padding: "7px 14px",
+                            border: "1px solid gray",
+                            borderRadius: "50px",
+                            fontSize: isMobileWidth ? "12px" : "",
+                          }}
+                        >
+                          <Image
+                            src="/images/create-profile/location.svg"
+                            loading="lazy"
+                            alt="Location"
+                            style={{
+                              marginRight: "8px",
+                              width: 20,
+                              height: 20,
+                            }}
+                          />
                           {currentHostData?.about_host?.location}
                         </div>
                       )}
 
                       {currentHostData?.about_host?.language && (
-                        <div style={{ display: "flex", alignItems: "center", padding:"7px 14px", border:"1px solid gray", borderRadius:"50px",fontSize: isMobileWidth ? "12px" : "" }}>
-                          <Image src="/images/create-profile/languages.svg" loading="lazy" alt="Languages" style={{ marginRight: "8px" }} /> 
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            padding: "7px 14px",
+                            border: "1px solid gray",
+                            borderRadius: "50px",
+                            fontSize: isMobileWidth ? "12px" : "",
+                          }}
+                        >
+                          <Image
+                            src="/images/create-profile/languages.svg"
+                            loading="lazy"
+                            alt="Languages"
+                            style={{
+                              marginRight: "8px",
+                              width: 20,
+                              height: 20,
+                            }}
+                          />
                           {currentHostData?.about_host?.language?.join(", ")}
                         </div>
                       )}
                     </div>
 
                     <div style={{ marginTop: "30px" }}>
-                      <p style={{ textAlign: "justify",fontSize: isMobileWidth ? "14px" : "" }}>
-                        {expanded ? currentHostData?.about_host?.description : `${currentHostData?.about_host?.description?.substring(0, 900 )}...`}{" "}
-                        <a href="#" onClick={(e) => { 
+                      <p
+                        style={{
+                          textAlign: "justify",
+                          fontSize: isMobileWidth ? "14px" : "",
+                        }}
+                      >
+                        {expanded
+                          ? currentHostData?.about_host?.description
+                          : `${currentHostData?.about_host?.description?.substring(
+                              0,
+                              900
+                            )}...`}{" "}
+                        <a
+                          href="#"
+                          onClick={(e) => {
                             e.preventDefault();
                             setExpanded(!expanded);
                           }}
@@ -273,7 +414,8 @@ function formatReview(value) {
                             color: "#4AEAB1",
                             textDecoration: "none",
                             cursor: "pointer",
-                          }}>
+                          }}
+                        >
                           {currentHostData?.about_host?.description?.length >
                             900 && (expanded ? "Read less" : "Read more")}
                         </a>
@@ -283,7 +425,10 @@ function formatReview(value) {
                 </Col>
               </div>
 
-              <hr style={{ border: "none", borderTop: "0.5px solid #000",
+              <hr
+                style={{
+                  border: "none",
+                  borderTop: "0.5px solid #000",
                   width: "100%",
                   marginTop: "30px",
                   margin: "20px 0",
@@ -292,7 +437,14 @@ function formatReview(value) {
 
               <Row className="d-flex justify-content-between align-items-center my-2">
                 <Col>
-                  <h4 style={{ fontWeight: "500", color:"black", marginBottom: "0", fontSize: isMobileWidth ? "15px" : "20px" }}>
+                  <h4
+                    style={{
+                      fontWeight: "500",
+                      color: "black",
+                      marginBottom: "0",
+                      fontSize: isMobileWidth ? "15px" : "20px",
+                    }}
+                  >
                     {currentHostData?.host?.name}’s Listings
                   </h4>
                 </Col>
@@ -323,19 +475,32 @@ function formatReview(value) {
                   {/* {currentHostData?.properties?.map((location, index) => (
                     <HostListingItem key={index} {...location} isMobileWidth={isMobileWidth}/>
                   ))} */}
-                  {
-                    isMobileWidth ? currentHostData?.properties?.slice(0,1)?.map((location, index) => (
-                    <HostListingItem key={index} {...location} isMobileWidth={isMobileWidth}/>
-                  )) : currentHostData?.properties?.slice(0,4).map((location, index) => (
-                    <HostListingItem key={index} {...location} isMobileWidth={isMobileWidth}/>
-                  ))
-                  }
-                </div >
+                  {isMobileWidth
+                    ? currentHostData?.properties
+                        ?.slice(0, 1)
+                        ?.map((location, index) => (
+                          <HostListingItem
+                            key={index}
+                            {...location}
+                            isMobileWidth={isMobileWidth}
+                          />
+                        ))
+                    : currentHostData?.properties
+                        ?.slice(0, 4)
+                        .map((location, index) => (
+                          <HostListingItem
+                            key={index}
+                            {...location}
+                            isMobileWidth={isMobileWidth}
+                          />
+                        ))}
+                </div>
               </div>
 
               <div className="col-lg-12 mt-5">
                 <div className="location-reviews">
-                  <Row className="align-items-center mb-4"
+                  <Row
+                    className="align-items-center mb-4"
                     style={{
                       borderTop: "1px solid #ddd",
                       paddingBottom: "15px",
@@ -343,34 +508,43 @@ function formatReview(value) {
                   >
                     {/* Reviews Title */}
                     <Col xs={12} md={6} className="d-flex align-items-center">
-                      <h4 style={{
+                      <h4
+                        style={{
                           fontSize: "18px",
                           margin: "0",
                           display: "flex",
                           alignItems: "center",
-                          width:"100%"
+                          width: "100%",
                           // fontWeight: "600",
                         }}
                       >
                         {" "}
                         Reviews ({currentHostData?.total_host_review_count || 0}
                         )
-                        <span style={{
+                        <span
+                          style={{
                             marginLeft: "15px",
                             display: "flex",
                             alignItems: "center",
-                            fontWeight:'400'
-                          }} >
-                          <Image src="/images/locations-grid/star-icon.svg" loading="lazy" alt="Star"
+                            fontWeight: "400",
+                          }}
+                        >
+                          <Image
+                            src="/images/locations-grid/star-icon.svg"
+                            loading="lazy"
+                            alt="Star"
                             style={{ width: "16px", marginRight: "5px" }}
                           />
-                          <span style={{ fontSize: "16px",
+                          <span
+                            style={{
+                              fontSize: "16px",
                               color: "rgb(252, 168, 0)",
                               marginRight: "5px",
-                             
                             }}
                           >
-                            {formatReview(currentHostData?.total_host_review_rating) || 0}
+                            {formatReview(
+                              currentHostData?.total_host_review_rating
+                            ) || 0}
                           </span>
                           Rating
                         </span>
@@ -378,8 +552,13 @@ function formatReview(value) {
                     </Col>
 
                     {/* Sort Dropdown */}
-                    <Col xs={12} md={6} className="d-flex justify-content-between justify-content-md-end align-items-center py-3" >
-                      <p style={{
+                    <Col
+                      xs={12}
+                      md={6}
+                      className="d-flex justify-content-between justify-content-md-end align-items-center py-3"
+                    >
+                      <p
+                        style={{
                           margin: "0",
                           fontSize: "16px",
                           fontWeight: "400",
@@ -408,16 +587,14 @@ function formatReview(value) {
                           {sortLabels[selectedSort]}
                         </Dropdown.Toggle> */}
 
-
                         <Dropdown.Toggle
                           variant="light"
                           id="dropdown-basic"
                           className="chatgpt-dropdown-toggle"
-                       >
-                       <span>{sortLabels[selectedSort]}</span>
-                       <IoIosArrowDown className="dropdown-chevron" />
-                       </Dropdown.Toggle>
-
+                        >
+                          <span>{sortLabels[selectedSort]}</span>
+                          <IoIosArrowDown className="dropdown-chevron" />
+                        </Dropdown.Toggle>
 
                         <Dropdown.Menu>
                           <Dropdown.Item eventKey="highest_review">
@@ -434,7 +611,7 @@ function formatReview(value) {
                     </Col>
                   </Row>
 
-                  <Row className="mt-4" style={{marginLeft:'-25px'}}>
+                  <Row className="mt-4" style={{ marginLeft: "-25px" }}>
                     {reviewData?.map((review, index) => (
                       <Col key={index} md={12} className="mb-3">
                         <div
@@ -462,24 +639,23 @@ function formatReview(value) {
                                 height: "70px",
                                 borderRadius: "50%",
                                 marginRight: "15px",
-                                border:'2px solid #ccc',
-                                padding:'5px'
+                                border: "2px solid #ccc",
+                                padding: "5px",
                               }}
                             />
                             <div>
                               <h6
                                 style={{
-                                  marginTop:"20px",
+                                  marginTop: "20px",
                                   fontSize: "16px",
                                   fontWeight: "600",
-                                  
                                 }}
                               >
                                 {review?.reviewer_name}
                               </h6>
                               <p
                                 style={{
-                                  marginTop:"5px",
+                                  marginTop: "5px",
                                   fontSize: "14px",
                                   color: "black",
                                 }}
@@ -499,7 +675,8 @@ function formatReview(value) {
                                       ? "/images/locations-grid/star-icon.svg"
                                       : "/images/locations-grid/star-icon-blank.svg"
                                   }
-                                  loading="lazy" alt="Star"
+                                  loading="lazy"
+                                  alt="Star"
                                   style={{ width: "14px", marginRight: "3px" }}
                                 />
                               ))}
@@ -509,7 +686,7 @@ function formatReview(value) {
                                 margin: "5px 0 0",
                                 fontSize: "15px",
                                 color: "#000000",
-                                fontWeight:'400'
+                                fontWeight: "400",
                               }}
                             >
                               {review?.review_date}
@@ -562,35 +739,57 @@ function formatReview(value) {
       {/*  */}
 
       {/* Listing Modal  */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} size="xl" centered fullscreen="lg-down" style={{ margin: "0 auto", maxWidth: isMobileWidth ? "" : "95vw", overflow: "hidden" }} className={isMobileWidth ? "custom-modal-css" : ""} >
+      <Modal
+        show={showModal}
+        onHide={() => setShowModal(false)}
+        size="xl"
+        centered
+        fullscreen="lg-down"
+        style={{
+          margin: "0 auto",
+          maxWidth: isMobileWidth ? "" : "95vw",
+          overflow: "hidden",
+        }}
+        className={isMobileWidth ? "custom-modal-css" : ""}
+      >
         <style>
           {`
             .modal-content {
-              border-radius: ${isMobileWidth ? "0px !important" : "0px !important"};
+              border-radius: ${
+                isMobileWidth ? "0px !important" : "0px !important"
+              };
               padding-top:20px;
             }
           `}
         </style>
 
-        <Modal.Header closeButton={isMobileWidth ? false : true} onClick={() => setShowAll(false)}>
-          {isMobileWidth ? <div className="container-fluid">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="mob-search-filter-in">
-                  <div className="mob-search-bar-back">
-                    <Link to="#" onClick={() => setShowModal(false)}>
-                      <i className="fa-regular fa-arrow-left"></i>
-                    </Link>
+        <Modal.Header
+          closeButton={isMobileWidth ? false : true}
+          onClick={() => setShowAll(false)}
+        >
+          {isMobileWidth ? (
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="mob-search-filter-in">
+                    <div className="mob-search-bar-back">
+                      <Link to="#" onClick={() => setShowModal(false)}>
+                        <i className="fa-regular fa-arrow-left"></i>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
+              <p className="p-0 m-0 pt-2" style={{ color: "black" }}>
+                Listing Details
+              </p>
             </div>
-            <p className="p-0 m-0 pt-2" style={{color:'black'}}>Listing Details</p>
-          </div> :
-          <Modal.Title>Listing Details</Modal.Title>}
+          ) : (
+            <Modal.Title>Listing Details</Modal.Title>
+          )}
         </Modal.Header>
-          <style>
-            {`
+        <style>
+          {`
               .modal-header {
                 display: flex;
                 flex-shrink: 0;
@@ -602,7 +801,7 @@ function formatReview(value) {
               }
             `}
         </style>
-          
+
         <Modal.Body
           style={{
             overflowX: "hidden",
@@ -614,7 +813,8 @@ function formatReview(value) {
           <Row className="g-4">
             {visibleData?.map((listing, index) => (
               <Col xs={12} sm={6} md={4} lg={3} key={index}>
-                <div style={{
+                <div
+                  style={{
                     borderRadius: "15px",
                     overflow: "hidden",
                     height: "100%",
@@ -624,13 +824,22 @@ function formatReview(value) {
                   }}
                 >
                   {/* <Carousel indicators={false}> */}
-                  <Carousel interval={listing?.property_images?.length > 1 ? 3000 : null}
+                  <Carousel
+                    interval={
+                      listing?.property_images?.length > 1 ? 3000 : null
+                    }
                     indicators={listing?.property_images?.length > 1}
-                    controls={false} >
+                    controls={false}
+                  >
                     {listing?.property_images?.map((img, i) => (
                       <Carousel.Item key={i}>
-                        <img src={imageBase + img} alt={`Listing ${i}`} loading="lazy"
-                          onClick={() => navigate(`/location/${listing?.property_id}`) }
+                        <img
+                          src={imageBase + img}
+                          alt={`Listing ${i}`}
+                          loading="lazy"
+                          onClick={() =>
+                            navigate(`/location/${listing?.property_id}`)
+                          }
                           style={{
                             width: "100%",
                             height: "280px",
@@ -667,29 +876,65 @@ function formatReview(value) {
                       </Carousel.Item>
                     ))}
                   </Carousel>
-                  <div style={{ padding: "7px 0px", background: "#fff", flexGrow: 1 }} >
-                    <div style={{
+                  <div
+                    style={{
+                      padding: "7px 0px",
+                      background: "#fff",
+                      flexGrow: 1,
+                    }}
+                  >
+                    <div
+                      style={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                      }}                     >
-                      <h6 style={{ fontWeight: "400", margin: "5px 0" ,fontSize:'16px',color:'black'}} onClick={() => navigate(`/location/${listing?.property_id}`) } >
+                      }}
+                    >
+                      <h6
+                        style={{
+                          fontWeight: "400",
+                          margin: "5px 0",
+                          fontSize: "16px",
+                          color: "black",
+                        }}
+                        onClick={() =>
+                          navigate(`/location/${listing?.property_id}`)
+                        }
+                      >
                         {listing?.title}
                       </h6>
-                      <p style={{ fontSize: "14px", color: "#555", marginBottom: "5px"}} >
+                      <p
+                        style={{
+                          fontSize: "14px",
+                          color: "#555",
+                          marginBottom: "5px",
+                        }}
+                      >
                         <span style={{ fontWeight: "400", color: "#000" }}>
-                          <i className="fa-solid fa-clock"
+                          <i
+                            className="fa-solid fa-clock"
                             style={{
-                              fontSize: "16px", fontWeight: "600", color: "#3A4B4C",
+                              fontSize: "16px",
+                              fontWeight: "600",
+                              color: "#3A4B4C",
                               // display: 'none',
                               // marginBottom: "5px",
                               // marginRight:'10px',
-                            }}>
+                            }}
+                          >
                             {" "}
                           </i>{" "}
-                       <span style={{ whiteSpace: 'nowrap', padding: 0, margin: 0, fontSize:"16px", fontWeight:"400"}}>
-                        {'$'+ parseFloat(listing?.hourly_rate)+'/h'}
-                      </span>
+                          <span
+                            style={{
+                              whiteSpace: "nowrap",
+                              padding: 0,
+                              margin: 0,
+                              fontSize: "16px",
+                              fontWeight: "400",
+                            }}
+                          >
+                            {"$" + parseFloat(listing?.hourly_rate) + "/h"}
+                          </span>
                         </span>
                       </p>
                     </div>
@@ -704,13 +949,15 @@ function formatReview(value) {
                       }}
                     >
                       <span style={{ fontWeight: "400" }}>
-                        <FaStar color="#FFA500"  style={{marginBottom:'5px',marginRight:'5px',}}/>
+                        <FaStar
+                          color="#FFA500"
+                          style={{ marginBottom: "5px", marginRight: "5px" }}
+                        />
                         <span
                           style={{
                             fontWeight: "400",
                             color: "rgb(252, 168, 0)",
-                            marginRight:'5px'
-
+                            marginRight: "5px",
                           }}
                         >
                           {formatReview(listing?.reviews_total_rating)}
@@ -718,7 +965,11 @@ function formatReview(value) {
                         ({formatReviewCount(listing?.reviews_total_count)})
                       </span>
                       <span style={{ alignContent: "end" }}>
-                        <img src="/images/locations-grid/location-icon.svg" alt="Location" style={{ width: "16px",marginRight:'5px' }}/>
+                        <img
+                          src="/images/locations-grid/location-icon.svg"
+                          alt="Location"
+                          style={{ width: "16px", marginRight: "5px" }}
+                        />
                         {listing?.distance_miles} miles away
                       </span>
                     </p>
@@ -728,7 +979,7 @@ function formatReview(value) {
             ))}
           </Row>
 
-          {(currentHostData?.properties?.length > 8 && !showAll) && (
+          {currentHostData?.properties?.length > 8 && !showAll && (
             <button
               type="button"
               className="location-reviews-btn"

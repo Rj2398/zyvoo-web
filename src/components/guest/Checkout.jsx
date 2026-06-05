@@ -2015,7 +2015,7 @@ const Checkout = ({ setExtendedTime }) => {
                 }}
                 onClick={handleBooking}
               >
-                Confirm &amp; pay
+                Confirm &amp; Pay
               </Button>
             </Col>
 

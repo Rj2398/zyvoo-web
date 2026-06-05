@@ -98,7 +98,6 @@
 //     return Number.isInteger(num) ? num?.toString() : num?.toFixed(1);
 //   }
 
-
 //   const truncateText = (text, limit) =>
 //   text?.length > limit ? text.slice(0, limit) + "..." : text;
 
@@ -183,7 +182,7 @@
 //                       ? "/images/locations-grid/profile/heart-fill.svg"
 //                       : isMobileWidth ? "/images/mobileBlankHeart.png" :  "/images/locations-grid/profile/heart.svg"
 //                   }
-//                   alt="Wishlist" 
+//                   alt="Wishlist"
 //                   style={{
 //                     width: "24px",
 //                     display: "block",
@@ -252,7 +251,7 @@
 //               )}
 //             </div>
 //             <h2>
-             
+
 //            {userId ? ( <span style={{fontSize:isMobileWidth ?"13px":"15px" }}> Hosted by {truncateText(hosted_by, 16)} <br /> </span>):(<span style={{ fontSize:isMobileWidth ?"13px":"15px"}}>{truncateText(hosted_by, 16)}<br/></span>)}
 
 //               {/* Hosted by {hosted_by} <br /> */}
@@ -273,13 +272,13 @@
 //             cursor: " inherit",
 //           }} >
 //           <div className="carousel-inner-content-top">
-//             <h1 onClick={() => handleNavigation(property_id)}  style={{ cursor: "pointer",fontWeight:'400', fontSize:isMobileWidth ?"13px":"18px" ,color:'black' }}> 
+//             <h1 onClick={() => handleNavigation(property_id)}  style={{ cursor: "pointer",fontWeight:'400', fontSize:isMobileWidth ?"13px":"18px" ,color:'black' }}>
 //              {truncateText(title, 16)}
 //             </h1>
-           
+
 //             <span style={{ display: "flex", alignItems: "center" ,}}>
 //               <i className="fa-solid fa-clock" style={{ fontSize: "18px", marginRight: "5px",color:'#3A4B4C' }} ></i>
- 
+
 //            <span style={{ whiteSpace: 'nowrap', padding: 0, margin: 0,color:'black',fontWeight:'400', fontSize:isMobileWidth ?"13px":"18px" }}>
 //             {'$'+ parseFloat(hourly_rate)+'/h'}
 //               </span>
@@ -296,7 +295,7 @@
 //               margin: 0
 //               }} >
 //               <li style={{
-//                   display: "flex", alignItems: "flex-start", gap: "5px", 
+//                   display: "flex", alignItems: "flex-start", gap: "5px",
 //                   color: "#FCA800"
 //                 }}
 //               >
@@ -338,15 +337,6 @@
 
 // // export default ProductItem;
 // export default React.memo(ProductItem);
-
-
-
-
-
-
-
-
-
 
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -708,7 +698,7 @@ const ProductItem = ({
               alignItems: "center",
               background: "#ffffffd9",
               padding: "10px",
-              borderRadius: "8px",
+              borderRadius: "15px",
               width: "95%",
             }}
           >

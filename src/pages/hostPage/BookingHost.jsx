@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
-import { Card, Button, Image, Dropdown, FormControl, InputGroup, Container, Modal, } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Image,
+  Dropdown,
+  FormControl,
+  InputGroup,
+  Container,
+  Modal,
+} from "react-bootstrap";
 import { MdOutlineMyLocation } from "react-icons/md";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -27,9 +36,18 @@ import { IoSearch } from "react-icons/io5";
 import { RiArrowDropDownLine } from "react-icons/ri";
 
 const BookingHost = () => {
-
-  const { userInfo } = useSelector(({ user }) => user)
-  const { getBookingHost, updateBookingStatus, getBookingGuest, getBookingDetails, getGuestBookingDetails, FilterPropertyReview, hostReportViolation, fetchGuestReview, isLoading, } = useBook();
+  const { userInfo } = useSelector(({ user }) => user);
+  const {
+    getBookingHost,
+    updateBookingStatus,
+    getBookingGuest,
+    getBookingDetails,
+    getGuestBookingDetails,
+    FilterPropertyReview,
+    hostReportViolation,
+    fetchGuestReview,
+    isLoading,
+  } = useBook();
   const { guestWishlistData, removeItemFromWishlist } = useCommon();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -41,7 +59,10 @@ const BookingHost = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("");
   const [refresh, setRefresh] = useState(0);
-  const [currentLocation, setCurrentLocation] = useState({ latitude: 0, longitude: 0, });
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
   const [showDiv, setShowDiv] = useState(false);
   const [isMessageClick, setIsMessageClick] = useState(false);
   const [showPropertyImages, setShowPropertyImages] = useState(false);
@@ -54,13 +75,17 @@ const BookingHost = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [viewDetails, setViewDetails] = useState();
 
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userType = localStorage.getItem(KEYS.USER_TYPE);
   const userId = userInfo?.user_id || userData?.user_id;
   const access_token = userInfo?.token || userData?.access_token;
 
   const [open, setOpen] = useState(null);
-  const toggleAccordion = (id) => { setOpen(open === id ? null : id); };
+  const toggleAccordion = (id) => {
+    setOpen(open === id ? null : id);
+  };
 
   const [reviews, setReviews] = useState([]);
   const [reviewPagination, setReviewPagination] = useState([]);
@@ -80,13 +105,17 @@ const BookingHost = () => {
       setIsMobileWidth(w >= 320 && w <= 780);
     };
 
-    checkWindowWidth();  // run on mount
+    checkWindowWidth(); // run on mount
     window.addEventListener("resize", checkWindowWidth);
 
     return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
-  const filterLabel = { recent_review: "Recent Reviews", highest_review: "Highest Review", lowest_review: "Lowest Review" };
+  const filterLabel = {
+    recent_review: "Recent Reviews",
+    highest_review: "Highest Review",
+    lowest_review: "Lowest Review",
+  };
 
   const guestReviewDetail = async (data) => {
     const response = await fetchGuestReview({ user_id: data?.user_id });
@@ -98,7 +127,11 @@ const BookingHost = () => {
   useEffect(() => {
     if (page != 1) {
       const fetchPropertyReviews = async () => {
-        const reviewsResp = await FilterPropertyReview({ property_id: propertyId, filter: reviewFilter, page });
+        const reviewsResp = await FilterPropertyReview({
+          property_id: propertyId,
+          filter: reviewFilter,
+          page,
+        });
         if (reviewsResp?.data?.length == 0) {
           setShowMoreBtn(false);
         }
@@ -117,7 +150,11 @@ const BookingHost = () => {
     if (count > 0) {
       setPage(1);
       const fetchPropertyReviews = async () => {
-        const reviewsResp = await FilterPropertyReview({ property_id: propertyId, filter: reviewFilter, page });
+        const reviewsResp = await FilterPropertyReview({
+          property_id: propertyId,
+          filter: reviewFilter,
+          page,
+        });
         setReviews(reviewsResp.data);
         setReviewPagination(reviewsResp?.pagination);
         setPage(1);
@@ -129,7 +166,10 @@ const BookingHost = () => {
   const handleWishlistClick = async () => {
     if (userId && access_token) {
       if (viewDetails?.is_in_wishlist || viewDetails?.wishlist) {
-        await removeItemFromWishlist({ user_id: userId, property_id: propertyId });
+        await removeItemFromWishlist({
+          user_id: userId,
+          property_id: propertyId,
+        });
       } else {
         setShowAddWishlistModal(true);
       }
@@ -137,7 +177,9 @@ const BookingHost = () => {
       getWishlist();
       setPropertyId(propertyId);
       // fetchDetailsData(viewDetails);
-      userType == "host" ? fetchDetailsData(selectedBooking) : fetchGuestDetailsData(selectedBooking);
+      userType == "host"
+        ? fetchDetailsData(selectedBooking)
+        : fetchGuestDetailsData(selectedBooking);
     }
   };
 
@@ -152,7 +194,8 @@ const BookingHost = () => {
   const fetchBookingList = async () => {
     try {
       const response = await (userType == "host"
-        ? getBookingHost({ user_id: userId }) : getBookingGuest({ user_id: userId }));
+        ? getBookingHost({ user_id: userId })
+        : getBookingGuest({ user_id: userId }));
       if (response) {
         setGetList(response?.data);
       }
@@ -162,17 +205,23 @@ const BookingHost = () => {
   };
 
   const getWishlist = async () => {
-    const wishlistData = await guestWishlistData({ user_id: userId, });
+    const wishlistData = await guestWishlistData({ user_id: userId });
     setWishlistArr(wishlistData?.data);
   };
 
   useEffect(() => {
     const getLocation = () => {
       if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          setCurrentLocation({ latitude: position.coords.latitude, longitude: position.coords.longitude });
-        },
-          (error) => { console.error(error.message); }
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setCurrentLocation({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+          },
+          (error) => {
+            console.error(error.message);
+          }
         );
       } else {
         console.error("Geolocation is not supported by your browser.");
@@ -184,23 +233,34 @@ const BookingHost = () => {
   const filteredBookings = useMemo(() => {
     return userType == "host"
       ? getList?.filter((booking) => {
-        const matchesName = booking?.guest_name?.toLowerCase().includes(searchQuery?.toLowerCase());
-        const matchesStatus = selectedStatus ? booking?.booking_status == selectedStatus : true;
-        return matchesName && matchesStatus;
-      })
+          const matchesName = booking?.guest_name
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase());
+          const matchesStatus = selectedStatus
+            ? booking?.booking_status == selectedStatus
+            : true;
+          return matchesName && matchesStatus;
+        })
       : getList?.filter((booking) => {
-        const matchesName = booking?.property_name?.toLowerCase().includes(searchQuery?.toLowerCase());
-        const matchesStatus = selectedStatus ? booking?.booking_status == selectedStatus : true;
-        return matchesName && matchesStatus;
-      });
+          const matchesName = booking?.property_name
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase());
+          const matchesStatus = selectedStatus
+            ? booking?.booking_status == selectedStatus
+            : true;
+          return matchesName && matchesStatus;
+        });
   }, [getList, searchQuery, selectedStatus, userType]);
 
   const fetchDetailsData = async (bookingData) => {
     try {
       const response = await getBookingDetails({
         booking_id: bookingData?.booking_id,
-        ...(bookingData?.extension_id && { extension_id: bookingData.extension_id, }),
-        latitude: currentLocation.latitude, longitude: currentLocation.longitude,
+        ...(bookingData?.extension_id && {
+          extension_id: bookingData.extension_id,
+        }),
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
       });
       if (response) {
         let view_details = response?.data;
@@ -208,7 +268,9 @@ const BookingHost = () => {
         setViewDetails(view_details);
         setPropertyId(property_id);
         const reviewsResp = await FilterPropertyReview({
-          property_id, filter: reviewFilter, page: 1,
+          property_id,
+          filter: reviewFilter,
+          page: 1,
         });
 
         setReviews(reviewsResp.data);
@@ -223,8 +285,10 @@ const BookingHost = () => {
   const fetchGuestDetailsData = async (bookingData) => {
     try {
       const response = await getGuestBookingDetails({
-        booking_id: selectedBooking?.booking_id, user_id: userId,
-        latitude: currentLocation.latitude, longitude: currentLocation.longitude,
+        booking_id: selectedBooking?.booking_id,
+        user_id: userId,
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
       });
 
       if (!response) return;
@@ -236,7 +300,9 @@ const BookingHost = () => {
       setPropertyId(property_id);
 
       const reviewsResp = await FilterPropertyReview({
-        property_id, filter: reviewFilter, page: 1
+        property_id,
+        filter: reviewFilter,
+        page: 1,
       });
 
       setReviews(reviewsResp.data);
@@ -286,7 +352,9 @@ const BookingHost = () => {
 
   useEffect(() => {
     if (bookingId && getList) {
-      const filteredBooking = getList.find((item) => item.booking_id == bookingId);
+      const filteredBooking = getList.find(
+        (item) => item.booking_id == bookingId
+      );
       setSelectedBooking(filteredBooking);
     }
   }, [bookingId, getList]);
@@ -297,7 +365,10 @@ const BookingHost = () => {
     if (isNaN(number)) return "0";
     return number % 1 === 0
       ? number.toLocaleString("en-IN", { maximumFractionDigits: 0 }) // Integer
-      : number.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }); // Decimal
+      : number.toLocaleString("en-IN", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }); // Decimal
   }
 
   function formatReview(value) {
@@ -308,11 +379,13 @@ const BookingHost = () => {
   }
 
   const [approveDeclineModal, setApproveDeclineModal] = useState({
-    show: false, status: null, data: null
+    show: false,
+    status: null,
+    data: null,
   });
 
   const openApproveDeclineModal = (status, booking) => {
-    setApproveDeclineModal({ show: true, status: status, data: booking, });
+    setApproveDeclineModal({ show: true, status: status, data: booking });
   };
 
   const closeApproveDeclineModal = () => {
@@ -322,8 +395,10 @@ const BookingHost = () => {
   const handleStatusUpdate = async ({ data, status, message }) => {
     try {
       const response = await updateBookingStatus({
-        booking_id: data.booking_id, extension_id: data?.extension_id,
-        status: status, message: message,
+        booking_id: data.booking_id,
+        extension_id: data?.extension_id,
+        status: status,
+        message: message,
       });
 
       if (response) {
@@ -337,90 +412,129 @@ const BookingHost = () => {
 
   const truncateText = (text, limit) =>
     text?.length > limit ? text.slice(0, limit) + "..." : text;
- 
 
   return (
     <>
       <Loader2 visible={isLoading} />
-      <div className="container-fluid d-flex justify-content-center" style={{ padding: isMobileWidth ? "0px" : "" }}>
-        <div style={{
-          width: "100%",
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
-          gap: "25px",
-          marginTop: isMobileWidth ? "2px" : "16px",
-        }} >
-
+      <div
+        className="container-fluid d-flex justify-content-center"
+        style={{ padding: isMobileWidth ? "0px" : "" }}
+      >
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "25px",
+            marginTop: isMobileWidth ? "2px" : "16px",
+          }}
+        >
           {/* First Row */}
-          <div className="mb-4 booking-left-sid-box"
-          // style={{
-          //   width: "100%",
-          //   minWidth: "300px",
-          //   boxSizing: "border-box",
-          //   overflowY: !isMobileWidth &&"auto",
-          //   padding: isMobileWidth ? "0px" : "10px",
-          //   maxWidth: isMobileWidth ? undefined : "380px",
-          //   maxHeight: isMobileWidth ? undefined : "calc(110vh)",
-          //   marginBottom: isMobileWidth ? "0px" : "20px",
-          //   flex: isMobileWidth ? "1 0 100%" : "1 0 400px",
-          //   }}
+          <div
+            className="mb-4 booking-left-sid-box"
+            // style={{
+            //   width: "100%",
+            //   minWidth: "300px",
+            //   boxSizing: "border-box",
+            //   overflowY: !isMobileWidth &&"auto",
+            //   padding: isMobileWidth ? "0px" : "10px",
+            //   maxWidth: isMobileWidth ? undefined : "380px",
+            //   maxHeight: isMobileWidth ? undefined : "calc(110vh)",
+            //   marginBottom: isMobileWidth ? "0px" : "20px",
+            //   flex: isMobileWidth ? "1 0 100%" : "1 0 400px",
+            //   }}
           >
             {!isMobileWidth && (
               <>
                 {!showSearch ? (
-                  <div className="d-flex align-items-center justify-content-between"
-                    style={{ minWidth: "100%", padding: "0 13px" }} >
-                    <div className="d-flex align-items-center gap-1" style={{ color: "#000000", cursor: "pointer" }} onClick={() => setShowDropdown(!showDropdown)} >
+                  <div
+                    className="d-flex align-items-center justify-content-between"
+                    style={{ minWidth: "100%", padding: "0 13px" }}
+                  >
+                    <div
+                      className="d-flex align-items-center gap-1"
+                      style={{ color: "#000000", cursor: "pointer" }}
+                      onClick={() => setShowDropdown(!showDropdown)}
+                    >
                       <div>All Bookings</div>
-                      <img src={"/images/dropdown.svg"} style={{ cursor: "pointer", marginLeft: 5, width: "12px" }} onClick={() => setShowDropdown(!showDropdown)} />
+                      <img
+                        src={"/images/dropdown.svg"}
+                        style={{
+                          cursor: "pointer",
+                          marginLeft: 5,
+                          width: "12px",
+                        }}
+                        onClick={() => setShowDropdown(!showDropdown)}
+                      />
                       {/* <RiArrowDropDownLine style={{ fontSize:"30px" }}  /> */}
                     </div>
-                    <IoSearch onClick={() => setShowSearch(true)} style={{ marginRight: 5, fontSize: "20px" }} />
+                    <IoSearch
+                      onClick={() => setShowSearch(true)}
+                      style={{ marginRight: 5, fontSize: "20px" }}
+                    />
                     {showDropdown && (
-                      <Dropdown.Menu show style={{ top: "140px", zIndex: 1000 }} >
-                        <Dropdown.Item onClick={() => {
-                          setSelectedStatus("");
-                          setShowDropdown(false);
-                          setViewDetails(null);
-                          setSelectedBooking(null);
-                        }} style={{ margin: isMobileWidth && '10px' }}>
+                      <Dropdown.Menu
+                        show
+                        style={{ top: "140px", zIndex: 1000 }}
+                      >
+                        <Dropdown.Item
+                          onClick={() => {
+                            setSelectedStatus("");
+                            setShowDropdown(false);
+                            setViewDetails(null);
+                            setSelectedBooking(null);
+                          }}
+                          style={{ margin: isMobileWidth && "10px" }}
+                        >
                           All Bookings
                         </Dropdown.Item>
 
-                        <Dropdown.Item onClick={() => {
-                          setSelectedStatus("Confirmed");
-                          setShowDropdown(false);
-                          setViewDetails(null);
-                          setSelectedBooking(null);
-                        }} style={{ margin: isMobileWidth && '10px' }}>
+                        <Dropdown.Item
+                          onClick={() => {
+                            setSelectedStatus("Confirmed");
+                            setShowDropdown(false);
+                            setViewDetails(null);
+                            setSelectedBooking(null);
+                          }}
+                          style={{ margin: isMobileWidth && "10px" }}
+                        >
                           Confirmed
                         </Dropdown.Item>
 
-                        <Dropdown.Item onClick={() => {
-                          setSelectedStatus("Pending");
-                          setShowDropdown(false);
-                          setViewDetails(null);
-                          setSelectedBooking(null);
-                        }} style={{ margin: isMobileWidth && '10px' }} >
+                        <Dropdown.Item
+                          onClick={() => {
+                            setSelectedStatus("Pending");
+                            setShowDropdown(false);
+                            setViewDetails(null);
+                            setSelectedBooking(null);
+                          }}
+                          style={{ margin: isMobileWidth && "10px" }}
+                        >
                           Pending
                         </Dropdown.Item>
 
-                        <Dropdown.Item onClick={() => {
-                          setSelectedStatus("Finished");
-                          setShowDropdown(false);
-                          setViewDetails(null);
-                          setSelectedBooking(null);
-                        }} style={{ margin: isMobileWidth && '10px' }}>
+                        <Dropdown.Item
+                          onClick={() => {
+                            setSelectedStatus("Finished");
+                            setShowDropdown(false);
+                            setViewDetails(null);
+                            setSelectedBooking(null);
+                          }}
+                          style={{ margin: isMobileWidth && "10px" }}
+                        >
                           Finished
                         </Dropdown.Item>
 
-                        <Dropdown.Item onClick={() => {
-                          setSelectedStatus("Cancelled");
-                          setShowDropdown(false);
-                          setViewDetails(null);
-                          setSelectedBooking(null);
-                        }} style={{ margin: isMobileWidth && '10px' }}>
+                        <Dropdown.Item
+                          onClick={() => {
+                            setSelectedStatus("Cancelled");
+                            setShowDropdown(false);
+                            setViewDetails(null);
+                            setSelectedBooking(null);
+                          }}
+                          style={{ margin: isMobileWidth && "10px" }}
+                        >
                           Cancelled
                         </Dropdown.Item>
                       </Dropdown.Menu>
@@ -428,7 +542,10 @@ const BookingHost = () => {
                   </div>
                 ) : (
                   <InputGroup style={{ width: "100%" }}>
-                    <FormControl type="text" placeholder="Search..." value={searchQuery}
+                    <FormControl
+                      type="text"
+                      placeholder="Search..."
+                      value={searchQuery}
                       style={{
                         outline: "none",
                         boxShadow: "none",
@@ -437,14 +554,21 @@ const BookingHost = () => {
                       }}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
-                    <Button variant="outline-secondary" onClick={() => setShowSearch(false)} > X </Button>
+                    <Button
+                      variant="outline-secondary"
+                      onClick={() => setShowSearch(false)}
+                    >
+                      {" "}
+                      X{" "}
+                    </Button>
                   </InputGroup>
                 )}
               </>
             )}
 
             {isMobileWidth && (
-              <div className="d-flex align-items-center justify-content-end"
+              <div
+                className="d-flex align-items-center justify-content-end"
                 style={{
                   minWidth: "100%",
                   borderTop: "1px solid #ccc",
@@ -462,113 +586,165 @@ const BookingHost = () => {
                   <div className="mob-search-bar-back">
                     <form action="" onSubmit={(e) => e.preventDefault()}>
                       <label>
-                        <input type="text" placeholder="Search..." value={searchQuery}
-                          onChange={(e) => setSearchQuery(e.target.value)} />
+                        <input
+                          type="text"
+                          placeholder="Search..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                        />
                         <button type="submit">
                           <i className="fa-regular fa-magnifying-glass"></i>
                         </button>
                       </label>
                     </form>
 
-                    <img src="/images/mobile/filters/filter.svg" onClick={() => setShowDropdown(!showDropdown)} alt="Filter" loading="lazy"
+                    <img
+                      src="/images/mobile/filters/filter.svg"
+                      onClick={() => setShowDropdown(!showDropdown)}
+                      alt="Filter"
+                      loading="lazy"
                       // style={{ cursor: "pointer", border: '1px solid #ccc', borderRadius: "50%",padding: "10px" }}
                       style={{ height: "18px", width: "18px" }}
                     />
                   </div>
                 ) : (
-                  <img src="/images/mobile/filters/filter.svg" onClick={() => setShowDropdown(!showDropdown)} loading="lazy" alt="Filter" style={{ cursor: "pointer", border: '1px solid #ccc', borderRadius: "50%", padding: "10px" }}
+                  <img
+                    src="/images/mobile/filters/filter.svg"
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    loading="lazy"
+                    alt="Filter"
+                    style={{
+                      cursor: "pointer",
+                      border: "1px solid #ccc",
+                      borderRadius: "50%",
+                      padding: "10px",
+                    }}
                   />
                 )}
 
                 {/* </div> */}
 
                 {showDropdown && (
-                  <Dropdown.Menu show style={{ top: 60, right: 5, zIndex: 1000 }} >
-                    <Dropdown.Item onClick={() => {
-                      setSelectedStatus("");
-                      setShowDropdown(false);
-                      setViewDetails(null);
-                      setSelectedBooking(null);
-                    }} >
+                  <Dropdown.Menu
+                    show
+                    style={{ top: 60, right: 5, zIndex: 1000 }}
+                  >
+                    <Dropdown.Item
+                      onClick={() => {
+                        setSelectedStatus("");
+                        setShowDropdown(false);
+                        setViewDetails(null);
+                        setSelectedBooking(null);
+                      }}
+                    >
                       All Bookings
                     </Dropdown.Item>
 
-                    <Dropdown.Item onClick={() => {
-                      setSelectedStatus("Confirmed");
-                      setShowDropdown(false);
-                      setViewDetails(null);
-                      setSelectedBooking(null);
-                    }} >
+                    <Dropdown.Item
+                      onClick={() => {
+                        setSelectedStatus("Confirmed");
+                        setShowDropdown(false);
+                        setViewDetails(null);
+                        setSelectedBooking(null);
+                      }}
+                    >
                       Confirmed
                     </Dropdown.Item>
 
-                    <Dropdown.Item onClick={() => {
-                      setSelectedStatus("Pending");
-                      setShowDropdown(false);
-                      setViewDetails(null);
-                      setSelectedBooking(null);
-                    }} >
+                    <Dropdown.Item
+                      onClick={() => {
+                        setSelectedStatus("Pending");
+                        setShowDropdown(false);
+                        setViewDetails(null);
+                        setSelectedBooking(null);
+                      }}
+                    >
                       {userType == "guest" ? "Pending" : "Booking Request"}
                     </Dropdown.Item>
 
-                    <Dropdown.Item onClick={() => {
-                      setSelectedStatus("Finished");
-                      setShowDropdown(false);
-                      setViewDetails(null);
-                      setSelectedBooking(null);
-                    }} >
+                    <Dropdown.Item
+                      onClick={() => {
+                        setSelectedStatus("Finished");
+                        setShowDropdown(false);
+                        setViewDetails(null);
+                        setSelectedBooking(null);
+                      }}
+                    >
                       Finished
                     </Dropdown.Item>
 
-                    <Dropdown.Item onClick={() => {
-                      setSelectedStatus("Cancelled");
-                      setShowDropdown(false);
-                      setViewDetails(null);
-                      setSelectedBooking(null);
-                    }} >
+                    <Dropdown.Item
+                      onClick={() => {
+                        setSelectedStatus("Cancelled");
+                        setShowDropdown(false);
+                        setViewDetails(null);
+                        setSelectedBooking(null);
+                      }}
+                    >
                       Cancelled
                     </Dropdown.Item>
 
-                    {userType == "host" && <Dropdown.Item onClick={() => {
-                      setSelectedStatus("Awaiting Payment");
-                      setShowDropdown(false);
-                      setViewDetails(null);
-                      setSelectedBooking(null);
-                    }}>
-                      Awaiting Payment
-                    </Dropdown.Item>}
-
-
-
-
-                    
+                    {userType == "host" && (
+                      <Dropdown.Item
+                        onClick={() => {
+                          setSelectedStatus("Awaiting Payment");
+                          setShowDropdown(false);
+                          setViewDetails(null);
+                          setSelectedBooking(null);
+                        }}
+                      >
+                        Awaiting Payment
+                      </Dropdown.Item>
+                    )}
                   </Dropdown.Menu>
                 )}
               </div>
             )}
             {filteredBookings?.length > 0 ? (
               filteredBookings.map((booking, index) => (
-                <div className="chat-list" id="v-pills-tab" role="tablist" aria-orientation="vertical"
-                  key={index} style={{
+                <div
+                  className="chat-list"
+                  id="v-pills-tab"
+                  role="tablist"
+                  aria-orientation="vertical"
+                  key={index}
+                  style={{
                     minWidth: "150px",
                     display: "flex",
                     flexDirection: "row",
                     padding: "0 10px",
-                  }} >
-                  <button style={{
-                    borderRadius: "15px",
-                    border: "2px solid ",
-                    boxSizing: "border-box",
-                    backgroundColor: (selectedBooking?.booking_id === booking.booking_id &&
-                      selectedBooking?.extension_id == booking?.extension_id) ? "#f0f0f0" : "white",
-                    borderColor: (selectedBooking?.booking_id === booking.booking_id &&
-                      selectedBooking?.extension_id == booking?.extension_id) ? "#3A4B4C" : "#E4E4E4",
                   }}
-                    className={`chat-list-in nav-link2 ${(selectedBooking?.booking_id === booking.booking_id && selectedBooking?.extension_id == booking?.extension_id) ? "active" : ""
-                      }`}
-                    id={`v-pills-${index}-tab`} data-bs-toggle="pill" type="button" role="tab"
-                    data-bs-target={`#v-pills-${index}`} aria-controls={`v-pills-${index}`}
-                    aria-selected={selectedBooking?.booking_id === booking.booking_id &&
+                >
+                  <button
+                    style={{
+                      borderRadius: "15px",
+                      border: "2px solid ",
+                      boxSizing: "border-box",
+                      backgroundColor:
+                        selectedBooking?.booking_id === booking.booking_id &&
+                        selectedBooking?.extension_id == booking?.extension_id
+                          ? "#f0f0f0"
+                          : "white",
+                      borderColor:
+                        selectedBooking?.booking_id === booking.booking_id &&
+                        selectedBooking?.extension_id == booking?.extension_id
+                          ? "#3A4B4C"
+                          : "#E4E4E4",
+                    }}
+                    className={`chat-list-in nav-link2 ${
+                      selectedBooking?.booking_id === booking.booking_id &&
+                      selectedBooking?.extension_id == booking?.extension_id
+                        ? "active"
+                        : ""
+                    }`}
+                    id={`v-pills-${index}-tab`}
+                    data-bs-toggle="pill"
+                    type="button"
+                    role="tab"
+                    data-bs-target={`#v-pills-${index}`}
+                    aria-controls={`v-pills-${index}`}
+                    aria-selected={
+                      selectedBooking?.booking_id === booking.booking_id &&
                       selectedBooking?.extension_id == booking?.extension_id
                     }
                     onClick={() => {
@@ -577,91 +753,137 @@ const BookingHost = () => {
                       dispatch(setOneToOneChatData(booking));
                     }}
                   >
-                    <span style={{
-                      padding: isMobileWidth ? "6px 4px 4px 6px" : 0,
-                      display: "flex", flexWrap: "nowrap",
-                      borderRadius: "10px", maxWidth: "600px",
-                      // marginBottom: "10px",
-                    }} >
-                      <div className="chat-list-in-image p-0 border-0 rounded-1"
+                    <span
+                      style={{
+                        padding: isMobileWidth ? "6px 4px 4px 6px" : 0,
+                        display: "flex",
+                        flexWrap: "nowrap",
+                        borderRadius: "10px",
+                        maxWidth: "600px",
+                        // marginBottom: "10px",
+                      }}
+                    >
+                      <div
+                        className="chat-list-in-image p-0 border-0 rounded-1"
                         style={{
                           overflow: "hidden",
                           width: isMobileWidth ? "90px" : "110px",
                           height: isMobileWidth ? "80px" : "100px",
-                        }} >
+                        }}
+                      >
                         <div className="h-100 p-0 border-0 rounded-1">
-                          <img src={userType === "host" ? booking.guest_avatar ? `${imageBase}${booking.guest_avatar}` : "https://cvhrma.org/wp-content/uploads/2015/07/default-profile-photo.jpg" : booking?.property_image ? `${imageBase}${booking.property_image}` : "https://he.cecollaboratory.com/public/layouts/images/community-default-logo.png"}
+                          <img
+                            src={
+                              userType === "host"
+                                ? booking.guest_avatar
+                                  ? `${imageBase}${booking.guest_avatar}`
+                                  : "https://cvhrma.org/wp-content/uploads/2015/07/default-profile-photo.jpg"
+                                : booking?.property_image
+                                ? `${imageBase}${booking.property_image}`
+                                : "https://he.cecollaboratory.com/public/layouts/images/community-default-logo.png"
+                            }
                             style={{
-                              border: isMobileWidth ? userType == "host" ? "2px solid #ccc" : "none" : "",
-                              padding: isMobileWidth ? userType == "host" ? "3px" : "0px" : "3px",
-                              borderRadius: isMobileWidth ? userType == "host" ? "50%" : "15px" : "20px",
+                              border: isMobileWidth
+                                ? userType == "host"
+                                  ? "2px solid #ccc"
+                                  : "none"
+                                : "",
+                              padding: isMobileWidth
+                                ? userType == "host"
+                                  ? "3px"
+                                  : "0px"
+                                : "3px",
+                              borderRadius: isMobileWidth
+                                ? userType == "host"
+                                  ? "50%"
+                                  : "15px"
+                                : "20px",
                               width: isMobileWidth ? "70px" : "",
-                              height:isMobileWidth ? "70px" : "",
+                              height: isMobileWidth ? "70px" : "",
                             }}
-                            alt={userType === "host" ? booking.guest_name : booking?.property_name}
+                            alt={
+                              userType === "host"
+                                ? booking.guest_name
+                                : booking?.property_name
+                            }
                           />
 
                           {booking?.extension_id && (
-                            <div style={{
-                              position: "absolute",
-                              bottom: "0px",
-                              right: "0px",
-                              width: "max-content",
-                              height: "max-content",
-                              borderRadius: "50%",
-                              backgroundColor: "#4AEAB1",
-                              padding: "5px",
-                              fontSize: "12px",
-                            }} >
+                            <div
+                              style={{
+                                position: "absolute",
+                                bottom: "0px",
+                                right: "0px",
+                                width: "max-content",
+                                height: "max-content",
+                                borderRadius: "50%",
+                                backgroundColor: "#4AEAB1",
+                                padding: "5px",
+                                fontSize: "12px",
+                              }}
+                            >
                               BTE
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="chat-list-in-content" >
-                        <h1 style={{
-                          fontSize: isMobileWidth ? '14px' : "18px",
-                          marginBottom: "5px",
-                          wordBreak: "break-word",
-                          paddingTop: "5px"
-                          // whiteSpace: "normal",
-                          // overflow: "visible",
-                          // textOverflow: "unset",
-                          // fontWeight: "400",
-                          // color: "#000000",
-                        }} >
-                          {userType === "host" ? truncateText(booking.guest_name?.trim(), 15) || "No Name"
-                            :truncateText(booking?.property_name?.trim(), 15) || "No Name"}
-
+                      <div className="chat-list-in-content">
+                        <h1
+                          style={{
+                            fontSize: isMobileWidth ? "14px" : "18px",
+                            marginBottom: "5px",
+                            wordBreak: "break-word",
+                            paddingTop: "5px",
+                            // whiteSpace: "normal",
+                            // overflow: "visible",
+                            // textOverflow: "unset",
+                            // fontWeight: "400",
+                            // color: "#000000",
+                          }}
+                        >
+                          {userType === "host"
+                            ? truncateText(booking.guest_name?.trim(), 15) ||
+                              "No Name"
+                            : truncateText(
+                                booking?.property_name?.trim(),
+                                15
+                              ) || "No Name"}
                         </h1>
-                        <h2 style={{
-                          // fontSize: "16px", color: "#A4A4A4", marginBottom: "15px", fontWeight: "400px"
-                        }} >
-                          {!isMobileWidth && (<span>{booking.booking_date}</span>)}
+                        <h2
+                          style={
+                            {
+                              // fontSize: "16px", color: "#A4A4A4", marginBottom: "15px", fontWeight: "400px"
+                            }
+                          }
+                        >
+                          {!isMobileWidth && (
+                            <span>{booking.booking_date}</span>
+                          )}
                         </h2>
-                        {userType == "host" && booking.booking_status == "Pending" ? (
+                        {userType == "host" &&
+                        booking.booking_status == "Pending" ? (
                           <div style={{ display: "flex", gap: "3px" }}>
                             {/* {booking.is_approve && ( */}
-                              <button
-                                // className="btn btn-sm btn-success "
-                                style={{
-                                  borderRadius: "25px",
-                                  fontWeight: "500",
-                                  padding: "5px 15px",
-                                  border: "1px solid #00BF7B",
-                                  color: "#00BF7B",
-                                  backgroundColor: "transparent",
-                                  cursor: "pointer",
-                                  fontSize: "14px"
-                                }}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  openApproveDeclineModal("approve", booking);
-                                }}
-                              >
-                                Approve
-                              </button>
+                            <button
+                              // className="btn btn-sm btn-success "
+                              style={{
+                                borderRadius: "25px",
+                                fontWeight: "500",
+                                padding: "5px 15px",
+                                border: "1px solid #00BF7B",
+                                color: "#00BF7B",
+                                backgroundColor: "transparent",
+                                cursor: "pointer",
+                                fontSize: "14px",
+                              }}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                openApproveDeclineModal("approve", booking);
+                              }}
+                            >
+                              Approve
+                            </button>
                             {/* )} */}
 
                             <button
@@ -674,7 +896,7 @@ const BookingHost = () => {
                                 borderRadius: "25px",
                                 padding: "5px 15px",
                                 fontWeight: "400",
-                                fontSize: "14px"
+                                fontSize: "14px",
                               }}
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -688,28 +910,47 @@ const BookingHost = () => {
                           <span
                             className="booking-tag"
                             style={{
-                              backgroundColor: booking.booking_status?.toLowerCase() ===
-                                "confirmed" ? "#85D6FF"
-                                : booking.booking_status?.toLowerCase() === "pending" ? "#ffc107"
-                                  : booking.booking_status?.toLowerCase() === "finished" ? "#4AEAB1"
-                                    : booking.booking_status?.toLowerCase() === "awaiting payment"
-                                      ? "#FFF178" : "#F5F6F6",
+                              backgroundColor:
+                                booking.booking_status?.toLowerCase() ===
+                                "confirmed"
+                                  ? "#85D6FF"
+                                  : booking.booking_status?.toLowerCase() ===
+                                    "pending"
+                                  ? "#ffc107"
+                                  : booking.booking_status?.toLowerCase() ===
+                                    "finished"
+                                  ? "#4AEAB1"
+                                  : booking.booking_status?.toLowerCase() ===
+                                    "awaiting payment"
+                                  ? "#FFF178"
+                                  : "#F5F6F6",
                               fontSize: isMobileWidth ? "12px" : "16px",
                               // padding: "5px 15px",
                               // borderRadius: "20px",
                               // fontWeight: "500",
                               // color: "#3A4B4C",
                               // width: "fit-content",
-                            }} >
+                            }}
+                          >
                             {booking.booking_status}
                           </span>
                         )}
 
-                        {isMobileWidth && (<> <br /><span style={{ fontSize: '12px',  appearance: "none",         
-                              WebkitAppearance: "none",    
-                              color: "black",  }}>
-                          {booking.booking_date}
-                        </span></>
+                        {isMobileWidth && (
+                          <>
+                            {" "}
+                            <br />
+                            <span
+                              style={{
+                                fontSize: "12px",
+                                appearance: "none",
+                                WebkitAppearance: "none",
+                                color: "black",
+                              }}
+                            >
+                              {booking.booking_date}
+                            </span>
+                          </>
                         )}
                       </div>
                     </span>
@@ -746,8 +987,14 @@ const BookingHost = () => {
           {viewDetails && showDiv ? (
             // <div className="w-100 mb-4" style={{ flex: "1 0 400px", overflowY: "auto", maxHeight: "calc(110vh)"}} >
 
-            <div className="w-100 mb-4 mobile-popup"
-              style={{ flex: "1 0 400px", overflowY: "auto", maxHeight: "calc(110vh)" }}>
+            <div
+              className="w-100 mb-4 mobile-popup"
+              style={{
+                flex: "1 0 400px",
+                overflowY: "auto",
+                maxHeight: "calc(110vh)",
+              }}
+            >
               <div className="mob-search-filter border-start-0 border-end-0">
                 <div className="container-fluid">
                   <div className="row">
@@ -755,7 +1002,10 @@ const BookingHost = () => {
                       <div className="mob-search-filter-in">
                         <div className="mob-search-bar-back">
                           <Link onClick={() => setShowDiv(false)}>
-                            <i className="fa-regular fa-arrow-left" style={{ textAlign: "center" }} ></i>
+                            <i
+                              className="fa-regular fa-arrow-left"
+                              style={{ textAlign: "center" }}
+                            ></i>
                           </Link>
                         </div>
                       </div>
@@ -764,31 +1014,49 @@ const BookingHost = () => {
                 </div>
               </div>
 
-              <Container fluid className="border border-2 "
-                style={{ minWidth: "200px", borderRadius: isMobileWidth ? "0" : "20px", padding: isMobileWidth ? "0" : "0" }} >
+              <Container
+                fluid
+                className="border border-2 "
+                style={{
+                  minWidth: "200px",
+                  borderRadius: isMobileWidth ? "0" : "20px",
+                  padding: isMobileWidth ? "0" : "0",
+                }}
+              >
                 {isMobileWidth && (
-                  <div className="col-lg-3 col-md-6" style={{ padding: isMobileWidth ? "10px 16px" : "16px" }}>
+                  <div
+                    className="col-lg-3 col-md-6"
+                    style={{ padding: isMobileWidth ? "10px 16px" : "16px" }}
+                  >
                     <div className="chat-right">
-                      <div className="chat-right-top"
+                      <div
+                        className="chat-right-top"
                         style={{
                           borderBottom: "2px solid #ccc",
                           padding: isMobileWidth ? "2px 0" : "10px 0 10px 0",
                           width: "100%",
                           marginLeft: "0px",
-                        }}>
+                        }}
+                      >
                         {/* <h3>{userType === "host" ? "Guest by" : "Hosted by"}</h3> */}
 
-                        <div className="chat-right-top-profile d-flex align-items-center"
-                          style={{ marginLeft: isMobileWidth ? '7%' : 0 }} >
-                          <img className="chat-right-top-profile-image img-fluid"
-                            src={userType === "host" ? selectedBooking?.guest_avatar
-                              ? `${imageBase}${selectedBooking?.guest_avatar}`
-                              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
-                              : selectedBooking?.host_image
+                        <div
+                          className="chat-right-top-profile d-flex align-items-center"
+                          style={{ marginLeft: isMobileWidth ? "7%" : 0 }}
+                        >
+                          <img
+                            className="chat-right-top-profile-image img-fluid"
+                            src={
+                              userType === "host"
+                                ? selectedBooking?.guest_avatar
+                                  ? `${imageBase}${selectedBooking?.guest_avatar}`
+                                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                : selectedBooking?.host_image
                                 ? `${imageBase}${selectedBooking?.host_image}`
                                 : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                             }
-                            loading="lazy" alt="Profile"
+                            loading="lazy"
+                            alt="Profile"
                             style={{
                               width: "40px",
                               height: "40px",
@@ -796,25 +1064,42 @@ const BookingHost = () => {
                               objectFit: "cover",
                             }}
                           />
-                          <h2 style={{ marginLeft: "10px", fontSize: "1rem", wordWrap: "break-word" }}>
-                            {userType === "host" ? selectedBooking?.guest_name?.trim()
-                              .split(" ")[0] + ".." || "No Name"
-                              : selectedBooking?.host_name?.trim().split(" ")[0] + ".."}
+                          <h2
+                            style={{
+                              marginLeft: "10px",
+                              fontSize: "1rem",
+                              wordWrap: "break-word",
+                            }}
+                          >
+                            {userType === "host"
+                              ? selectedBooking?.guest_name
+                                  ?.trim()
+                                  .split(" ")[0] + ".." || "No Name"
+                              : selectedBooking?.host_name
+                                  ?.trim()
+                                  .split(" ")[0] + ".."}
                           </h2>
 
                           {userType === "host" ? (
                             <>
-                              <img className="chat-right-top-batch-image" loading="lazy" alt="verified"
-                                src=" /images/locations-grid/star-icon.svg" style={{ width: "20px" }}
+                              <img
+                                className="chat-right-top-batch-image"
+                                loading="lazy"
+                                alt="verified"
+                                src=" /images/locations-grid/star-icon.svg"
+                                style={{ width: "20px" }}
                               />{" "}
-                              <span style={{ color: '#FFC107' }}>
+                              <span style={{ color: "#FFC107" }}>
                                 {reviewPagination?.average_review_rating}
                               </span>
                             </>
                           ) : (
                             <>
                               {/* {selectedBooking?.is_star_host && ( */}
-                              <img className="chat-right-top-batch-image" loading="lazy" alt="verified"
+                              <img
+                                className="chat-right-top-batch-image"
+                                loading="lazy"
+                                alt="verified"
                                 src="/images/bookings/verify-star.svg"
                                 style={{ width: "20px" }}
                               />
@@ -826,9 +1111,17 @@ const BookingHost = () => {
                         {userType === "guest" && (
                           <>
                             <hr />
-                            <Link to="/helpCenter" style={{ border: "none" }}  >
-                              <span >
-                                <img src="/images/create-profile/info.svg" style={{ filter: " grayscale(100%) invert(1.8)" }} loading="lazy" alt="info" className="px-2" />
+                            <Link to="/helpCenter" style={{ border: "none" }}>
+                              <span>
+                                <img
+                                  src="/images/create-profile/info.svg"
+                                  style={{
+                                    filter: " grayscale(100%) invert(1.8)",
+                                  }}
+                                  loading="lazy"
+                                  alt="info"
+                                  className="px-2"
+                                />
                                 I need help
                               </span>
                             </Link>
@@ -836,61 +1129,92 @@ const BookingHost = () => {
                         )}
                       </div>
 
-                      <div style={{
-                        display: "flex", marginTop: "18px", justifyContent: "space-around",
-                        height: isMessageClick ? "270px" : ""
-                      }} >
+                      <div
+                        style={{
+                          display: "flex",
+                          marginTop: "18px",
+                          justifyContent: "space-around",
+                          height: isMessageClick ? "270px" : "",
+                        }}
+                      >
                         {userType === "host" &&
                           (isMobileWidth ? (
-                            <a className="review-btn" style={{
-                              width: "fit-content", marginBottom: "10px", padding: "4px !important", display: "block",
-                            }} >
-                              <ReviewBookingPopup booking_id={selectedBooking?.booking_id}
-                                property_id={propertyId} />
+                            <a
+                              className="review-btn"
+                              style={{
+                                width: "fit-content",
+                                marginBottom: "10px",
+                                padding: "4px !important",
+                                display: "block",
+                              }}
+                            >
+                              <ReviewBookingPopup
+                                booking_id={selectedBooking?.booking_id}
+                                property_id={propertyId}
+                              />
                             </a>
                           ) : (
-                            (selectedBooking?.booking_status === "Awaiting Payment" ||
-                              selectedBooking?.booking_status === "finished") && (
-                              <a className="review-btn" style={{
-                                marginBottom: "10px", width: "fit-content",
-                                // padding: "10px", display: "block",
-                              }} >
-                                <ReviewBookingPopup booking_id={selectedBooking?.booking_id}
-                                  property_id={propertyId} />
+                            (selectedBooking?.booking_status ===
+                              "Awaiting Payment" ||
+                              selectedBooking?.booking_status ===
+                                "finished") && (
+                              <a
+                                className="review-btn"
+                                style={{
+                                  marginBottom: "10px",
+                                  width: "fit-content",
+                                  // padding: "10px", display: "block",
+                                }}
+                              >
+                                <ReviewBookingPopup
+                                  booking_id={selectedBooking?.booking_id}
+                                  property_id={propertyId}
+                                />
                               </a>
                             )
                           ))}
 
-                        {userType == "guest" && (selectedBooking?.booking_status == "Finished" ? (
-                          <a className="review-btn" style={{
-                            marginBottom: "10px",
-                            display: "flex", justifyContent: "space-around", // padding: "10px",
-                          }}>
-                            <ReviewBookingPopup booking_id={selectedBooking?.booking_id}
-                              property_id={propertyId}
-                            />
-                          </a>
-                        ) : (
-                          (viewDetails.status ? viewDetails.status : selectedBooking?.booking_status) != "Cancelled" && (
-                            <button style={{
-                              width: "auto",
-                              padding: "10px 15px",
-                              borderRadius: "10px",
-                              border: "1px solid black",
-                              backgroundColor: "white",
-                              marginBottom: "10px",
-                              cursor: "pointer",
-                              height: "fit-content",
-                              // marginTop: "3px",
-                            }}
-                              onClick={handleOpenModal} >
-                              Cancel Booking
-                            </button>
-                          )
-                        ))}
+                        {userType == "guest" &&
+                          (selectedBooking?.booking_status == "Finished" ? (
+                            <a
+                              className="review-btn"
+                              style={{
+                                marginBottom: "10px",
+                                display: "flex",
+                                justifyContent: "space-around", // padding: "10px",
+                              }}
+                            >
+                              <ReviewBookingPopup
+                                booking_id={selectedBooking?.booking_id}
+                                property_id={propertyId}
+                              />
+                            </a>
+                          ) : (
+                            (viewDetails.status
+                              ? viewDetails.status
+                              : selectedBooking?.booking_status) !=
+                              "Cancelled" && (
+                              <button
+                                style={{
+                                  width: "auto",
+                                  padding: "10px 15px",
+                                  borderRadius: "10px",
+                                  border: "1px solid black",
+                                  backgroundColor: "white",
+                                  marginBottom: "10px",
+                                  cursor: "pointer",
+                                  height: "fit-content",
+                                  // marginTop: "3px",
+                                }}
+                                onClick={handleOpenModal}
+                              >
+                                Cancel Booking
+                              </button>
+                            )
+                          ))}
 
                         {selectedBooking?.booking_status === "Cancelled" &&
-                          userType != "host" ? (
+                        userType != "host" ? (
                           <button
                             style={{
                               // width: "70%",
@@ -900,9 +1224,9 @@ const BookingHost = () => {
                               backgroundColor: "white",
                               marginBottom: "10px",
                               cursor: "pointer",
-                              height: 'fit-content'
+                              height: "fit-content",
                             }}
-                          // disabled
+                            // disabled
                           >
                             Cancelled
                           </button>
@@ -910,17 +1234,24 @@ const BookingHost = () => {
                           ""
                         )}
 
-                        <MessageHost type={userType === "host" ? "guest" : "host"}
+                        <MessageHost
+                          type={userType === "host" ? "guest" : "host"}
                           data={{
                             sender_detail: selectedBooking,
                             property_id: selectedBooking?.booking_id,
                           }}
                           isMobileWidth={isMobileWidth}
-                          handleMsgClick={() => setIsMessageClick(!isMessageClick)}
+                          handleMsgClick={() =>
+                            setIsMessageClick(!isMessageClick)
+                          }
                         />
 
-                        <CancelPopup isOpen={showCancelModal} userId={userId} onCancel={handleCancel}
-                          booking_Id={viewDetails?.booking_id} amount={viewDetails?.booking_total_amount}
+                        <CancelPopup
+                          isOpen={showCancelModal}
+                          userId={userId}
+                          onCancel={handleCancel}
+                          booking_Id={viewDetails?.booking_id}
+                          amount={viewDetails?.booking_total_amount}
                           onClose={() => {
                             handleCancel();
                           }}
@@ -934,10 +1265,18 @@ const BookingHost = () => {
 
                       {userType === "host" && (
                         <>
-                          <div style={{ textAlign: "center", marginTop: "10px" }} >
-                            <a href="#" onClick={() => {
-                              propertyId ? setShowReportModal(true) : toast.error("Please select a booking first")
-                            }}
+                          <div
+                            style={{ textAlign: "center", marginTop: "10px" }}
+                          >
+                            <a
+                              href="#"
+                              onClick={() => {
+                                propertyId
+                                  ? setShowReportModal(true)
+                                  : toast.error(
+                                      "Please select a booking first"
+                                    );
+                              }}
                               style={{
                                 width: "120%",
                                 borderRadius: "10px",
@@ -949,9 +1288,12 @@ const BookingHost = () => {
                                 listStyle: "none",
                                 padding: "10px 30px",
                                 marginTop: "10px",
-                                fontSize: isMobileWidth ? "14px" : ''
-                              }} >
-                              {isMobileWidth ? "Report an issue" : "Report Violation"}
+                                fontSize: isMobileWidth ? "14px" : "",
+                              }}
+                            >
+                              {isMobileWidth
+                                ? "Report an issue"
+                                : "Report Violation"}
                             </a>
                           </div>
 
@@ -963,39 +1305,59 @@ const BookingHost = () => {
                         </>
                       )}
 
-                      <div className="chat-right-bottom bg-white" style={{ marginBottom: "18px" }} >
+                      <div
+                        className="chat-right-bottom bg-white"
+                        style={{ marginBottom: "18px" }}
+                      >
                         <div className="chat-right-bottom-in d-flex flex-wrap">
-                          <div className="chat-right-bottom-in-image "
+                          <div
+                            className="chat-right-bottom-in-image "
                             style={{
                               display: "flex",
                               flexDirection: "row",
                               gap: "1rem",
-                            }} >
-                            <img src={userType == "host" ? viewDetails?.images?.[0]
-                              ? imageBase + viewDetails?.images?.[0]
-                              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
-                              : viewDetails?.first_property_image
-                                ? imageBase +
-                                viewDetails?.first_property_image
-                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
-                            }
-                              loading="lazy" alt="property" className="img-fluid"
-                              style={{ // width: "60px", height: "70px",
+                            }}
+                          >
+                            <img
+                              src={
+                                userType == "host"
+                                  ? viewDetails?.images?.[0]
+                                    ? imageBase + viewDetails?.images?.[0]
+                                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                  : viewDetails?.first_property_image
+                                  ? imageBase +
+                                    viewDetails?.first_property_image
+                                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                              }
+                              loading="lazy"
+                              alt="property"
+                              className="img-fluid"
+                              style={{
+                                // width: "60px", height: "70px",
                                 borderRadius: "10px",
                               }}
                             />
                           </div>
                           <div className="chat-right-bottom-in-text">
-                            <h1 style={{ fontSize: "1.1rem", wordWrap: "break-word" }} >
+                            <h1
+                              style={{
+                                fontSize: "1.1rem",
+                                wordWrap: "break-word",
+                              }}
+                            >
                               {userType == "host"
                                 ? viewDetails?.property_title ||
-                                "Cabin in Peshastin"
+                                  "Cabin in Peshastin"
                                 : viewDetails?.property_name ||
-                                "Cabin in Peshastin"}
+                                  "Cabin in Peshastin"}
                             </h1>
                             <p>
-                              <FaStar className="text-warning" style={{ marginTop: "-2px" }} />
-                              {reviewPagination?.average_review_rating
+                              <FaStar
+                                className="text-warning"
+                                style={{ marginTop: "-2px" }}
+                              />
+                              {
+                                reviewPagination?.average_review_rating
                                 // formatReview(reviewPagination?.average_review_rating )
                               }{" "}
                               ({reviewPagination?.total}){" "}
@@ -1011,18 +1373,35 @@ const BookingHost = () => {
                           <ul style={{ padding: "10px" }}>
                             <li>
                               {viewDetails?.booking_hour} hours
-                              <span> ${formatCurrency(viewDetails?.booking_amount)} </span>
+                              <span>
+                                {" "}
+                                ${formatCurrency(
+                                  viewDetails?.booking_amount
+                                )}{" "}
+                              </span>
                             </li>
                             {viewDetails?.cleaning_fee > 0 && (
-                              <li> Cleaning Fee
-                                <span> ${formatCurrency(viewDetails?.cleaning_fee)} </span>
+                              <li>
+                                {" "}
+                                Cleaning Fee
+                                <span>
+                                  {" "}
+                                  ${formatCurrency(
+                                    viewDetails?.cleaning_fee
+                                  )}{" "}
+                                </span>
                               </li>
                             )}
 
                             {viewDetails?.service_fee > 0 && (
                               <li>
                                 Zyvo Service Fee
-                                <span> ${formatCurrency(viewDetails?.service_fee)} </span>
+                                <span>
+                                  {" "}
+                                  ${formatCurrency(
+                                    viewDetails?.service_fee
+                                  )}{" "}
+                                </span>
                               </li>
                             )}
 
@@ -1036,20 +1415,34 @@ const BookingHost = () => {
                             {viewDetails?.add_on_total > 0 && (
                               <li>
                                 Add-on
-                                <span> ${formatCurrency(viewDetails?.add_on_total)} </span>
+                                <span>
+                                  {" "}
+                                  ${formatCurrency(
+                                    viewDetails?.add_on_total
+                                  )}{" "}
+                                </span>
                               </li>
                             )}
 
                             {viewDetails?.discount > 0 && (
                               <li>
                                 discount
-                                <span> -${formatCurrency(viewDetails?.discount)} </span>
+                                <span>
+                                  {" "}
+                                  -${formatCurrency(viewDetails?.discount)}{" "}
+                                </span>
                               </li>
                             )}
 
                             <li className="total-cost">
                               Total
-                              <span> $ {formatCurrency(viewDetails?.booking_total_amount)} </span>
+                              <span>
+                                {" "}
+                                ${" "}
+                                {formatCurrency(
+                                  viewDetails?.booking_total_amount
+                                )}{" "}
+                              </span>
                             </li>
                           </ul>
                         ) : (
@@ -1057,14 +1450,20 @@ const BookingHost = () => {
                             <li>
                               {viewDetails?.charges?.booking_hours} hours
                               <span>
-                                ${formatCurrency(viewDetails?.charges?.booking_amount)}
+                                $
+                                {formatCurrency(
+                                  viewDetails?.charges?.booking_amount
+                                )}
                               </span>
                             </li>
                             {viewDetails?.charges?.cleaning_fee > 0 && (
                               <li>
                                 Cleaning Fee
                                 <span>
-                                  ${formatCurrency(viewDetails?.charges?.cleaning_fee)}
+                                  $
+                                  {formatCurrency(
+                                    viewDetails?.charges?.cleaning_fee
+                                  )}
                                 </span>
                               </li>
                             )}
@@ -1072,21 +1471,35 @@ const BookingHost = () => {
                             {viewDetails?.charges?.zyvo_service_fee > 0 && (
                               <li>
                                 Zyvo Service Fee
-                                <span>${formatCurrency(viewDetails?.charges?.zyvo_service_fee)}</span>
+                                <span>
+                                  $
+                                  {formatCurrency(
+                                    viewDetails?.charges?.zyvo_service_fee
+                                  )}
+                                </span>
                               </li>
                             )}
 
                             {/* {viewDetails?.charges?.taxes > 0 && ( */}
                             <li>
                               Taxes{" "}
-                              <span>${formatCurrency(viewDetails?.charges?.taxes) || 0} </span>
+                              <span>
+                                $
+                                {formatCurrency(viewDetails?.charges?.taxes) ||
+                                  0}{" "}
+                              </span>
                             </li>
                             {/* )} */}
 
                             {/* {viewDetails?.charges?.add_on_price > 0 && ( */}
                             <li>
                               Add-on
-                              <span>$ {formatCurrency(viewDetails?.charges?.add_on_price || 0)}</span>
+                              <span>
+                                ${" "}
+                                {formatCurrency(
+                                  viewDetails?.charges?.add_on_price || 0
+                                )}
+                              </span>
                             </li>
                             {/* )} */}
                             {/* {viewDetails?.charges?.discount > 0 && ( */}
@@ -1116,117 +1529,231 @@ const BookingHost = () => {
 
                 <div className="booking-mid-top location-top px-3 pt-3">
                   <h2>
-                    {userType == "host" ? viewDetails?.property_title : viewDetails?.property_name}
-                    <div className="booking-tag finished"
+                    {userType == "host"
+                      ? viewDetails?.property_title
+                      : viewDetails?.property_name}
+                    <div
+                      className="booking-tag finished"
                       style={{
                         padding: "5px 15px",
-                        backgroundColor: (userType == "host" ? viewDetails?.booking_status
-                          : viewDetails?.status) == "Confirmed" ? "#85D6FF"
-                          : (userType == "host" ? viewDetails?.booking_status
-                            : viewDetails?.status) == "Pending" ? "#ffc107"
-                            : (userType == "host" ? viewDetails?.booking_status
-                              : viewDetails?.status) == "Finished" ? "#4AEAB1"
-                              : (userType == "host" ? viewDetails?.booking_status
-                                : viewDetails?.status) == "Waiting_payment" ? "#FFF178"
-                                : "#ebe1e1",
-                        color: 'black'
-                      }}>
-                      {userType == "host" ? viewDetails?.booking_status : viewDetails?.status}
+                        backgroundColor:
+                          (userType == "host"
+                            ? viewDetails?.booking_status
+                            : viewDetails?.status) == "Confirmed"
+                            ? "#85D6FF"
+                            : (userType == "host"
+                                ? viewDetails?.booking_status
+                                : viewDetails?.status) == "Pending"
+                            ? "#ffc107"
+                            : (userType == "host"
+                                ? viewDetails?.booking_status
+                                : viewDetails?.status) == "Finished"
+                            ? "#4AEAB1"
+                            : (userType == "host"
+                                ? viewDetails?.booking_status
+                                : viewDetails?.status) == "Waiting_payment"
+                            ? "#FFF178"
+                            : "#ebe1e1",
+                        color: "black",
+                      }}
+                    >
+                      {userType == "host"
+                        ? viewDetails?.booking_status
+                        : viewDetails?.status}
                     </div>
                   </h2>
 
                   {userType == "guest" && (
                     <ul>
-                      <li style={{ cursor: "pointer", color: "#007BFF", display: "block" }} >
-                        <Link href="#" onClick={() => setShowModal(true)}
-                          style={{ textDecoration: "none", color: "black" }} >
-                          <i className="fa-solid fa-share-nodes me-1 light-gray "></i> Share
+                      <li
+                        style={{
+                          cursor: "pointer",
+                          color: "#007BFF",
+                          display: "block",
+                        }}
+                      >
+                        <Link
+                          href="#"
+                          onClick={() => setShowModal(true)}
+                          style={{ textDecoration: "none", color: "black" }}
+                        >
+                          <i className="fa-solid fa-share-nodes me-1 light-gray "></i>{" "}
+                          Share
                         </Link>
                       </li>
                       <li>
                         <Link to="#" onClick={handleWishlistClick}>
-                          <i className={`fa-solid fa-heart me-1 ${userType == "host" ? viewDetails?.wishlist : viewDetails?.is_in_wishlist
-                              ? "text-danger" : "light-gray"}`}
+                          <i
+                            className={`fa-solid fa-heart me-1 ${
+                              userType == "host"
+                                ? viewDetails?.wishlist
+                                : viewDetails?.is_in_wishlist
+                                ? "text-danger"
+                                : "light-gray"
+                            }`}
                           ></i>
                           Favorite
                         </Link>
                       </li>
                     </ul>
                   )}
-                  {showModal && (<ShareModal onClose={() => setShowModal(false)} />)}
+                  {showModal && (
+                    <ShareModal onClose={() => setShowModal(false)} />
+                  )}
                 </div>
                 {/* <div className={`top-grid-bookinghost-h top-grid-images-${viewDetails?.images?.length <5 ? 5 : viewDetails?.images?.length || viewDetails?.property_images?.length >5 ? 5 : viewDetails?.property_images?.length}`}> */}
-                <div className={`top-grid-bookinghost-h px-3 top-grid-images-${userType === "host"
-                    ? viewDetails?.images?.length < 3 && viewDetails?.images?.length < 3
-                      ? viewDetails?.images?.length : 3
-                    : viewDetails?.property_images?.length && viewDetails?.property_images?.length < 3
-                      ? viewDetails?.property_images?.length : 3
+                <div
+                  className={`top-grid-bookinghost-h px-3 top-grid-images-${
+                    userType === "host"
+                      ? viewDetails?.images?.length < 3 &&
+                        viewDetails?.images?.length < 3
+                        ? viewDetails?.images?.length
+                        : 3
+                      : viewDetails?.property_images?.length &&
+                        viewDetails?.property_images?.length < 3
+                      ? viewDetails?.property_images?.length
+                      : 3
                   }`}
-                  onClick={() => setShowPropertyImages(true)} >
+                  onClick={() => setShowPropertyImages(true)}
+                >
                   <div className="top-grid-images-left">
                     {(viewDetails?.images?.[0] ||
                       viewDetails?.first_property_image?.[0]) && (
-                        <img src={userType == "host"
-                          ? Array.isArray(viewDetails?.images) &&
-                          imageBase + viewDetails?.images[0] &&
-                          imageBase + viewDetails?.images?.[0]
-                          : imageBase + viewDetails?.first_property_image
+                      <img
+                        src={
+                          userType == "host"
+                            ? Array.isArray(viewDetails?.images) &&
+                              imageBase + viewDetails?.images[0] &&
+                              imageBase + viewDetails?.images?.[0]
+                            : imageBase + viewDetails?.first_property_image
                         }
-                          loading="lazy" alt="Main Property"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            display: "block",
-                          }}
-                        />
-                      )}
+                        loading="lazy"
+                        alt="Main Property"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                    )}
                   </div>
 
-
-                  <div className="top-grid-images-right" onClick={() => setShowPropertyImages(true)}>
+                  <div
+                    className="top-grid-images-right"
+                    onClick={() => setShowPropertyImages(true)}
+                  >
                     {userType == "host"
-                      ? viewDetails?.images?.slice(1, 3).map((item, index) => (
-                        <img key={index} src={`https://zyvo.tgastaging.com/${item}`}
-                          loading="lazy" alt="Main Property"
-                        />
-                      ))
-                      : viewDetails?.property_images?.slice(1, 3).map((item, index) => (
-                        <img src={imageBase + item} key={index} loading="lazy" alt="Main Property" />
-                      ))}
+                      ? viewDetails?.images
+                          ?.slice(1, 3)
+                          .map((item, index) => (
+                            <img
+                              key={index}
+                              src={`https://zyvo.tgastaging.com/${item}`}
+                              loading="lazy"
+                              alt="Main Property"
+                            />
+                          ))
+                      : viewDetails?.property_images
+                          ?.slice(1, 3)
+                          .map((item, index) => (
+                            <img
+                              src={imageBase + item}
+                              key={index}
+                              loading="lazy"
+                              alt="Main Property"
+                            />
+                          ))}
                   </div>
                 </div>
-                {(viewDetails?.property_images?.length >= 3 || viewDetails?.images?.length >= 3) && (
-                  <div className=" px-3 " style={{ textAlign: "right", cursor: "pointer" }} onClick={() => setShowPropertyImages(true)} >
+                {(viewDetails?.property_images?.length >= 3 ||
+                  viewDetails?.images?.length >= 3) && (
+                  <div
+                    className=" px-3 "
+                    style={{ textAlign: "right", cursor: "pointer" }}
+                    onClick={() => setShowPropertyImages(true)}
+                  >
                     See more
                   </div>
                 )}
 
                 <hr className="property-modal-hr" />
 
-                <Container className="px-sm-2 pt-2 px-lg-3 " style={{ fontSize: "13px", paddingLeft: '0px !important', margin: '32px 0px' }} >
+                <Container
+                  className="px-sm-2 pt-2 px-lg-3 "
+                  style={{
+                    fontSize: "13px",
+                    paddingLeft: "0px !important",
+                    margin: "32px 0px",
+                  }}
+                >
                   <h5 className="mb-3">Booking Details</h5>
                   <div className="nw-bookingdtl-list-wrp">
-                    <div className="nw-bookingdtl-list"
-                      style={{ width: "100%", flexWrap: isMobileWidth ? "wrap" : "nowrap" }} >
+                    <div
+                      className="nw-bookingdtl-list"
+                      style={{
+                        width: "100%",
+                        flexWrap: isMobileWidth ? "wrap" : "nowrap",
+                      }}
+                    >
                       {[
-                        ["calendar-icon.svg", userType == "host" ? viewDetails?.booking_date : viewDetails?.booking_detail?.date || "date",],
-                        ["time.svg", userType == "host" ? `${Number(viewDetails?.original_booking_hour) || "no data"} hours ` : `${viewDetails?.booking_detail?.time || "no data"}  `,],
-                        ["time.svg", userType == "host" ? ` From ${viewDetails?.booking_start_time || "start time"} to ${viewDetails?.booking_end_time || "end time"}` : `
-                          ${!isMobileWidth && viewDetails?.booking_detail?.time || " "} ${!isMobileWidth ? "|" : ""}
-                          ${viewDetails?.booking_detail?.start_end_time || "start time"}`,
+                        [
+                          "calendar-icon.svg",
+                          userType == "host"
+                            ? viewDetails?.booking_date
+                            : viewDetails?.booking_detail?.date || "date",
                         ],
-                        ["price.svg", userType == "host"
-                          ? parseFloat(viewDetails?.original_booking_amount)
-                          : parseFloat(viewDetails?.charges?.booking_amount),
+                        [
+                          "time.svg",
+                          userType == "host"
+                            ? `${
+                                Number(viewDetails?.original_booking_hour) ||
+                                "no data"
+                              } hours `
+                            : `${
+                                viewDetails?.booking_detail?.time || "no data"
+                              }  `,
+                        ],
+                        [
+                          "time.svg",
+                          userType == "host"
+                            ? ` From ${
+                                viewDetails?.booking_start_time || "start time"
+                              } to ${
+                                viewDetails?.booking_end_time || "end time"
+                              }`
+                            : `
+                          ${
+                            (!isMobileWidth &&
+                              viewDetails?.booking_detail?.time) ||
+                            " "
+                          } ${!isMobileWidth ? "|" : ""}
+                          ${
+                            viewDetails?.booking_detail?.start_end_time ||
+                            "start time"
+                          }`,
+                        ],
+                        [
+                          "price.svg",
+                          userType == "host"
+                            ? parseFloat(viewDetails?.original_booking_amount)
+                            : parseFloat(viewDetails?.charges?.booking_amount),
                         ],
                       ].map(
                         ([icon, text], i) =>
                           ((isMobileWidth && i !== 3) ||
                             (!isMobileWidth && i !== 1)) && (
-                            <div key={i} style={{ whiteSpace: "nowrap" }}
-                              className="d-flex align-items-center gap-2 p-2 border rounded-pill " >
-                              <Image src={`/images/filters/${icon}`} loading="lazy" alt="" width="20" />
+                            <div
+                              key={i}
+                              style={{ whiteSpace: "nowrap" }}
+                              className="d-flex align-items-center gap-2 p-2 border rounded-pill "
+                            >
+                              <Image
+                                src={`/images/filters/${icon}`}
+                                loading="lazy"
+                                alt=""
+                                width="20"
+                              />
                               <span style={{ color: "#000000" }}>{text}</span>
                             </div>
                           )
@@ -1237,37 +1764,117 @@ const BookingHost = () => {
                 {isMobileWidth && <hr />}
 
                 {viewDetails?.extension_details && (
-                  <Container className="px-2 px-md-3 pb-2 mt-3" style={{ fontSize: "13px" }}>
+                  <Container
+                    className="px-2 px-md-3 pb-2 mt-3"
+                    style={{ fontSize: "13px" }}
+                  >
                     <h5 className="mb-3">Booking Time Extension (BTE)</h5>
                     {isMobileWidth ? (
                       <div className="overflow-auto pb-2">
-                        <div className="d-inline-flex gap-2 "
-                          style={{ width: "100%", flexWrap: isMobileWidth ? "wrap" : "nowrap" }} >
+                        <div
+                          className="d-inline-flex gap-2 "
+                          style={{
+                            width: "100%",
+                            flexWrap: isMobileWidth ? "wrap" : "nowrap",
+                          }}
+                        >
                           {[
-                            ["calendar-icon.svg", viewDetails?.extension_details?.extension_date || "date"],
-                            ["time.svg", `${viewDetails?.extension_details?.extension_hours || "no data"} hours`,],
-                            ["time.svg", `From ${viewDetails?.extension_details?.extension_start_time || "start time"} to ${viewDetails?.extension_details?.extension_end_time || "end time"}`,],
-                            ["price.svg", parseFloat(viewDetails?.extension_details?.extension_booking_amount),]].map(([icon, text], i) => (
-                              <div key={i} className="d-flex align-items-center gap-2 p-2 border rounded-pill" style={{ whiteSpace: "nowrap" }} >
-                                <Image src={`/images/filters/${icon}`} loading="lazy" alt="" width="20" />
-                                <span>{text}</span>
-                              </div>
-                            ))}
+                            [
+                              "calendar-icon.svg",
+                              viewDetails?.extension_details?.extension_date ||
+                                "date",
+                            ],
+                            [
+                              "time.svg",
+                              `${
+                                viewDetails?.extension_details
+                                  ?.extension_hours || "no data"
+                              } hours`,
+                            ],
+                            [
+                              "time.svg",
+                              `From ${
+                                viewDetails?.extension_details
+                                  ?.extension_start_time || "start time"
+                              } to ${
+                                viewDetails?.extension_details
+                                  ?.extension_end_time || "end time"
+                              }`,
+                            ],
+                            [
+                              "price.svg",
+                              parseFloat(
+                                viewDetails?.extension_details
+                                  ?.extension_booking_amount
+                              ),
+                            ],
+                          ].map(([icon, text], i) => (
+                            <div
+                              key={i}
+                              className="d-flex align-items-center gap-2 p-2 border rounded-pill"
+                              style={{ whiteSpace: "nowrap" }}
+                            >
+                              <Image
+                                src={`/images/filters/${icon}`}
+                                loading="lazy"
+                                alt=""
+                                width="20"
+                              />
+                              <span>{text}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     ) : (
                       <div className="overflow-auto pb-2">
-                        <div className="d-inline-flex gap-2 "
-                          style={{ width: "100%", flexWrap: isMobileWidth ? "wrap" : "nowrap" }} >
+                        <div
+                          className="d-inline-flex gap-2 "
+                          style={{
+                            width: "100%",
+                            flexWrap: isMobileWidth ? "wrap" : "nowrap",
+                          }}
+                        >
                           {[
-                            ["calendar-icon.svg", viewDetails?.extension_details?.extension_date || "date"],
-                            ["time.svg", `${viewDetails?.extension_details?.extension_hours || "no data"} hours | From ${viewDetails?.extension_details?.extension_start_time || "start time"} to ${viewDetails?.extension_details?.extension_end_time || "end time"}`],
-                            ["price.svg", parseFloat(viewDetails?.extension_details?.extension_booking_amount),]].map(([icon, text], i) => (
-                              <div key={i} className="d-flex align-items-center gap-2 p-2 border rounded-pill" style={{ whiteSpace: "nowrap" }} >
-                                <Image src={`/images/filters/${icon}`} loading="lazy" alt="" width="20" />
-                                <span>{text}</span>
-                              </div>
-                            ))}
+                            [
+                              "calendar-icon.svg",
+                              viewDetails?.extension_details?.extension_date ||
+                                "date",
+                            ],
+                            [
+                              "time.svg",
+                              `${
+                                viewDetails?.extension_details
+                                  ?.extension_hours || "no data"
+                              } hours | From ${
+                                viewDetails?.extension_details
+                                  ?.extension_start_time || "start time"
+                              } to ${
+                                viewDetails?.extension_details
+                                  ?.extension_end_time || "end time"
+                              }`,
+                            ],
+                            [
+                              "price.svg",
+                              parseFloat(
+                                viewDetails?.extension_details
+                                  ?.extension_booking_amount
+                              ),
+                            ],
+                          ].map(([icon, text], i) => (
+                            <div
+                              key={i}
+                              className="d-flex align-items-center gap-2 p-2 border rounded-pill"
+                              style={{ whiteSpace: "nowrap" }}
+                            >
+                              <Image
+                                src={`/images/filters/${icon}`}
+                                loading="lazy"
+                                alt=""
+                                width="20"
+                              />
+                              <span>{text}</span>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
@@ -1280,14 +1887,30 @@ const BookingHost = () => {
                   <h5 className="mb-3">Included in your booking</h5>
                   <Row>
                     {viewDetails?.amenities?.map((amenity, index) => (
-                      <Col key={index} md="auto" className="mb-3" style={{ width: isMobileWidth ? "33%" : "", minHeight: isMobileWidth ? '60px' : '' }} >
-                        <Card className="d-flex align-items-center p-1 bg-white"
+                      <Col
+                        key={index}
+                        md="auto"
+                        className="mb-3"
+                        style={{
+                          width: isMobileWidth ? "33%" : "",
+                          minHeight: isMobileWidth ? "60px" : "",
+                        }}
+                      >
+                        <Card
+                          className="d-flex align-items-center p-1 bg-white"
                           style={{
                             border: "1px solid rgba(0, 0, 0, .2)",
-                            borderRadius: "10px", minHeight: isMobileWidth ? '60px' : ''
-                          }} >
-                          <Card.Body className="d-flex align-items-center p-1 p-lg-2"
-                            style={{ wordBreak: "break-word", fontSize: isMobileWidth ? "12px" : "" }}>
+                            borderRadius: "10px",
+                            minHeight: isMobileWidth ? "60px" : "",
+                          }}
+                        >
+                          <Card.Body
+                            className="d-flex align-items-center p-1 p-lg-2"
+                            style={{
+                              wordBreak: "break-word",
+                              fontSize: isMobileWidth ? "12px" : "",
+                            }}
+                          >
                             <span className="text-black">{amenity}</span>
                           </Card.Body>
                         </Card>
@@ -1297,34 +1920,72 @@ const BookingHost = () => {
                 </Container>
                 <hr className="property-modal-hr" />
 
-                <div className="accordion px-3 " id="rulesAccordion" style={{ marginTop: isMobileWidth ? "2%" : "6%", marginBottom: isMobileWidth ? "2%" : "6%" }}>
+                <div
+                  className="accordion px-3 "
+                  id="rulesAccordion"
+                  style={{
+                    marginTop: isMobileWidth ? "2%" : "6%",
+                    marginBottom: isMobileWidth ? "2%" : "6%",
+                  }}
+                >
                   <div className="container">
                     <h5 className="mb-3">Rules</h5>
                     {[
                       {
-                        id: "collapseOne", label: "Parking", icon: "1.svg",
-                        content: viewDetails?.parking_rules || "This section describes the parking rules in detail.",
+                        id: "collapseOne",
+                        label: "Parking",
+                        icon: "1.svg",
+                        content:
+                          viewDetails?.parking_rules ||
+                          "This section describes the parking rules in detail.",
                       },
                       {
-                        id: "collapseTwo", label: "Host rules", icon: "7.svg",
-                        content: viewDetails?.host_rules || "This section describes the host rules in detail."
+                        id: "collapseTwo",
+                        label: "Host rules",
+                        icon: "7.svg",
+                        content:
+                          viewDetails?.host_rules ||
+                          "This section describes the host rules in detail.",
                       },
                     ].map(({ id, label, icon, content }) => (
-                      <div className="accordion-item border rounded mb-2" key={id} >
+                      <div
+                        className="accordion-item border rounded mb-2"
+                        key={id}
+                      >
                         <h2 className="accordion-header">
-                          <button className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === id ? "" : "collapsed"}`} type="button"
-                            onClick={() => toggleAccordion(id)} style={{ padding: "12px" }} >
-                            <img src={`/images/location/included/${icon}`} alt={`${label} Icon`}
-                              className="me-2" style={{ width: "20px", height: "20px" }} />
+                          <button
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                              open === id ? "" : "collapsed"
+                            }`}
+                            type="button"
+                            onClick={() => toggleAccordion(id)}
+                            style={{ padding: "12px" }}
+                          >
+                            <img
+                              src={`/images/location/included/${icon}`}
+                              alt={`${label} Icon`}
+                              className="me-2"
+                              style={{ width: "20px", height: "20px" }}
+                            />
                             <span className="flex-grow-1">{label}</span>
-                            <img src={`/images/dropdown.svg`} alt={`Dropdown Icon`} className="ms-auto"
-                              style={{ width: "12px" }} />
+                            <img
+                              src={`/images/dropdown.svg`}
+                              alt={`Dropdown Icon`}
+                              className="ms-auto"
+                              style={{ width: "12px" }}
+                            />
                           </button>
                         </h2>
                         {open === id && (
-                          <div className="shadow rounded mt-2" style={{ border: '1px solid #ccc' }}>
+                          <div
+                            className="shadow rounded mt-2"
+                            style={{ border: "1px solid #ccc" }}
+                          >
                             {[...Array(1)].map((_, i) => (
-                              <div key={i} className="accordion-body bg-light m-2 p-2 rounded" >
+                              <div
+                                key={i}
+                                className="accordion-body bg-light m-2 p-2 rounded"
+                              >
                                 {content}
                               </div>
                             ))}
@@ -1338,44 +1999,85 @@ const BookingHost = () => {
                 <hr className="property-modal-hr" />
 
                 <Row className=" px-3 ">
-                  <Col xs={12} style={{ marginTop: !isMobileWidth && '10px' }}>
+                  <Col xs={12} style={{ marginTop: !isMobileWidth && "10px" }}>
                     <h5>Address & Location </h5>
                     <p>{/* <u>{viewDetails?.address}</u> */}</p>
-                    <Map lat={viewDetails?.latitude} lng={viewDetails?.longitude} bookingData={"address"}
-                      locationImg={locationImg} />
+                    <Map
+                      lat={viewDetails?.latitude}
+                      lng={viewDetails?.longitude}
+                      bookingData={"address"}
+                      locationImg={locationImg}
+                    />
                   </Col>
                 </Row>
                 <hr className="property-modal-hr" />
 
-                <Row className="px-3" style={{ paddingBottom: isMobileWidth ? "50px" : "0", margin: isMobileWidth ? "-17px" : "0px" }}>
-                  <Col xs={12} className="location-reviews mt-4"
-                    style={{ marginTop: isMobileWidth ? "64px " : "0px" }} >
-                    <h5> Reviews{" "}
-                      {isMobileWidth && <span>({(reviewPagination?.total)})</span>}
+                <Row
+                  className="px-3"
+                  style={{
+                    paddingBottom: isMobileWidth ? "50px" : "0",
+                    margin: isMobileWidth ? "-17px" : "0px",
+                  }}
+                >
+                  <Col
+                    xs={12}
+                    className="location-reviews mt-4"
+                    style={{ marginTop: isMobileWidth ? "64px " : "0px" }}
+                  >
+                    <h5>
+                      {" "}
+                      Reviews{" "}
+                      {isMobileWidth && (
+                        <span>({reviewPagination?.total})</span>
+                      )}
                     </h5>
-                    <div className="location-reviews-top d-flex flex-wrap align-items-center"
-                      style={{ gap: isMobileWidth ? "0px" : "" }} >
-                      <h6 className="me-auto" >
+                    <div
+                      className="location-reviews-top d-flex flex-wrap align-items-center"
+                      style={{ gap: isMobileWidth ? "0px" : "" }}
+                    >
+                      <h6 className="me-auto">
                         <img src="/images/locations-grid/star-icon.svg" />
-                        <span style={{ color: '#FCA800' }}> {reviewPagination?.average_review_rating}
-                        </span> {!isMobileWidth && reviewPagination?.total_reviews} Rating
+                        <span style={{ color: "#FCA800" }}>
+                          {" "}
+                          {reviewPagination?.average_review_rating}
+                        </span>{" "}
+                        {!isMobileWidth && reviewPagination?.total_reviews}{" "}
+                        reviews
                       </h6>
-                      <p className="mb-0 " style={{ marginEnd: isMobileWidth ? "0" : "32px" }} >
+                      <p
+                        className="mb-0 "
+                        style={{ marginEnd: isMobileWidth ? "0" : "32px" }}
+                      >
                         Sort by:
                       </p>
-                      <Dropdown className="chat-left-top-dropdown" onSelect={(eventKey) => {
-                        setReviewFilter(eventKey);
-                        setCount((prev) => prev + 1);
-                      }}>
-                        <Dropdown.Toggle variant="light" className="dropdown-toggle"
-                          style={{ marginTop: "-4px" }}>
+                      <Dropdown
+                        className="chat-left-top-dropdown"
+                        onSelect={(eventKey) => {
+                          setReviewFilter(eventKey);
+                          setCount((prev) => prev + 1);
+                        }}
+                      >
+                        <Dropdown.Toggle
+                          variant="light"
+                          className="dropdown-toggle"
+                          style={{ marginTop: "-4px" }}
+                        >
                           {filterLabel[reviewFilter]}
                         </Dropdown.Toggle>
 
                         <Dropdown.Menu className="chat-left-top-dropdown-list">
-                          <Dropdown.Item eventKey="highest_review"> Highest Review </Dropdown.Item>
-                          <Dropdown.Item eventKey="lowest_review"> Lowest Review </Dropdown.Item>
-                          <Dropdown.Item eventKey="recent_review"> Recent Reviews </Dropdown.Item>
+                          <Dropdown.Item eventKey="highest_review">
+                            {" "}
+                            Highest Review{" "}
+                          </Dropdown.Item>
+                          <Dropdown.Item eventKey="lowest_review">
+                            {" "}
+                            Lowest Review{" "}
+                          </Dropdown.Item>
+                          <Dropdown.Item eventKey="recent_review">
+                            {" "}
+                            Recent Reviews{" "}
+                          </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
                     </div>
@@ -1386,49 +2088,99 @@ const BookingHost = () => {
 
                     {reviews.map((review, index) => (
                       <>
-                        <Row key={index} className=" align-items-center mt-3"
-                          style={{ padding: isMobileWidth ? '4px' : "" }} >
-                          <Col xs={12} md={8} className="d-flex align-items-center" >
-                            <Image src={`${imageBase}${review?.profile_image}`} roundedCircle
-                              style={{ padding: "2px", border: "2px solid #E4E4E4", marginRight: "15px" }}
-                              width="50" height="50" // className="me-3"
+                        <Row
+                          key={index}
+                          className=" align-items-center mt-3"
+                          style={{ padding: isMobileWidth ? "4px" : "" }}
+                        >
+                          <Col
+                            xs={12}
+                            md={8}
+                            className="d-flex align-items-center"
+                          >
+                            <Image
+                              src={`${imageBase}${review?.profile_image}`}
+                              roundedCircle
+                              style={{
+                                padding: "2px",
+                                border: "2px solid #E4E4E4",
+                                marginRight: "15px",
+                              }}
+                              width="50"
+                              height="50" // className="me-3"
                             />
                             <div>
-                              <h6 className="mb-1" style={{ fontWeight: "600", color: "#3F3D56" }} >
-                                {!isMobileWidth ? (review?.reviewer_name) : (
-                                  <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "13px", width: "100%", }} >
+                              <h6
+                                className="mb-1"
+                                style={{ fontWeight: "600", color: "#3F3D56" }}
+                              >
+                                {!isMobileWidth ? (
+                                  review?.reviewer_name
+                                ) : (
+                                  <span
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      justifyContent: "space-between",
+                                      fontSize: "13px",
+                                      width: "100%",
+                                    }}
+                                  >
                                     {/* Left: Reviewer name */}
-                                    <span style={{ fontWeight: 500 }}>{review?.reviewer_name}</span>
+                                    <span style={{ fontWeight: 500 }}>
+                                      {review?.reviewer_name}
+                                    </span>
 
                                     {/* Middle: Stars */}
-                                    <span style={{ marginLeft: "20px", marginRight: "10px" }}>
-                                      <LocationReviewStars rating={review?.review_rating} />
+                                    <span
+                                      style={{
+                                        marginLeft: "20px",
+                                        marginRight: "10px",
+                                      }}
+                                    >
+                                      <LocationReviewStars
+                                        rating={review?.review_rating}
+                                      />
                                     </span>
 
                                     {/* Right: Date */}
-                                    <span style={{ fontSize: "12px", color: "#666" }}>
+                                    <span
+                                      style={{
+                                        fontSize: "12px",
+                                        color: "#666",
+                                      }}
+                                    >
                                       {review?.review_date}
                                     </span>
                                   </span>
                                 )}
                               </h6>
 
-                              <p className="mb-0 text-muted" style={{ fontSize: "14px" }} >
+                              <p
+                                className="mb-0 text-muted"
+                                style={{ fontSize: "14px" }}
+                              >
                                 {review?.review_message}
                               </p>
                             </div>
                           </Col>
 
                           {!isMobileWidth && (
-                            <Col xs={12} md={4} className="text-md-end mt-2 mt-md-0" style={{ display: isMobileWidth ? "flex" : '' }} >
-                              <LocationReviewStars rating={review?.review_rating} /> {review?.review_date}
-                            </Col>)
-                          }
+                            <Col
+                              xs={12}
+                              md={4}
+                              className="text-md-end mt-2 mt-md-0"
+                              style={{ display: isMobileWidth ? "flex" : "" }}
+                            >
+                              <LocationReviewStars
+                                rating={review?.review_rating}
+                              />{" "}
+                              {review?.review_date}
+                            </Col>
+                          )}
                         </Row>
                         <hr />
                       </>
-
-
                     ))}
 
                     {reviews?.length == 0 ? (
@@ -1438,14 +2190,18 @@ const BookingHost = () => {
                           justifyContent: "center",
                           alignItems: "center",
                           padding: "10px",
-                        }} >
+                        }}
+                      >
                         No Review Found
                       </div>
                     ) : (
                       <div className="text-center mt-3">
                         {reviews.length > 3 && showMoreBtn && (
-                          <button className="location-reviews-btn" type="button"
-                            onClick={() => setPage((prev) => prev + 1)} >
+                          <button
+                            className="location-reviews-btn"
+                            type="button"
+                            onClick={() => setPage((prev) => prev + 1)}
+                          >
                             Show More Reviews
                           </button>
                         )}
@@ -1457,10 +2213,19 @@ const BookingHost = () => {
             </div>
           ) : (
             !isMobileWidth && (
-              <div className="w-100 mb-4"
-                style={{ flex: "1 0 400px", overflowY: "auto", height: "100vh" }} >
-                <Container fluid className="border border-2 p-lg-3"
-                  style={{ minWidth: "250px", height: "100vh" }} >
+              <div
+                className="w-100 mb-4"
+                style={{
+                  flex: "1 0 400px",
+                  overflowY: "auto",
+                  height: "100vh",
+                }}
+              >
+                <Container
+                  fluid
+                  className="border border-2 p-lg-3"
+                  style={{ minWidth: "250px", height: "100vh" }}
+                >
                   <div className="h-100 d-flex justify-content-center align-items-center text-center">
                     Please select a booking to view details.
                   </div>
@@ -1474,18 +2239,24 @@ const BookingHost = () => {
             <div className="col-lg-3 col-12">
               <div className="chat-right">
                 <div className="chat-right-top">
-                  <h3 style={{ color: "#808080" }}>{userType === "host" ? "Guest by" : "Hosted by"}</h3>
+                  <h3 style={{ color: "#808080" }}>
+                    {userType === "host" ? "Guest by" : "Hosted by"}
+                  </h3>
 
                   <div className="chat-right-top-profile d-flex align-items-center">
-                    <img className="chat-right-top-profile-image img-fluid"
-                      src={userType === "host" ? selectedBooking?.guest_avatar
-                        ? `${imageBase}${selectedBooking?.guest_avatar}`
-                        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
-                        : selectedBooking?.host_image
+                    <img
+                      className="chat-right-top-profile-image img-fluid"
+                      src={
+                        userType === "host"
+                          ? selectedBooking?.guest_avatar
+                            ? `${imageBase}${selectedBooking?.guest_avatar}`
+                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                          : selectedBooking?.host_image
                           ? `${imageBase}${selectedBooking?.host_image}`
                           : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                       }
-                      loading="lazy" alt="Profile"
+                      loading="lazy"
+                      alt="Profile"
                       style={{
                         width: "50px",
                         height: "50px",
@@ -1493,7 +2264,14 @@ const BookingHost = () => {
                         objectFit: "cover",
                       }}
                     />
-                    <h2 style={{ marginLeft: "10px", fontSize: "20px", fontWeight: "400", wordWrap: "break-word" }} >
+                    <h2
+                      style={{
+                        marginLeft: "10px",
+                        fontSize: "20px",
+                        fontWeight: "400",
+                        wordWrap: "break-word",
+                      }}
+                    >
                       {userType === "host"
                         ? selectedBooking?.guest_name?.trim() || "No Name"
                         : selectedBooking?.host_name?.trim() || "John Doe"}
@@ -1501,9 +2279,16 @@ const BookingHost = () => {
 
                     {userType === "host" ? (
                       <>
-                        <img className="chat-right-top-batch-image" src=" /images/locations-grid/star-icon.svg" loading="lazy" alt="verified" style={{ width: "20px", color: '#FCA800' }}
+                        <img
+                          className="chat-right-top-batch-image"
+                          src=" /images/locations-grid/star-icon.svg"
+                          loading="lazy"
+                          alt="verified"
+                          style={{ width: "20px", color: "#FCA800" }}
                         />{" "}
-                        <span style={{ color: '#FCA800' }}>{guestReview || "0.0"} </span>
+                        <span style={{ color: "#FCA800" }}>
+                          {guestReview || "0.0"}{" "}
+                        </span>
                       </>
                     ) : (
                       <>
@@ -1511,7 +2296,8 @@ const BookingHost = () => {
                           <img
                             className="chat-right-top-batch-image"
                             src="/images/bookings/verify-star.svg"
-                            loading="lazy" alt="verified"
+                            loading="lazy"
+                            alt="verified"
                             style={{ width: "20px" }}
                           />
                         )}
@@ -1529,7 +2315,7 @@ const BookingHost = () => {
                           padding: "10px",
                           marginBottom: "10px",
                           display: "block",
-                          height: 'fit-content'
+                          height: "fit-content",
                         }}
                       >
                         <ReviewBookingPopup
@@ -1547,7 +2333,7 @@ const BookingHost = () => {
                           padding: "0",
                           marginBottom: "10px",
                           display: "block",
-                          height: 'fit-content'
+                          height: "fit-content",
                         }}
                       >
                         <ReviewBookingPopup
@@ -1620,10 +2406,6 @@ const BookingHost = () => {
                   />
                 </div>
 
-
-
-
-
                 <div className="chat-right-bottom bg-white">
                   <div className="chat-right-bottom-in d-flex flex-wrap">
                     <div
@@ -1641,10 +2423,11 @@ const BookingHost = () => {
                               ? imageBase + viewDetails?.images?.[0]
                               : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                             : viewDetails?.first_property_image
-                              ? imageBase + viewDetails?.first_property_image
-                              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                            ? imageBase + viewDetails?.first_property_image
+                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                         }
-                        loading="lazy" alt="property"
+                        loading="lazy"
+                        alt="property"
                         className="img-fluid"
                         style={{
                           // width: "60px",
@@ -1666,8 +2449,8 @@ const BookingHost = () => {
                           className="text-warning"
                           style={{ marginTop: "-2px" }}
                         />
-                        {`${reviewPagination?.average_review_rating} `}
-                        ({reviewPagination?.total}){" "}
+                        {`${reviewPagination?.average_review_rating} `}(
+                        {reviewPagination?.total}){" "}
                       </p>
                       <p>
                         {/* <MdOutlineMyLocation className="text-secondary" /> */}
@@ -1800,9 +2583,7 @@ const BookingHost = () => {
                     </ul>
                   )}
                 </div>
-
               </div>
-
             </div>
           ) : (
             <div className="col-lg-3 col-md-6">
@@ -1811,11 +2592,8 @@ const BookingHost = () => {
           )}
         </div>
 
-
         <MobFooter />
       </div>
-
-
 
       <ReportBookingModal
         show={showReportModal}
@@ -1844,7 +2622,6 @@ const BookingHost = () => {
           setShowAddWishlistModal(false);
         }}
       />
-
 
       <ApproveDeclineModal
         show={approveDeclineModal.show}
@@ -1909,7 +2686,13 @@ const ApproveDeclineModal = ({ show, status, data, onClose, onSubmit }) => {
               </div>
               <div className="d-flex flex-wrap gap-2 mt-2">
                 {reasons.map((reason) => (
-                  <button key={reason} type="button" className={`btn ${selectedReason === reason ? "primary-color" : "btn-outline-secondary"
+                  <button
+                    key={reason}
+                    type="button"
+                    className={`btn ${
+                      selectedReason === reason
+                        ? "primary-color"
+                        : "btn-outline-secondary"
                     }`}
                     onClick={() =>
                       setSelectedReason(selectedReason === reason ? "" : reason)

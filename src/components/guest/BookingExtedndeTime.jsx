@@ -1058,7 +1058,7 @@ const BookingExtendedTime = () => {
                 }}
                 onClick={handleBooking}
               >
-                Confirm &amp; pay
+                Confirm &amp; Pay
               </Button>
             </Col>
 
