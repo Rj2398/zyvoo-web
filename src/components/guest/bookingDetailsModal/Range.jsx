@@ -127,8 +127,8 @@ const Range = ({
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                width: "95%",
-                height: "95%",
+                width: "90%",
+                height: "90%",
                 color: "black",
                 zIndex: 2,
                 // pointerEvents: "none"
