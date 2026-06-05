@@ -86,6 +86,12 @@ const amenitiesList = [
 //
 const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
   const dispatch = useDispatch();
+  const [croxProp, setCroxProp] = useState(false);
+
+  const [peopleProp, setPeopPro] = useState(false);
+  const [BedroomProp, setBedroomProps] = useState(false);
+  const [BathroomProp, setBathroomProp] = useState(false);
+  //
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
   const [propertyData, setPropertyData] = useState(propertyDataa);
@@ -140,7 +146,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
   ); // Default value
 
   const [customGuests, setCustomGuests] = useState("");
-  const guestOptions = ["Any","1", "2", "3", "4", "5", "6", "7"];
+  const guestOptions = ["Any", "1", "2", "3", "4", "5", "6", "7"];
 
   // for bedrooms
   const [selectedBedrooms, setSelectedBedrooms] = useState(
@@ -152,7 +158,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
   const [customBedrooms, setCustomBedrooms] = useState("");
 
   const bedroomOptions = ["Any", "1", "2", "3", "4", "5", "6", "7"];
-  
+
   // for bedrooms
   const [selectedBathrooms, setSelectedBathrooms] = useState(
     propertyData?.bathroom_count != null &&
@@ -192,8 +198,9 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
 
   const [show, setShow] = useState(false);
 
-
-  const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO))|| JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const localSaved =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userId = localSaved?.user_id;
 
   const handlePriceChange = (price) => {
@@ -432,7 +439,10 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
       {isMobileWidth && (
         <>
           {/* <div className="mob-search-filter border-start-0 border-end-0"> */}
-          <div className="container-fluid d-flex justify-content-between" style={{padding:'12px 3px'}}>
+          <div
+            className="container-fluid d-flex justify-content-between"
+            style={{ padding: "12px 3px" }}
+          >
             <div className="row">
               <div className="col-lg-12">
                 <div className="mob-search-filter-in">
@@ -462,9 +472,12 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                     >
                       <i
                         className="fa-regular fa-arrow-left"
-                        style={{ textAlign: "center", appearance: "none",         
-                              WebkitAppearance: "none",    
-                              color: "black",  }}
+                        style={{
+                          textAlign: "center",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          color: "black",
+                        }}
                       ></i>
                     </button>
                   </div>
@@ -478,7 +491,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                 color: "black",
                 borderRadius: "40px",
                 fontWeight: "300",
-                fontSize : "14px"
+                fontSize: "14px",
               }}
               onClick={() => handleHomeSetup()}
             >
@@ -489,7 +502,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
         </>
       )}
 
-      <hr style={{ borderColor:'black',width:'104%',marginLeft:'-2%'}} />
+      <hr style={{ borderColor: "black", width: "104%", marginLeft: "-2%" }} />
 
       {isMobileWidth && (
         <>
@@ -505,14 +518,22 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
               { key: "gallery_location", label: "Gallery & Location" },
               { key: "price_availability", label: "Price and Availability" },
             ].map(({ key, label }) => (
-              <button key={key} disabled className="property-modal-radio-switch-btn"
+              <button
+                key={key}
+                disabled
+                className="property-modal-radio-switch-btn"
                 onClick={() => onCallBack(key)}
                 style={{
-                  backgroundColor:activeTab === key ? "#FFFFFF" : "transparent",
+                  backgroundColor:
+                    activeTab === key ? "#FFFFFF" : "transparent",
                   color: activeTab === key ? "#000000" : "#000",
-                  border:activeTab === key ? "1px solid #FFFFFF" : "2px solid transparent",
-                  fontWeight:activeTab === key ? "500":"400"
-                }}>
+                  border:
+                    activeTab === key
+                      ? "1px solid #FFFFFF"
+                      : "2px solid transparent",
+                  fontWeight: activeTab === key ? "500" : "400",
+                }}
+              >
                 {label}
               </button>
             ))}
@@ -522,7 +543,10 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
 
       <>
         <h4 className="property-modal-main-heading"> Type of place </h4>
-        <h6 className="property-modal-main-sub-heading"> Setup places, availability, prices and more.</h6>
+        <h6 className="property-modal-main-sub-heading">
+          {" "}
+          Setup places, availability, prices and more.
+        </h6>
 
         <div
           style={{
@@ -545,24 +569,34 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
               onClick={() => setSelectedRoom(room)}
               style={{
                 padding: isMobileWidth ? "4px 20px" : "10px 20px",
-                fontSize: isMobileWidth ? "12px" :"14px",
-                backgroundColor: selectedRoom === room ? "#FFFFFF" : "transparent",
+                fontSize: isMobileWidth ? "12px" : "14px",
+                backgroundColor:
+                  selectedRoom === room ? "#FFFFFF" : "transparent",
                 color: selectedRoom === room ? "#000000" : "#000",
-                border: selectedRoom === room ? "2px solid #FFFFFF" : "2px solid transparent",
+                border:
+                  selectedRoom === room
+                    ? "2px solid #FFFFFF"
+                    : "2px solid transparent",
                 borderRadius: "20px",
                 cursor: "pointer",
-                fontWeight: selectedRoom === room ?"500":"400",
+                fontWeight: selectedRoom === room ? "500" : "400",
                 transition: "all 0.3s ease",
                 width: "80%",
-                height: isMobileWidth ? 38 :40,
+                height: isMobileWidth ? 38 : 40,
               }}
             >
-              {room?.replace(/_/g, " ").split(" ").map((item) => item.charAt(0).toUpperCase() + item.slice(1)).join(" ")}
+              {room
+                ?.replace(/_/g, " ")
+                .split(" ")
+                .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
+                .join(" ")}
             </button>
           ))}
         </div>
 
-      <hr style={{ borderColor:'black',width:'104%',marginLeft:'-2%'}} />
+        <hr
+          style={{ borderColor: "black", width: "104%", marginLeft: "-2%" }}
+        />
 
         <h4 className="property-modal-main-heading">Availability</h4>
         <div className="preferences-wrap-host">
@@ -584,14 +618,14 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                     selectedPrice === price
                       ? "2px solid #FFFFFF"
                       : "2px solid transparent",
-                      fontWeight:
-                  selectedPrice === price ? "500" : "400",
+                  fontWeight: selectedPrice === price ? "500" : "400",
                 }}
               >
                 {price}
               </button>
             ))}
             {/* Custom Input Field */}
+
             <input
               type="text"
               placeholder="Type..."
@@ -602,21 +636,42 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                   : selectedPrice
               }
               onChange={handleCustomPriceChange}
+              disabled={!!croxProp}
             />
-            <button className="last-check-btn">
-              <i className="fa-solid fa-check"></i>
+
+            <button
+              className="last-check-btn"
+              onClick={() => {
+                setCroxProp(!croxProp);
+                if (croxProp) {
+                  setCustomPrice(""); // Clears the custom price state
+                  setSelectedPrice(""); // Clears the selected price state
+                }
+              }}
+            >
+              {croxProp ? (
+                <i className="fa-solid fa-xmark"></i> // Show cross icon if checked
+              ) : (
+                <i className="fa-solid fa-check"></i> // Show check icon if not checked
+              )}
             </button>
           </div>
 
           <h6 className="property-modal-sub-heading">Number of people</h6>
           <div className="price-filter-wrapper">
             {guestOptions.map((guest) => (
-              <button className="price-filter-wrapper-btn" key={guest}
+              <button
+                className="price-filter-wrapper-btn"
+                key={guest}
                 onClick={() => handleGuestChange(guest)}
                 style={{
-                  backgroundColor: selectedGuests === guest ? "#FFFFFF" : "transparent",
+                  backgroundColor:
+                    selectedGuests === guest ? "#FFFFFF" : "transparent",
                   color: selectedGuests === guest ? "#000000" : "#000",
-                  border: selectedGuests === guest ? "2px solid #FFFFFF" : "2px solid transparent",
+                  border:
+                    selectedGuests === guest
+                      ? "2px solid #FFFFFF"
+                      : "2px solid transparent",
                   fontWeight: selectedGuests === guest ? "500" : "400",
                 }}
               >
@@ -625,10 +680,12 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             ))}
 
             {/* Custom Input Field */}
+
             <input
               type="text"
-              placeholder="Type..."
               className="price-filter-wrapper-input"
+              placeholder="Type..."
+              disabled={!!peopleProp}
               value={
                 guestOptions.includes(selectedGuests)
                   ? customGuests
@@ -636,8 +693,22 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
               }
               onChange={handleCustomGuestChange}
             />
-            <button className="last-check-btn">
-              <i className="fa-solid fa-check"></i>
+
+            <button
+              className="last-check-btn"
+              onClick={() => {
+                setPeopPro(!peopleProp);
+                if (peopleProp) {
+                  setCustomGuests("");
+                  setSelectedGuests("");
+                }
+              }}
+            >
+              {peopleProp ? (
+                <i className="fa-solid fa-xmark"></i>
+              ) : (
+                <i className="fa-solid fa-check"></i>
+              )}
             </button>
           </div>
 
@@ -657,7 +728,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                     selectedBedrooms === bedroom
                       ? "2px solid #FFFFFF"
                       : "2px solid transparent",
-                      fontWeight: selectedBedrooms === bedroom ? "500" : "400",
+                  fontWeight: selectedBedrooms === bedroom ? "500" : "400",
                 }}
               >
                 {bedroom}
@@ -665,10 +736,12 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             ))}
 
             {/* Custom Input Field */}
+
             <input
               type="text"
               placeholder="Type..."
               className="price-filter-wrapper-input"
+              disabled={!!BedroomProp}
               value={
                 bedroomOptions.includes(selectedBedrooms)
                   ? customBedrooms
@@ -676,8 +749,21 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
               }
               onChange={handleCustomBedroomChange}
             />
-            <button className="last-check-btn">
-              <i className="fa-solid fa-check"></i>
+            <button
+              className="last-check-btn"
+              onClick={() => {
+                setBedroomProps(!BedroomProp);
+                if (BedroomProp) {
+                  setCustomBedrooms("");
+                  setSelectedBedrooms("");
+                }
+              }}
+            >
+              {BedroomProp ? (
+                <i className="fa-solid fa-xmark"></i>
+              ) : (
+                <i className="fa-solid fa-check"></i>
+              )}
             </button>
           </div>
 
@@ -696,7 +782,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                     selectedBathrooms == bathroom
                       ? "2px solid #FFFFFF"
                       : "2px solid transparent",
-                      fontWeight: selectedBathrooms == bathroom ? "500" : "400",
+                  fontWeight: selectedBathrooms == bathroom ? "500" : "400",
                 }}
                 className="price-filter-wrapper-btn"
               >
@@ -705,10 +791,12 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             ))}
 
             {/* Custom Input Field */}
+
             <input
               type="text"
               placeholder="Type..."
               className="price-filter-wrapper-input"
+              disabled={!!BathroomProp}
               value={
                 bathroomOptions?.includes(selectedBathrooms)
                   ? customBathrooms
@@ -716,88 +804,60 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
               }
               onChange={handleCustomBathroomChange}
             />
-            <button className="last-check-btn">
-              <i className="fa-solid fa-check"></i>
+            <button
+              className="last-check-btn"
+              onClick={() => {
+                setBathroomProp(!BathroomProp);
+                if (BathroomProp) {
+                  setCustomBathrooms("");
+                  setSelectedBathrooms("");
+                }
+              }}
+            >
+              {BathroomProp ? (
+                <i className="fa-solid fa-xmark"></i>
+              ) : (
+                <i className="fa-solid fa-check"></i>
+              )}
             </button>
           </div>
         </div>
 
-       <hr style={{ borderColor:'black',width:'104%',marginLeft:'-2%'}} />
+        <hr
+          style={{ borderColor: "black", width: "104%", marginLeft: "-2%" }}
+        />
 
-        <h4 style={{ marginTop: "20px", fontSize:isMobileWidth ?"16px":"28px", color: "#000000",marginLeft:'12px' ,fontWeight:isMobileWidth && '400'}}>
+        <h4
+          style={{
+            marginTop: "20px",
+            fontSize: isMobileWidth ? "16px" : "28px",
+            color: "#000000",
+            marginLeft: "12px",
+            fontWeight: isMobileWidth && "400",
+          }}
+        >
           Activities
         </h4>
         <Container>
           <Row className="justify-content-center mt-4">
-            {options?.slice(0, isMobileWidth ? 3 : options.length).map((option) => {
-              const isSelected = selectedOptions.includes(option.id);
-              return (
-                <Col key={option.id} xs={isMobileWidth ? 4: 6} md={3} className="mb-3 ">
-                  <Card onClick={() => handleSelection(option.id)}
-                    className={`addproperty-activities-card ${isSelected ? 'selected' : ''}`}   style={{}}>
-                    <div
-                      style={{
-                        textAlign: "center",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    
-                      }}
-                    >
-                      <img src={option.image} alt={option.label}
-                        style={{
-                          objectFit: "contain",
-                          transition: "all 0.3s ease",
-                          width: isMobileWidth ? "22px" :  "40px",
-                          height: isMobileWidth ? "22px" : "40px",
-                          filter: isMobileWidth ? "" : isSelected ? "brightness(0) invert(1)" : "none", // Turns image white when selected
-                        }}
-                      />
-                      <Card.Text
-                        style={{
-                          fontWeight: "400",
-                          marginTop: "20px",
-                          fontSize : isMobileWidth ? "10px" :"15px",
-                          color: isMobileWidth ? "" : isSelected ? "white" : "black",
-                        }}
-                      >
-                        {option.label}
-                      </Card.Text>
-                    </div>
-                  </Card>
-                </Col>
-              );
-            })}
-          </Row>
-        </Container>
-        <h6
-          style={{
-            marginTop: "20px",
-            fontSize: isMobileWidth ? "13px":"16px",
-            fontWeight: "400",
-            color: "#000000",
-            cursor: "pointer",
-            marginLeft:'12px'
-          }}
-          onClick={() => setOthActivyShow(!otherActivyShow)}
-        >
-          Other Activities{" "}
-          {otherActivyShow ? <FaChevronUp /> : <FaChevronDown />}
-        </h6>
-        {otherActivyShow && (
-          <Container>
-            <Row className={!isMobileWidth ?"justify-content-start mt-4":"justify-content-center mt-4"}  style={{width:isMobileWidth && '25% !important' ,gap: isMobileWidth &&'0px !important'}}>
-              {otherActiviy?.slice(isMobileWidth ? 0 : 1, otherActiviy.length).map((option) => {
-                const isSelected = selectedOptionsOtherActivity.includes(
-                  option.id
-                );
+            {options
+              ?.slice(0, isMobileWidth ? 3 : options.length)
+              .map((option) => {
+                const isSelected = selectedOptions.includes(option.id);
                 return (
-                  <Col key={option.id} xs={isMobileWidth ? 4: 6}  md={3}
-                    className="mb-3 d-flex justify-content-center"
+                  <Col
+                    key={option.id}
+                    xs={isMobileWidth ? 4 : 6}
+                    md={3}
+                    className="mb-3 "
                   >
-                    <Card onClick={() => handleOtherActiviy(option.id)}
-                      className={`w-100 addproperty-activities-card ${isSelected ? 'selected' : ''}`}>
+                    <Card
+                      onClick={() => handleSelection(option.id)}
+                      className={`addproperty-activities-card ${
+                        isSelected ? "selected" : ""
+                      }`}
+                      style={{}}
+                    >
                       <div
                         style={{
                           textAlign: "center",
@@ -811,20 +871,30 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                           src={option.image}
                           alt={option.label}
                           style={{
-                          objectFit: "contain",
-                          transition: "all 0.3s ease",
-                          width: isMobileWidth ? "22px" :  "40px",
-                          height: isMobileWidth ? "22px" : "40px",
-                          filter: isMobileWidth ? "" : isSelected ? "brightness(0) invert(1)" : "none", // Turns image white when selected
-                        }}
+                            objectFit: "contain",
+                            transition: "all 0.3s ease",
+                            width: isMobileWidth ? "22px" : "40px",
+                            height: isMobileWidth ? "22px" : "40px",
+                            // paddingTop: isMobileWidth ? "2px" : "2px",
+                            filter: isMobileWidth
+                              ? ""
+                              : isSelected
+                              ? "brightness(0) invert(1)"
+                              : "none", // Turns image white when selected
+                          }}
                         />
                         <Card.Text
                           style={{
-                          fontWeight: "400",
-                          marginTop: "20px",
-                          fontSize : isMobileWidth ? "10px" :"",
-                          color: isMobileWidth ? "" : isSelected ? "white" : "black",
-                        }}
+                            fontWeight: "400",
+                            marginTop: "10px",
+
+                            fontSize: isMobileWidth ? "10px" : "15px",
+                            color: isMobileWidth
+                              ? ""
+                              : isSelected
+                              ? "white"
+                              : "black",
+                          }}
                         >
                           {option.label}
                         </Card.Text>
@@ -833,26 +903,130 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                   </Col>
                 );
               })}
+          </Row>
+        </Container>
+        <h6
+          style={{
+            marginTop: "20px",
+            fontSize: isMobileWidth ? "13px" : "16px",
+            fontWeight: "400",
+            color: "#000000",
+            cursor: "pointer",
+            marginLeft: "12px",
+          }}
+          onClick={() => setOthActivyShow(!otherActivyShow)}
+        >
+          Other Activities{" "}
+          {otherActivyShow ? <FaChevronUp /> : <FaChevronDown />}
+        </h6>
+        {otherActivyShow && (
+          <Container>
+            <Row
+              className={
+                !isMobileWidth
+                  ? "justify-content-start mt-4"
+                  : "justify-content-start mt-4"
+              }
+            >
+              {otherActiviy
+                ?.slice(isMobileWidth ? 0 : 1, otherActiviy.length)
+                .map((option) => {
+                  const isSelected = selectedOptionsOtherActivity.includes(
+                    option.id
+                  );
+                  return (
+                    <Col
+                      key={option.id}
+                      xs={isMobileWidth ? 4 : 6}
+                      md={3}
+                      // className="mb-3 d-flex justify-content-center"
+                      className="mb-3 "
+                    >
+                      <Card
+                        onClick={() => handleOtherActiviy(option.id)}
+                        className={`w-100 addproperty-activities-card ${
+                          isSelected ? "selected" : ""
+                        }`}
+                      >
+                        <div
+                          style={{
+                            textAlign: "center",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          <img
+                            src={option.image}
+                            alt={option.label}
+                            style={{
+                              objectFit: "contain",
+                              transition: "all 0.3s ease",
+                              width: isMobileWidth ? "22px" : "40px",
+                              height: isMobileWidth ? "22px" : "40px",
+                              // paddingTop: isMobileWidth ? "2px" : "2px",
+                              filter: isMobileWidth
+                                ? ""
+                                : isSelected
+                                ? "brightness(0) invert(1)"
+                                : "none", // Turns image white when selected
+                            }}
+                          />
+                          <Card.Text
+                            style={{
+                              fontWeight: "400",
+                              marginTop: "10px",
+                              fontSize: isMobileWidth ? "10px" : "",
+                              color: isMobileWidth
+                                ? ""
+                                : isSelected
+                                ? "white"
+                                : "black",
+                            }}
+                          >
+                            {option.label}
+                          </Card.Text>
+                        </div>
+                      </Card>
+                    </Col>
+                  );
+                })}
             </Row>
           </Container>
         )}
-        <hr style={{ borderColor:'black',width:'104%',marginLeft:'-2%'}} />
-        <h4 style={{ marginTop: "20px",  fontSize:isMobileWidth ?"16px":"28px", color: "#000000",marginLeft:'12px',fontWeight:isMobileWidth && '400'}}>
-          Amenities</h4>
-        <Container style={{marginLeft:'0px'}}>
-          
+        <hr
+          style={{ borderColor: "black", width: "104%", marginLeft: "-2%" }}
+        />
+        <h4
+          style={{
+            marginTop: "20px",
+            fontSize: isMobileWidth ? "16px" : "28px",
+            color: "#000000",
+            marginLeft: "12px",
+            fontWeight: isMobileWidth && "400",
+          }}
+        >
+          Amenities
+        </h4>
+        <Container style={{ marginLeft: "0px" }}>
           <Row>
             {/* Show Only 1 Item Per Column When Collapsed */}
             {!showMore ? (
-              <div className="d-flex flex-wrap" >
-                {amenitiesList?.slice(0,6).map((item, index) =>{
+              <div className="d-flex flex-wrap">
+                {amenitiesList?.slice(0, 6).map((item, index) => {
                   return (
-                  <Col key={index} style={{minWidth:"48%", width:"48%"}}>
-                    <Form.Check type="checkbox" label={item} checked={selectedAmenities.includes(item)}
-                      onChange={() => handleCheckboxChange(item)}   className="custom-checkbox"
-                      style={{display:'flex',whiteSpace:'normal' }} />
-                    <style>
-                      {` .custom-checkbox{
+                    <Col key={index} style={{ minWidth: "48%", width: "48%" }}>
+                      <Form.Check
+                        type="checkbox"
+                        label={item}
+                        checked={selectedAmenities.includes(item)}
+                        onChange={() => handleCheckboxChange(item)}
+                        className="custom-checkbox"
+                        style={{ display: "flex", whiteSpace: "normal" }}
+                      />
+                      <style>
+                        {` .custom-checkbox{
                             margin-top:10px;                              
                           }
                           .custom-checkbox label{
@@ -865,20 +1039,24 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                             --bs-form-check-bg-image : none !important;
                           }                     
                         `}
-                    </style>
-                  </Col>)
+                      </style>
+                    </Col>
+                  );
                 })}
               </div>
             ) : (
               // Show Full List When Expanded
-              <div className="d-flex flex-wrap justify-content-between " >
+              <div className="d-flex flex-wrap justify-content-between ">
                 {amenitiesList.map((amenity, index) => (
-                  <Col md={6} style={{maxWidth:"48%", width:"48%"}}>
-                    <Form.Check key={index} type="checkbox" label={amenity}
+                  <Col md={6} style={{ maxWidth: "48%", width: "48%" }}>
+                    <Form.Check
+                      key={index}
+                      type="checkbox"
+                      label={amenity}
                       checked={selectedAmenities.includes(amenity)}
                       onChange={() => handleCheckboxChange(amenity)}
                       className="custom-checkbox"
-                      style={{display:'flex',whiteSpace:'normal', }}
+                      style={{ display: "flex", whiteSpace: "normal" }}
                     />
                     <style>
                       {` .custom-checkbox{
@@ -907,7 +1085,13 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             <Button
               variant="link"
               onClick={() => setShowMore(!showMore)}
-              style={{ color: "black", fontWeight: "400",marginLeft:'-9px' , fontSize: isMobileWidth ? "13px":"16px",}}   >
+              style={{
+                color: "black",
+                fontWeight: "400",
+                marginLeft: "-9px",
+                fontSize: isMobileWidth ? "13px" : "16px",
+              }}
+            >
               {showMore ? "Show Less" : "Show More"}
             </Button>
           </div>
@@ -916,8 +1100,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             {`
     .custom-checkbox .form-check-input {
       border-radius: 50%; /* Makes it circular */
-      width:  ${isMobileWidth ? "22px":"30px"} ;
-      height:${isMobileWidth ? "22px":"30px"} ;
+      width:  ${isMobileWidth ? "22px" : "30px"} ;
+      height:${isMobileWidth ? "22px" : "30px"} ;
       border: 1px solid #B1B1B1; /* Outline color */
     }
 
@@ -930,14 +1114,36 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
           </style>
         </Container>
 
-       <hr style={{ borderColor:'black',width:'104%',marginLeft:'-2%'}} />
-        <h4 style={{ marginTop: "20px",  fontSize:isMobileWidth ?"16px":"28px", color: "#000000",marginLeft:'12px',fontWeight:isMobileWidth && '400'}}>
-          Booking</h4>
+        <hr
+          style={{ borderColor: "black", width: "104%", marginLeft: "-2%" }}
+        />
+        <h4
+          style={{
+            marginTop: "20px",
+            fontSize: isMobileWidth ? "16px" : "28px",
+            color: "#000000",
+            marginLeft: "12px",
+            fontWeight: isMobileWidth && "400",
+          }}
+        >
+          Booking
+        </h4>
         <Container className="mt-3">
           <div className="d-flex align-items-center justify-content-between">
             <div style={{ maxWidth: "85%" }}>
-              <h6 style={{ fontWeight:isMobileWidth?"400":"500"  ,fontSize:isMobileWidth?"15px":'18px',color:'black' }}>Instant Book</h6>
-              <p className="text-black" style={{fontSize:isMobileWidth?"13px":'16px'}}>
+              <h6
+                style={{
+                  fontWeight: isMobileWidth ? "400" : "500",
+                  fontSize: isMobileWidth ? "15px" : "18px",
+                  color: "black",
+                }}
+              >
+                Instant Book
+              </h6>
+              <p
+                className="text-black"
+                style={{ fontSize: isMobileWidth ? "13px" : "16px" }}
+              >
                 Listings you can book without waiting for host approval.
               </p>
             </div>
@@ -945,25 +1151,38 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             <div
               onClick={() => setInstantBook(instantBook === "0" ? "1" : "0")}
               style={{
-                width: isMobileWidth ?  "30px":"60px" ,
-                height:isMobileWidth ? "16px":"28px",
+                width: isMobileWidth ? "30px" : "60px",
+                height: isMobileWidth ? "16px" : "28px",
                 borderRadius: "20px",
-                backgroundColor: instantBook === "1"  ? isMobileWidth  ? "#B0B0B0" : "#4AEAB1":"#B0B0B0", 
+                backgroundColor:
+                  instantBook === "1"
+                    ? isMobileWidth
+                      ? "#B0B0B0"
+                      : "#4AEAB1"
+                    : "#B0B0B0",
                 position: "relative",
                 cursor: "pointer",
-                marginTop:isMobileWidth && '-9px',
+                marginTop: isMobileWidth && "-9px",
                 transition: "background-color 0.3s",
               }}
             >
-            <div
+              <div
                 style={{
-                  width:isMobileWidth ? "18px" :"24px",
-                  height:isMobileWidth ? "18px" :"24px",
+                  width: isMobileWidth ? "18px" : "24px",
+                  height: isMobileWidth ? "18px" : "24px",
                   borderRadius: "50%",
-                  backgroundColor: isMobileWidth && instantBook === "1" ?"#555353ff":"#fff",
+                  backgroundColor:
+                    isMobileWidth && instantBook === "1" ? "#555353ff" : "#fff",
                   position: "absolute",
                   top: isMobileWidth ? "-1px" : "2px",
-                  left: instantBook === "1" ? isMobileWidth?"20px" :"33px" :isMobileWidth?"":"3px",
+                  left:
+                    instantBook === "1"
+                      ? isMobileWidth
+                        ? "20px"
+                        : "33px"
+                      : isMobileWidth
+                      ? ""
+                      : "3px",
                   transition: "left 0.3s",
                 }}
               />
@@ -974,34 +1193,58 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
         <Container className="mt-3">
           <div className="d-flex align-items-center justify-content-between">
             <div style={{ maxWidth: "85%" }}>
-              <h6 style={{ fontWeight:isMobileWidth?"400":"500"  ,fontSize:isMobileWidth?"15px":'18px',color:'black' }}>Self Check-in</h6>
-              <p className="text-black" style={{fontSize:isMobileWidth?"13px":'16px'}}>
+              <h6
+                style={{
+                  fontWeight: isMobileWidth ? "400" : "500",
+                  fontSize: isMobileWidth ? "15px" : "18px",
+                  color: "black",
+                }}
+              >
+                Self Check-in
+              </h6>
+              <p
+                className="text-black"
+                style={{ fontSize: isMobileWidth ? "13px" : "16px" }}
+              >
                 Easy access to the property once you arrive.
               </p>
             </div>
 
             <div
               onClick={() => setSelfCheckIn(selfCheckIn === "0" ? "1" : "0")}
-            style={{
-                width: isMobileWidth ?  "30px":"60px" ,
-                height:isMobileWidth ? "16px":"28px",
+              style={{
+                width: isMobileWidth ? "30px" : "60px",
+                height: isMobileWidth ? "16px" : "28px",
                 borderRadius: "20px",
-                 backgroundColor: selfCheckIn === "1"  ? isMobileWidth  ? "#B0B0B0" : "#4AEAB1":"#B0B0B0",
+                backgroundColor:
+                  selfCheckIn === "1"
+                    ? isMobileWidth
+                      ? "#B0B0B0"
+                      : "#4AEAB1"
+                    : "#B0B0B0",
                 position: "relative",
                 cursor: "pointer",
-                marginTop:isMobileWidth && '-9px',
+                marginTop: isMobileWidth && "-9px",
                 transition: "background-color 0.3s",
               }}
             >
               <div
                 style={{
-                  width:isMobileWidth ? "18px" :"24px",
-                  height:isMobileWidth ? "18px" :"24px",
+                  width: isMobileWidth ? "18px" : "24px",
+                  height: isMobileWidth ? "18px" : "24px",
                   borderRadius: "50%",
-                  backgroundColor: isMobileWidth && selfCheckIn === "1" ?"#555353ff":"#fff",
+                  backgroundColor:
+                    isMobileWidth && selfCheckIn === "1" ? "#555353ff" : "#fff",
                   position: "absolute",
                   top: isMobileWidth ? "-1px" : "2px",
-                  left: selfCheckIn === "1" ? isMobileWidth?"20px" :"33px" :isMobileWidth?"":"3px",
+                  left:
+                    selfCheckIn === "1"
+                      ? isMobileWidth
+                        ? "20px"
+                        : "33px"
+                      : isMobileWidth
+                      ? ""
+                      : "3px",
                   transition: "left 0.3s",
                 }}
               />
@@ -1017,7 +1260,15 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                 maxWidth: "85%",
               }}
             >
-              <h6 style={{fontWeight:isMobileWidth?"400":"500"  ,fontSize:isMobileWidth?"15px":'18px',margin:'0px' }}>Allows Pets</h6>
+              <h6
+                style={{
+                  fontWeight: isMobileWidth ? "400" : "500",
+                  fontSize: isMobileWidth ? "15px" : "18px",
+                  margin: "0px",
+                }}
+              >
+                Allows Pets
+              </h6>
               <span
                 className="info-wrap"
                 style={{
@@ -1034,7 +1285,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                 >
                   <img
                     src="/images/create-profile/info.svg"
-                    loading="lazy" alt=""
+                    loading="lazy"
+                    alt=""
                     style={{ cursor: "pointer", marginLeft: 0 }}
                   />
                   {isHovered && (
@@ -1066,25 +1318,38 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             <div
               onClick={() => setAllowsPets(allowsPets === "0" ? "1" : "0")}
               style={{
-                width: isMobileWidth ?  "30px":"60px" ,
-                height:isMobileWidth ? "16px":"28px",
+                width: isMobileWidth ? "30px" : "60px",
+                height: isMobileWidth ? "16px" : "28px",
                 borderRadius: "20px",
-                backgroundColor: allowsPets === "1"  ? isMobileWidth  ? "#B0B0B0" : "#4AEAB1":"#B0B0B0",
+                backgroundColor:
+                  allowsPets === "1"
+                    ? isMobileWidth
+                      ? "#B0B0B0"
+                      : "#4AEAB1"
+                    : "#B0B0B0",
                 position: "relative",
                 cursor: "pointer",
                 transition: "background-color 0.3s",
-                marginTop:isMobileWidth && '-9px'
+                marginTop: isMobileWidth && "-9px",
               }}
             >
               <div
-                 style={{
-                    width:isMobileWidth ? "18px" :"24px",
-                  height:isMobileWidth ? "18px" :"24px",
+                style={{
+                  width: isMobileWidth ? "18px" : "24px",
+                  height: isMobileWidth ? "18px" : "24px",
                   borderRadius: "50%",
-                  backgroundColor: isMobileWidth && allowsPets === "1" ?"#555353ff":"#fff",
+                  backgroundColor:
+                    isMobileWidth && allowsPets === "1" ? "#555353ff" : "#fff",
                   position: "absolute",
                   top: isMobileWidth ? "-1px" : "2px",
-                  left: allowsPets === "1" ? isMobileWidth?"20px" :"33px" :isMobileWidth?"":"3px",
+                  left:
+                    allowsPets === "1"
+                      ? isMobileWidth
+                        ? "20px"
+                        : "33px"
+                      : isMobileWidth
+                      ? ""
+                      : "3px",
                   transition: "left 0.3s",
                 }}
               />
@@ -1092,23 +1357,39 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
           </div>
         </Container>
         <Container className="mt-3">
-          <div className={`d-flex align-items-center ${isMobileWidth ? "justify-content-between" : "justify-content-left"}`}>
+          <div
+            className={`d-flex align-items-center ${
+              isMobileWidth ? "justify-content-between" : "justify-content-left"
+            }`}
+          >
             <div className="d-flex align-items-center justify-content-between">
               <div style={{ display: "inline-flex", alignItems: "center" }}>
-                <h6 style={{ margin: 0 ,fontWeight:isMobileWidth?"400":"500"  ,fontSize:isMobileWidth?"15px":'18px'}}>{isMobileWidth?"Cancellation ":"Cancellation Policy"}</h6>
-                <span className="info-wrap" style={{
+                <h6
+                  style={{
+                    margin: 0,
+                    fontWeight: isMobileWidth ? "400" : "500",
+                    fontSize: isMobileWidth ? "15px" : "18px",
+                  }}
+                >
+                  {isMobileWidth ? "Cancellation " : "Cancellation Policy"}
+                </h6>
+                <span
+                  className="info-wrap"
+                  style={{
                     position: "relative",
                     display: "inline-block",
                     marginLeft: "8px",
                   }}
                 >
-                  <span onMouseEnter={() => setIsHovered1(true)}
+                  <span
+                    onMouseEnter={() => setIsHovered1(true)}
                     onMouseLeave={() => setIsHovered1(false)}
                     style={{ display: "inline-block", position: "relative" }}
                   >
                     <img
                       src="/images/create-profile/info.svg"
-                      loading="lazy" alt=""
+                      loading="lazy"
+                      alt=""
                       style={{ cursor: "pointer", marginLeft: 0 }}
                     />
                     {isHovered1 && (
@@ -1201,48 +1482,59 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
   </Dropdown.Menu>
 </Dropdown> */}
 
-<Dropdown onToggle={(isOpen) => setShow(isOpen)}>
-  <Dropdown.Toggle
-    variant="outline-light"
-    className="no-caret"
-    style={{
-      border: "1px solid #FFF",
-      borderRadius: "20px",
-      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
-      fontWeight: "400",
-      display: "flex",
-      alignItems: "center",
-      justifyContent:"space-between",
-      width: isMobileWidth ? "150px" : "200px"
-    }}
-  >
-    <span style={{ color: "#000000" ,opacity:'60%'}}>
-      {selectedCancellation
-        ? selectedCancellation == 24
-          ? "24 Hrs"
-          : `${selectedCancellation / 24} Days`
-        : "Select Dropdown"}
-    </span>
+            <Dropdown onToggle={(isOpen) => setShow(isOpen)}>
+              <Dropdown.Toggle
+                variant="outline-light"
+                className="no-caret"
+                style={{
+                  border: "1px solid #FFF",
+                  borderRadius: "20px",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.15)",
+                  fontWeight: "400",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  width: isMobileWidth ? "155px" : "200px",
+                }}
+              >
+                <span style={{ color: "#000000", opacity: "60%" }}>
+                  {selectedCancellation
+                    ? selectedCancellation == 24
+                      ? "24 Hrs"
+                      : `${selectedCancellation / 24} Days`
+                    : "Select Dropdown"}
+                </span>
 
-    {show ? <FaChevronUp size={15} style={{color:'black'}} /> : <FaChevronDown size={15}  style={{color:'black'}}/>}
-  </Dropdown.Toggle>
+                {show ? (
+                  <FaChevronUp size={15} style={{ color: "black" }} />
+                ) : (
+                  <FaChevronDown size={15} style={{ color: "black" }} />
+                )}
+              </Dropdown.Toggle>
 
-  <Dropdown.Menu>
-    {["24 Hrs", "3 Days", "7 Days", "15 Days", "30 Days"].map((option, index) => (
-      <Dropdown.Item
-        key={index}
-        onClick={() => handleCancellationChange(option)}
-      >
-        {option}
-      </Dropdown.Item>
-    ))}
-  </Dropdown.Menu>
-</Dropdown> 
-
-
+              <Dropdown.Menu>
+                {["24 Hrs", "3 Days", "7 Days", "15 Days", "30 Days"].map(
+                  (option, index) => (
+                    <Dropdown.Item
+                      key={index}
+                      onClick={() => handleCancellationChange(option)}
+                    >
+                      {option}
+                    </Dropdown.Item>
+                  )
+                )}
+              </Dropdown.Menu>
+            </Dropdown>
           </div>
         </Container>
-     <hr style={{ borderColor:'black',width:'104%',marginLeft:'-2%',marginBottom:'20px'}} />
+        <hr
+          style={{
+            borderColor: "black",
+            width: "104%",
+            marginLeft: "-2%",
+            marginBottom: "20px",
+          }}
+        />
 
         {!isMobileWidth && (
           <>
@@ -1253,13 +1545,13 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                 variant="outline-success"
                 onClick={clarAll}
                 style={{
-                 color: "#000",
-                background: "#fff",
-                borderColor: "#E5E5E5",
-                fontWeight: "400",
-                borderRadius: "40px",
-                padding:'13px 26px',
-                marginLeft:'-15px'
+                  color: "#000",
+                  background: "#fff",
+                  borderColor: "#E5E5E5",
+                  fontWeight: "400",
+                  borderRadius: "40px",
+                  padding: "13px 26px",
+                  marginLeft: "-15px",
                 }}
               >
                 Clear All
@@ -1273,7 +1565,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                   fontWeight: "400",
                   color: "black",
                   borderRadius: "40px",
-                  padding:'13px 26px',
+                  padding: "13px 26px",
                 }}
                 onClick={() => handleHomeSetup()}
               >

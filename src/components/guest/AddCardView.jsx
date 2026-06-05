@@ -13,15 +13,21 @@ import vector from "../../assets/gallery/Vector.png";
 import { useSelector } from "react-redux";
 
 const Card = "";
-function AddCardView({type}) {
-      const {userInfo} = useSelector(({user})=>user)
+function AddCardView({ type }) {
+  const { userInfo } = useSelector(({ user }) => user);
   const stripePromise = loadStripe(
     "pk_test_51OJYBTBtvbMCJV4HYgcTe7suuWdRm8p0YqsRVOT7VU8z1CmCeMwK1MSIYRp0NQRaBiH26gE3VgmENFKybIgNJVrd00UGnNavL3"
   );
 
   const dropdownRef = useRef(null);
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO))  || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO))
-  const userId =userInfo?.user_id ? String(userInfo?.user_id) : null|| userData?.user_id ? String(userData?.user_id) : null;
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userId = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || userData?.user_id
+    ? String(userData?.user_id)
+    : null;
   const { getAllSavedCard, setPrefferCard, deleteSavedCard, isLoading } =
     useCommon();
   const [savedCards, setSavedCards] = useState([]);
@@ -77,7 +83,9 @@ function AddCardView({type}) {
   };
 
   const CustomToggle = forwardRef(({ onClick }, ref) => (
-    <span ref={ref} onClick={(e) => {
+    <span
+      ref={ref}
+      onClick={(e) => {
         e.preventDefault();
         onClick(e);
       }}
@@ -109,16 +117,22 @@ function AddCardView({type}) {
     };
 
     checkWindowWidth();
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   return (
     <>
-      <div style={{ width: isMobileWidth ? "100%" : "max-content", fontFamily: "" }}>
+      <div
+        style={{
+          width: isMobileWidth ? "100%" : "max-content",
+          fontFamily: "",
+        }}
+      >
         {/* Payment Methods Header */}
-        <div style={{
+        <div
+          style={{
             display: "flex",
             alignItems: "center",
             justifyContent: isMobileWidth ? "" : "space-between",
@@ -145,11 +159,11 @@ function AddCardView({type}) {
           </span>
         </div>
 
-        {(isMobileWidth  ? (dropdownOpen) : (dropdownOpen)) && (
+        {(isMobileWidth ? dropdownOpen : dropdownOpen) && (
           <div
             style={{
               marginTop: isMobileWidth ? "" : "5px",
-              padding: isMobileWidth ? "" :  "10px",
+              padding: isMobileWidth ? "" : "10px",
               background: isMobileWidth ? "" : "#fff",
               boxShadow: isMobileWidth ? "" : "0px 2px 6px rgba(0, 0, 0, 0.1)",
               position: isMobileWidth ? "" : "absolute",
@@ -157,13 +171,21 @@ function AddCardView({type}) {
               width: isMobileWidth ? "100%" : "380px",
               zIndex: isMobileWidth ? "" : 1000,
               opacity: isMobileWidth ? "1" : dropdownOpen ? 1 : 0,
-              transform: isMobileWidth ? "" : dropdownOpen ? "translateY(0)" : "translateY(-10px)",
-              visibility: isMobileWidth ? "" : dropdownOpen ? "visible" : "hidden",
+              transform: isMobileWidth
+                ? ""
+                : dropdownOpen
+                ? "translateY(0)"
+                : "translateY(-10px)",
+              visibility: isMobileWidth
+                ? ""
+                : dropdownOpen
+                ? "visible"
+                : "hidden",
               height: isMobileWidth ? "" : "200px",
               overflowY: "auto",
-              maxHeight : isMobileWidth ? "200px" : "",
-              border : isMobileWidth ? "1px solid black" : "1px solid #ddd",
-              borderRadius : isMobileWidth ? "10px" : "8px"
+              maxHeight: isMobileWidth ? "200px" : "",
+              border: isMobileWidth ? "1px solid black" : "1px solid #ddd",
+              borderRadius: isMobileWidth ? "10px" : "8px",
             }}
           >
             <Loader visible={isLoading} />
@@ -171,7 +193,8 @@ function AddCardView({type}) {
               <div className="text-center p-2">No saved cards found.</div>
             ) : (
               savedCards.map((card, index) => (
-                <div key={index}
+                <div
+                  key={index}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -192,7 +215,8 @@ function AddCardView({type}) {
                   >
                     <img
                       src="/images/payment-methods/visa.svg"
-                      loading="lazy" alt="Visa"
+                      loading="lazy"
+                      alt="Visa"
                       style={{ width: "30px", height: "auto" }}
                     />
                     <div>
@@ -205,8 +229,13 @@ function AddCardView({type}) {
                       </p>
                     </div>
                     {card.is_preferred && (
-                      <span className="badge  d-flex justify-end align-items-center ms-auto"
-                        style={{ fontWeight: '400', color: 'black', fontSize: '15px' }}
+                      <span
+                        className="badge  d-flex justify-end align-items-center ms-auto"
+                        style={{
+                          fontWeight: "400",
+                          color: "black",
+                          fontSize: "15px",
+                        }}
                       >
                         Preferred
                       </span>
@@ -222,7 +251,7 @@ function AddCardView({type}) {
                       ></Dropdown.Toggle>
                       <Dropdown.Menu>
                         <Dropdown.Item
-                         className="text-black"
+                          className="text-black"
                           onClick={() => {
                             handleSetPreferred(card);
                           }}
@@ -240,34 +269,34 @@ function AddCardView({type}) {
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
-
-
-                  ) : <Dropdown align="end">
-                    <Dropdown.Toggle
-                      variant="link"
-                      className="p-0 border-0"
-                      id="dropdown-custom-components"
-                      as={CustomToggle}
-                    ></Dropdown.Toggle>
-                    <Dropdown.Menu>
-                      {/* <Dropdown.Item
+                  ) : (
+                    <Dropdown align="end">
+                      <Dropdown.Toggle
+                        variant="link"
+                        className="p-0 border-0"
+                        id="dropdown-custom-components"
+                        as={CustomToggle}
+                      ></Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {/* <Dropdown.Item
                           onClick={() => {
                             handleSetPreferred(card);
                           }}
                         >
                           Make as Preferred
                         </Dropdown.Item> */}
-                      <Dropdown.Item
-                        className="text-black"
-                        onClick={() => {
-                          setSelectedCard(card);
-                          setShowDeleteModalCard(true);
-                        }}
-                      >
-                        Remove
-                      </Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>}
+                        <Dropdown.Item
+                          className="text-black"
+                          onClick={() => {
+                            setSelectedCard(card);
+                            setShowDeleteModalCard(true);
+                          }}
+                        >
+                          Remove
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
                 </div>
               ))
             )}
@@ -275,64 +304,66 @@ function AddCardView({type}) {
         )}
       </div>
       {/* Add Card Button */}
-      {(isMobileWidth && type==="guest" ? dropdownOpen : !dropdownOpen ) && 
+      {(isMobileWidth && type === "guest" ? dropdownOpen : !dropdownOpen) && (
         <div style={{ maxWidth: "500px", margin: "8px" }}>
-        <Button
-          onClick={() => {
-            if (window.innerWidth <= 768) {
-              setShowMobileModal(true);   // Open popup for mobile
-            } else {
-              setShowForm(!showForm);     // Keep inline form for web
-            }
-          }}
-
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            backgroundColor: "#fff",
-            color: "black",
-            border: "1px solid #b6b6b8",
-            borderRadius: "20px",
-            padding: "8px 13px",
-            fontSize: "16px",
-            gap: '15px',
-            marginLeft:'-12px'
-            // width: "50%",
-          }}>
-          Add Card
-          <div
+          <Button
+            onClick={() => {
+              if (window.innerWidth <= 768) {
+                setShowMobileModal(true); // Open popup for mobile
+              } else {
+                setShowForm(!showForm); // Keep inline form for web
+              }
+            }}
             style={{
               display: "flex",
-              height: isMobileWidth ? "20px" : "25px",
-              width: isMobileWidth ? "20px" : "25px",
-              borderRadius: "50%",
-              backgroundColor: "#2EE5A1",
-              justifyContent: "center",
+              justifyContent: "space-between",
               alignItems: "center",
+              backgroundColor: "#fff",
+              color: "black",
+              border: "1px solid #b6b6b8",
+              borderRadius: "20px",
+              padding: "8px 13px",
+              fontSize: "16px",
+              gap: "15px",
+              marginLeft: "-12px",
+              // width: "50%",
             }}
-          // onClick={() => setShowForm(!showForm)}
           >
-            <i className="fa-solid fa-plus"></i>
-          </div>
-        </Button>
-
-        {showForm && (
-          <div style={{ display: showForm ? '' : 'none' }}>
-            <div className="m-3 w-100">
-              <Elements stripe={stripePromise}>
-                <CheckOutForm
-                  setRefresh={setRefresh}
-                  setShowForm={setShowForm}
-                />
-              </Elements>
+            Add Card
+            <div
+              style={{
+                display: "flex",
+                height: isMobileWidth ? "20px" : "25px",
+                width: isMobileWidth ? "20px" : "25px",
+                borderRadius: "50%",
+                backgroundColor: "#2EE5A1",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              // onClick={() => setShowForm(!showForm)}
+            >
+              <i className="fa-solid fa-plus"></i>
             </div>
-          </div>
-        )}
-        </div>}
+          </Button>
+
+          {showForm && (
+            <div style={{ display: showForm ? "" : "none" }}>
+              <div className="m-3 w-100">
+                <Elements stripe={stripePromise}>
+                  <CheckOutForm
+                    setRefresh={setRefresh}
+                    setShowForm={setShowForm}
+                  />
+                </Elements>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {showDeleteModalCard && (
-        <div style={{
+        <div
+          style={{
             position: "fixed",
             top: 0,
             left: 0,
@@ -343,16 +374,20 @@ function AddCardView({type}) {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 1050,
-          }} >
-          <div style={{
+          }}
+        >
+          <div
+            style={{
               width: "90%", // Or "100%" if you want
               maxWidth: "400px",
               borderRadius: "13px",
               backgroundColor: "white",
               padding: "20px",
-            }} >
+            }}
+          >
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button onClick={() => setShowDeleteModalCard(false)}
+              <button
+                onClick={() => setShowDeleteModalCard(false)}
                 style={{
                   background: "black",
                   color: "white",
@@ -364,38 +399,50 @@ function AddCardView({type}) {
                   justifyContent: "center",
                   alignItems: "center",
                   cursor: "pointer",
-                }} >
+                }}
+              >
                 x
               </button>
             </div>
             <div style={{ textAlign: "center", padding: "0 20px" }}>
-              <h3 style={{
+              <h3
+                style={{
                   fontWeight: "400",
                   fontSize: "28px",
                   color: "#000000",
                   marginBottom: "10px",
                   fontFamily: "sans-serif poppins",
-                }} >
+                }}
+              >
                 Delete
               </h3>
 
               <div style={{ margin: "20px 0" }}>
-                <img src={vector} loading="lazy" alt="delete" 
+                <img
+                  src={vector}
+                  loading="lazy"
+                  alt="delete"
                   style={{
                     width: "90px",
                     height: "90px",
                     marginBottom: "20px",
-                  }} />
+                  }}
+                />
               </div>
 
-              <p style={{ marginBottom: "30px" }}> Are you sure you want to delete this property? </p>
+              <p style={{ marginBottom: "30px" }}>
+                {" "}
+                Are you sure you want to delete this property?{" "}
+              </p>
 
-              <div style={{
+              <div
+                style={{
                   display: "flex",
                   justifyContent: "center",
                   gap: "15px",
                   marginBottom: "20px",
-                }} >
+                }}
+              >
                 <button
                   onClick={() => {
                     deletePreferredCard(selectedCard);
@@ -408,11 +455,13 @@ function AddCardView({type}) {
                     backgroundColor: "#4AEAB1",
                     color: "#000",
                     cursor: "pointer",
-                  }}>
+                  }}
+                >
                   Yes
                 </button>
 
-                <button onClick={() => setShowDeleteModalCard(false)}
+                <button
+                  onClick={() => setShowDeleteModalCard(false)}
                   style={{
                     padding: "10px 37px",
                     border: "1px solid #4AEAB1",
@@ -420,7 +469,8 @@ function AddCardView({type}) {
                     backgroundColor: "#fff",
                     color: "#000",
                     cursor: "pointer",
-                  }} >
+                  }}
+                >
                   Cancel
                 </button>
               </div>
@@ -442,7 +492,7 @@ function AddCardView({type}) {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 1050,
-            padding:isMobileWidth?"20px":''
+            padding: isMobileWidth ? "20px" : "",
           }}
         >
           <div
@@ -475,35 +525,39 @@ function AddCardView({type}) {
                 x
               </button> */}
 
-                <button
-            // type="button"
-            // className="close"
-                       onClick={() => setShowMobileModal(false)}
-            // aria-label="Close"
-            style={{
-              // position: "absolute",
-              // top: "10px",
-              // right: "10px",
-              background: "#2F3E46",
-              border: "none",
-              fontSize: "18px",
-              cursor: "pointer",
-              color: "white",
-              width: isMobileWidth? "25px" : "35px",
-              height:isMobileWidth? "25px" : "35px",
-              borderRadius: "50%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop:isMobileWidth? "-10px" : ''
-            }}
-          >
-            &times;
-          </button>
+              <button
+                // type="button"
+                // className="close"
+                onClick={() => setShowMobileModal(false)}
+                // aria-label="Close"
+                style={{
+                  // position: "absolute",
+                  // top: "10px",
+                  // right: "10px",
+                  background: "#2F3E46",
+                  border: "none",
+                  fontSize: "18px",
+                  cursor: "pointer",
+                  color: "white",
+                  width: isMobileWidth ? "25px" : "35px",
+                  height: isMobileWidth ? "25px" : "35px",
+                  borderRadius: "50%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: isMobileWidth ? "-10px" : "",
+                }}
+              >
+                &times;
+              </button>
             </div>
 
             <Elements stripe={stripePromise}>
-              <CheckOutForm setRefresh={setRefresh} setShowForm={setShowForm} setShowMobileModal={setShowMobileModal}/>
+              <CheckOutForm
+                setRefresh={setRefresh}
+                setShowForm={setShowForm}
+                setShowMobileModal={setShowMobileModal}
+              />
             </Elements>
           </div>
         </div>

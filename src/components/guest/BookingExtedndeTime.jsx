@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button, Dropdown, Image } from "react-bootstrap";
-import { FaRegClock, FaRegCalendar, FaCheck, FaRegCalendarAlt } from "react-icons/fa";
+import {
+  FaRegClock,
+  FaRegCalendar,
+  FaCheck,
+  FaRegCalendarAlt,
+} from "react-icons/fa";
 import { loadStripe } from "@stripe/stripe-js";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -86,7 +91,7 @@ const BookingExtendedTime = () => {
   const [bookingDate, setBookingDate] = useState(
     checkoutData?.dateSelected || checkoutData?.booking_date
       ? moment(checkoutData?.dateSelected || checkoutData?.booking_date).format(
-       "MMMM DD, YYYY"
+          "MMMM DD, YYYY"
         )
       : ""
   );
@@ -141,7 +146,9 @@ const BookingExtendedTime = () => {
     setOpen2(open2 === id ? null : id);
   };
 
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO))|| JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userId = userData?.user_id;
 
   const service_fee = (13 / 100) * TotalHourprice;
@@ -320,7 +327,7 @@ const BookingExtendedTime = () => {
         }}
       >
         <Loader visible={isLoading} />
-        <Container fluid className="px-md-5 px-3 py-md-4 py-3"   >
+        <Container fluid className="px-md-5 px-3 py-md-4 py-3">
           <Row>
             <Col lg={8} className="pe-lg-4">
               {!isMobileWidth && (
@@ -333,10 +340,10 @@ const BookingExtendedTime = () => {
                           fontSize: "25px",
                           color: "#000000",
                           background: "none",
-                          marginBottom:'16px'
+                          marginBottom: "16px",
                         }}
                       >
-                       <FiArrowLeft
+                        <FiArrowLeft
                           style={{
                             fontWeight: "400",
                             border: "none",
@@ -345,8 +352,8 @@ const BookingExtendedTime = () => {
                             backgroundColor: "black",
                             color: "white",
                             borderRadius: "50%",
-                            padding: "8px", 
-                            boxSizing: "content-box", 
+                            padding: "8px",
+                            boxSizing: "content-box",
                           }}
                         />
                         Booking Time Extension
@@ -397,7 +404,8 @@ const BookingExtendedTime = () => {
                       <img
                         className="chat-right-top-profile-image"
                         src={imageBase + checkoutData?.host_profile_image}
-                        loading="lazy" alt="Host"
+                        loading="lazy"
+                        alt="Host"
                         style={{
                           width: "clamp(50px, 7vw, 60px)",
                           height: "clamp(50px, 7vw, 60px)",
@@ -416,7 +424,8 @@ const BookingExtendedTime = () => {
                       <img
                         className="chat-right-top-batch-image"
                         src="/images/bookings/verify-star.svg"
-                        loading="lazy" alt="Verified"
+                        loading="lazy"
+                        alt="Verified"
                         style={{
                           width: "clamp(14px, 2vw, 16px)",
                           height: "clamp(14px, 2vw, 16px)",
@@ -426,7 +435,8 @@ const BookingExtendedTime = () => {
                       {checkoutData?.is_star_host && (
                         <Image
                           src="/images/locations-grid/profile/batch.svg"
-                          loading="lazy" alt="Batch"
+                          loading="lazy"
+                          alt="Batch"
                           style={{
                             position: "absolute",
                             top: "20px",
@@ -452,7 +462,8 @@ const BookingExtendedTime = () => {
                   >
                     <img
                       src="/images/guides-articles/time.svg"
-                      loading="lazy" alt="Response time"
+                      loading="lazy"
+                      alt="Response time"
                       style={{
                         width: "clamp(14px, 2vw, 16px)",
                         height: "clamp(14px, 2vw, 16px)",
@@ -477,7 +488,8 @@ const BookingExtendedTime = () => {
                           <div className="chat-right-bottom-in-image ">
                             <img
                               src={imageBase + checkoutData?.images?.[0]}
-                              loading="lazy" alt="images"
+                              loading="lazy"
+                              alt="images"
                             />
                           </div>
                           <div className="chat-right-bottom-in-text">
@@ -485,7 +497,8 @@ const BookingExtendedTime = () => {
                             <p>
                               <img
                                 src="/images/locations-grid/star-icon.svg"
-                                loading="lazy" alt="star"
+                                loading="lazy"
+                                alt="star"
                               />{" "}
                               <span>
                                 {" "}
@@ -500,7 +513,8 @@ const BookingExtendedTime = () => {
                             <p>
                               <img
                                 src="/images/locations-grid/location-icon.svg"
-                                loading="lazy" alt=""
+                                loading="lazy"
+                                alt=""
                               />{" "}
                               {checkoutData?.distance_miles} miles away
                             </p>
@@ -549,8 +563,20 @@ const BookingExtendedTime = () => {
               )}
 
               {/* Booking Details */}
-              <h5 style={{ display: "inline-block", fontWeight:'400',color:'black',marginTop:'15px' }}>Booking Details </h5>
-              <div className="d-flex flex-wrap gap-2 mt-2 " style={{marginBottom:'22px'}}>
+              <h5
+                style={{
+                  display: "inline-block",
+                  fontWeight: "400",
+                  color: "black",
+                  marginTop: "15px",
+                }}
+              >
+                Booking Details{" "}
+              </h5>
+              <div
+                className="d-flex flex-wrap gap-2 mt-2 "
+                style={{ marginBottom: "22px" }}
+              >
                 {/* Hours Selection */}
                 <div
                   className="badge bg-light text-dark  rounded-pill d-flex align-items-center border "
@@ -558,7 +584,7 @@ const BookingExtendedTime = () => {
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     width: "fit-content",
                     position: "relative",
-                    padding:'10px'
+                    padding: "10px",
                   }}
                 >
                   {/* <FaClock className="me-2" /> */}
@@ -591,7 +617,7 @@ const BookingExtendedTime = () => {
                       <FaCheck style={{ fontSize: "15px" }} />
                     ) : (
                       // <CgColorPicker style={{ fontSize: "15px" }} />
-                       <i className="fa-solid fa-pen"></i>
+                      <i className="fa-solid fa-pen"></i>
                     )}
                   </span>
                 </div>
@@ -606,16 +632,29 @@ const BookingExtendedTime = () => {
                     fontWeight: "400",
                     fontSize: "15px",
                     marginLeft: "10px",
-                    marginRight:'10px',
-                    color:'black',
-                    padding:'10px'
+                    marginRight: "10px",
+                    color: "black",
+                    padding: "10px",
                   }}
                 >
                   {/* <FaRegCalendarAlt className="me-2" fontSize={20} /> */}
-                  <img src="/images/checkout/checkcalendar.png" loading="lazy" alt="calendarImg" width={20}  style={{marginRight:'10px'}}/>
-                  
+                  <img
+                    src="/images/checkout/checkcalendar.png"
+                    loading="lazy"
+                    alt="calendarImg"
+                    width={20}
+                    style={{ marginRight: "10px" }}
+                  />
 
-                  <span style={{ cursor:"pointer",color:'black',fontWeight:'400'}}>{bookingDate}</span>
+                  <span
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      fontWeight: "400",
+                    }}
+                  >
+                    {bookingDate}
+                  </span>
                 </div>
               </div>
               <hr />
@@ -626,7 +665,9 @@ const BookingExtendedTime = () => {
                   {isMobileWidth ? (
                     <h6>Payment method</h6>
                   ) : (
-                    <h5  style={{color:'black',fontWeight:'400'}}>Payment method</h5>
+                    <h5 style={{ color: "black", fontWeight: "400" }}>
+                      Payment method
+                    </h5>
                   )}
                   <SavedCardsDropdown
                     getStripId={(txt) => setCustomerId(txt)}
@@ -656,10 +697,10 @@ const BookingExtendedTime = () => {
                     </Button>
                     <div
                       style={{
-                          textAlign: "center",
-                          marginBottom: "10px",
-                          fontWeight: "500",
-                          color:'black'
+                        textAlign: "center",
+                        marginBottom: "10px",
+                        fontWeight: "500",
+                        color: "black",
                       }}
                     >
                       -OR-
@@ -684,11 +725,23 @@ const BookingExtendedTime = () => {
                     setSelected((prev) => !prev);
                     setShowDropdown2(true);
                   }}
-                  style={{  fontWeight: 400,backgroundColor:'white',borderColor:'#E5E5E5',fontSize:'16px',color:"black" }}
+                  style={{
+                    fontWeight: 400,
+                    backgroundColor: "white",
+                    borderColor: "#E5E5E5",
+                    fontSize: "16px",
+                    color: "black",
+                  }}
                 >
                   Credit or Debit Card
                   <span style={{ fontSize: "0.8rem" }}>
-                    {selected ? <IoIosArrowUp  style={{ width: "20px", height: "20px" }} /> : <IoIosArrowDown  style={{ width: "20px", height: "20px" }}/>}
+                    {selected ? (
+                      <IoIosArrowUp style={{ width: "20px", height: "20px" }} />
+                    ) : (
+                      <IoIosArrowDown
+                        style={{ width: "20px", height: "20px" }}
+                      />
+                    )}
                   </span>
                 </Button>
 
@@ -733,17 +786,25 @@ const BookingExtendedTime = () => {
                                 <div className="d-flex align-items-center gap-2">
                                   <img
                                     src={visa}
-                                    loading="lazy" alt="Visa"
+                                    loading="lazy"
+                                    alt="Visa"
                                     style={{ width: "32px", height: "22px" }}
                                   />
-                                  <span style={{fontWeight:'400',color:'black'}}>•••• {card.last4}</span>
+                                  <span
+                                    style={{
+                                      fontWeight: "400",
+                                      color: "black",
+                                    }}
+                                  >
+                                    •••• {card.last4}
+                                  </span>
                                 </div>
                                 {card.is_preferred && (
                                   <span
                                     style={{
-                                        fontSize: "14px",
-                                        fontWeight: "400",
-                                        color: "black",
+                                      fontSize: "14px",
+                                      fontWeight: "400",
+                                      color: "black",
                                     }}
                                   >
                                     Preferred
@@ -802,8 +863,10 @@ const BookingExtendedTime = () => {
               <hr />
 
               <div className="mb-4">
-                <h5 style={{fontWeight:'400',color:'black'}}>{isMobileWidth ? "Refund Policies" : "About the Space"}</h5>
-                <p style={{fontSize:'15px'}}>
+                <h5 style={{ fontWeight: "400", color: "black" }}>
+                  {isMobileWidth ? "Refund Policies" : "About the Space"}
+                </h5>
+                <p style={{ fontSize: "15px" }}>
                   {isExpanded ||
                   (checkoutData?.property_description?.length || 0) <= 200
                     ? checkoutData?.property_description
@@ -814,7 +877,7 @@ const BookingExtendedTime = () => {
                   <Button
                     variant="link"
                     className="p-0 text-decoration"
-                    style={{color:'#4AEAB1'}}
+                    style={{ color: "#4AEAB1" }}
                     onClick={() => setIsExpanded(!isExpanded)}
                   >
                     {isExpanded ? "Read Less" : "Read More"}
@@ -832,7 +895,10 @@ const BookingExtendedTime = () => {
               >
                 {/* Host Rules Section */}
                 <div className="container p-">
-                  <h5 className="fw-bold mb-3" style={{fontWeight:'400',color:'black'}}>
+                  <h5
+                    className="fw-bold mb-3"
+                    style={{ fontWeight: "400", color: "black" }}
+                  >
                     {" "}
                     {!isMobileWidth ? "Rules" : "Included in your booking"}
                   </h5>
@@ -851,16 +917,21 @@ const BookingExtendedTime = () => {
                           >
                             <img
                               src="/images/location/included/1.svg"
-                              loading="lazy" alt="Parking Icon"
+                              loading="lazy"
+                              alt="Parking Icon"
                               className="me-2"
                               style={{ width: "20px", height: "20px" }}
                             />
-                            <span  style={{
+                            <span
+                              style={{
                                 display: "inline-block",
                                 fontWeight: "400",
                                 color: "black",
                                 fontSize: "16px",
-                              }}  >Parking</span>
+                              }}
+                            >
+                              Parking
+                            </span>
                             <img
                               src={`/images/dropdown.svg`}
                               alt={`Dropdown Icon`}
@@ -883,8 +954,8 @@ const BookingExtendedTime = () => {
                               backgroundColor: "#F8F9FA",
                               margin: "10px",
                               padding: "10px",
-                              color:'black',
-                              fontSize:'15px',
+                              color: "black",
+                              fontSize: "15px",
                             }}
                           >
                             {checkoutData.parking_rules ||
@@ -907,16 +978,21 @@ const BookingExtendedTime = () => {
                         >
                           <img
                             src="/images/location/included/7.svg"
-                            loading="lazy" alt="Host Rules Icon"
+                            loading="lazy"
+                            alt="Host Rules Icon"
                             className="me-2"
                             style={{ width: "20px", height: "20px" }}
                           />
-                          <span style={{
-                                display: "inline-block",
-                                fontWeight: "400",
-                                color: "black",
-                                fontSize: "16px",
-                              }}>Host rules</span>
+                          <span
+                            style={{
+                              display: "inline-block",
+                              fontWeight: "400",
+                              color: "black",
+                              fontSize: "16px",
+                            }}
+                          >
+                            Host rules
+                          </span>
                           <img
                             src={`/images/dropdown.svg`}
                             alt={`Dropdown Icon`}
@@ -931,12 +1007,12 @@ const BookingExtendedTime = () => {
                         <div
                           className="accordion-body "
                           style={{
-                              borderRadius: "10px",
-                              backgroundColor: "#F8F9FA",
-                              margin: "10px",
-                              padding: "10px",
-                              color:'black',
-                              fontSize:'15px',
+                            borderRadius: "10px",
+                            backgroundColor: "#F8F9FA",
+                            margin: "10px",
+                            padding: "10px",
+                            color: "black",
+                            fontSize: "15px",
                           }}
                         >
                           {checkoutData.host_rules ||
@@ -965,30 +1041,32 @@ const BookingExtendedTime = () => {
                 Confirm &amp; pay
               </Button> */}
 
-                 <Button
-                              // variant="primary"
-                              className="text-black "
-                              style={{
-                                backgroundColor: "#4AEAB1",
-                                border: "none",
-                                borderRadius: "25px",
-                                maxWidth: isMobileWidth ? "250px" : "266px",
-                                margin: "16px 0",
-                                fontSize: isMobileWidth ? "15px !important" : "17px !important",
-                                padding: "10px 25px 10px 25px",
-                                fontWeight:'500'
-                              }}
-                              onClick={handleBooking}
-                            >
-                              Confirm &amp; pay  
-                            </Button>
+              <Button
+                // variant="primary"
+                className="text-black "
+                style={{
+                  backgroundColor: "#4AEAB1",
+                  border: "none",
+                  borderRadius: "25px",
+                  maxWidth: isMobileWidth ? "250px" : "266px",
+                  margin: "16px 0",
+                  fontSize: isMobileWidth
+                    ? "15px !important"
+                    : "17px !important",
+                  padding: "10px 25px 10px 25px",
+                  fontWeight: "500",
+                }}
+                onClick={handleBooking}
+              >
+                Confirm &amp; pay
+              </Button>
             </Col>
 
             {/* Right Column - Summary */}
             {!isMobileWidth && (
-              <Col lg={4} className="ps-lg-4" >
+              <Col lg={4} className="ps-lg-4">
                 <div>
-                  <div style={{ padding: "10px" ,marginTop:'-26px'}}>
+                  <div style={{ padding: "10px", marginTop: "-26px" }}>
                     <div
                       className="chat-right-bottom bg-white"
                       style={{ width: "350px " }}
@@ -997,7 +1075,8 @@ const BookingExtendedTime = () => {
                         <div className="chat-right-bottom-in-image ">
                           <img
                             src={imageBase + checkoutData?.images?.[0]}
-                            loading="lazy" alt="checkout images"
+                            loading="lazy"
+                            alt="checkout images"
                           />
                         </div>
                         <div className="chat-right-bottom-in-text">
@@ -1005,7 +1084,8 @@ const BookingExtendedTime = () => {
                           <p>
                             <img
                               src="/images/locations-grid/star-icon.svg"
-                              loading="lazy" alt="star-icon"
+                              loading="lazy"
+                              alt="star-icon"
                             />{" "}
                             <span>
                               {" "}
@@ -1017,7 +1097,8 @@ const BookingExtendedTime = () => {
                           <p>
                             <img
                               src="/images/locations-grid/location-icon.svg"
-                              loading="lazy" alt="location-icon"
+                              loading="lazy"
+                              alt="location-icon"
                             />{" "}
                             {checkoutData?.distance_miles} miles away
                           </p>
@@ -1084,7 +1165,11 @@ const BookingExtendedTime = () => {
                     style={{ alignItems: "center" }}
                   >
                     <span className="info-wrap">
-                      <img src="/images/create-profile/info.svg" loading="lazy" alt="info" />
+                      <img
+                        src="/images/create-profile/info.svg"
+                        loading="lazy"
+                        alt="info"
+                      />
                       <span className="info-in" style={{ width: "1000%" }}>
                         Your safety and peace of mind are our top priorities.
                         ZYVO is proud to provide comprehensive liability
@@ -1094,7 +1179,8 @@ const BookingExtendedTime = () => {
                     <h2>
                       <img
                         src="/images/location/zyvo-shield.svg"
-                        loading="lazy" alt="zyvo-shield"
+                        loading="lazy"
+                        alt="zyvo-shield"
                       />
                       ZYVO Shield
                     </h2>

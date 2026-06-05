@@ -39,7 +39,6 @@
   margin-block-start: 15px !important;
 }
 
-
 .help-center-mid h2 a {
   display: block;
   margin-block-start: 8px;
@@ -127,7 +126,6 @@
 
 /* Mobile styles for ArticleDetails */
 @media (max-width: 991px) {
-
   /* Header section */
   .explore-title {
     font-size: 24px !important;
@@ -176,7 +174,6 @@
     margin-block-end: 15px !important; */
   }
 
-
   /* Guides grid - SINGLE COLUMN FOR MOBILE ONLY */
   .guides-container {
     display: flex !important;
@@ -198,8 +195,6 @@
     flex-direction: column !important;
   }
 
-
-
   .guide-description {
     font-size: 13px !important;
     line-height: 1.4;
@@ -207,7 +202,6 @@
     text-align: start !important;
     /* padding: 0 10px !important; */
   }
-
 
   /* Remove horizontal rules between items */
   .explore-guides-articles-inner hr {
@@ -337,8 +331,8 @@
   }
 
   /* Create a horizontal container for author and share sections */
-  .row>.author-section,
-  .row>.share-section {
+  .row > .author-section,
+  .row > .share-section {
     inline-size: 50% !important;
     max-inline-size: 50% !important;
     flex: 0 0 50% !important;
@@ -627,7 +621,6 @@
   transition: background-color 0.3s ease;
 }
 
-
 .price-filter-wrapper-input {
   padding: 10px;
   font-size: 14px;
@@ -646,7 +639,7 @@
   margin-block-start: 20px;
   color: #000000;
   font-size: 28px;
-  margin-left: 12px
+  margin-left: 12px;
 }
 
 .property-modal-main-sub-heading {
@@ -654,7 +647,7 @@
   color: #000000;
   font-size: 16px;
   font-weight: 400;
-  margin-left: 12px
+  margin-left: 12px;
 }
 
 .property-modal-radio-switch {
@@ -680,7 +673,6 @@
   inline-size: 100%;
   block-size: auto;
 }
-
 
 .clear-filter,
 .save-continue-btn {
@@ -830,7 +822,7 @@
   }
 
   /* Fix navigation buttons position */
-  .mob-payment-host .col-lg-3.col-md-6>div {
+  .mob-payment-host .col-lg-3.col-md-6 > div {
     margin-inline-start: 0 !important;
     margin-inline-end: 0 !important;
   }
@@ -933,6 +925,8 @@
     min-inline-size: 18% !important;
     text-align: start !important;
     padding-inline-end: 0 !important;
+
+    padding-right: 33px !important;
   }
 
   button.last-check-btn {
@@ -941,7 +935,6 @@
     font-size: 11px;
     inset-inline-end: 20px;
   }
-
 
   .property-modal-main-sub-heading {
     font-size: 14px;
@@ -993,7 +986,6 @@
   }
 }
 
-
 /* -------------------23-01-26-sunil---------------  */
 @media (min-width: 340px) and (max-width: 768px) {
   .complete-your-profile {
@@ -1024,7 +1016,6 @@
       & h2 {
         font-size: 17px;
         font-weight: 400;
-
       }
     }
   }
@@ -1068,8 +1059,6 @@
       }
     }
   }
-
 }
-
 
 /* -------------------23-01-26-sunil---------------  */
