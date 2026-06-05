@@ -731,8 +731,8 @@ function Location() {
                             id="slider"
                             style={{
                               position: "relative",
-                              width: "280px",
-                              height: "280px",
+                              width: "300px",
+                              height: "300px",
                             }}
                           >
                             <img
@@ -744,8 +744,8 @@ function Location() {
                                 top: "50%",
                                 left: "50%",
                                 transform: "translate(-50%, -50%)",
-                                width: "93%",
-                                height: "93%",
+                                width: "80%",
+                                height: "80%",
                                 zIndex: 3,
                                 pointerEvents: "none",
                               }}
@@ -759,8 +759,8 @@ function Location() {
                                 position: "absolute",
                                 top: "auto",
                                 left: "auto",
-                                width: "88%",
-                                height: "88%",
+                                width: "85%",
+                                height: "85%",
                               }}
                             />
                             {/* Centered Hours Value and Label */}
@@ -794,14 +794,14 @@ function Location() {
                                 Hours
                               </div>
                             </div>
-
+                            {/* code commented by rajan */}
                             <div style={{ position: "relative", zIndex: 2 }}>
                               <CircularSlider
                                 min={0}
                                 max={23}
-                                trackSize={40}
-                                progressSize={40}
-                                knobSize={50}
+                                trackSize={42}
+                                progressSize={45}
+                                knobSize={60}
                                 knobColor="#fff"
                                 trackColor="transparent"
                                 progressColorFrom="#4aeab1"
@@ -824,6 +824,79 @@ function Location() {
                                 }}
                               />
                             </div>
+
+                            {/* <div
+                              style={{
+                                position: "relative",
+                                zIndex: 2,
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                backgroundImage: "url('/VectorR(3).png')", // Aapki image ka sahi path daalein
+                                backgroundSize: "contain",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                                width: "300px", // Ghere ko perfect square rakhne ke liye
+                                height: "300px",
+                              }}
+                            >
+                              <CircularSlider
+                                width={280}
+                                min={0}
+                                max={23}
+                                trackSize={40}
+                                progressSize={40}
+                                knobSize={50}
+                                knobColor="#fff"
+                                trackColor="transparent"
+                                progressColorFrom="#4aeab1"
+                                progressColorTo="#4aeab1"
+                                direction={1}
+                                dataIndex={parseInt(
+                                  propertyDetails?.min_booking_hours
+                                )}
+                                label=" "
+                                labelColor="transparent"
+                                valueColor="transparent"
+                                valueFontSize="0rem"
+                                labelFontSize="1rem"
+                                onChange={(value) => {
+                                  setHoursValue(value);
+                                  calculateTotalPrice(
+                                    value,
+                                    parseFloat(propertyDetails?.hourly_rate)
+                                  );
+                                }}
+                              />
+
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  textAlign: "center",
+                                  zIndex: 0,
+                                  pointerEvents: "none", // Taaki click slider pe hi lage
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    fontSize: "2.5rem",
+                                    fontWeight: "bold",
+                                    display: "block",
+                                    color: "#000",
+                                  }}
+                                >
+                                  {hoursValue ||
+                                    parseInt(
+                                      propertyDetails?.min_booking_hours
+                                    )}
+                                </span>
+                                <span
+                                  style={{ fontSize: "1.2rem", color: "#000" }}
+                                >
+                                  Hours
+                                </span>
+                              </div>
+                            </div> */}
                           </div>
 
                           <div className="hour-slider-in">
