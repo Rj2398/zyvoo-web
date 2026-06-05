@@ -731,8 +731,8 @@ function Location() {
                             id="slider"
                             style={{
                               position: "relative",
-                              width: "280px",
-                              height: "280px",
+                              width: "283px",
+                              height: "283px",
                             }}
                           >
                             <img
@@ -744,8 +744,8 @@ function Location() {
                                 top: "50%",
                                 left: "50%",
                                 transform: "translate(-50%, -50%)",
-                                width: "93%",
-                                height: "93%",
+                                width: "88%",
+                                height: "88%",
                                 zIndex: 3,
                                 pointerEvents: "none",
                               }}
@@ -759,8 +759,8 @@ function Location() {
                                 position: "absolute",
                                 top: "auto",
                                 left: "auto",
-                                width: "88%",
-                                height: "88%",
+                                width: "86%",
+                                height: "86%",
                               }}
                             />
                             {/* Centered Hours Value and Label */}
@@ -799,9 +799,9 @@ function Location() {
                               <CircularSlider
                                 min={0}
                                 max={23}
-                                trackSize={40}
-                                progressSize={40}
-                                knobSize={40}
+                                trackSize={45}
+                                progressSize={45}
+                                knobSize={50}
                                 knobColor="#fff"
                                 trackColor="transparent"
                                 progressColorFrom="#4aeab1"
