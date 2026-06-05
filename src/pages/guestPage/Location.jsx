@@ -8,7 +8,7 @@ import LocationReviewStars from "../../components/guest/LocationReviewStars";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import { DayPicker } from "react-day-picker";
 import main from "../.././assets/gallery/Group (2).png";
-import dotted from "../.././assets/gallery/Vector (1).png";
+import dotted from "../.././assets/gallery/vector_4.png";
 import { Tab } from "bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -759,8 +759,8 @@ function Location() {
                                 position: "absolute",
                                 top: "auto",
                                 left: "auto",
-                                width: "90%",
-                                height: "90%",
+                                width: "88%",
+                                height: "88%",
                               }}
                             />
                             {/* Centered Hours Value and Label */}
@@ -801,7 +801,7 @@ function Location() {
                                 max={23}
                                 trackSize={40}
                                 progressSize={40}
-                                knobSize={40}
+                                knobSize={50}
                                 knobColor="#fff"
                                 trackColor="transparent"
                                 progressColorFrom="#4aeab1"
