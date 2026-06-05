@@ -623,6 +623,7 @@
 
 .price-filter-wrapper-input {
   padding: 10px;
+  margin-right: -7px;
   font-size: 14px;
   inline-size: 12%;
   block-size: 40px;
