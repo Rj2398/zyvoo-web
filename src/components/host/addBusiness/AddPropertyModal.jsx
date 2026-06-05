@@ -8,7 +8,6 @@ import GalleryLocation from "./Gallery_location";
 import useHome from "../../../hooks/host/useHome";
 import { setAddnewPropertyState } from "../../../store/slices/hostuserSlice";
 
-
 function AddPropertyModal(props) {
   const ShowData = useSelector((state) => state?.hostuser?.showNewProperty);
   const dispatch = useDispatch();
@@ -23,9 +22,9 @@ function AddPropertyModal(props) {
     };
 
     checkWindowWidth(); // run on mount
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   const propertyID = props?.property_id;
@@ -60,11 +59,17 @@ function AddPropertyModal(props) {
 
   return (
     <>
-      <Modal backdrop={"static"} {...props} size="lg" centered id="location-modal"
-        aria-labelledby="contained-modal-title-vcenter" style={{ zIndex: 10000 }}
+      <Modal
+        backdrop={"static"}
+        {...props}
+        size="lg"
+        centered
+        id="location-modal"
+        aria-labelledby="contained-modal-title-vcenter"
+        style={{ zIndex: 10000 }}
         dialogClassName="custom-modal custom-modal-css"
       >
-        <Modal.Body className="dialogue-modal d" >
+        <Modal.Body className="dialogue-modal d">
           <style>
             {` .dialogue-modal {
                   border-radius: 30px;
@@ -75,58 +80,75 @@ function AddPropertyModal(props) {
                   font-size: 14px; 
                   color: black;
                   line-height: 1.6;
-                }`
-            }
+                }`}
           </style>
 
           {!isMobileWidth && (
             <>
-              <div style={{ display: "flex", justifyContent: "flex-end", }} >
-                <button onClick={() => {
-                  setPropertyData(null);
-                  props.onHide();
-                  dispatch(setAddnewPropertyState(false));
-                  setActiveTab("home_setup");
-                }}
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  onClick={() => {
+                    setPropertyData(null);
+                    props.onHide();
+                    dispatch(setAddnewPropertyState(false));
+                    setActiveTab("home_setup");
+                  }}
                   style={{
                     background: "transparent",
                     border: "none",
                     fontSize: "20px",
                     cursor: "pointer",
-                    background:'#3A4B4C',
-                    width:'30px',
-                    height:'30px',
-                    borderRadius:'50%',
-                    color:'#fff'
-                  }} >
+                    background: "#3A4B4C",
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "50%",
+                    color: "#fff",
+                  }}
+                >
                   &times;
                 </button>
               </div>
 
-              <h4 className="property-modal-main-heading"> Manage your place </h4>
-              <h6 className="property-modal-main-sub-heading"> Setup places, availability, prices and more. </h6>
+              <h4 className="property-modal-main-heading">
+                {" "}
+                Manage your place{" "}
+              </h4>
+              <h6 className="property-modal-main-sub-heading">
+                {" "}
+                Setup places, availability, prices and more.{" "}
+              </h6>
 
-              <div className="property-modal-radio-switch" >
-                {[{ key: "home_setup", label: "Home Setup" },
-                { key: "gallery_location", label: "Gallery & Location" },
-                { key: "price_availability", label: "Price and Availability" },
+              <div className="property-modal-radio-switch">
+                {[
+                  { key: "home_setup", label: "Home Setup" },
+                  { key: "gallery_location", label: "Gallery & Location" },
+                  {
+                    key: "price_availability",
+                    label: "Price and Availability",
+                  },
                 ].map(({ key, label }) => (
-                  <button key={key} disabled className="property-modal-radio-switch-btn"
+                  <button
+                    key={key}
+                    disabled
+                    className="property-modal-radio-switch-btn"
                     onClick={() => handleTabChange(key)}
                     style={{
-                      backgroundColor: activeTab === key ? "#FFFFFF" : "transparent",
+                      backgroundColor:
+                        activeTab === key ? "#FFFFFF" : "transparent",
                       color: activeTab === key ? "#000000" : "#000",
-                      border: activeTab === key ? "1px solid #FFFFFF" : "2px solid transparent",
-                      fontWeight:activeTab===key?"500":"400",
-                    }}>
+                      border:
+                        activeTab === key
+                          ? "1px solid #FFFFFF"
+                          : "2px solid transparent",
+                      fontWeight: activeTab === key ? "500" : "400",
+                    }}
+                  >
                     {label}
                   </button>
                 ))}
               </div>
             </>
           )}
-
-
 
           {/* code for add modal */}
           {activeTab === "home_setup" && (
@@ -183,4 +205,3 @@ function AddPropertyModal(props) {
 }
 
 export default AddPropertyModal;
-

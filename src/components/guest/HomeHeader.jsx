@@ -35,7 +35,7 @@ import useCommon from "../../hooks/useCommon";
 import { useDispatch, useSelector } from "react-redux";
 import RegisterModal from "./authModalGuest/RegisterModal";
 import main from "../../assets/gallery/Group (2).png";
-import dotted from "../../assets/gallery/Vector (1).png";
+import dotted from "../../assets/gallery/vector_4.png";
 import { toast } from "react-toastify";
 import moment from "moment";
 import useChat from "../../hooks/host/useChat";
@@ -3051,8 +3051,8 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                             position: "absolute",
                             top: "auto",
                             left: "auto",
-                            width: "95%",
-                            height: "95%",
+                            width: "90%",
+                            height: "90%",
                             zIndex: 1,
                           }}
                         />
@@ -4148,7 +4148,8 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                                     cx="15"
                                     cy="15"
                                     r="15"
-                                    fill="#50E3C2"
+                                    // fill="#50E3C2"
+                                    fill="#E5E5E5"
                                   />
                                   <line
                                     x1="10"
@@ -4176,7 +4177,8 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                                     cx="15"
                                     cy="15"
                                     r="15"
-                                    fill="#50E3C2"
+                                    // fill="#50E3C2"
+                                    fill="#E5E5E5"
                                   />
                                   <polyline
                                     points="21 10 13 19 9 15"

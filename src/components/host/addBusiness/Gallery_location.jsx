@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Button, Form, Alert, InputGroup, } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Form,
+  Alert,
+  InputGroup,
+} from "react-bootstrap";
 
 import GoogleMapReact from "google-map-react";
 import markerImage from "../../../assets/marker1.png";
@@ -15,7 +23,13 @@ import Autocomplete from "react-google-autocomplete";
 import { Link } from "react-router-dom";
 import countries from "world-countries";
 
-const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack, activeTab }) => {
+const GalleryLocation = ({
+  switchToAddProperty,
+  propertyDataa,
+  isEdited,
+  onBack,
+  activeTab,
+}) => {
   const [propertyData, setPropertyData] = useState(propertyDataa);
   const [GoogleApi, setGoogleAple] = useState(null);
 
@@ -32,13 +46,16 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
   const [displayImg, setDisplayImg] = useState(
     Array.isArray(propertyData?.property_images)
       ? propertyData?.property_images.map((img) => ({
-        id: img.id,
-        image_url: `${imageBase}${img.image_url}`,
-      }))
+          id: img.id,
+          image_url: `${imageBase}${img.image_url}`,
+        }))
       : []
   );
 
-  const [location, setLocation] = useState({ lat: Number(propertyDataa?.latitude) ?? null, lng: Number(propertyDataa?.longitude) ?? null });
+  const [location, setLocation] = useState({
+    lat: Number(propertyDataa?.latitude) ?? null,
+    lng: Number(propertyDataa?.longitude) ?? null,
+  });
   const [address, setAddress] = useState("");
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
@@ -48,12 +65,12 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
         : "",
     description:
       propertyData?.property_description != null &&
-        propertyData?.property_description !== undefined
+      propertyData?.property_description !== undefined
         ? propertyData?.property_description
         : "",
     street:
       propertyData?.street_address != null &&
-        propertyData?.street_address !== undefined
+      propertyData?.street_address !== undefined
         ? propertyData?.street_address
         : "",
     city:
@@ -74,7 +91,7 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
         : "",
     parking_rules:
       propertyData?.parking_rules != null &&
-        propertyData?.parking_rules !== undefined
+      propertyData?.parking_rules !== undefined
         ? propertyData?.parking_rules
         : "",
     host_rules:
@@ -109,34 +126,31 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
   //   }
   // };
 
-
-
-
   const handleImageUpload = (event) => {
-  const files = Array.from(event.target.files); // convert FileList to array
-  const totalImages = images.length + displayImg.length + files.length;
+    const files = Array.from(event.target.files); // convert FileList to array
+    const totalImages = images.length + displayImg.length + files.length;
 
-  if (totalImages > 5) {
-    toast.error("You can only upload up to five images");
-    return;
-  }
+    if (totalImages > 5) {
+      toast.error("You can only upload up to five images");
+      return;
+    }
 
-  files.forEach((file) => {
-    const reader = new FileReader();
+    files.forEach((file) => {
+      const reader = new FileReader();
 
-    reader.onloadend = () => {
-      const base64String = reader.result;
+      reader.onloadend = () => {
+        const base64String = reader.result;
 
-      setImages((prevImages) => [...prevImages, base64String]);
-      setDisplayImg((prevImages) => [
-        ...prevImages,
-        { id: null, image_url: base64String },
-      ]);
-    };
+        setImages((prevImages) => [...prevImages, base64String]);
+        setDisplayImg((prevImages) => [
+          ...prevImages,
+          { id: null, image_url: base64String },
+        ]);
+      };
 
-    reader.readAsDataURL(file);
-  });
-};
+      reader.readAsDataURL(file);
+    });
+  };
 
   useEffect(() => {
     if (!propertyData?.latitude) {
@@ -239,14 +253,17 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
       });
       flag = false;
     }
-    if (images.length === 0 && (!propertyData?.property_images || propertyData?.property_images.length === 0)) {
+    if (
+      images.length === 0 &&
+      (!propertyData?.property_images ||
+        propertyData?.property_images.length === 0)
+    ) {
       toast.error("Please select at least one image", {
         position: "top-right",
         autoClose: 3000,
       });
       flag = false;
     }
-
 
     // my code
     if (images.length > 5) {
@@ -306,10 +323,8 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
     let stateWithZip = parts.length > 1 ? parts[parts.length - 2] : "";
     const city = parts.length > 2 ? parts[parts.length - 3] : "";
 
-
     const zipMatch = stateWithZip.match(/\d{4,}/);
     const zipCode = zipMatch ? zipMatch[0] : "";
-
 
     const state = zipCode
       ? stateWithZip.replace(zipCode, "").trim()
@@ -388,18 +403,25 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
     };
 
     checkWindowWidth();
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
-  }, [])
+    return () => window.removeEventListener("resize", checkWindowWidth);
+  }, []);
 
   if (!isScriptLoaded) {
     return <div>Loading maps...</div>;
   }
 
   return (
-
-    <Container className="mt-lg-4" style={{ alignItems: "center", marginLeft: "0px", padding: isMobileWidth ? "0 7px 0 7px " : "", marginRight: isMobileWidth ? "0px" : "20px"  }}>
+    <Container
+      className="mt-lg-4"
+      style={{
+        alignItems: "center",
+        marginLeft: "0px",
+        padding: isMobileWidth ? "0 7px 0 7px " : "",
+        marginRight: isMobileWidth ? "0px" : "20px",
+      }}
+    >
       {/* Gallery Section */}
       {isMobileWidth && (
         <>
@@ -413,29 +435,34 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
                     </Link> */}
 
                     <button
-                    onClick={() => switchToAddProperty("home_setup")}
-                       className="mob-back-btn"
-                       style={{
-                        marginLeft:'-8px'
-                       }}
+                      onClick={() => switchToAddProperty("home_setup")}
+                      className="mob-back-btn"
+                      style={{
+                        marginLeft: "-8px",
+                      }}
                     >
-                      <i className="fa-regular fa-arrow-left"  style={{ textAlign: "center", appearance: "none",         
-                              WebkitAppearance: "none",    
-                              color: "black", }}></i>
+                      <i
+                        className="fa-regular fa-arrow-left"
+                        style={{
+                          textAlign: "center",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          color: "black",
+                        }}
+                      ></i>
                     </button>
                   </div>
                 </div>
               </div>
-
-
             </div>
 
-            <Button className="save-continue-btn"
+            <Button
+              className="save-continue-btn"
               style={{
                 backgroundColor: "#4AEAB1",
                 borderColor: "#4AEAB1",
                 fontWeight: isMobileWidth ? "300" : "500",
-                fontSize : isMobileWidth ? "14px" : "",
+                fontSize: isMobileWidth ? "14px" : "",
                 color: "black",
                 borderRadius: "40px",
               }}
@@ -446,43 +473,86 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           </div>
         </>
       )}
-      
-  
       {isMobileWidth && (
         <>
+          <hr
+            style={{
+              borderColor: "1px soild rgb(187 166 163)",
+              width: "calc(100% + 56px)",
+              marginLeft: "-28px",
+            }}
+          />
+          <h4
+            className="property-modal-main-heading"
+            style={{ marginLeft: isMobileWidth && "0px" }}
+          >
+            {" "}
+            Manage your place{" "}
+          </h4>
+          <h6
+            className="property-modal-main-sub-heading"
+            style={{ marginLeft: isMobileWidth && "0px" }}
+          >
+            {" "}
+            Setup places, availability, prices and more.{" "}
+          </h6>
 
-         <hr style={{borderColor: '1px soild rgb(187 166 163)',width: 'calc(100% + 56px)',marginLeft: '-28px'}}/>
-          <h4 className="property-modal-main-heading" style={{marginLeft:isMobileWidth && '0px'}}> Manage your place </h4>
-          <h6 className="property-modal-main-sub-heading" style={{marginLeft:isMobileWidth && '0px'}}> Setup places, availability, prices and more. </h6>
-
-          <div className="property-modal-radio-switch" >
-            {[{ key: "home_setup", label: "Home Setup" },
-            { key: "gallery_location", label: "Gallery & Location" },
-            { key: "price_availability", label: "Price and Availability" },
+          <div className="property-modal-radio-switch">
+            {[
+              { key: "home_setup", label: "Home Setup" },
+              { key: "gallery_location", label: "Gallery & Location" },
+              { key: "price_availability", label: "Price and Availability" },
             ].map(({ key, label }) => (
-              <button key={key} disabled className="property-modal-radio-switch-btn"
+              <button
+                key={key}
+                disabled
+                className="property-modal-radio-switch-btn"
                 onClick={() => switchToAddProperty(key)}
                 style={{
-                  backgroundColor: activeTab === key ? "#FFFFFF" : "transparent",
+                  backgroundColor:
+                    activeTab === key ? "#FFFFFF" : "transparent",
                   color: activeTab === key ? "#000000" : "#000",
-                  border: activeTab === key ? "1px solid #FFFFFF" : "2px solid transparent",
-                }}>
+                  border:
+                    activeTab === key
+                      ? "1px solid #FFFFFF"
+                      : "2px solid transparent",
+                }}
+              >
                 {label}
               </button>
             ))}
           </div>
         </>
       )}
- <hr style={{borderColor: '1px soild rgb(187 166 163)',width: 'calc(100% + 56px)',marginLeft: '-28px'}}/>
-      <h4  className="heading-title">Gallery</h4>
+      <hr
+        style={{
+          borderColor: "1px soild rgb(187 166 163)",
+          width: "calc(100% + 56px)",
+          marginLeft: "-28px",
+        }}
+      />
+      <h4 className="heading-title">Gallery</h4>
       <Row className="ms-0">
         {displayImg.map((img, index) => (
-          <Col key={index} xs={3} className="position-relative p-0 uploaded-image me-2 me-lg-3 mb-3"
-            style={{ width: isMobileWidth ? "82px" : "100px", height:  isMobileWidth ? "80px" : "100px" }}
+          <Col
+            key={index}
+            xs={3}
+            className="position-relative p-0 uploaded-image me-2 me-lg-3 mb-3"
+            style={{
+              width: isMobileWidth ? "82px" : "100px",
+              height: isMobileWidth ? "80px" : "100px",
+            }}
           >
             <div style={{ width: "100%", height: "100%" }}>
-              <img src={img?.image_url != null && img?.image_url !== undefined ? img?.image_url : img}
-                loading="lazy" alt="Selected" className="img-fluid rounded border"
+              <img
+                src={
+                  img?.image_url != null && img?.image_url !== undefined
+                    ? img?.image_url
+                    : img
+                }
+                loading="lazy"
+                alt="Selected"
+                className="img-fluid rounded border"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }} // Set fixed size
               />
             </div>
@@ -497,50 +567,46 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           </Col>
         ))}
 
-
         <Col xs={2} className="ps-0">
-          {(displayImg?.length < 5) && <label
-            className="d-flex justify-content-center align-items-center rounded"
-            style={{
-              width: isMobileWidth?"80px":"100px",
-              height: isMobileWidth?"80px":"100px",
-              cursor: "pointer",
-              border: "1px dashed grey",
-              flexDirection: "column",
-              color: "#ccc",
-              gap: "4px",
-              fontWeight: "500",
-            }}
-          >
-
-            <i
-              className="fa-solid fa-circle-plus"
-              style={{ fontSize: "21px" }}
-            ></i>
-            Add More
-            <input
-              type="file"
-              accept="image/*"
+          {displayImg?.length < 5 && (
+            <label
+              className="d-flex justify-content-center align-items-center rounded"
+              style={{
+                width: isMobileWidth ? "80px" : "100px",
+                height: isMobileWidth ? "80px" : "100px",
+                cursor: "pointer",
+                border: "1px dashed grey",
+                flexDirection: "column",
+                color: "#ccc",
+                gap: "4px",
+                fontWeight: "500",
+              }}
+            >
+              <i
+                className="fa-solid fa-circle-plus"
+                style={{ fontSize: "21px" }}
+              ></i>
+              Add More
+              <input
+                type="file"
+                accept="image/*"
                 multiple
-              onChange={handleImageUpload}
-              style={{ display: "none", border: "1px dashed grey" }}
-            />
-          </label>}
+                onChange={handleImageUpload}
+                style={{ display: "none", border: "1px dashed grey" }}
+              />
+            </label>
+          )}
         </Col>
       </Row>
-       
-
       <hr
-  style={{
-    borderColor: '1px soild rgb(187 166 163)',
-    width: 'calc(100% + 56px)',
-    marginLeft: '-28px'
-  }}
-/>
-
-
+        style={{
+          borderColor: "1px soild rgb(187 166 163)",
+          width: "calc(100% + 56px)",
+          marginLeft: "-28px",
+        }}
+      />
       {/* About the Space Section */}
-      <h4  className="heading-title">About the Space</h4>
+      <h4 className="heading-title">About the Space</h4>
       <Form.Control
         type="text"
         name="title"
@@ -555,10 +621,9 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           border: "1px solid #B1B1B1",
           padding: "12px",
           color: "black",
-          fontSize:'15px'
+          fontSize: "15px",
         }}
       />
-
       <style>
         {`
     .custom-input::placeholder {
@@ -583,11 +648,9 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           border: "1px solid #B1B1B1",
           padding: "12px",
           color: "black",
-          fontSize:'15px',
-         
+          fontSize: "15px",
         }}
       />
-
       <style>
         {`
     .custom-input::placeholder {
@@ -599,8 +662,17 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
       </style>
       {errors.description && (
         <Alert variant="danger">{errors.description}</Alert>
-      )}  <hr style={{borderColor: '1px soild rgb(187 166 163)',width: 'calc(100% + 56px)',marginLeft: '-28px',marginTop:'25px', marginBottom:'25px'}}/>   
-      <h4  className="heading-title">Parking Rules</h4>
+      )}{" "}
+      <hr
+        style={{
+          borderColor: "1px soild rgb(187 166 163)",
+          width: "calc(100% + 56px)",
+          marginLeft: "-28px",
+          marginTop: "25px",
+          marginBottom: "25px",
+        }}
+      />
+      <h4 className="heading-title">Parking Rules</h4>
       <Form.Control
         as="textarea"
         name="parking_rules"
@@ -615,10 +687,9 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           border: "1px solid #B1B1B1",
           padding: "12px",
           color: "black",
-          fontSize:'15px'
+          fontSize: "15px",
         }}
       />
-
       <style>
         {`
     .custom-input::placeholder {
@@ -631,8 +702,16 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
       {errors.parking_rules && (
         <Alert variant="danger">{errors.parking_rules}</Alert>
       )}
-    <hr style={{borderColor: '1px soild rgb(187 166 163)',width: 'calc(100% + 56px)',marginLeft: '-28px',marginTop:'25px', marginBottom:'25px'}}/>
-      <h4  className="heading-title">Host Rules</h4>
+      <hr
+        style={{
+          borderColor: "1px soild rgb(187 166 163)",
+          width: "calc(100% + 56px)",
+          marginLeft: "-28px",
+          marginTop: "25px",
+          marginBottom: "25px",
+        }}
+      />
+      <h4 className="heading-title">Host Rules</h4>
       <Form.Control
         as="textarea"
         name="host_rules"
@@ -647,10 +726,9 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           border: "1px solid #B1B1B1",
           padding: "12px",
           color: "black",
-          fontSize:'15px'
+          fontSize: "15px",
         }}
       />
-
       <style>
         {`
         .custom-input::placeholder {
@@ -660,16 +738,15 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
       </style>
       {errors.host_rules && <Alert variant="danger">{errors.host_rules}</Alert>}
       {/* Address Section */}
-             <hr
-  style={{
-    borderColor: '1px soild rgb(187 166 163)',
-    width: 'calc(100% + 56px)',
-    marginLeft: '-28px'
-  }}
-/>
+      <hr
+        style={{
+          borderColor: "1px soild rgb(187 166 163)",
+          width: "calc(100% + 56px)",
+          marginLeft: "-28px",
+        }}
+      />
       <h4 className="mt-lg-4  heading-title">Address</h4>
-
-         <div
+      <div
         style={{
           // marginRight: "75px",
           position: "relative",
@@ -677,8 +754,8 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           width: "100%",
         }}
       >
-     <InputGroup>
-            {/* <Form.Control
+        <InputGroup>
+          {/* <Form.Control
         type="hidden"
         name="street"
         value={formData.street||street}
@@ -700,8 +777,8 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
         }}
       /> */}
 
-      <style>
-        {`
+          <style>
+            {`
           .custom-input::placeholder {
             color: black;
           }
@@ -709,101 +786,99 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
             margin-bottom:10px;
           }
         `}
-      </style>
+          </style>
 
-<Autocomplete
-  apiKey={GoogleApi}
-  onPlaceSelected={(place) => {
-    try {
-      if (!place?.address_components) {
-        console.error("No place details available");
-        return;
-      }
+          <Autocomplete
+            apiKey={GoogleApi}
+            onPlaceSelected={(place) => {
+              try {
+                if (!place?.address_components) {
+                  console.error("No place details available");
+                  return;
+                }
 
-      const components = place.address_components;
+                const components = place.address_components;
 
-      const streetNumber = components.find(c =>
-        c.types.includes("street_number")
-      )?.long_name || "";
+                const streetNumber =
+                  components.find((c) => c.types.includes("street_number"))
+                    ?.long_name || "";
 
-      const route = components.find(c =>
-        c.types.includes("route")
-      )?.long_name || "";
+                const route =
+                  components.find((c) => c.types.includes("route"))
+                    ?.long_name || "";
 
-      const city = components.find(c =>
-        c.types.includes("locality")
-      )?.long_name || "";
+                const city =
+                  components.find((c) => c.types.includes("locality"))
+                    ?.long_name || "";
 
-      const stateName = components.find(c =>
-        c.types.includes("administrative_area_level_1")
-      )?.short_name || "";
+                const stateName =
+                  components.find((c) =>
+                    c.types.includes("administrative_area_level_1")
+                  )?.short_name || "";
 
-      const postalCode = components.find(c =>
-        c.types.includes("postal_code")
-      )?.long_name || "";
+                const postalCode =
+                  components.find((c) => c.types.includes("postal_code"))
+                    ?.long_name || "";
 
-      const countryName = components.find(c =>
-        c.types.includes("country")
-      )?.long_name || "";
+                const countryName =
+                  components.find((c) => c.types.includes("country"))
+                    ?.long_name || "";
 
-      // Build street & full address including country
-      const street = `${streetNumber} ${route}`.trim();
-      const fullAddress = `${street}, ${city}, ${stateName} ${postalCode}, ${countryName}`.trim();
+                // Build street & full address including country
+                const street = `${streetNumber} ${route}`.trim();
+                const fullAddress =
+                  `${street}, ${city}, ${stateName} ${postalCode}, ${countryName}`.trim();
 
-      // Update local states
-      setStreet(street);
-      setAddress(fullAddress);
+                // Update local states
+                setStreet(street);
+                setAddress(fullAddress);
 
-      // Update form data
-      setFormData(prev => ({
-        ...prev,
-        street,
-        city,
-        state: stateName,
-        country: countryName,
-        zipCode: postalCode,
-      }));
+                // Update form data
+                setFormData((prev) => ({
+                  ...prev,
+                  street,
+                  city,
+                  state: stateName,
+                  country: countryName,
+                  zipCode: postalCode,
+                }));
 
-      // Update location if available
-      if (place.geometry?.location) {
-        setLocation({
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
-        });
-      }
-
-    } catch (error) {
-      console.error("Error handling place selection:", error);
-    }
-  }}
-  options={{
-    types: ["address"], // full street addresses
-    fields: ["formatted_address", "address_components", "geometry"],
-  }}
-  value={formData.street} // ✅ just use formData.street
-  placeholder="Street Address"
-  className="google-autocomplete custom_input"
-  onChange={(e) => {
-    const value = e.target.value;
-    setStreet(value);
-    setFormData(prev => ({ ...prev, street: value }));
-  }}
-  style={{
-    width: "100%",
-    border: "1px solid #B1B1B1",
-    padding: "12px",
-    color: "black",
-    borderRadius: "30px",
-    fontSize: "15px",
-    marginBottom: "10px",
-  }}
-/>
-
-
-</InputGroup>
-</div>
-    
-{      console.log(formData)}
+                // Update location if available
+                if (place.geometry?.location) {
+                  setLocation({
+                    lat: place.geometry.location.lat(),
+                    lng: place.geometry.location.lng(),
+                  });
+                }
+              } catch (error) {
+                console.error("Error handling place selection:", error);
+              }
+            }}
+            options={{
+              types: ["address"], // full street addresses
+              fields: ["formatted_address", "address_components", "geometry"],
+            }}
+            value={formData.street} // ✅ just use formData.street
+            placeholder="Street Address"
+            className="google-autocomplete custom_input"
+            onChange={(e) => {
+              const value = e.target.value;
+              setStreet(value);
+              setFormData((prev) => ({ ...prev, street: value }));
+            }}
+            style={{
+              width: "100%",
+              border: "1px solid #B1B1B1",
+              padding: "12px",
+              color: "black",
+              borderRadius: "30px",
+              fontSize: "15px",
+              marginBottom: "10px",
+            }}
+          />
+        </InputGroup>
+      </div>
+      {console.log(formData)}
       {errors.street && <Alert variant="danger">{errors.street}</Alert>}
       {/* <div
         style={{
@@ -813,49 +888,47 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           width: "100%",
         }}
       > */}
-        {/* <InputGroup> */}
-          {/* Visible Input Box */}
-          <Form.Control
-            // type="hidden"
-            name="city"
-            // value={formData.city || city}
-            // onChange={(e) => {
-            //   setCity(e.target.value);
-            //   setFormData((prev) => ({ ...prev, city: e.target.value })); // Update formData
-            // }}
+      {/* <InputGroup> */}
+      {/* Visible Input Box */}
+      <Form.Control
+        // type="hidden"
+        name="city"
+        // value={formData.city || city}
+        // onChange={(e) => {
+        //   setCity(e.target.value);
+        //   setFormData((prev) => ({ ...prev, city: e.target.value })); // Update formData
+        // }}
 
-             value={formData.city}
-             onChange={handleChange}
-             placeholder="City"
-             className="custom-input"
-             style={{
-                width: "100%",
-                border: "1px solid #B1B1B1",
-                padding: "12px",
-                color: "black",
-                borderRadius: "30px",
-                fontSize:'15px',
-                marginBottom:'20px',
-                position: "relative",
-            }}
-          />
-
-          <style>
-            {`
+        value={formData.city}
+        onChange={handleChange}
+        placeholder="City"
+        className="custom-input"
+        style={{
+          width: "100%",
+          border: "1px solid #B1B1B1",
+          padding: "12px",
+          color: "black",
+          borderRadius: "30px",
+          fontSize: "15px",
+          marginBottom: "20px",
+          position: "relative",
+        }}
+      />
+      <style>
+        {`
               .custom-input::placeholder {
                 color: black;
               }
             `}
-          </style>
-
-          <style>
-            {`
+      </style>
+      <style>
+        {`
               .custom-input::placeholder {
                 color: black;
               }
             `}
-          </style>
-        {/* </InputGroup> */}
+      </style>
+      {/* </InputGroup> */}
       {/* </div> */}
       {errors.city && <Alert variant="danger">{errors.city}</Alert>}
       <div className={isMobileWidth ? "" : "row"}>
@@ -867,14 +940,14 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
             onChange={handleChange}
             placeholder="Zip Code"
             className="custom-input"
-        style={{
-          width: "100%",
-          border: "1px solid #B1B1B1",
-          padding: "12px",
-          color: "black",
-          borderRadius: "30px",
-          fontSize:'15px',
-          marginBottom:'15px'
+            style={{
+              width: "100%",
+              border: "1px solid #B1B1B1",
+              padding: "12px",
+              color: "black",
+              borderRadius: "30px",
+              fontSize: "15px",
+              marginBottom: "15px",
             }}
           />
 
@@ -900,13 +973,13 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
             placeholder="Country"
             className="custom-input"
             style={{
-           width: "100%",
-          border: "1px solid #B1B1B1",
-          padding: "12px",
-          color: "black",
-          borderRadius: "30px",
-          fontSize:'15px',
-          marginBottom:'15px'
+              width: "100%",
+              border: "1px solid #B1B1B1",
+              padding: "12px",
+              color: "black",
+              borderRadius: "30px",
+              fontSize: "15px",
+              marginBottom: "15px",
             }}
           />
 
@@ -924,7 +997,7 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           {errors.country && <Alert variant="danger">{errors.country}</Alert>}
         </Col>
 
-        <Col >
+        <Col>
           <Form.Control
             type="text"
             name="state"
@@ -933,13 +1006,13 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
             placeholder="State"
             className="custom-input"
             style={{
-          width: "100%",
-          border: "1px solid #B1B1B1",
-          padding: "12px",
-          color: "black",
-          borderRadius: "30px",
-          fontSize:'15px',
-          marginBottom:'15px'
+              width: "100%",
+              border: "1px solid #B1B1B1",
+              padding: "12px",
+              color: "black",
+              borderRadius: "30px",
+              fontSize: "15px",
+              marginBottom: "15px",
             }}
           />
 
@@ -957,19 +1030,24 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           {errors.state && <Alert variant="danger">{errors.state}</Alert>}
         </Col>
       </div>
-
-      <div style={{ height: "400px", width: "100%", marginTop: "30px",marginBottom: "30px", borderRadius: "20px", overflow: "hidden" }}>
-
-
-        <GoogleMapReact
+      <div
+        style={{
+          height: "400px",
+          width: "100%",
+          marginTop: "30px",
+          marginBottom: "30px",
+          borderRadius: "20px",
+          overflow: "hidden",
+        }}
+      >
+        {/* <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyDcDl4RoLc2oLDDpkJqdhWOWHP0B4qBEqk" }}
-          defaultCenter={defaultCenter} // optional now
-          center={center} // ✅ always valid
+          defaultCenter={defaultCenter} 
+          center={center} 
           defaultZoom={12}
         >
           <img
 
-            // src="https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi-dotless_hdpi.png"
             src={markerImage}
             loading="lazy" alt="marker"
             style={{
@@ -981,10 +1059,57 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
               zIndex: 10,
             }}
           />
+        </GoogleMapReact> */}
+
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: "AIzaSyDcDl4RoLc2oLDDpkJqdhWOWHP0B4qBEqk" }}
+          defaultCenter={defaultCenter}
+          center={center}
+          defaultZoom={12}
+          // Add this options prop to hide everything - START
+          options={{
+            styles: [
+              {
+                featureType: "all",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }], // Hides all text/names
+              },
+              {
+                featureType: "poi",
+                elementType: "all",
+                stylers: [{ visibility: "off" }], // Hides points of interest
+              },
+              {
+                featureType: "transit",
+                elementType: "all",
+                stylers: [{ visibility: "off" }], // Hides bus/train lines
+              },
+            ],
+          }}
+          // Add this options prop to hide everything - END
+        >
+          <img
+            src={markerImage}
+            loading="lazy"
+            alt="marker"
+            style={{
+              width: "40px",
+              height: "45px",
+              transform: "translate(-50%, -100%)",
+              position: "absolute",
+              cursor: "pointer",
+              zIndex: 10,
+            }}
+          />
         </GoogleMapReact>
       </div>
-      <hr style={{borderColor: '1px soild rgb(187 166 163)',width: 'calc(100% + 56px)',marginLeft: '-28px'}}/>
-
+      <hr
+        style={{
+          borderColor: "1px soild rgb(187 166 163)",
+          width: "calc(100% + 56px)",
+          marginLeft: "-28px",
+        }}
+      />
       {!isMobileWidth && (
         <>
           <Container className="mt-4 d-flex justify-content-between">
@@ -1013,31 +1138,33 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
               Go back
             </button> */}
 
-               <Button className="go-back-btn save-continue-btn"
-                          variant="outline-success"
-                          onClick={() => switchToAddProperty("home_setup")}
-                          style={{
-                            color: "#000",
-                            background: "#fff",
-                            borderColor: "#E5E5E5",
-                            fontWeight: "400",
-                            borderRadius: "40px",
-                            padding:'13px 26px',
-                            marginLeft:'-15px'
-                          }}
-                        >
-                          Go back 
-                        </Button>
+            <Button
+              className="go-back-btn save-continue-btn"
+              variant="outline-success"
+              onClick={() => switchToAddProperty("home_setup")}
+              style={{
+                color: "#000",
+                background: "#fff",
+                borderColor: "#E5E5E5",
+                fontWeight: "400",
+                borderRadius: "40px",
+                padding: "13px 26px",
+                marginLeft: "-15px",
+              }}
+            >
+              Go back
+            </Button>
 
             {/* Save and Continue Button */}
-            <Button className="save-continue-btn"
+            <Button
+              className="save-continue-btn"
               style={{
                 backgroundColor: "#4AEAB1",
                 borderColor: "#4AEAB1",
                 fontWeight: "400",
                 color: "black",
                 borderRadius: "40px",
-                padding:'13px 26px',
+                padding: "13px 26px",
               }}
               onClick={handleGalleryLocation}
             >
@@ -1046,7 +1173,6 @@ const GalleryLocation = ({ switchToAddProperty, propertyDataa, isEdited, onBack,
           </Container>
         </>
       )}
-
       {/* <ToastContainer /> */}
     </Container>
   );

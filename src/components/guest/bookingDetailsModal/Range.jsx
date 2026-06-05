@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import { useNavigate } from "react-router-dom";
 import main from "../../../assets/gallery/Group (2).png";
-import dotted from "../../../assets/gallery/Vector (1).png";
+import dotted from "../../../assets/gallery/vector_4.png";
 import BookingExtensionModal from "./BookingExtensionModal";
 import { toast } from "react-toastify";
 
@@ -17,11 +17,10 @@ const Range = ({
   onHide,
   initialValue,
   isExtentionTime = false,
-
 }) => {
   const navigate = useNavigate();
   const [totalPrice, setTotalPrice] = useState(0);
-  const [hoursValue, setHoursValue] = useState(initialValue ??0);
+  const [hoursValue, setHoursValue] = useState(initialValue ?? 0);
   const [hasChanged, setHasChanged] = useState(false);
   const [selectedOption, setSelectedOption] = useState(
     initialValue || "Select hours"
@@ -38,7 +37,6 @@ const Range = ({
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-  
 
   const selectOption = (option) => {
     const numericValue = parseInt(option);
@@ -80,7 +78,7 @@ const Range = ({
           width: "fit-content",
           zIndex: 3,
           backgroundColor: "white",
-          borderRadius:"10px"
+          borderRadius: "10px",
         }}
       >
         <div
@@ -91,25 +89,23 @@ const Range = ({
             alignItems: "center",
             width: "100%",
             border: "1px solid block",
-            padding:'10px'
-           
-            
+            padding: "10px",
           }}
         >
           <div
             id="slider"
             style={{
-               position: "relative",
-               width: "280px",
-               height: "280px",
-               borderRadius: "50%",
-               boxShadow: "0 4px 25px rgba(0, 0, 0, 0.3)", // outer shadow
-              }}
-
+              position: "relative",
+              width: "280px",
+              height: "280px",
+              borderRadius: "50%",
+              boxShadow: "0 4px 25px rgba(0, 0, 0, 0.3)", // outer shadow
+            }}
           >
             <img
               src={main}
-              loading="lazy" alt="Main Background"
+              loading="lazy"
+              alt="Main Background"
               style={{
                 position: "absolute",
                 top: "50%",
@@ -124,7 +120,8 @@ const Range = ({
 
             <img
               src={dotted}
-              loading="lazy" alt="Dotted Overlay"
+              loading="lazy"
+              alt="Dotted Overlay"
               style={{
                 position: "absolute",
                 top: "50%",
@@ -132,7 +129,7 @@ const Range = ({
                 transform: "translate(-50%, -50%)",
                 width: "95%",
                 height: "95%",
-                color:'black',
+                color: "black",
                 zIndex: 2,
                 // pointerEvents: "none"
               }}
@@ -169,7 +166,10 @@ const Range = ({
               </div>
             </div>
 
-            <div style={{ position: "relative", zIndex: 2 }} className={(!hasChanged || hoursValue == 0) ? "range-ss" : ""}>
+            <div
+              style={{ position: "relative", zIndex: 2 }}
+              className={!hasChanged || hoursValue == 0 ? "range-ss" : ""}
+            >
               <CircularSlider
                 min={0}
                 max={23}
@@ -194,13 +194,21 @@ const Range = ({
                   callbacTotalHrs(value);
                   calculateTotalPrice(value, perHourRate);
                 }}
-             
-              />              
+              />
             </div>
           </div>
 
           {/* <hr style={{ width: "100%", margin: "20px 0" }} /> */}
-          <span style={{margin:'10px',color:'#000000',fontWeight:'400',fontSiz:"17px !important"}}>Or</span>
+          <span
+            style={{
+              margin: "10px",
+              color: "#000000",
+              fontWeight: "400",
+              fontSiz: "17px !important",
+            }}
+          >
+            Or
+          </span>
 
           <div
             style={{
@@ -225,11 +233,18 @@ const Range = ({
               onClick={toggleDropdown}
             >
               {selectedOption} Hours
-              <span>  <img src={`/images/dropdown.svg`} alt={`Dropdown Icon`} style={{
-            width:'12px',
-            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-            transition: "transform 0.2s ease",
-          }}/></span>
+              <span>
+                {" "}
+                <img
+                  src={`/images/dropdown.svg`}
+                  alt={`Dropdown Icon`}
+                  style={{
+                    width: "12px",
+                    transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.2s ease",
+                  }}
+                />
+              </span>
             </div>
             {isOpen && (
               <div
@@ -286,7 +301,9 @@ const Range = ({
               onClick={() =>
                 hoursValue == 0
                   ? toast.error("please select at least 1 hour")
-                  : isExtentionTime ? onHide() : setShowModal(true)
+                  : isExtentionTime
+                  ? onHide()
+                  : setShowModal(true)
               }
             >
               Save Changes
