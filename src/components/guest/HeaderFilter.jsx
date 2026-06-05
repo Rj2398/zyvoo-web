@@ -73,7 +73,8 @@ const HeaderFilter = () => {
                       <div className="range-slider-in">
                         <img
                           src="/images/filters/price-range.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                         <input
                           value="50"
@@ -112,7 +113,8 @@ const HeaderFilter = () => {
                         >
                           <img
                             src="/images/create-profile/location.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           Location <i className="fa-solid fa-pen"></i>
                         </button>
@@ -123,7 +125,8 @@ const HeaderFilter = () => {
                                 {" "}
                                 <img
                                   src="/images/filters/where-icons.svg"
-                                  loading="lazy" alt=""
+                                  loading="lazy"
+                                  alt=""
                                 />
                                 Alaska, US
                               </a>
@@ -132,7 +135,8 @@ const HeaderFilter = () => {
                               <a href="#">
                                 <img
                                   src="/images/filters/where-icons.svg"
-                                  loading="lazy" alt=""
+                                  loading="lazy"
+                                  alt=""
                                 />
                                 California, US
                               </a>
@@ -141,7 +145,8 @@ const HeaderFilter = () => {
                               <a href="#">
                                 <img
                                   src="/images/filters/where-icons.svg"
-                                  loading="lazy" alt=""
+                                  loading="lazy"
+                                  alt=""
                                 />
                                 Delaware, US
                               </a>
@@ -150,7 +155,8 @@ const HeaderFilter = () => {
                               <a href="#">
                                 <img
                                   src="/images/filters/where-icons.svg"
-                                  loading="lazy" alt=""
+                                  loading="lazy"
+                                  alt=""
                                 />
                                 Florida, US
                               </a>
@@ -159,7 +165,8 @@ const HeaderFilter = () => {
                               <a href="#">
                                 <img
                                   src="/images/filters/where-icons.svg"
-                                  loading="lazy" alt=""
+                                  loading="lazy"
+                                  alt=""
                                 />
                                 New York, US
                               </a>
@@ -174,7 +181,8 @@ const HeaderFilter = () => {
                         >
                           <img
                             src="/images/filters/calendar-icon.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           Date <i className="fa-solid fa-pen"></i>
                         </button>
@@ -638,7 +646,8 @@ const HeaderFilter = () => {
                         {" "}
                         <img
                           src="/images/filters/activities/1.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />{" "}
                         Stays{" "}
                       </label>
@@ -653,7 +662,8 @@ const HeaderFilter = () => {
                         {" "}
                         <img
                           src="/images/filters/activities/2.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />{" "}
                         Event Space
                       </label>
@@ -668,7 +678,8 @@ const HeaderFilter = () => {
                         {" "}
                         <img
                           src="/images/filters/activities/3.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />{" "}
                         Photo shoot
                       </label>
@@ -683,7 +694,8 @@ const HeaderFilter = () => {
                         {" "}
                         <img
                           src="/images/filters/activities/4.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />{" "}
                         Meeting
                       </label>
@@ -703,7 +715,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/5.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Party
                         </label>
@@ -718,7 +731,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/6.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Film Shoot
                         </label>
@@ -733,7 +747,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/7.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Performance
                         </label>
@@ -748,7 +763,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/8.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Workshop
                         </label>
@@ -763,7 +779,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/9.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Corporate Event{" "}
                         </label>
@@ -778,7 +795,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/10.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Wedding
                         </label>
@@ -793,7 +811,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/11.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Dinner
                         </label>
@@ -808,7 +827,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/12.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Retreat
                         </label>
@@ -823,7 +843,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/13.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Pop-up
                         </label>
@@ -838,7 +859,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/14.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Networking
                         </label>
@@ -853,7 +875,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/15.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Fitness ClassName{" "}
                         </label>
@@ -868,7 +891,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/16.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           Audio Recording{" "}
                         </label>
@@ -883,7 +907,8 @@ const HeaderFilter = () => {
                           {" "}
                           <img
                             src="/images/filters/activities/17.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />
                           Swimming Pool{" "}
                         </label>
@@ -976,7 +1001,8 @@ const HeaderFilter = () => {
                           <span className="info-icon">
                             <img
                               src="/images/create-profile/info.svg"
-                              loading="lazy" alt=""
+                              loading="lazy"
+                              alt=""
                             />
                             <span className="info-text">
                               Your safety and peace of mind are our top
@@ -1084,10 +1110,7 @@ const HeaderFilter = () => {
             <div className="modal-body">
               <h2>Need More Time?</h2>
               <div className="password-changed-successfully-icon">
-                <img
-                  src="/images/popups/logout.svg"
-                  loading="lazy" alt=""
-                />
+                <img src="/images/popups/logout.svg" loading="lazy" alt="" />
               </div>
               <p className="mb-3">
                 To Extend your booking time. Please <br /> click ‘yes” below.
@@ -1139,7 +1162,8 @@ const HeaderFilter = () => {
                       <div className="explore-guides-articles-image">
                         <img
                           src="/images/locations-grid/1.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                       </div>
                       <h3>Sea view</h3>
@@ -1153,7 +1177,8 @@ const HeaderFilter = () => {
                       <div className="explore-guides-articles-image">
                         <img
                           src="/images/locations-grid/2.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                       </div>
                       <h3>Cabin in Peshastin</h3>

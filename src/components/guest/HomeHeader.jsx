@@ -9,7 +9,23 @@ import { GOOGLE_KEY, imageBase, KEYS } from "../../config/Constant";
 import { clearUser, setUserType } from "../../store/slices/userSlice";
 import Constant from "../../config/Constant";
 import Home from "../../pages/guestPage/Home";
-import { CloseButton, Col, Container, Row, Form, Button, Tabs, Tab, Modal, Dropdown, ToggleButtonGroup, ToggleButton, InputGroup, Image, FormControl, } from "react-bootstrap";
+import {
+  CloseButton,
+  Col,
+  Container,
+  Row,
+  Form,
+  Button,
+  Tabs,
+  Tab,
+  Modal,
+  Dropdown,
+  ToggleButtonGroup,
+  ToggleButton,
+  InputGroup,
+  Image,
+  FormControl,
+} from "react-bootstrap";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import { format } from "date-fns";
 import { FaAngleDown, FaAngleUp, FaRedo, FaSearch } from "react-icons/fa";
@@ -47,22 +63,23 @@ const generateTimeOptions = () => {
 };
 
 const HomeHeader = ({ showMap, setShowMap }) => {
-
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {userInfo} = useSelector(({user})=>user)
-  
-
-
-// console.log(userInfo)
-  const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO))||JSON.parse(sessionStorage.getItem(KEYS.USER_INFO)) ;
-  const login_id = userInfo?.user_id ? String(userInfo?.user_id) : null||   localSaved?.user_id ? String(localSaved?.user_id) : null;
+  const { userInfo } = useSelector(({ user }) => user);
+  // const [showCloseIcon, setShowCloseIcon] = useState(false);
+  const [activeCloseIcons, setActiveCloseIcons] = useState({});
+  // console.log(userInfo)
+  const localSaved =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const login_id = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || localSaved?.user_id
+    ? String(localSaved?.user_id)
+    : null;
 
   // const access_token = localSaved?.access_token;
-    const access_token =  localSaved?.access_token;
-
-
+  const access_token = localSaved?.access_token;
 
   const { homeDataFilters, guestHomeData, isLoading } = useCommon();
   const [currentLocation, setCurrentLocation] = useState({
@@ -89,7 +106,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
   const [coordinates, setCoordinates] = useState({ lat: null, lng: null });
   const [start_time, setStart_time] = useState("");
   const [end_time, setEnd_time] = useState("");
-  const [filterPrice, setFilterPrice] = useState("")
+  const [filterPrice, setFilterPrice] = useState("");
   const [showModal, setShowModal] = useState(false);
 
   const handleToggleMobSearch = () => {
@@ -107,9 +124,13 @@ const HomeHeader = ({ showMap, setShowMap }) => {
     useCommon();
 
   const { getUserProfile } = useProfile();
-  const userData =userInfo|| JSON.parse(localStorage.getItem(KEYS.USER_INFO))|| JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userData =
+    userInfo ||
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userType = localStorage.getItem(KEYS.USER_TYPE);
-  const userId = userInfo?.user_id|| userData?.user_id ? String(userData?.user_id) : null;
+  const userId =
+    userInfo?.user_id || userData?.user_id ? String(userData?.user_id) : null;
   const [unreadCountChat, setUnreadCountChat] = useState(0);
 
   const profileData = useSelector((state) => state.profile);
@@ -432,7 +453,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
     getPriceRange();
     setFilterLocation("");
     setSelectedDuration(0);
-    setHour("")
+    setHour("");
     setPreferences({
       people_count: "Any",
       property_size: "Any",
@@ -460,8 +481,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
     setSelectedLanguages([]);
     setIsCleaned(true);
     // setSelectedValue(1);
-    setSelectedValue("any_type")
-    
+    setSelectedValue("any_type");
 
     setTimeout(() => setIsCleaned(false), 1000);
   };
@@ -564,33 +584,33 @@ const HomeHeader = ({ showMap, setShowMap }) => {
   ];
 
   const availableLanguages = [
-  "Albanian",
-  "Arabic",
-  "Armenian",
-  "Azerbaijani",
-  "Bengali",
-  "Bereber",
-  "Catalan",
-  "Danish",
-  "Dari",
-  "Dutch",
-  "English",
-  "Finnish",
-  "French",
-  "German",
-  "Hindi",
-  "Italian",
-  "Japanese",
-  "Maori",
-  "Mandarin",
-  "Pashto",
-  "Portuguese",
-  "Russian",
-  "Spanish",
-  "Swedish",
-  "Urdu",
-  "Vietnamese"
-];
+    "Albanian",
+    "Arabic",
+    "Armenian",
+    "Azerbaijani",
+    "Bengali",
+    "Bereber",
+    "Catalan",
+    "Danish",
+    "Dari",
+    "Dutch",
+    "English",
+    "Finnish",
+    "French",
+    "German",
+    "Hindi",
+    "Italian",
+    "Japanese",
+    "Maori",
+    "Mandarin",
+    "Pashto",
+    "Portuguese",
+    "Russian",
+    "Spanish",
+    "Swedish",
+    "Urdu",
+    "Vietnamese",
+  ];
 
   const activities1 = [
     {
@@ -616,7 +636,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
       name: "Party",
       icon: "/images/filters/activities/5.svg",
     },
-     {
+    {
       name: "Pool",
       icon: "/images/filters/activities/17.svg",
     },
@@ -664,7 +684,6 @@ const HomeHeader = ({ showMap, setShowMap }) => {
       name: "Audio Recording",
       icon: "/images/filters/activities/16.svg",
     },
-   
   ];
 
   const handleRemoveData = async (setValue) => {
@@ -832,9 +851,9 @@ const HomeHeader = ({ showMap, setShowMap }) => {
 
   const sections = [
     {
-      title: isMobileWidth ? "No of people":"Number of people",
+      title: isMobileWidth ? "No of people" : "Number of people",
       name: "people_count",
-      options: ["Any", 1, 2,3,4, 5, 6 ,7],
+      options: ["Any", 1, 2, 3, 4, 5, 6, 7],
     },
     {
       title: "Property size (Sq ft)",
@@ -1023,17 +1042,19 @@ const HomeHeader = ({ showMap, setShowMap }) => {
     };
   }, [GOOGLE_KEY]);
 
-    // Add this useEffect to clear bedrooms when activity is not "Stays"
-useEffect(() => {
-  const isActivityStays = selectedActivitiesFilter.includes("Stays") || selectedActivity === "Stays";
-  
-  if (!isActivityStays && preferences.bedroom !== "Any") {
-    setPreferences(prev => ({
-      ...prev,
-      bedroom: "Any"
-    }));
-  }
-}, [selectedActivitiesFilter, selectedActivity]);
+  // Add this useEffect to clear bedrooms when activity is not "Stays"
+  useEffect(() => {
+    const isActivityStays =
+      selectedActivitiesFilter.includes("Stays") ||
+      selectedActivity === "Stays";
+
+    if (!isActivityStays && preferences.bedroom !== "Any") {
+      setPreferences((prev) => ({
+        ...prev,
+        bedroom: "Any",
+      }));
+    }
+  }, [selectedActivitiesFilter, selectedActivity]);
 
   function formatDateToMMDDYYYY(date) {
     const mm = String(date.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
@@ -1045,334 +1066,363 @@ useEffect(() => {
 
   return (
     <>
-    <div className="mob-search-filter border-start-0 border-end-0" style={{
-      position: "sticky",
-      top: "0",
-      zIndex: "1000",
-      backgroundColor: "white",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
-    }}>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="mob-search-filter-in">
-              <div className="mob-search-in">
-                <Form className="d-flex align-items-center w-100 " style={{ position: "relative" }} >
-                  {openInput && (
-                    <div className="d-flex align-items-center w-100">
-                      {/* Location Filter */}
-                      {isMobileWidth ? (
-                        <>
-                          <input
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setShowModal(true);
-                            }}
-                            value={selectedPlace ? selectedPlace?.length > 5 ? selectedPlace?.slice(0, 5) + "." : selectedPlace : ""}
-                            readOnly  
-                            placeholder="Where"
+      <div
+        className="mob-search-filter border-start-0 border-end-0"
+        style={{
+          position: "sticky",
+          top: "0",
+          zIndex: "1000",
+          backgroundColor: "white",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+        }}
+      >
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="mob-search-filter-in">
+                <div className="mob-search-in">
+                  <Form
+                    className="d-flex align-items-center w-100 "
+                    style={{ position: "relative" }}
+                  >
+                    {openInput && (
+                      <div className="d-flex align-items-center w-100">
+                        {/* Location Filter */}
+                        {isMobileWidth ? (
+                          <>
+                            <input
+                              onClick={(e) => {
+                                e.preventDefault();
+                                setShowModal(true);
+                              }}
+                              value={
+                                selectedPlace
+                                  ? selectedPlace?.length > 5
+                                    ? selectedPlace?.slice(0, 5) + "."
+                                    : selectedPlace
+                                  : ""
+                              }
+                              readOnly
+                              placeholder="Where"
+                              style={{
+                                width: "100%",
+                                height: "100%",
+                                border: "none",
+                                cursor: "text",
+                                outline: "none",
+                                boxShadow: "none",
+                                backgroundColor: "transparent",
+                                fontWeight: "400",
+                                textAlign: "center",
+                              }}
+                            />
+                            <MobSearch
+                              showMobSearch={showModal}
+                              handleToggleMobSearch={handleToggleMobSearch}
+                              selectedPlace={selectedPlace}
+                              coordinates={coordinates}
+                              selectedActivity={selectedActivity}
+                              selectedDate={selectedDate}
+                              toTime={toTime}
+                              newDate={newDate}
+                              flexibleDate={flexibleDate}
+                              fromTime={fromTime}
+                              start_time={start_time}
+                              end_time={end_time}
+                              hour={hour}
+                              filterPrice={filterPrice}
+                              setFilterPrice={setFilterPrice}
+                              show={show}
+                              key={key}
+                              // Function props
+                              setSelectedPlace={(val) => setSelectedPlace(val)}
+                              setCoordinates={(val) => setCoordinates(val)}
+                              onActivityChange={setSelectedActivity}
+                              onDateChange={(val) => {
+                                setNewDate(val);
+                                setSelectedDate(val);
+                              }}
+                              onTimeChange={(type, value) => {
+                                if (type === "from") setFromTime(value);
+                                else setToTime(value);
+                              }}
+                              onHourChange={setHour}
+                              onShowToggle={setShow}
+                              onKeyChange={setKey}
+                              onFlexibleDateChange={setFlexibleDate}
+                              onStartTimeChange={setStart_time}
+                              onEndTimeChange={setEnd_time}
+                              onCleanAll={handleCleanAll}
+                              onSearch={handleFilterData}
+                              handleHourChange={handleHourChange}
+                              timeOptions={timeOptions}
+                              handleTimeChange={handleTimeChange}
+                              handleDate={handleDate}
+                            />
+                          </>
+                        ) : (
+                          <Dropdown
                             style={{
-                              width: "100%",
+                              width: "22%",
                               height: "100%",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
                               border: "none",
-                              cursor: "text",
-                              outline: "none",
-                              boxShadow: "none",
+                              cursor: "pointer",
                               backgroundColor: "transparent",
-                              fontWeight: "400",
-                              textAlign: "center"
                             }}
-                          />
-                          <MobSearch
-                            showMobSearch={showModal}
-                            handleToggleMobSearch={handleToggleMobSearch}
-                            selectedPlace={selectedPlace}
-                            coordinates={coordinates}
-                            selectedActivity={selectedActivity}
-                            selectedDate={selectedDate}
-                            toTime={toTime}
-                            newDate={newDate}
-                            flexibleDate={flexibleDate}
-                            fromTime={fromTime}
-                            start_time={start_time}
-                            end_time={end_time}
-                            hour={hour}
-                            filterPrice={filterPrice}
-                            setFilterPrice={setFilterPrice}
-                            show={show}
-                            key={key}
-                            // Function props
-                            setSelectedPlace={(val) => setSelectedPlace(val)}
-                            setCoordinates={(val) => setCoordinates(val)}
-                            onActivityChange={setSelectedActivity}
-                            onDateChange={(val) => {
-                              setNewDate(val);
-                              setSelectedDate(val);
-                            }}
-                            onTimeChange={(type, value) => {
-                              if (type === "from") setFromTime(value);
-                              else setToTime(value);
-                            }}
-                            onHourChange={setHour}
-                            onShowToggle={setShow}
-                            onKeyChange={setKey}
-                            onFlexibleDateChange={setFlexibleDate}
-                            onStartTimeChange={setStart_time}
-                            onEndTimeChange={setEnd_time}
-                            onCleanAll={handleCleanAll}
-                            onSearch={handleFilterData}
-                            handleHourChange={handleHourChange}
-                            timeOptions={timeOptions}
-                            handleTimeChange={handleTimeChange}
-                            handleDate={handleDate}
-                          />
-                        </>
-                      ) : (
-                        <Dropdown
+                          >
+                            <Dropdown.Toggle
+                              variant="light"
+                              className="no-caret "
+                              style={{
+                                backgroundColor: "transparent",
+                                overflow: "hidden",
+                                border: "none",
+                              }}
+                            >
+                              {selectedPlace || "Where"}
+                            </Dropdown.Toggle>
+                            <Dropdown.Menu className="w-100 p-lg-2">
+                              <Autocomplete
+                                apiKey={GOOGLE_KEY}
+                                onPlaceSelected={(place) => {
+                                  if (
+                                    place &&
+                                    place.geometry &&
+                                    place.geometry.location
+                                  ) {
+                                    const lat = place.geometry.location.lat();
+                                    const lng = place.geometry.location.lng();
+                                    setSelectedPlace(
+                                      place.formatted_address || place.name
+                                    );
+                                    setCoordinates({ lat, lng });
+                                  } else {
+                                    setSelectedPlace("");
+                                  }
+                                }}
+                                options={{ types: ["(cities)"] }}
+                                placeholder="Search for a place..."
+                                className="google-autocomplete"
+                                style={{
+                                  width: "100%",
+                                  padding: "8px",
+                                  border: "1px solid #ccc",
+                                  borderRadius: "4px",
+                                }}
+                              />
+                            </Dropdown.Menu>
+                          </Dropdown>
+                        )}
+                        <div
+                          style={{
+                            height: "40px",
+                            width: "1px",
+                            backgroundColor: "#ccc",
+                            margin: "0 10px 0 0",
+                          }}
+                        ></div>
+
+                        {/* Time Filter */}
+                        <div
                           style={{
                             width: "22%",
                             height: "100%",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            border: "none",
+                            borderRadius: "25px",
                             cursor: "pointer",
                             backgroundColor: "transparent",
+                          }}
+                        >
+                          <Button
+                            className="w-100"
+                            as="div"
+                            style={{
+                              width: "100%",
+                              padding: "8px 16px",
+                              borderRadius: "8px",
+                              backgroundColor: "transparent",
+                              color: "#000",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              border: "0",
+                              fontWeight: "400",
+                            }}
+                            onClick={handleToggleMobSearch}
+                          >
+                            {"Time"}
+                          </Button>
+                        </div>
+
+                        <div
+                          style={{
+                            height: "40px",
+                            width: "1px",
+                            backgroundColor: "#ccc",
+                            margin: "0 0 0 15px",
+                          }}
+                        ></div>
+
+                        {/* Activity Filter */}
+                        <Dropdown
+                          className="w-100"
+                          style={{
+                            width: "32%",
+                            marginRight: "50px",
                           }}
                         >
                           <Dropdown.Toggle
+                            className="no-caret"
                             variant="light"
-                            className="no-caret "
+                            id="dropdown-activity"
                             style={{
-                              backgroundColor: "transparent",
-                              overflow: "hidden",
                               border: "none",
+                              padding: "8px 16px",
+                              backgroundColor: "transparent",
+                              width: "100%",
+                              fontSize: "16px",
+                              fontWeight: "400",
+                              textAlign: "center",
+                              whiteSpace: "nowrap",
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                            }}
+                            onClick={handleToggleMobSearch}
+                          >
+                            {selectedActivity || "Activity"}
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu
+                            style={{
+                              padding: "8px",
+                              minWidth: "250px",
+                              width: "100%",
                             }}
                           >
-                            {selectedPlace || "Where"}
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu className="w-100 p-lg-2">
-                            <Autocomplete
-                              apiKey={GOOGLE_KEY}
-                              onPlaceSelected={(place) => {
-                                if (place && place.geometry && place.geometry.location ) {
-                                  const lat = place.geometry.location.lat();
-                                  const lng = place.geometry.location.lng();
-                                  setSelectedPlace(
-                                    place.formatted_address || place.name
-                                  );
-                                  setCoordinates({ lat, lng });
-                                } else {
-                                  setSelectedPlace("");
-                                }
-                              }}
-                              options={{ types: ["(cities)"] }}
-                              placeholder="Search for a place..."
-                              className="google-autocomplete"
-                              style={{
-                                width: "100%",
-                                padding: "8px",
-                                border: "1px solid #ccc",
-                                borderRadius: "4px",
-                              }}
-                            />
+                            {activities.map((act, index) => (
+                              <Dropdown.Item
+                                key={index}
+                                onClick={() => setSelectedActivity(act)}
+                              >
+                                {act}
+                              </Dropdown.Item>
+                            ))}
                           </Dropdown.Menu>
                         </Dropdown>
-                      )}
-                      <div
-                        style={{
-                          height: "40px",
-                          width: "1px",
-                          backgroundColor: "#ccc",
-                          margin: "0 10px 0 0",
-                        }}
-                      ></div>
-    
-                      {/* Time Filter */}
-                      <div
-                        style={{
-                          width: "22%",
-                          height: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: "25px",
-                          cursor: "pointer",
-                          backgroundColor: "transparent",
-                        }}
-                      >
-                        <Button
-                          className="w-100"
-                          as="div"
-                          style={{
-                            width: "100%",
-                            padding: "8px 16px",
-                            borderRadius: "8px",
-                            backgroundColor: "transparent",
-                            color: "#000",
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            border: "0",
-                            fontWeight: "400",
-                          }}
-                          onClick={handleToggleMobSearch}
-                        >
-                          {"Time"}
-                        </Button>
                       </div>
-    
-                      <div
-                        style={{
-                          height: "40px",
-                          width: "1px",
-                          backgroundColor: "#ccc",
-                          margin: "0 0 0 15px",
-                        }}
-                      ></div>
-    
-                      {/* Activity Filter */}
-                      <Dropdown
-                        className="w-100"
-                        style={{
-                          width: "32%",
-                          marginRight: "50px",
-                        }}
-                      >
-                        <Dropdown.Toggle
-                          className="no-caret"
-                          variant="light"
-                          id="dropdown-activity"
+                    )}
+
+                    {!openInput && (
+                      <div className="w-100 d-flex align-items-center p-1">
+                        <Form
+                          className="w-100"
+                          onSubmit={handleSearchQuery}
                           style={{
-                            border: "none",
-                            padding: "8px 16px",
-                            backgroundColor: "transparent",
-                            width: "100%",
-                            fontSize: "16px",
-                            fontWeight: "400",
-                            textAlign: "center",
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                          }}
-                          onClick={handleToggleMobSearch}
-                        >
-                          {selectedActivity || "Activity"}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu
-                          style={{
-                            padding: "8px",
-                            minWidth: "250px",
-                            width: "100%",
+                            marginRight: "35px",
                           }}
                         >
-                          {activities.map((act, index) => (
-                            <Dropdown.Item
-                              key={index}
-                              onClick={() => setSelectedActivity(act)}
-                            >
-                              {act}
-                            </Dropdown.Item>
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </div>
-                  )}
-    
-                  {!openInput && (
-                    <div className="w-100 d-flex align-items-center p-1">
-                      <Form
-                        className="w-100"
-                        onSubmit={handleSearchQuery}
-                        style={{
-                          marginRight: "35px",
-                        }}
-                      >
-                        <InputGroup
-                          className="border p-1"
-                          style={{
-                            borderRadius: "40px",
-                          }}
-                        >
-                          <FormControl
-                            type="text"
-                            placeholder="Search"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="border-0"
+                          <InputGroup
+                            className="border p-1"
                             style={{
-                              boxShadow: "none",
                               borderRadius: "40px",
-                              padding: "8px 12px",
-                            }}
-                          />
-                          <Button
-                            variant="light"
-                            className="border-0"
-                            onClick={() => {
-                              setSearchQuery("");
-                              setOpenInput(true);
-                            }}
-                            style={{
-                              background: "transparent",
-                              boxShadow: "none",
-                              marginRight: "5px",
                             }}
                           >
-                            <X size={20} color="#999" />
-                          </Button>
-                        </InputGroup>
-                      </Form>
-                    </div>
-                  )}
-    
-                  {/* Search Button */}
-    
-                  <Button className="d-flex align-items-center justify-content-center shadow-sm"
-                    style={{
-                      width: "39px",
-                      height: "36px",
-                      borderRadius: "50%",
-                      backgroundColor: "#3A4B4C",
-                      border: "none",
-                      position: "absolute",
-                      right: "5px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      cursor: "pointer",
-                      transition: "background-color 0.3s ease, transform 0.2s ease",
-                    }}
-                    onClick={handleFilterData}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#2f3d3e")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#3A4B4C")}
-                  >
-                    <FaSearch color="#fff" size={16} />
-                  </Button>
-                </Form>
-              </div>
-              <div
-                className="mob-filter-in"
-                onClick={() => handleNavigation()}
-              >
-                <Link>
-                  {" "}
-                  <img loading="lazy" src="/images/mobile/filters/filter.svg" alt=""    />{" "}
-                </Link>
+                            <FormControl
+                              type="text"
+                              placeholder="Search"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              className="border-0"
+                              style={{
+                                boxShadow: "none",
+                                borderRadius: "40px",
+                                padding: "8px 12px",
+                              }}
+                            />
+                            <Button
+                              variant="light"
+                              className="border-0"
+                              onClick={() => {
+                                setSearchQuery("");
+                                setOpenInput(true);
+                              }}
+                              style={{
+                                background: "transparent",
+                                boxShadow: "none",
+                                marginRight: "5px",
+                              }}
+                            >
+                              <X size={20} color="#999" />
+                            </Button>
+                          </InputGroup>
+                        </Form>
+                      </div>
+                    )}
+
+                    {/* Search Button */}
+
+                    <Button
+                      className="d-flex align-items-center justify-content-center shadow-sm"
+                      style={{
+                        width: "39px",
+                        height: "36px",
+                        borderRadius: "50%",
+                        backgroundColor: "#3A4B4C",
+                        border: "none",
+                        position: "absolute",
+                        right: "5px",
+                        top: "50%",
+                        transform: "translateY(-50%)",
+                        cursor: "pointer",
+                        transition:
+                          "background-color 0.3s ease, transform 0.2s ease",
+                      }}
+                      onClick={handleFilterData}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#2f3d3e")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#3A4B4C")
+                      }
+                    >
+                      <FaSearch color="#fff" size={16} />
+                    </Button>
+                  </Form>
+                </div>
+                <div
+                  className="mob-filter-in"
+                  onClick={() => handleNavigation()}
+                >
+                  <Link>
+                    {" "}
+                    <img
+                      loading="lazy"
+                      src="/images/mobile/filters/filter.svg"
+                      alt=""
+                    />{" "}
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
       <header style={{}}>
         {/* <!-- NAV -->
         <!-- DESKTOP-&-TABLET --> */}
-        <div className="nav-wrap" style={{ padding: login_id?"0px 30px":"0px 56px 0 30px"}}>
+        <div
+          className="nav-wrap"
+          style={{ padding: login_id ? "0px 30px" : "0px 56px 0 30px" }}
+        >
           <nav className="navbar navbar-expand-lg navbar-light bg-white">
             <div className="container-fluid">
               <Link className="navbar-brand" to="/" onClick={handleClick}>
-                <img src="/images/logo.svg" alt="Logo" loading="lazy"/>
+                <img src="/images/logo.svg" alt="Logo" loading="lazy" />
               </Link>
               <button
                 className="navbar-toggler"
@@ -1385,14 +1435,21 @@ useEffect(() => {
               >
                 <span className="navbar-toggler-icon"></span>
               </button>
-              <div className="collapse navbar-collapse " id="navbarSupportedContent" >
+              <div
+                className="collapse navbar-collapse "
+                id="navbarSupportedContent"
+              >
                 <div className="nav-inner w-100 d-flex justify-content-center align-items-center ">
-                  <div className="nav-inner-mid" style={{
+                  <div
+                    className="nav-inner-mid"
+                    style={{
                       border: openInput ? "1px solid #E5E5E5" : "0", // Adjust border style as needed
                       marginRight: "0px",
                       padding: "5px",
-                    }} >
-                    <Form className=" d-flex align-items-center "
+                    }}
+                  >
+                    <Form
+                      className=" d-flex align-items-center "
                       style={{
                         height: "100%",
                         width: "100%",
@@ -1400,23 +1457,28 @@ useEffect(() => {
                       }}
                       onSubmit={handleFormSubmit}
                     >
-                      <div className="input-group"
+                      <div
+                        className="input-group"
                         style={{
                           width: "100%",
                           height: "100%",
                           // justifyContent: "space-evenly",
                           textAlign: "center",
-                        }} >
+                        }}
+                      >
                         {openInput ? (
-                          <div className="d-flex align-items-center gap-3"
+                          <div
+                            className="d-flex align-items-center gap-3"
                             style={{
                               // justifyContent: "space-between",
                               alignItems: "center",
                               width: "100%",
                               height: "100%",
-                            }} >
+                            }}
+                          >
                             {/* Location Filter */}
-                            <div style={{
+                            <div
+                              style={{
                                 width: "32%",
                                 height: "100%",
                                 display: "flex",
@@ -1426,13 +1488,16 @@ useEffect(() => {
                                 cursor: "pointer",
                                 backgroundColor: "transparent",
                                 // boxShadow: "0px 0px 10px rgba(59, 55, 55, 0.1)",
-                              }} >
-                              <Dropdown className="w-100"
+                              }}
+                            >
+                              <Dropdown
+                                className="w-100"
                                 style={{
                                   width: "100%",
                                   height: "100%",
                                   display: "flex",
-                                }} >
+                                }}
+                              >
                                 <Dropdown.Toggle
                                   className="no-caret"
                                   variant="light"
@@ -1463,16 +1528,22 @@ useEffect(() => {
                                   {selectedPlace || "Where"}
                                 </Dropdown.Toggle>
 
-                                <Dropdown.Menu style={{
+                                <Dropdown.Menu
+                                  style={{
                                     padding: "8px",
                                     minWidth: "250px",
                                     width: "100%",
                                   }}
                                 >
                                   <div style={{ padding: "8px" }}>
-                                    <Autocomplete apiKey="AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs"
+                                    <Autocomplete
+                                      apiKey="AIzaSyAvdUxrhv49imo4xWac52D-E_PQvmHyqhs"
                                       onPlaceSelected={(place) => {
-                                        if (place && place.geometry && place.geometry.location ) {
+                                        if (
+                                          place &&
+                                          place.geometry &&
+                                          place.geometry.location
+                                        ) {
                                           const lat =
                                             place.geometry.location.lat();
                                           const lng =
@@ -1593,7 +1664,7 @@ useEffect(() => {
                                     whiteSpace: "nowrap",
                                     overflow: "hidden",
                                     textOverflow: "ellipsis",
-                                    color:'black'
+                                    color: "black",
                                   }}
                                 >
                                   <style>
@@ -1704,12 +1775,18 @@ useEffect(() => {
                   </div>
                   {/* Right Side Links */}
                   {!login_id ? (
-                    <div className="nav-inner-right position-static ms-auto" style={{ margin: "0" }}>
-                      <ul className="list-unstyled d-flex mb-0"
+                    <div
+                      className="nav-inner-right position-static ms-auto"
+                      style={{ margin: "0" }}
+                    >
+                      <ul
+                        className="list-unstyled d-flex mb-0"
                         // style={{ padding: "10px" }}
                       >
                         <li className="me-3">
-                          <Link to="/aboutUs" className="active text-decoration-none"
+                          <Link
+                            to="/aboutUs"
+                            className="active text-decoration-none"
                             style={{
                               border: "1px solid #4AEAB1", // consolidated border styling
                               height: "100%",
@@ -2506,7 +2583,7 @@ useEffect(() => {
             </ul>
           </div>
         </div> */}
-        <MobFooter /> 
+        <MobFooter />
         {/* <!-- MOBILE -->
     <!-- NAV -->
     <!-- MAP-BUTTON --> */}
@@ -2729,7 +2806,11 @@ useEffect(() => {
               </Col>
             )}
 
-            <Col md="auto" className="ms-auto d-flex gap-lg-2" style={{marginRight:'-5px'}}>
+            <Col
+              md="auto"
+              className="ms-auto d-flex gap-lg-2"
+              style={{ marginRight: "-5px" }}
+            >
               {removeFilter && (
                 <Button
                   onClick={handleClearFilter}
@@ -2770,7 +2851,6 @@ useEffect(() => {
                   border: "none",
                   padding: "15px",
                   fontSize: "18px",
-                 
                 }}
                 onClick={() => setShowMap((prev) => !prev)}
               >
@@ -2811,8 +2891,7 @@ useEffect(() => {
               maxWidth: "380px",
               boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
               position: "relative",
-              padding:'35px 15px 15px 15px'
-         
+              padding: "35px 15px 15px 15px",
             }}
           >
             <button
@@ -2947,8 +3026,8 @@ useEffect(() => {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                           borderRadius: "50%",
-  boxShadow: "0 4px 25px rgba(0, 0, 0, 0.3)"
+                          borderRadius: "50%",
+                          boxShadow: "0 4px 25px rgba(0, 0, 0, 0.3)",
                         }}
                       >
                         <img
@@ -2995,7 +3074,7 @@ useEffect(() => {
                               lineHeight: "1",
                             }}
                           >
-                            {hour||0}
+                            {hour || 0}
                           </div>
                           <div
                             style={{
@@ -3007,7 +3086,10 @@ useEffect(() => {
                             Hours
                           </div>
                         </div>
-                        <div style={{ position: "relative", zIndex: 2 }}  className={(!hasChanged || hour == 0) ? "range-ss" : ""}>
+                        <div
+                          style={{ position: "relative", zIndex: 2 }}
+                          className={!hasChanged || hour == 0 ? "range-ss" : ""}
+                        >
                           <CircularSlider
                             min={0}
                             max={24}
@@ -3186,7 +3268,8 @@ useEffect(() => {
           >
             {isMobileWidth && (
               <>
-                <div className="modal-footer"
+                <div
+                  className="modal-footer"
                   style={{
                     display: "flex",
                     justifyContent: "start",
@@ -3234,11 +3317,11 @@ useEffect(() => {
                       // padding: "5px 20px",
                       padding: "6px 5px 5px 12px",
                       cursor: "pointer",
-                      fontWeight: isMobileWidth? "400" : "500",
+                      fontWeight: isMobileWidth ? "400" : "500",
                       transition: "0.3s",
-                      fontSize:'13px',
-                      marginLeft:'10px',
-                      color:'#000'
+                      fontSize: "13px",
+                      marginLeft: "10px",
+                      color: "#000",
                       // visibility:'hidden'
                     }}
                   >
@@ -3252,7 +3335,7 @@ useEffect(() => {
                         padding: "5px",
                         backgroundColor: "#3A4B4C",
                         borderRadius: "50%",
-                        transform: "scaleX(-1)"
+                        transform: "scaleX(-1)",
                       }}
                     />
                   </button>
@@ -3270,19 +3353,20 @@ useEffect(() => {
                       borderRadius: "30px",
                       padding: "4px 5px 4px 12px",
                       cursor: "pointer",
-                      fontWeight: isMobileWidth? "400" : "500",
+                      fontWeight: isMobileWidth ? "400" : "500",
                       color: "#000",
                       transition: "0.3s",
-                      fontSize:'13px',
-                      marginLeft:'10px'
+                      fontSize: "13px",
+                      marginLeft: "10px",
                     }}
                   >
                     Search
                     <Container className="d-flex justify-content-end m-0 p-0">
-                      <div className="search-icon d-flex align-items-center justify-content-center"
+                      <div
+                        className="search-icon d-flex align-items-center justify-content-center"
                         style={{
-                         width: "25px",
-                        height: "25px",
+                          width: "25px",
+                          height: "25px",
                           backgroundColor: "#3A4B4C",
                           borderRadius: "50%",
                           color: "#fff",
@@ -3306,7 +3390,8 @@ useEffect(() => {
             )}
 
             {!isMobileWidth && (
-              <div style={{
+              <div
+                style={{
                   backgroundColor: "#3A4B4C",
                   display: "flex",
                   alignItems: "center",
@@ -3323,24 +3408,46 @@ useEffect(() => {
                   handleCleanAll();
                 }}
               >
-                <X size={14} style={{ color: "#fff", fontWeight: "bold", cursor: "pointer"}}/>
+                <X
+                  size={14}
+                  style={{
+                    color: "#fff",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                />
               </div>
             )}
           </div>
 
-          <div className="justify-content-between" style={{padding: isMobileWidth ? "" : "0 1rem 1rem 1rem",}}>
+          <div
+            className="justify-content-between"
+            style={{ padding: isMobileWidth ? "" : "0 1rem 1rem 1rem" }}
+          >
             <div className="align-items-center">
-              <h4 style={{
-                  fontSize:  isMobileWidth ? "18px" : "",
+              <h4
+                style={{
+                  fontSize: isMobileWidth ? "18px" : "",
                   color: "black",
-                  marginTop:isMobileWidth && "20px"
+                  marginTop: isMobileWidth && "20px",
                 }}
               >
                 Type of Place
               </h4>
-              <p style={{fontSize: isMobileWidth ?'15px':'16px', color:"black",fontWeight:'400'}}>Search rooms, entire homes, or any type of place.</p>
+              <p
+                style={{
+                  fontSize: isMobileWidth ? "15px" : "16px",
+                  color: "black",
+                  fontWeight: "400",
+                }}
+              >
+                Search rooms, entire homes, or any type of place.
+              </p>
 
-              <ToggleButtonGroup type="radio" name="options" value={selectedValue}
+              <ToggleButtonGroup
+                type="radio"
+                name="options"
+                value={selectedValue}
                 onChange={(val) => setSelectedValue(val)}
                 className="d-flex w-100 rounded-pill"
                 style={{ backgroundColor: "#D1D4D4", padding: "5px" }}
@@ -3348,7 +3455,11 @@ useEffect(() => {
                 {[
                   { id: "tbg-btn-1", value: "any_type", label: "Any Type" },
                   { id: "tbg-btn-2", value: "room", label: "Room" },
-                  { id: "tbg-btn-3", value: "entire_home", label: "Entire Home", },
+                  {
+                    id: "tbg-btn-3",
+                    value: "entire_home",
+                    label: "Entire Home",
+                  },
                 ].map((btn) => (
                   <ToggleButton
                     key={btn.id}
@@ -3356,11 +3467,17 @@ useEffect(() => {
                     value={btn.value}
                     className="flex-grow-1 border-0"
                     style={{
-                      backgroundColor: selectedValue === btn.value ? "white" : "transparent",
+                      backgroundColor:
+                        selectedValue === btn.value ? "white" : "transparent",
                       color: selectedValue === btn.value ? "black" : "black",
-                      fontWeight: selectedValue === btn.value ? isMobileWidth ?"400": "500" : "400",
+                      fontWeight:
+                        selectedValue === btn.value
+                          ? isMobileWidth
+                            ? "400"
+                            : "500"
+                          : "400",
                       fontSize: isMobileWidth && "13px",
-                      padding:isMobileWidth ?"5px 7px": "10px",
+                      padding: isMobileWidth ? "5px 7px" : "10px",
                       borderRadius: "50px",
                     }}
                   >
@@ -3370,7 +3487,7 @@ useEffect(() => {
               </ToggleButtonGroup>
             </div>
 
-            <hr className="homeHeader-modal-hr"/>
+            <hr className="homeHeader-modal-hr" />
             {/* <hr  style={{width :"108%", margin: "30px 0 30px -4%"}}/> */}
 
             <div className="align-items-center p-lg-2 mt-4">
@@ -3380,15 +3497,27 @@ useEffect(() => {
               </p>
 
               <Container className="d-flex flex-column align-items-center w-100">
-                <div className="d-flex w-100 justify-content-center position-relative"
-                  style={{ marginBottom: "-2px" }} >
-                  <Image src="/images/filters/price-range.svg" alt="Price Range" className="w-100"
-                    fluid />
+                <div
+                  className="d-flex w-100 justify-content-center position-relative"
+                  style={{ marginBottom: "-2px" }}
+                >
+                  <Image
+                    src="/images/filters/price-range.svg"
+                    alt="Price Range"
+                    className="w-100"
+                    fluid
+                  />
 
                   {/* LEFT OVERLAY */}
-                  <div className="position-absolute top-0 start-0 h-100"
+                  <div
+                    className="position-absolute top-0 start-0 h-100"
                     style={{
-                      width: `${((values[0] - (RangeValue?.min ?? 0)) / ((RangeValue?.max ?? 2000) - (RangeValue?.min ?? 0))) * 100 }%`,
+                      width: `${
+                        ((values[0] - (RangeValue?.min ?? 0)) /
+                          ((RangeValue?.max ?? 2000) -
+                            (RangeValue?.min ?? 0))) *
+                        100
+                      }%`,
                       background: "#fff",
                       opacity: 0.8,
                       pointerEvents: "none",
@@ -3396,9 +3525,16 @@ useEffect(() => {
                   />
 
                   {/* RIGHT OVERLAY */}
-                  <div className="position-absolute top-0 end-0 h-100"
+                  <div
+                    className="position-absolute top-0 end-0 h-100"
                     style={{
-                      width: `${ (1 - (values[1] - (RangeValue?.min ?? 0)) / ((RangeValue?.max ?? 2000) - (RangeValue?.min ?? 0))) * 100 }%`,
+                      width: `${
+                        (1 -
+                          (values[1] - (RangeValue?.min ?? 0)) /
+                            ((RangeValue?.max ?? 2000) -
+                              (RangeValue?.min ?? 0))) *
+                        100
+                      }%`,
                       background: "#fff",
                       opacity: 0.8,
                       pointerEvents: "none",
@@ -3407,21 +3543,51 @@ useEffect(() => {
                 </div>
 
                 <div className="w-100">
-                  <Range step={1} min={RangeValue?.min} max={RangeValue?.max}
-                    values={[values[0] >= (RangeValue?.min ?? 0) ? values[0] : (RangeValue?.min ?? 0),
-                      values[1] <= (RangeValue?.max ?? 2000) ? values[1] : (RangeValue?.max ?? 2000),
+                  <Range
+                    step={1}
+                    min={RangeValue?.min}
+                    max={RangeValue?.max}
+                    values={[
+                      values[0] >= (RangeValue?.min ?? 0)
+                        ? values[0]
+                        : RangeValue?.min ?? 0,
+                      values[1] <= (RangeValue?.max ?? 2000)
+                        ? values[1]
+                        : RangeValue?.max ?? 2000,
                     ]}
                     onChange={(newValues) => setValues(newValues)}
                     renderTrack={({ props, children }) => (
-                      <div {...props} style={{
+                      <div
+                        {...props}
+                        style={{
                           ...props.style,
                           height: "6px",
                           borderRadius: "3px",
                           background: `linear-gradient(to right,
-                            #007bff ${((values[0] - (RangeValue?.min ?? 0)) / ((RangeValue?.max ?? 2000) - (RangeValue?.min ?? 0))) * 100}%,
-                            #000 ${((values[0] - (RangeValue?.min ?? 0)) / ((RangeValue?.max ?? 2000) - (RangeValue?.min ?? 0))) * 100 }%,
-                            #000 ${((values[1] - (RangeValue?.min ?? 0)) / ((RangeValue?.max ?? 2000) - (RangeValue?.min ?? 0))) * 100 }%,
-                            #007bff ${ ((values[1] - (RangeValue?.min ?? 0)) / ((RangeValue?.max ?? 2000) - (RangeValue?.min ?? 0))) * 100 }%
+                            #007bff ${
+                              ((values[0] - (RangeValue?.min ?? 0)) /
+                                ((RangeValue?.max ?? 2000) -
+                                  (RangeValue?.min ?? 0))) *
+                              100
+                            }%,
+                            #000 ${
+                              ((values[0] - (RangeValue?.min ?? 0)) /
+                                ((RangeValue?.max ?? 2000) -
+                                  (RangeValue?.min ?? 0))) *
+                              100
+                            }%,
+                            #000 ${
+                              ((values[1] - (RangeValue?.min ?? 0)) /
+                                ((RangeValue?.max ?? 2000) -
+                                  (RangeValue?.min ?? 0))) *
+                              100
+                            }%,
+                            #007bff ${
+                              ((values[1] - (RangeValue?.min ?? 0)) /
+                                ((RangeValue?.max ?? 2000) -
+                                  (RangeValue?.min ?? 0))) *
+                              100
+                            }%
                           )`,
                         }}
                       >
@@ -3429,10 +3595,12 @@ useEffect(() => {
                       </div>
                     )}
                     renderThumb={({ props }) => (
-                      <div {...props} style={{
+                      <div
+                        {...props}
+                        style={{
                           ...props.style,
-                          height:isMobileWidth ?"20px":"30px",
-                          width: isMobileWidth ?"20px":"30px",
+                          height: isMobileWidth ? "20px" : "30px",
+                          width: isMobileWidth ? "20px" : "30px",
                           background: "#fff",
                           border: "2px solid #E2E2E2",
                           borderRadius: "50%",
@@ -3444,15 +3612,31 @@ useEffect(() => {
               </Container>
 
               {/* INPUTS */}
-              <div className="d-flex justify-content-between align-items-center pt-4" style={{gap:isMobileWidth &&  "10px"}}>
+              <div
+                className="d-flex justify-content-between align-items-center pt-4"
+                style={{ gap: isMobileWidth && "10px" }}
+              >
                 <Form.Group className="w-50">
-                  <div style={{ border: "1px solid #B1B1B1", borderRadius: "10px", padding: "3px 10px" }}>
+                  <div
+                    style={{
+                      border: "1px solid #B1B1B1",
+                      borderRadius: "10px",
+                      padding: "3px 10px",
+                    }}
+                  >
                     <Form.Label className="max-min-label">Minimum</Form.Label>
-                    <Form.Control type="text" value={`$${values[0]}`}
+                    <Form.Control
+                      type="text"
+                      value={`$${values[0]}`}
                       onChange={(e) => {
-                        const val = Number(e.target.value.replace(/[^0-9]/g, ""));
+                        const val = Number(
+                          e.target.value.replace(/[^0-9]/g, "")
+                        );
                         setValues([
-                          Math.max(RangeValue?.min ?? 0,Math.min(val, values[1]) ),
+                          Math.max(
+                            RangeValue?.min ?? 0,
+                            Math.min(val, values[1])
+                          ),
                           values[1],
                         ]);
                       }}
@@ -3462,22 +3646,30 @@ useEffect(() => {
                         padding: 0,
                         boxShadow: "none",
                         color: "black",
-                        fontSize:isMobileWidth && "15px"
+                        fontSize: isMobileWidth && "15px",
                       }}
                     />
                   </div>
                 </Form.Group>
 
-              {!isMobileWidth &&  (<Form.Group className="p-3">—</Form.Group>)}
+                {!isMobileWidth && <Form.Group className="p-3">—</Form.Group>}
 
                 <Form.Group className="w-50">
-                  <div style={{ border: "1px solid #B1B1B1", borderRadius: "10px", padding: "3px 10px" }}>
+                  <div
+                    style={{
+                      border: "1px solid #B1B1B1",
+                      borderRadius: "10px",
+                      padding: "3px 10px",
+                    }}
+                  >
                     <Form.Label className="max-min-label">Maximum</Form.Label>
                     <Form.Control
                       type="text"
                       value={`$${values[1]}`}
                       onChange={(e) => {
-                        const val = Number(e.target.value.replace(/[^0-9]/g, ""));
+                        const val = Number(
+                          e.target.value.replace(/[^0-9]/g, "")
+                        );
                         setValues([
                           values[0],
                           Math.min(
@@ -3492,7 +3684,7 @@ useEffect(() => {
                         padding: 0,
                         boxShadow: "none",
                         color: "black",
-                        fontSize:isMobileWidth && "15px"
+                        fontSize: isMobileWidth && "15px",
                       }}
                     />
                   </div>
@@ -3500,8 +3692,8 @@ useEffect(() => {
               </div>
             </div>
 
-            <hr className="homeHeader-modal-hr"/>
-            <div className="d-flex py-2 justify-content align-items-center w-100 flex-wrap"  >
+            <hr className="homeHeader-modal-hr" />
+            <div className="d-flex py-2 justify-content align-items-center w-100 flex-wrap">
               <div
                 className="d-flex align-items-center bg-white rounded-pill shadow-sm border"
                 style={{
@@ -3513,8 +3705,8 @@ useEffect(() => {
                   alignItems: "center",
                   gap: "8px",
                   border: "1px solid #ddd",
-                  width: isMobileWidth ? '100%' : '22%',
-                  marginBottom: isMobileWidth ? '10px' : ''
+                  width: isMobileWidth ? "100%" : "22%",
+                  marginBottom: isMobileWidth ? "10px" : "",
                 }}
               >
                 <img
@@ -3540,7 +3732,7 @@ useEffect(() => {
                     border: "none",
                     outline: "none",
                     fontSize: isMobileWidth ? "13px" : "1.1rem",
-                    fontWeight:'400'
+                    fontWeight: "400",
                   }}
                 />
               </div>
@@ -3551,7 +3743,7 @@ useEffect(() => {
                   id="dropdown-basic"
                   className="d-flex align-items-center bg-white rounded-pill shadow-sm border"
                   style={{
-                    padding:isMobileWidth ?"7px 16px": "12px 16px",
+                    padding: isMobileWidth ? "7px 16px" : "12px 16px",
                     // fontSize: "1.1rem",
                     fontSize: isMobileWidth ? "13px" : "1.1rem",
                     fontWeight: "400",
@@ -3561,32 +3753,37 @@ useEffect(() => {
                     border: "1px solid #ddd",
                   }}
                 >
-                  <img src="/images/filters/calendar-icon.svg" alt="calendar icon"
-                    style={{ width: 20, height: 20 }} />
+                  <img
+                    src="/images/filters/calendar-icon.svg"
+                    alt="calendar icon"
+                    style={{ width: 20, height: 20 }}
+                  />
                   {finalDate ? format(finalDate, "MM-dd-yyyy") : "Date"}
-               <IoChevronDown size={18}/>
+                  <IoChevronDown size={18} />
                 </Dropdown.Toggle>
 
-
                 <style>
-                  {
-                    `
+                  {`
                      .dropdown-toggle::after {
                          display: none !important;
                       }
 
-                    `
-                  }
+                    `}
                 </style>
 
-                <Dropdown.Menu style={{
-                    padding: isMobileWidth ? "7px 15px":"15px",
+                <Dropdown.Menu
+                  style={{
+                    padding: isMobileWidth ? "7px 15px" : "15px",
                     boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
                     borderRadius: "12px",
                     border: "none",
                     minWidth: "240px",
-                  }} >
-                  <DayPicker mode="single" selected={finalDate} disabled={{ before: new Date() }}
+                  }}
+                >
+                  <DayPicker
+                    mode="single"
+                    selected={finalDate}
+                    disabled={{ before: new Date() }}
                     onSelect={(date) => {
                       setFinalDate(format(date || new Date(), "yyyy-MM-dd"));
                       setSelectedDate(false);
@@ -3597,11 +3794,9 @@ useEffect(() => {
                     <button className="px-4 py-1 rounded-pill border-0" onClick={() => setSelectedDate(false)}> OK </button>
                   </div> */}
                 </Dropdown.Menu>
-                
               </Dropdown>
             </div>
-            {!isMobileWidth &&   <hr className="homeHeader-modal-hr"/>}
-
+            {!isMobileWidth && <hr className="homeHeader-modal-hr" />}
 
             <div style={{ position: "relative", display: "inline-block" }}>
               <Form.Select
@@ -3609,7 +3804,7 @@ useEffect(() => {
                 onChange={(e) => setSelectedDuration(e.target.value)}
                 style={{
                   appearance: "none",
-                  padding:isMobileWidth ?"7px 16px 7px 40px": "12px 16px",
+                  padding: isMobileWidth ? "7px 16px 7px 40px" : "12px 16px",
                   paddingLeft: "40px", // space for icon
                   fontSize: isMobileWidth ? "13px" : "1.1rem",
 
@@ -3650,7 +3845,7 @@ useEffect(() => {
                 <Clock size={18} />
               </div>
             </div>
-             <hr className="homeHeader-modal-hr"/>
+            <hr className="homeHeader-modal-hr" />
 
             {/* <div className="my-2">
               {isMobileWidth ? <h4 className="text-dark fs-6"  style={{color:'black'}}> Availability </h4> : <h4 className="pb-3" style={{color:'black',fontWeight:'500'}}>Preferences</h4>}
@@ -3749,141 +3944,276 @@ useEffect(() => {
               ))}
             </div> */}
 
-<div className="my-2">
-  {/* <h2 className="text-dark">Preferences</h2> */}
-  {isMobileWidth ? <h4 className="text-dark fs-6"  style={{color:'black'}}> Availability </h4> : <h4 className="pb-3" style={{color:'black',fontWeight:'500'}}>Preferences</h4>}
-
-  {sections.map((section, index) => {
-    // Add this check - START
-    const isBedroomsSection = section.name === "bedroom";
-    const isActivityStays = selectedActivitiesFilter.includes("Stays") || selectedActivity === "Stays";
-    const isDisabled = isBedroomsSection && !isActivityStays;
-    // Add this check - END
-    
-    return (
-      <div key={index} className="mb-4">
-        <p style={{fontSize:isMobileWidth?'14px':'' }}>{section.title}</p>
-        <div className="d-flex align-items-center justify-content-between p-lg-2"
-          style={{
-            backgroundColor: "#D1D4D4",
-            borderRadius: "50px",
-            padding:isMobileWidth ?"2px 8px":"8px",
-            // Add these styles - START
-            opacity: isDisabled ? 0.6 : 1,
-            pointerEvents: isDisabled ? "none" : "auto",
-            // Add these styles - END
-          }}
-        >
-          <ToggleButtonGroup
-            style={{ width: "75%" }}
-            type="radio"
-            name={section.name}
-            value={""}
-            onChange={(value) => handleSelect(section.name, value)}
-            className="d-flex flex-wrap filter-radio-custum-text"
-            // Add this - START
-            disabled={isDisabled}
-            // Add this - END
-          >
-            {section.options.map((option, idx) => (
-              <ToggleButton
-                key={idx}
-                id={`${section.name}-${idx}`}
-                value={option || ""}
-                variant="light"
-                className="border-0 rounded-pill px-lg-3 py-2"
-                style={{
-                  backgroundColor: preferences[section.name] == option ? "white" : "transparent",
-                  fontWeight: "400",
-                  // Add this - START
-                  cursor: isDisabled ? "not-allowed" : "pointer",
-                  opacity: isDisabled ? 0.6 : 1,
-                  // Add this - END
-                }}
-                // Add this - START
-                disabled={isDisabled}
-                // Add this - END
-              >
-                {option}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-
-          <div
-            className="d-flex align-items-center justify-content-right ms-2 "
-            style={{ width: "24%" }}
-          >
-            <InputGroup>
-              <Form className="filter-radio-btn-group">
-                <Form.Control
-                  type="number"
-                  placeholder="Type..."
-                  value={
-                    preferences[section.name] === "Any"
-                      ? ""
-                      : preferences[section.name]
-                  }
-                  onChange={(e) =>
-                    handleInputChange(section.name, e.target.value)
-                  }
-                  className="text-center border-0"
-                  style={{
-                    height:isMobileWidth?"":"40px",
-                    paddingRight: "25px",
-                    borderRadius: "50px",
-                    border: "1px solid #D1D4D4",
-                    // Add these styles - START
-                    cursor: isDisabled ? "not-allowed" : "text",
-                    opacity: isDisabled ? 0.6 : 1,
-                    // Add these styles - END
-                  }}
-                  // Add this - START
-                  disabled={isDisabled}
-                  // Add this - END
-                />
-                <svg
-                  className="position-absolute"
-                  style={{
-                    right: "5px",
-                    top:isMobileWidth ? "30%" :"20%"
-                  }}
-                  width={isMobileWidth ? "15" : "30"}
-                  height={isMobileWidth ? "15" : "30"}
-                  viewBox="0 0 30 30"
-                  xmlns="http://www.w3.org/2000/svg"
+            <div className="my-2">
+              {/* <h2 className="text-dark">Preferences</h2> */}
+              {isMobileWidth ? (
+                <h4 className="text-dark fs-6" style={{ color: "black" }}>
+                  {" "}
+                  Availability{" "}
+                </h4>
+              ) : (
+                <h4
+                  className="pb-3"
+                  style={{ color: "black", fontWeight: "500" }}
                 >
-                  <circle cx="15" cy="15" r="15" fill="#50E3C2" />
-                  <polyline
-                    points="21 10 13 19 9 15"
-                    fill="none"
-                    stroke="black"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Form>
-            </InputGroup>
-          </div>
-        </div>
-        {/* Add this message - START */}
-        {isBedroomsSection && !isActivityStays && (
-          <p style={{ 
-            color: "#666", 
-            fontSize: "12px", 
-            marginTop: "5px",
-            fontStyle: "italic" 
-          }}>
-            Bedrooms selection is only available for "Stays" activity
-          </p>
-        )}
-        {/* Add this message - END */}
-      </div>
-    );
-  })}
-</div>
-            
-             <hr className="homeHeader-modal-hr"/>
+                  Preferences
+                </h4>
+              )}
+
+              {sections.map((section, index) => {
+                // Add this check - START
+                const isBedroomsSection = section.name === "bedroom";
+                const isActivityStays =
+                  selectedActivitiesFilter.includes("Stays") ||
+                  selectedActivity === "Stays";
+                const isDisabled = isBedroomsSection && !isActivityStays;
+                // Add this check - END
+
+                return (
+                  <div key={index} className="mb-4">
+                    <p style={{ fontSize: isMobileWidth ? "14px" : "" }}>
+                      {section.title}
+                    </p>
+                    <div
+                      className="d-flex align-items-center justify-content-between p-lg-2"
+                      style={{
+                        backgroundColor: "#D1D4D4",
+                        borderRadius: "50px",
+                        padding: isMobileWidth ? "2px 8px" : "8px",
+                        // Add these styles - START
+                        opacity: isDisabled ? 0.6 : 1,
+                        pointerEvents: isDisabled ? "none" : "auto",
+                        // Add these styles - END
+                      }}
+                    >
+                      <ToggleButtonGroup
+                        style={{ width: "75%" }}
+                        type="radio"
+                        name={section.name}
+                        value={""}
+                        onChange={(value) => handleSelect(section.name, value)}
+                        className="d-flex flex-wrap filter-radio-custum-text"
+                        // Add this - START
+                        disabled={isDisabled}
+                        // Add this - END
+                      >
+                        {section.options.map((option, idx) => (
+                          <ToggleButton
+                            key={idx}
+                            id={`${section.name}-${idx}`}
+                            value={option || ""}
+                            variant="light"
+                            className="border-0 rounded-pill px-lg-3 py-2"
+                            style={{
+                              backgroundColor:
+                                preferences[section.name] == option
+                                  ? "white"
+                                  : "transparent",
+                              fontWeight: "400",
+                              // Add this - START
+                              cursor: isDisabled ? "not-allowed" : "pointer",
+                              opacity: isDisabled ? 0.6 : 1,
+                              // Add this - END
+                            }}
+                            // Add this - START
+                            disabled={isDisabled}
+                            // Add this - END
+                          >
+                            {option}
+                          </ToggleButton>
+                        ))}
+                      </ToggleButtonGroup>
+
+                      <div
+                        className="d-flex align-items-center justify-content-right ms-2 "
+                        style={{ width: "24%" }}
+                      >
+                        {/* <InputGroup>
+                          <Form className="filter-radio-btn-group">
+                            <Form.Control
+                              type="number"
+                              placeholder="Type..."
+                              value={
+                                preferences[section.name] === "Any"
+                                  ? ""
+                                  : preferences[section.name]
+                              }
+                              onChange={(e) =>
+                                handleInputChange(section.name, e.target.value)
+                              }
+                              className="text-center border-0"
+                              style={{
+                                height: isMobileWidth ? "" : "40px",
+                                paddingRight: "25px",
+                                borderRadius: "50px",
+                                border: "1px solid #D1D4D4",
+                                // Add these styles - START
+                                cursor: isDisabled ? "not-allowed" : "text",
+                                opacity: isDisabled ? 0.6 : 1,
+                                // Add these styles - END
+                              }}
+                              // Add this - START
+                              disabled={isDisabled}
+                              // Add this - END
+                            />
+                            <svg
+                              className="position-absolute"
+                              style={{
+                                right: "5px",
+                                top: isMobileWidth ? "30%" : "20%",
+                              }}
+                              width={isMobileWidth ? "15" : "30"}
+                              height={isMobileWidth ? "15" : "30"}
+                              viewBox="0 0 30 30"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <circle cx="15" cy="15" r="15" fill="#50E3C2" />
+                              <polyline
+                                points="21 10 13 19 9 15"
+                                fill="none"
+                                stroke="black"
+                                strokeWidth="3"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </Form>
+                        </InputGroup> */}
+                        <InputGroup>
+                          <Form className="filter-radio-btn-group position-relative">
+                            <Form.Control
+                              type="number"
+                              placeholder="Type..."
+                              value={
+                                preferences[section.name] === "Any"
+                                  ? ""
+                                  : preferences[section.name]
+                              }
+                              onChange={(e) =>
+                                handleInputChange(section.name, e.target.value)
+                              }
+                              className="text-center border-0"
+                              style={{
+                                height: isMobileWidth ? "" : "40px",
+                                paddingRight: "25px",
+                                borderRadius: "50px",
+                                border: "1px solid #D1D4D4",
+                                cursor: isDisabled ? "not-allowed" : "text",
+                                opacity: isDisabled ? 0.6 : 1,
+                              }}
+                              disabled={isDisabled}
+                            />
+                            <svg
+                              className="position-absolute"
+                              style={{
+                                right: "5px",
+                                top: isMobileWidth ? "30%" : "20%",
+                                cursor: isDisabled ? "not-allowed" : "pointer",
+                                zIndex: 10,
+                              }}
+                              width={isMobileWidth ? "15" : "30"}
+                              height={isMobileWidth ? "15" : "30"}
+                              viewBox="0 0 30 30"
+                              xmlns="http://www.w3.org/2000/svg"
+                              onClick={() => {
+                                if (isDisabled) return;
+
+                                // Check if THIS specific section has the close icon showing
+                                const isShowingClose =
+                                  activeCloseIcons[section.name] || false;
+
+                                if (!isShowingClose) {
+                                  // 1st Click: Turn ONLY this section's icon into a Cross
+                                  setActiveCloseIcons((prev) => ({
+                                    ...prev,
+                                    [section.name]: true, // Set just this one to true
+                                  }));
+                                } else {
+                                  // 2nd Click: Clear the field
+                                  // Changed "Any" to "" right here:
+                                  handleInputChange(section.name, "");
+
+                                  // Revert ONLY this section's icon back to a Tick
+                                  setActiveCloseIcons((prev) => ({
+                                    ...prev,
+                                    [section.name]: false, // Set just this one to false
+                                  }));
+                                }
+                              }}
+                            >
+                              {activeCloseIcons[section.name] ? (
+                                // --- CROSS ICON ---
+                                <>
+                                  <circle
+                                    cx="15"
+                                    cy="15"
+                                    r="15"
+                                    fill="#50E3C2"
+                                  />
+                                  <line
+                                    x1="10"
+                                    y1="10"
+                                    x2="20"
+                                    y2="20"
+                                    stroke="black"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                  />
+                                  <line
+                                    x1="20"
+                                    y1="10"
+                                    x2="10"
+                                    y2="20"
+                                    stroke="black"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                  />
+                                </>
+                              ) : (
+                                // --- TICK ICON ---
+                                <>
+                                  <circle
+                                    cx="15"
+                                    cy="15"
+                                    r="15"
+                                    fill="#50E3C2"
+                                  />
+                                  <polyline
+                                    points="21 10 13 19 9 15"
+                                    fill="none"
+                                    stroke="black"
+                                    strokeWidth="3"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </>
+                              )}
+                            </svg>
+                          </Form>
+                        </InputGroup>
+                      </div>
+                    </div>
+                    {/* Add this message - START */}
+                    {isBedroomsSection && !isActivityStays && (
+                      <p
+                        style={{
+                          color: "#666",
+                          fontSize: "12px",
+                          marginTop: "5px",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        Bedrooms selection is only available for "Stays"
+                        activity
+                      </p>
+                    )}
+                    {/* Add this message - END */}
+                  </div>
+                );
+              })}
+            </div>
+
+            <hr className="homeHeader-modal-hr" />
             <div
               style={{
                 padding: "10px 0",
@@ -3891,7 +4221,15 @@ useEffect(() => {
                 borderRadius: "12px",
               }}
             >
-               <h4 style={{ marginBottom: "20px",fontSize:isMobileWidth?'18px':'', color:'black'  }}>Activities</h4>
+              <h4
+                style={{
+                  marginBottom: "20px",
+                  fontSize: isMobileWidth ? "18px" : "",
+                  color: "black",
+                }}
+              >
+                Activities
+              </h4>
 
               <div
                 style={{
@@ -3910,8 +4248,18 @@ useEffect(() => {
                     onClick={() => toggleActivity(activity.name)}
                     style={{
                       padding: isMobileWidth ? "10px" : "20px",
-                      backgroundColor: selectedActivitiesFilter.includes(activity.name) ? (isMobileWidth ? "none" : "#50E3C2") : "white",
-                      border: selectedActivitiesFilter.includes(activity.name) && isMobileWidth ? "1px solid blue" : "1px solid #ccc",
+                      backgroundColor: selectedActivitiesFilter.includes(
+                        activity.name
+                      )
+                        ? isMobileWidth
+                          ? "none"
+                          : "#50E3C2"
+                        : "white",
+                      border:
+                        selectedActivitiesFilter.includes(activity.name) &&
+                        isMobileWidth
+                          ? "1px solid blue"
+                          : "1px solid #ccc",
                       borderRadius: "12px",
                       textAlign: "center",
                       fontWeight: "500",
@@ -3920,16 +4268,17 @@ useEffect(() => {
                       // display: "flex",
                       // flexDirection: "column",
                       // justifyContent: "center",
-
-                  
                     }}
                   >
                     <div
                       style={{
                         fontSize: "24px",
                         marginBottom: "8px",
-                        color: selectedActivitiesFilter.includes(activity.name) 
-                          ?  (isMobileWidth ? "black" : "white") : "black",
+                        color: selectedActivitiesFilter.includes(activity.name)
+                          ? isMobileWidth
+                            ? "black"
+                            : "white"
+                          : "black",
                       }}
                     >
                       {/* <img src={activity.icon} loading="lazy" style={{width:isMobileWidth ? "20px" : ""}}/> */}
@@ -3946,9 +4295,12 @@ useEffect(() => {
                     </div>
                     <span
                       style={{
-                        color: selectedActivitiesFilter.includes(activity.name) 
-                          ?  (isMobileWidth ? "black" : "white") : "black",
-                          wordWrap:'break-word'
+                        color: selectedActivitiesFilter.includes(activity.name)
+                          ? isMobileWidth
+                            ? "black"
+                            : "white"
+                          : "black",
+                        wordWrap: "break-word",
                       }}
                     >
                       {activity.name}
@@ -3963,7 +4315,7 @@ useEffect(() => {
                   marginBottom: "10px",
                   cursor: "pointer",
                   fontWeight: isMobileWidth ? "400" : "500",
-                  fontSize: isMobileWidth ? '14px' : ''
+                  fontSize: isMobileWidth ? "14px" : "",
                 }}
                 onClick={() => setShowOtherActivities(!showOtherActivities)}
               >
@@ -3988,10 +4340,18 @@ useEffect(() => {
                       key={activity.name}
                       onClick={() => toggleActivity(activity.name)}
                       style={{
-                        backgroundColor: selectedActivitiesFilter.includes(activity.name) 
-                          ? (isMobileWidth ? " none" : "#50E3C2") : "white",
-                        border: selectedActivitiesFilter.includes(activity.name) && isMobileWidth
-                        ? "1px solid blue" : "1px solid #ccc",
+                        backgroundColor: selectedActivitiesFilter.includes(
+                          activity.name
+                        )
+                          ? isMobileWidth
+                            ? " none"
+                            : "#50E3C2"
+                          : "white",
+                        border:
+                          selectedActivitiesFilter.includes(activity.name) &&
+                          isMobileWidth
+                            ? "1px solid blue"
+                            : "1px solid #ccc",
                         padding: isMobileWidth ? "10px" : "20px",
                         borderRadius: "12px",
                         textAlign: "center",
@@ -4005,8 +4365,13 @@ useEffect(() => {
                         style={{
                           fontSize: "24px",
                           marginBottom: "8px",
-                          color: selectedActivitiesFilter.includes(activity.name) 
-                          ?  (isMobileWidth ? "black" : "white") : "black",
+                          color: selectedActivitiesFilter.includes(
+                            activity.name
+                          )
+                            ? isMobileWidth
+                              ? "black"
+                              : "white"
+                            : "black",
                         }}
                       >
                         <Image
@@ -4023,9 +4388,14 @@ useEffect(() => {
 
                       <span
                         style={{
-                          color: selectedActivitiesFilter.includes(activity.name) 
-                          ?  (isMobileWidth ? "black" : "white") : "black",
-                          wordWrap:'break-word'
+                          color: selectedActivitiesFilter.includes(
+                            activity.name
+                          )
+                            ? isMobileWidth
+                              ? "black"
+                              : "white"
+                            : "black",
+                          wordWrap: "break-word",
                         }}
                       >
                         {activity.name}
@@ -4036,7 +4406,7 @@ useEffect(() => {
               )}
             </div>
 
-             <hr className="homeHeader-modal-hr"/>
+            <hr className="homeHeader-modal-hr" />
             <div
               className="nw-pop-amenities-wrp"
               style={{
@@ -4045,7 +4415,15 @@ useEffect(() => {
                 borderRadius: "12px",
               }}
             >
-              <h4 style={{ marginBottom: "20px" ,fontSize:isMobileWidth?'18px':'', color:'black'}}>Amenities</h4>
+              <h4
+                style={{
+                  marginBottom: "20px",
+                  fontSize: isMobileWidth ? "18px" : "",
+                  color: "black",
+                }}
+              >
+                Amenities
+              </h4>
               <div
                 style={{
                   display: "grid",
@@ -4065,7 +4443,7 @@ useEffect(() => {
                       cursor: "pointer",
                       wordBreak: "break-word",
                       whiteSpace: "normal",
-                      fontSize: isMobileWidth ? '14px' : ''
+                      fontSize: isMobileWidth ? "14px" : "",
                     }}
                   >
                     <input
@@ -4116,14 +4494,14 @@ useEffect(() => {
                   cursor: "pointer",
                   color: "#000",
                   textDecoration: "underline",
-                  fontSize:isMobileWidth?'14px':''
+                  fontSize: isMobileWidth ? "14px" : "",
                 }}
                 onClick={() => setShowMore(!showMore)}
               >
                 {showMore ? "Show Less" : "Show More"}
               </p>
             </div>
-             <hr className="homeHeader-modal-hr"/>
+            <hr className="homeHeader-modal-hr" />
             <div
               style={{
                 padding: "10px 0",
@@ -4131,7 +4509,15 @@ useEffect(() => {
                 borderRadius: "12px",
               }}
             >
-              <h4 style={{ marginBottom: "20px" , fontSize:isMobileWidth?'18px':'' , color:'black'}}>Booking</h4>
+              <h4
+                style={{
+                  marginBottom: "20px",
+                  fontSize: isMobileWidth ? "18px" : "",
+                  color: "black",
+                }}
+              >
+                Booking
+              </h4>
 
               {togglesBooking.map((item, index) => (
                 <div
@@ -4144,7 +4530,13 @@ useEffect(() => {
                   }}
                 >
                   <div style={{ maxWidth: "85%" }}>
-                    <strong style={{ fontWeight: "500", color: "black" ,fontSize:isMobileWidth?'14px':''}}>
+                    <strong
+                      style={{
+                        fontWeight: "500",
+                        color: "black",
+                        fontSize: isMobileWidth ? "14px" : "",
+                      }}
+                    >
                       {item.title}
                     </strong>
                     {item.info && (
@@ -4184,7 +4576,7 @@ useEffect(() => {
                                 width: "410px",
                                 zIndex: 10,
                                 whiteSpace: "normal",
-                                fontSize: isMobileWidth ?"12px":"14px",
+                                fontSize: isMobileWidth ? "12px" : "14px",
                                 wordBreak: "break-word",
                                 maxWidth: isMobileWidth ? "200px" : "none",
                               }}
@@ -4202,8 +4594,7 @@ useEffect(() => {
                         style={{
                           margin: "5px 0",
                           color: "black",
-                          fontSize: isMobileWidth ? '12px' : '16px'
-
+                          fontSize: isMobileWidth ? "12px" : "16px",
                         }}
                       >
                         {item.description}
@@ -4216,7 +4607,7 @@ useEffect(() => {
                       width: "60px",
                       height: "28px",
                       borderRadius: "20px",
-                      backgroundColor: item.toggle ? "#4AEAB1":"#B0B0B0",
+                      backgroundColor: item.toggle ? "#4AEAB1" : "#B0B0B0",
                       display: "flex",
                       alignItems: "center",
                       padding: "3px",
@@ -4229,7 +4620,7 @@ useEffect(() => {
                         width: "24px",
                         height: "24px",
                         borderRadius: "50%",
-                        backgroundColor: item.toggle?"white":"white",
+                        backgroundColor: item.toggle ? "white" : "white",
                         transform: item.toggle
                           ? "translateX(31px)"
                           : "translateX(0px)",
@@ -4241,7 +4632,7 @@ useEffect(() => {
               ))}
             </div>
 
-             <hr className="homeHeader-modal-hr"/>
+            <hr className="homeHeader-modal-hr" />
             <div
               className="nw-pop-amenities-wrp"
               style={{
@@ -4250,7 +4641,15 @@ useEffect(() => {
                 borderRadius: "12px",
               }}
             >
-              <h4 style={{  fontSize:isMobileWidth?'18px':'', marginBottom: "20px" , color:'black'}}>Language</h4>
+              <h4
+                style={{
+                  fontSize: isMobileWidth ? "18px" : "",
+                  marginBottom: "20px",
+                  color: "black",
+                }}
+              >
+                Language
+              </h4>
 
               <div
                 style={{
@@ -4268,7 +4667,7 @@ useEffect(() => {
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
-                        fontSize: isMobileWidth ?"14px":"",
+                        fontSize: isMobileWidth ? "14px" : "",
                       }}
                     >
                       <input
@@ -4288,7 +4687,7 @@ useEffect(() => {
                   cursor: "pointer",
                   color: "black",
                   textDecoration: "underline",
-                  fontSize: isMobileWidth ?"14px":"",
+                  fontSize: isMobileWidth ? "14px" : "",
                 }}
               >
                 {showMoreLanguages ? "Show Less" : "See More"}
@@ -4298,15 +4697,18 @@ useEffect(() => {
         </Modal.Body>
 
         {!isMobileWidth && (
-          <Modal.Footer style={{ padding: "4px" ,border:'none' }} >
-            <div className="modal-footer"
+          <Modal.Footer style={{ padding: "4px", border: "none" }}>
+            <div
+              className="modal-footer"
               style={{
                 display: "flex",
                 justifyContent: "space-between",
                 width: "100%",
-              }}>
+              }}
+            >
               {/* Clean All Button */}
-              <button onClick={handleCleanAll}
+              <button
+                onClick={handleCleanAll}
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -4321,9 +4723,14 @@ useEffect(() => {
                 }}
               >
                 Clean All
-                <img src={"/images/clean-all.svg" } alt="clean" style={{
-                    width: "30px", height: "30px", }}/>
-
+                <img
+                  src={"/images/clean-all.svg"}
+                  alt="clean"
+                  style={{
+                    width: "30px",
+                    height: "30px",
+                  }}
+                />
                 {/* <FaRedo style={{
                     width: "30px",
                     height: "30px",
@@ -4391,7 +4798,6 @@ useEffect(() => {
 };
 
 export default React.memo(HomeHeader);
-
 
 // import React, { useEffect, useRef, useState } from "react";
 // import { Link, useNavigate } from "react-router-dom";
@@ -5428,7 +5834,7 @@ export default React.memo(HomeHeader);
 //                           <input onClick={(e) => {
 //                               e.preventDefault();
 //                               setShowModal(true);
-//                             }} 
+//                             }}
 //                             value={selectedPlace ? selectedPlace?.length > 5 ? selectedPlace?.slice(0, 5) + "." : selectedPlace : ""} readOnly  placeholder="where" style={{
 //                             width: "100%",
 //                             // minWidth:"22%",
@@ -6841,7 +7247,6 @@ export default React.memo(HomeHeader);
 //                 </Link>
 //               </li>
 
-            
 //               <li>
 //                 <Link to="/WishList">
 //                   <img src="/images/mobile/nav/4.svg" alt="" />
@@ -6849,7 +7254,6 @@ export default React.memo(HomeHeader);
 //                 </Link>
 //               </li>
 
-         
 //               {login_id ? (
 //                 <>
 //                   <li>
@@ -6881,7 +7285,7 @@ export default React.memo(HomeHeader);
 //                   </li>
 //                 </>
 //               ) : (
-                
+
 //                 <li>
 //                   <a
 //                     onClick={(e) => {
@@ -6897,7 +7301,7 @@ export default React.memo(HomeHeader);
 //             </ul>
 //           </div>
 //         </div> */}
-        // <MobFooter />
+// <MobFooter />
 //         {/* <!-- MOBILE -->
 //     <!-- NAV -->
 //     <!-- MAP-BUTTON --> */}
