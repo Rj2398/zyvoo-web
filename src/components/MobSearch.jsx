@@ -331,14 +331,19 @@ const MobSearch = ({
                                     id="slider"
                                     style={{
                                       position: "relative",
-                                      width: "280px",
-                                      height: "280px",
+                                      width: "283px",
+                                      height: "283px",
                                       display: "flex",
                                       alignItems: "center",
                                       justifyContent: "center",
-                                      boxShadow:
-                                        "0 4px 25px rgba(0, 0, 0, 0.3)", // outer shadow
                                       borderRadius: "50%",
+                                      aspectRatio: "1 / 1",
+                                      objectFit: "contain",
+                                      boxShadow: `
+                              0px 35px 75px rgba(168, 133, 155, 0.22), 
+                              0px 15px 35px rgba(0, 0, 0, 0.02), 
+                              inset 0px -1px 5px rgba(255, 255, 255, 0.4)
+                            `,
                                     }}
                                   >
                                     <img
@@ -350,8 +355,8 @@ const MobSearch = ({
                                         top: "50%",
                                         left: "50%",
                                         transform: "translate(-50%, -50%)",
-                                        width: "93%",
-                                        height: "93%",
+                                        width: "82%",
+                                        height: "82%",
                                         zIndex: 3,
                                         pointerEvents: "none",
                                       }}
@@ -364,8 +369,8 @@ const MobSearch = ({
                                         position: "absolute",
                                         top: "auto",
                                         left: "auto",
-                                        width: "90%",
-                                        height: "90%",
+                                        width: "86%",
+                                        height: "86%",
                                         zIndex: 1,
                                       }}
                                     />
@@ -400,19 +405,27 @@ const MobSearch = ({
                                       </div>
                                     </div>
                                     <div
+                                      className="hide-slider-pulse"
                                       style={{
                                         position: "relative",
                                         zIndex: 2,
                                       }}
                                     >
+                                      <style>{`
+    .hide-slider-pulse circle[style*="animation-name: pulse"] {
+      fill-opacity: 0 !important;
+      opacity: 0 !important;
+      display: none !important;
+    }
+  `}</style>
                                       {/* {console.log("hour value in MobSearch:", hour, "type:", typeof hour)} */}
                                       <CircularSlider
                                         min={0}
                                         max={24}
                                         // value={hour}
-                                        trackSize={40}
-                                        progressSize={40}
-                                        knobSize={40}
+                                        trackSize={55}
+                                        progressSize={55}
+                                        knobSize={75}
                                         knobColor="#fff"
                                         trackColor="transparent"
                                         progressColorFrom="#4aeab1"

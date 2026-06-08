@@ -96,10 +96,16 @@ const Range = ({
             id="slider"
             style={{
               position: "relative",
-              width: "280px",
-              height: "280px",
+              width: "283px",
+              height: "283px",
               borderRadius: "50%",
-              boxShadow: "0 4px 25px rgba(0, 0, 0, 0.3)", // outer shadow
+              aspectRatio: "1 / 1",
+              objectFit: "contain",
+              boxShadow: `
+              0px 35px 75px rgba(168, 133, 155, 0.22), 
+              0px 15px 35px rgba(0, 0, 0, 0.02), 
+              inset 0px -1px 5px rgba(255, 255, 255, 0.4)
+            `,
             }}
           >
             <img
@@ -111,8 +117,8 @@ const Range = ({
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                width: "93%",
-                height: "93%",
+                width: "88%",
+                height: "88%",
                 zIndex: 3,
                 pointerEvents: "none",
               }}
@@ -127,8 +133,8 @@ const Range = ({
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                width: "90%",
-                height: "90%",
+                width: "86%",
+                height: "86%",
                 color: "black",
                 zIndex: 2,
                 // pointerEvents: "none"
@@ -168,14 +174,23 @@ const Range = ({
 
             <div
               style={{ position: "relative", zIndex: 2 }}
-              className={!hasChanged || hoursValue == 0 ? "range-ss" : ""}
+              className={`hide-slider-pulse ${
+                !hasChanged || hoursValue == 0 ? "range-ss" : ""
+              }`}
             >
+              <style>{`
+    .hide-slider-pulse circle[style*="animation-name: pulse"] {
+      fill-opacity: 0 !important;
+      opacity: 0 !important;
+      display: none !important;
+    }
+  `}</style>
               <CircularSlider
                 min={0}
                 max={23}
-                trackSize={40}
-                progressSize={40}
-                knobSize={40}
+                trackSize={45}
+                progressSize={45}
+                knobSize={59}
                 knobColor="#fff"
                 trackColor="transparent"
                 progressColorFrom="#4aeab1"
