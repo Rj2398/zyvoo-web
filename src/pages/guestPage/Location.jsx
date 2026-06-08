@@ -727,7 +727,7 @@ function Location() {
                         id="pills-hourly"
                         role="tabpanel"
                         aria-labelledby="pills-hourly-tab"
-                        // style={{height:"500px"}}
+                        style={{ height: !isMobileWidth && "510px" }}
                       >
                         <div
                           className="hour-slider-wrap"
@@ -741,8 +741,8 @@ function Location() {
                             id="slider"
                             style={{
                               position: "relative",
-                              width: "283px",
-                              height: "283px",
+                              width: isMobileWidth ? "283px" : "283px",
+                              height: isMobileWidth ? "283px" : "283px",
                             }}
                           >
                             <img
