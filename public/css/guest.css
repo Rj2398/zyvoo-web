@@ -4833,9 +4833,11 @@ img.chat-right-top-batch-image {
     flex-wrap: wrap;
 
     #slider {
-      margin: 10px auto;
+      transform: scale(0.88) !important;
+      margin: -30px !important;
+      /* margin: 10px auto; */
       /* transform: scale(0.85); */
-      transform: scale(1);
+      /* transform: scale(1); */
     }
   }
 
