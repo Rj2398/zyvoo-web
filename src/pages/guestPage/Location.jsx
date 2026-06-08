@@ -683,7 +683,7 @@ function Location() {
                     className="location-right-hour-day"
                     style={{
                       padding: isMobileWidth ? "5px" : "12px",
-                      height: isMobileWidth ? "560px" : "auto",
+                      // height: isMobileWidth ? "auto" : "auto",
                     }}
                   >
                     <ul
@@ -727,13 +727,13 @@ function Location() {
                         id="pills-hourly"
                         role="tabpanel"
                         aria-labelledby="pills-hourly-tab"
-                        style={{ height: !isMobileWidth && "510px" }}
+                        // style={{ height: isMobileWidth ? "510px" : "auto" }}
                       >
                         <div
                           className="hour-slider-wrap"
                           style={{
-                            height: isMobileWidth ? "450px" : "450px",
-                            paddingTop: "50px",
+                            // height: isMobileWidth ? "450px" : "auto",
+                            paddingTop: "30px",
                           }}
                         >
                           <div
@@ -743,7 +743,13 @@ function Location() {
                               position: "relative",
                               width: isMobileWidth ? "310px" : "283px",
                               height: isMobileWidth ? "310px" : "283px",
-                              // backgroundColor: "red",
+                              borderRadius: "50%",
+                              aspectRatio: "1 / 1",
+                              boxShadow: `
+    0px 25px 55px rgba(183, 153, 171, 0.25), 
+    0px 10px 25px rgba(0, 0, 0, 0.05), 
+    inset 0px -2px 6px rgba(255, 255, 255, 0.6)
+  `,
                             }}
                           >
                             <img
