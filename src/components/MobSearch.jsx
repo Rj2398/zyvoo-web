@@ -5,7 +5,7 @@ import moment from "moment";
 import { Modal, Form } from "react-bootstrap";
 import { format } from "date-fns";
 import main from "../assets/gallery/Group (2).png";
-import dotted from "../assets/gallery/Vector (1).png";
+import dotted from "../assets/gallery/vector_4.png";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
@@ -55,14 +55,12 @@ const MobSearch = ({
     { id: 5, name: "Party" },
     { id: 6, name: "Pool" },
     { id: 7, name: "Film Shoot" },
-    { id: 8, name: "Wedding" }
-    // { id: 5, name: "Birthday Party" }, 
-
+    { id: 8, name: "Wedding" },
+    // { id: 5, name: "Birthday Party" },
   ],
 }) => {
   const [showActivityPopup, setShowActivityPopup] = useState(false);
   const [key, setKey] = useState("dates");
-
 
   const dropdownRef = useRef(null);
 
@@ -173,7 +171,7 @@ const MobSearch = ({
                       type="button"
                       value="Add Time"
                       id="time-search"
-                    // onClick={() => onShowToggle && onShowToggle(!show)}
+                      // onClick={() => onShowToggle && onShowToggle(!show)}
                     />
                   </div>
 
@@ -297,9 +295,9 @@ const MobSearch = ({
                                 footer={
                                   selectedDate
                                     ? `Selected: ${format(
-                                      selectedDate,
-                                      "MM-dd-yyyy"
-                                    )}`
+                                        selectedDate,
+                                        "MM-dd-yyyy"
+                                      )}`
                                     : "Pick a day."
                                 }
                               />
@@ -338,8 +336,9 @@ const MobSearch = ({
                                       display: "flex",
                                       alignItems: "center",
                                       justifyContent: "center",
-                                      boxShadow: "0 4px 25px rgba(0, 0, 0, 0.3)", // outer shadow
-                                      borderRadius: "50%"
+                                      boxShadow:
+                                        "0 4px 25px rgba(0, 0, 0, 0.3)", // outer shadow
+                                      borderRadius: "50%",
                                     }}
                                   >
                                     <img
@@ -365,8 +364,8 @@ const MobSearch = ({
                                         position: "absolute",
                                         top: "auto",
                                         left: "auto",
-                                        width: "95%",
-                                        height: "95%",
+                                        width: "90%",
+                                        height: "90%",
                                         zIndex: 1,
                                       }}
                                     />
@@ -554,7 +553,8 @@ const MobSearch = ({
                   {key === "hourly" ? (
                     <div className="search-filter-mid-activity-btn">
                       Price
-                      <input type="number"
+                      <input
+                        type="number"
                         placeholder="Select price"
                         onChange={(e) => {
                           e.preventDefault();
