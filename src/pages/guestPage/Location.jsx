@@ -741,15 +741,17 @@ function Location() {
                             id="slider"
                             style={{
                               position: "relative",
-                              width: isMobileWidth ? "310px" : "283px",
-                              height: isMobileWidth ? "310px" : "283px",
+                              // width: isMobileWidth ? "310px" : "283px",
+                              // height: isMobileWidth ? "310px" : "283px",
+                              width: isMobileWidth ? "85%" : "92%",
                               borderRadius: "50%",
                               aspectRatio: "1 / 1",
+                              objectFit: "contain",
                               boxShadow: `
-    0px 25px 55px rgba(183, 153, 171, 0.25), 
-    0px 10px 25px rgba(0, 0, 0, 0.05), 
-    inset 0px -2px 6px rgba(255, 255, 255, 0.6)
-  `,
+                              0px 35px 75px rgba(168, 133, 155, 0.22), 
+                              0px 15px 35px rgba(0, 0, 0, 0.02), 
+                              inset 0px -1px 5px rgba(255, 255, 255, 0.4)
+                            `,
                             }}
                           >
                             <img
