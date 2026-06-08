@@ -741,8 +741,9 @@ function Location() {
                             id="slider"
                             style={{
                               position: "relative",
-                              width: isMobileWidth ? "283px" : "283px",
-                              height: isMobileWidth ? "283px" : "283px",
+                              width: isMobileWidth ? "310px" : "283px",
+                              height: isMobileWidth ? "310px" : "283px",
+                              // backgroundColor: "red",
                             }}
                           >
                             <img
@@ -754,8 +755,8 @@ function Location() {
                                 top: "50%",
                                 left: "50%",
                                 transform: "translate(-50%, -50%)",
-                                width: isMobileWidth ? "74%" : "88%",
-                                height: isMobileWidth ? "74%" : "88%",
+                                width: isMobileWidth ? "80%" : "88%",
+                                height: isMobileWidth ? "80%" : "88%",
                                 zIndex: 3,
                                 pointerEvents: "none",
                               }}
@@ -817,6 +818,7 @@ function Location() {
     }
   `}</style>
                               <CircularSlider
+                                width={isMobileWidth ? 310 : 283}
                                 min={0}
                                 max={23}
                                 trackSize={isMobileWidth ? 60 : 45}
