@@ -732,7 +732,7 @@ function Location() {
                         <div
                           className="hour-slider-wrap"
                           style={{
-                            height: "450px",
+                            height: isMobileWidth ? "470px" : "450px",
                             paddingTop: "50px",
                           }}
                         >
