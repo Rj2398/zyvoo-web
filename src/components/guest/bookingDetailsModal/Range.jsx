@@ -25,6 +25,7 @@ const Range = ({
   const [selectedOption, setSelectedOption] = useState(
     initialValue || "Select hours"
   );
+
   const [show, setShow] = useState("false");
 
   const calculateTotalPrice = (hours, hourlyRate) => {

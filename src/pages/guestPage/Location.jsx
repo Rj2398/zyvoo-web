@@ -113,7 +113,15 @@ function Location() {
   const [filteredReviews, setFilteredReviews] = useState([]);
 
   const [dropdownOpen, setDropdownOpen] = useState(false); // NEW
-  const [hoursValue, setHoursValue] = useState(1);
+
+  const [hoursValue, setHoursValue] = useState(0);
+  const [sliderValue, setSliderValue] = useState(0);
+  useEffect(() => {
+    if (propertyDetails?.min_booking_hours) {
+      setHoursValue(parseInt(propertyDetails.min_booking_hours, 10));
+      setSliderValue(parseInt(propertyDetails.min_booking_hours, 10));
+    }
+  }, [propertyDetails]);
   const [dateSelected, setDateSelected] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [startTime, setStartTime] = useState("");
@@ -683,7 +691,6 @@ function Location() {
                     className="location-right-hour-day"
                     style={{
                       padding: isMobileWidth ? "5px" : "12px",
-                      // height: isMobileWidth ? "auto" : "auto",
                     }}
                   >
                     <ul
@@ -743,8 +750,6 @@ function Location() {
                               position: "relative",
                               width: isMobileWidth ? "310px" : "283px",
                               height: isMobileWidth ? "310px" : "283px",
-                              // width: isMobileWidth ? "85%" : "92%",
-                              // // height: isMobileWidth ? "85%" : "92%",
                               borderRadius: "50%",
                               aspectRatio: "1 / 1",
                               objectFit: "contain",
@@ -817,7 +822,45 @@ function Location() {
 
                             <div
                               className="hide-slider-pulse"
-                              style={{ position: "relative", zIndex: 2 }}
+                              style={{
+                                position: "relative",
+                                zIndex: 2,
+                                cursor: "pointer",
+                                transform: "translate3d(0, 0, 0)",
+                                backfaceVisibility: "hidden",
+                              }}
+                              onClick={(e) => {
+                                // Agar direct white goli (knob) par click kiya hai toh handle mat karo (normal drag chalne do)
+                                if (
+                                  e.target.tagName === "circle" &&
+                                  e.target.getAttribute("fill") === "#fff"
+                                ) {
+                                  return;
+                                }
+
+                                const rect =
+                                  e.currentTarget.getBoundingClientRect();
+                                const x =
+                                  e.clientX - rect.left - rect.width / 2;
+                                const y =
+                                  e.clientY - rect.top - rect.height / 2;
+
+                                let angle = Math.atan2(x, -y) * (180 / Math.PI);
+                                if (angle < 0) angle += 360;
+
+                                const pureInteger =
+                                  Math.round((angle / 360) * 24) | 0;
+                                const finalVal =
+                                  pureInteger >= 24 ? 0 : pureInteger;
+
+                                // Yahan teenon cheezein ek sath update hongi, jisse slider khud chal kar naye spot par set ho jayega
+                                setSliderValue(finalVal);
+                                setHoursValue(finalVal);
+                                calculateTotalPrice(
+                                  finalVal,
+                                  parseFloat(propertyDetails?.hourly_rate)
+                                );
+                              }}
                             >
                               <style>{`
     .hide-slider-pulse circle[style*="animation-name: pulse"] {
@@ -826,7 +869,45 @@ function Location() {
       display: none !important;
     }
   `}</style>
+
                               <CircularSlider
+                                width={isMobileWidth ? 310 : 283}
+                                min={0}
+                                max={23}
+                                trackSize={isMobileWidth ? 60 : 45}
+                                progressSize={isMobileWidth ? 60 : 45}
+                                knobSize={isMobileWidth ? 78 : 59}
+                                shadow={false}
+                                knobShadow={false}
+                                knobShadowColor="transparent"
+                                knobColor="#fff"
+                                trackColor="transparent"
+                                progressColorFrom="#4aeab1"
+                                progressColorTo="#4aeab1"
+                                direction={1}
+                                /* --- FIX 1: Ab dataIndex is safe state se chalega, jo tap par slider ko set karegi --- */
+                                dataIndex={sliderValue}
+                                label=" "
+                                labelColor="transparent"
+                                valueColor="transparent"
+                                valueFontSize="0rem"
+                                labelFontSize="1rem"
+                                /* --- FIX 2: Live Dragging without any blinking/flipping --- */
+                                onChange={(value) => {
+                                  const pureInteger = value | 0;
+
+                                  if (hoursValue !== pureInteger) {
+                                    // Drag ke dauran hum sliderValue ko sync rakhenge bina slider ko disturb kiye
+                                    setSliderValue(pureInteger);
+                                    setHoursValue(pureInteger);
+                                    calculateTotalPrice(
+                                      pureInteger,
+                                      parseFloat(propertyDetails?.hourly_rate)
+                                    );
+                                  }
+                                }}
+                              />
+                              {/* <CircularSlider
                                 width={isMobileWidth ? 310 : 283}
                                 min={0}
                                 max={23}
@@ -856,7 +937,7 @@ function Location() {
                                     parseFloat(propertyDetails?.hourly_rate)
                                   );
                                 }}
-                              />
+                              /> */}
                             </div>
                           </div>
                           <div
