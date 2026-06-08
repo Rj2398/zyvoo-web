@@ -61,7 +61,7 @@ const MobSearch = ({
 }) => {
   const [showActivityPopup, setShowActivityPopup] = useState(false);
   const [key, setKey] = useState("dates");
-
+  const [sliderKey, setSliderKey] = useState(0);
   const dropdownRef = useRef(null);
 
   // 👇 Close dropdown when clicking outside
@@ -75,7 +75,11 @@ const MobSearch = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [setShowActivityPopup]);
-
+  useEffect(() => {
+    if (key === "hourly") {
+      setSliderKey((prev) => prev + 1);
+    }
+  }, [key, hour]);
   // 👇 Handle keyboard navigation like a real <select>
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -338,12 +342,55 @@ const MobSearch = ({
                                       justifyContent: "center",
                                       borderRadius: "50%",
                                       aspectRatio: "1 / 1",
-                                      objectFit: "contain",
+                                      cursor: "pointer",
                                       boxShadow: `
-                              0px 35px 75px rgba(168, 133, 155, 0.22), 
-                              0px 15px 35px rgba(0, 0, 0, 0.02), 
-                              inset 0px -1px 5px rgba(255, 255, 255, 0.4)
-                            `,
+                                        0px 35px 75px rgba(168, 133, 155, 0.22), 
+                                        0px 15px 35px rgba(0, 0, 0, 0.02), 
+                                        inset 0px -1px 5px rgba(255, 255, 255, 0.4)
+                                      `,
+                                      /* Anti-flicker settings */
+                                      transform: "translate3d(0, 0, 0)",
+                                      backfaceVisibility: "hidden",
+                                    }}
+                                    onClick={(e) => {
+                                      if (
+                                        e.target.tagName === "circle" &&
+                                        e.target.getAttribute("fill") === "#fff"
+                                      ) {
+                                        return;
+                                      }
+
+                                      const rect =
+                                        e.currentTarget.getBoundingClientRect();
+                                      const x =
+                                        e.clientX - rect.left - rect.width / 2;
+                                      const y =
+                                        e.clientY - rect.top - rect.height / 2;
+
+                                      let angle =
+                                        Math.atan2(x, -y) * (180 / Math.PI);
+                                      if (angle < 0) angle += 360;
+
+                                      // String output array size context mapping (Length is 23 items -> 1 to 23)
+                                      const stepIndex =
+                                        Math.round((angle / 360) * 23) | 0;
+                                      // Restrict values within exact bounds
+                                      const safeIndex =
+                                        stepIndex >= 23
+                                          ? 22
+                                          : stepIndex < 0
+                                          ? 0
+                                          : stepIndex;
+
+                                      const finalHourValue = safeIndex + 1;
+
+                                      // Triggers external callback prop logic to sync state
+                                      if (handleHourChange) {
+                                        handleHourChange(
+                                          String(finalHourValue)
+                                        );
+                                      }
+                                      setSliderKey((prev) => prev + 1); // Jump effect triggered
                                     }}
                                   >
                                     <img
@@ -431,8 +478,13 @@ const MobSearch = ({
                                         progressColorFrom="#4aeab1"
                                         progressColorTo="#4aeab1"
                                         direction={0}
-                                        // dataIndex={2}
-                                        dataIndex={1}
+                                        // dataIndex={1}
+
+                                        dataIndex={
+                                          (hour | 0) - 1 < 0
+                                            ? 0
+                                            : (hour | 0) - 1
+                                        }
                                         label=" "
                                         labelColor="transparent"
                                         valueColor="transparent"
@@ -442,7 +494,16 @@ const MobSearch = ({
                                           { length: 23 },
                                           (_, i) => `${i + 1}`
                                         )}
-                                        onChange={handleHourChange}
+                                        onChange={(value) => {
+                                          const pureInt = value | 0;
+                                          /* --- FIX 5: Stop unwanted loops & flickering while manually sliding --- */
+                                          if ((hour | 0) !== pureInt) {
+                                            if (handleHourChange) {
+                                              handleHourChange(String(pureInt));
+                                            }
+                                          }
+                                        }}
+                                        // onChange={handleHourChange}
                                       />
                                     </div>
                                   </div>

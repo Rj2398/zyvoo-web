@@ -6931,6 +6931,15 @@ button.btn-close::before {
 }
 
 @media screen and (max-width: 767px) {
+  .location-right-hour-day {
+    & .hour-slider-wrap {
+      #slider {
+        transform: scale(0.88);
+        margin: -30px;
+      }
+    }
+  }
+
   .booking-left-sid-box {
     flex: 1 0 100%;
     max-width: unset;
