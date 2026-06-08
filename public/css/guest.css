@@ -6936,8 +6936,8 @@ button.btn-close::before {
   .location-right-hour-day {
     & .hour-slider-wrap {
       #slider {
-        transform: scale(0.88);
-        margin: -30px;
+        transform: scale(0.88) !important;
+        margin: -30px !important;
       }
     }
   }
