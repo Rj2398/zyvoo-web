@@ -744,8 +744,8 @@ function Location() {
                                 top: "50%",
                                 left: "50%",
                                 transform: "translate(-50%, -50%)",
-                                width: "88%",
-                                height: "88%",
+                                width: "75%",
+                                height: "75%",
                                 zIndex: 3,
                                 pointerEvents: "none",
                               }}
@@ -799,9 +799,12 @@ function Location() {
                               <CircularSlider
                                 min={0}
                                 max={23}
-                                trackSize={45}
-                                progressSize={45}
-                                knobSize={50}
+                                // trackSize={45}
+                                // progressSize={45}
+                                // knobSize={50}
+                                trackSize={60}
+                                progressSize={60}
+                                knobSize={75}
                                 knobColor="#fff"
                                 trackColor="transparent"
                                 progressColorFrom="#4aeab1"
