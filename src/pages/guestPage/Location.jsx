@@ -681,10 +681,13 @@ function Location() {
                   </div>
                   <div
                     className="location-right-hour-day"
-                    style={{ padding: isMobileWidth ? "5px" : "12px" }}
+                    style={{
+                      padding: isMobileWidth ? "5px" : "12px",
+                      height: isMobileWidth ? "560px" : "auto",
+                    }}
                   >
                     <ul
-                      className="nav nav-pills mb-3"
+                      className="nav nav-pills m-0"
                       id="pills-tab"
                       role="tablist"
                     >
@@ -724,8 +727,15 @@ function Location() {
                         id="pills-hourly"
                         role="tabpanel"
                         aria-labelledby="pills-hourly-tab"
+                        // style={{height:"500px"}}
                       >
-                        <div className="hour-slider-wrap">
+                        <div
+                          className="hour-slider-wrap"
+                          style={{
+                            height: "450px",
+                            paddingTop: "50px",
+                          }}
+                        >
                           <div
                             className="hour-slider"
                             id="slider"
@@ -744,8 +754,8 @@ function Location() {
                                 top: "50%",
                                 left: "50%",
                                 transform: "translate(-50%, -50%)",
-                                width: "75%",
-                                height: "75%",
+                                width: isMobileWidth ? "74%" : "88%",
+                                height: isMobileWidth ? "74%" : "88%",
                                 zIndex: 3,
                                 pointerEvents: "none",
                               }}
@@ -759,8 +769,8 @@ function Location() {
                                 position: "absolute",
                                 top: "auto",
                                 left: "auto",
-                                width: "84%",
-                                height: "84%",
+                                width: isMobileWidth ? "84%" : "86%",
+                                height: isMobileWidth ? "84%" : "86%",
                               }}
                             />
                             {/* Centered Hours Value and Label */}
@@ -795,16 +805,26 @@ function Location() {
                               </div>
                             </div>
 
-                            <div style={{ position: "relative", zIndex: 2 }}>
+                            <div
+                              className="hide-slider-pulse"
+                              style={{ position: "relative", zIndex: 2 }}
+                            >
+                              <style>{`
+    .hide-slider-pulse circle[style*="animation-name: pulse"] {
+      fill-opacity: 0 !important;
+      opacity: 0 !important;
+      display: none !important;
+    }
+  `}</style>
                               <CircularSlider
                                 min={0}
                                 max={23}
-                                // trackSize={45}
-                                // progressSize={45}
-                                // knobSize={50}
-                                trackSize={60}
-                                progressSize={60}
-                                knobSize={75}
+                                trackSize={isMobileWidth ? 60 : 45}
+                                progressSize={isMobileWidth ? 60 : 45}
+                                knobSize={isMobileWidth ? 78 : 59}
+                                shadow={false}
+                                knobShadow={false}
+                                knobShadowColor="transparent"
                                 knobColor="#fff"
                                 trackColor="transparent"
                                 progressColorFrom="#4aeab1"
@@ -828,7 +848,14 @@ function Location() {
                               />
                             </div>
                           </div>
-
+                          <div
+                            style={{
+                              width: "98%",
+                              height: "1px",
+                              backgroundColor: "#E2DCE2",
+                              marginTop: "30px",
+                            }}
+                          />
                           <div className="hour-slider-in">
                             <p>
                               <img
