@@ -759,8 +759,8 @@ function Location() {
                                 position: "absolute",
                                 top: "auto",
                                 left: "auto",
-                                width: "86%",
-                                height: "86%",
+                                width: "84%",
+                                height: "84%",
                               }}
                             />
                             {/* Centered Hours Value and Label */}
