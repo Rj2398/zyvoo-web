@@ -1052,7 +1052,10 @@ function Location() {
                         </>
                       </div>
                     </div>
-                    <p className="location-right-btn-after">
+                    <p
+                      className="location-right-btn-after"
+                      style={{ padding: "10px" }}
+                    >
                       {getCancelMessage(propertyDetails.cancellation_time)}
                     </p>
                   </div>
