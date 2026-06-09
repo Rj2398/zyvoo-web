@@ -5,7 +5,7 @@ import moment from "moment";
 import { Modal, Form } from "react-bootstrap";
 import { format } from "date-fns";
 import main from "../assets/gallery/Group (2).png";
-import dotted from "../assets/gallery/vector_4.png";
+import dotted from "../assets/gallery/vector_10.png";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import React, { useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
@@ -416,8 +416,8 @@ const MobSearch = ({
                                         position: "absolute",
                                         top: "auto",
                                         left: "auto",
-                                        width: "86%",
-                                        height: "86%",
+                                        width: "120%",
+                                        height: "100%",
                                         zIndex: 1,
                                       }}
                                     />
@@ -472,7 +472,7 @@ const MobSearch = ({
                                         // value={hour}
                                         trackSize={50}
                                         progressSize={55}
-                                        knobSize={75}
+                                        knobSize={70}
                                         knobColor="#fff"
                                         trackColor="transparent"
                                         progressColorFrom="#4aeab1"

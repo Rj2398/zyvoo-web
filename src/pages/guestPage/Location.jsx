@@ -8,7 +8,7 @@ import LocationReviewStars from "../../components/guest/LocationReviewStars";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import { DayPicker } from "react-day-picker";
 import main from "../.././assets/gallery/Group (2).png";
-import dotted from "../.././assets/gallery/vector_4.png";
+import dotted from "../.././assets/gallery/vector_10.png";
 import { Tab } from "bootstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -784,8 +784,8 @@ function Location() {
                                 position: "absolute",
                                 top: "auto",
                                 left: "auto",
-                                width: isMobileWidth ? "84%" : "86%",
-                                height: isMobileWidth ? "84%" : "86%",
+                                width: isMobileWidth ? "120%" : "120%",
+                                height: isMobileWidth ? "95%" : "102%",
                               }}
                             />
                             {/* Centered Hours Value and Label */}

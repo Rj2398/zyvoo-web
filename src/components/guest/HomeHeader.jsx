@@ -35,7 +35,7 @@ import useCommon from "../../hooks/useCommon";
 import { useDispatch, useSelector } from "react-redux";
 import RegisterModal from "./authModalGuest/RegisterModal";
 import main from "../../assets/gallery/Group (2).png";
-import dotted from "../../assets/gallery/vector_4.png";
+import dotted from "../../assets/gallery/vector_10.png";
 import { toast } from "react-toastify";
 import moment from "moment";
 import useChat from "../../hooks/host/useChat";
@@ -65,6 +65,7 @@ const generateTimeOptions = () => {
 const HomeHeader = ({ showMap, setShowMap }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const sliderRef = useRef(null);
   const { userInfo } = useSelector(({ user }) => user);
   // const [showCloseIcon, setShowCloseIcon] = useState(false);
   const [activeCloseIcons, setActiveCloseIcons] = useState({});
@@ -3051,8 +3052,8 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                             position: "absolute",
                             top: "auto",
                             left: "auto",
-                            width: "90%",
-                            height: "90%",
+                            width: "125%",
+                            height: "102%",
                             zIndex: 1,
                           }}
                         />
@@ -3087,21 +3088,80 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                           </div>
                         </div>
                         <div
-                          style={{ position: "relative", zIndex: 2 }}
-                          className={!hasChanged || hour == 0 ? "range-ss" : ""}
+                          style={{
+                            position: "relative",
+                            zIndex: 2,
+                            cursor: "pointer",
+                            transform: "translate3d(0, 0, 0)",
+                            backfaceVisibility: "hidden",
+                          }}
+                          className={`hide-slider-pulse ${
+                            !hasChanged || hour === 0 ? "range-ss" : ""
+                          }`}
+                          onClick={(e) => {
+                            // Agar direct white goli (knob) par click hai toh drag chalne do
+                            if (
+                              e.target.tagName === "circle" &&
+                              e.target.getAttribute("fill") === "#fff"
+                            ) {
+                              return;
+                            }
+
+                            const rect =
+                              e.currentTarget.getBoundingClientRect();
+                            const x = e.clientX - rect.left - rect.width / 2;
+                            const y = e.clientY - rect.top - rect.height / 2;
+
+                            let angle = Math.atan2(x, -y) * (180 / Math.PI);
+                            if (angle < 0) angle += 360;
+
+                            // Total 23 items hain array mein, accurate index mapping:
+                            const stepIndex =
+                              Math.round((angle / 360) * 23) | 0;
+                            const safeIndex =
+                              stepIndex >= 23
+                                ? 22
+                                : stepIndex < 0
+                                ? 0
+                                : stepIndex;
+
+                            const finalHourValue = String(safeIndex + 1);
+
+                            setHasChanged(true);
+                            if (handleHourChange) {
+                              handleHourChange(finalHourValue);
+                            }
+
+                            /* --- MAGIC LOGIC: key badle bina slider ko update karega, NO FADE! --- */
+                            if (
+                              sliderRef.current &&
+                              typeof sliderRef.current.setValue === "function"
+                            ) {
+                              sliderRef.current.setValue(finalHourValue);
+                            }
+                          }}
                         >
+                          <style>{`
+                              .hide-slider-pulse circle[style*="animation-name: pulse"] {
+                                fill-opacity: 0 !important;
+                                opacity: 0 !important;
+                                display: none !important;
+                              }
+                            `}</style>
                           <CircularSlider
+                            ref={sliderRef}
                             min={0}
                             max={24}
                             trackSize={40}
                             progressSize={40}
-                            knobSize={40}
+                            knobSize={55}
                             knobColor="#fff"
                             trackColor="transparent"
                             progressColorFrom="#4aeab1"
                             progressColorTo="#4aeab1"
                             direction={0}
-                            dataIndex={0}
+                            dataIndex={(hour | 0) - 1 < 0 ? 0 : (hour | 0) - 1}
+                            // dataIndex={0}
                             // label=" "
                             labelColor="transparent"
                             valueColor="transparent"
@@ -3111,18 +3171,41 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                               { length: 23 },
                               (_, i) => `${i + 1}`
                             )}
+                            // onChange={(value) => {
+                            //   setHasChanged(true);
+                            //   const label = document.querySelector(
+                            //     '[aria-label="Hour"]'
+                            //   );
+                            //   if (label) {
+                            //     label.style.animation = "pulse 0.5s ease";
+                            //     setTimeout(() => {
+                            //       label.style.animation = "";
+                            //     }, 500);
+                            //   }
+                            //   handleHourChange(value);
+                            // }}
                             onChange={(value) => {
-                              setHasChanged(true);
-                              const label = document.querySelector(
-                                '[aria-label="Hour"]'
-                              );
-                              if (label) {
-                                label.style.animation = "pulse 0.5s ease";
-                                setTimeout(() => {
-                                  label.style.animation = "";
-                                }, 500);
+                              const pureInt = value | 0;
+
+                              /* --- 4. NO BLINKING CONDITION: Renders block jab tak number change na ho --- */
+                              if ((hour | 0) !== pureInt) {
+                                setHasChanged(true);
+
+                                // Aapka purana aria-label animations logic jaisa tha waisa hi rakha hai
+                                const label = document.querySelector(
+                                  '[aria-label="Hour"]'
+                                );
+                                if (label) {
+                                  label.style.animation = "pulse 0.5s ease";
+                                  setTimeout(() => {
+                                    label.style.animation = "";
+                                  }, 500);
+                                }
+
+                                if (handleHourChange) {
+                                  handleHourChange(value);
+                                }
                               }
-                              handleHourChange(value);
                             }}
                           />
                         </div>

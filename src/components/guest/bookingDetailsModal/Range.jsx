@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import { useNavigate } from "react-router-dom";
 import main from "../../../assets/gallery/Group (2).png";
-import dotted from "../../../assets/gallery/vector_4.png";
+import dotted from "../../../assets/gallery/vector_10.png";
 import BookingExtensionModal from "./BookingExtensionModal";
 import { toast } from "react-toastify";
 
@@ -134,8 +134,8 @@ const Range = ({
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                width: "86%",
-                height: "86%",
+                width: "120%",
+                height: "100%",
                 color: "black",
                 zIndex: 2,
                 // pointerEvents: "none"
