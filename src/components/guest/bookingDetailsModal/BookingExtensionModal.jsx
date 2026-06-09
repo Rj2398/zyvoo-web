@@ -2,16 +2,22 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setBookingDetailsData } from "../../../store/slices/userSlice";
 import ExtendedTimeModal from "../ExtendedTimeModal";
-import dollarIcon from "../../../assets/gallery/dollarIcon.png"
-import {useNavigate } from "react-router-dom";
+import dollarIcon from "../../../assets/gallery/dollarIcon.png";
+import { useNavigate } from "react-router-dom";
 
-const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, handleBook}) => {
+const BookingExtensionModal = ({
+  show,
+  handleClose,
+  bookingDetails,
+  totalAmount,
+  handleBook,
+}) => {
   const navigate = useNavigate();
   const [extendedModalVisible, setExtendedVisible] = useState(false);
 
   const dispatch = useDispatch();
 
-  const [isMobileWidth, setIsMobileWidth] = useState(false)
+  const [isMobileWidth, setIsMobileWidth] = useState(false);
 
   useEffect(() => {
     const checkWindowWidth = () => {
@@ -19,9 +25,9 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
     };
 
     checkWindowWidth();
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   const mergedBooking = {
@@ -32,11 +38,12 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
 
   const handleExtend = () => {
     setExtendedVisible(true);
-    dispatch(setBookingDetailsData(mergedBooking))
+    dispatch(setBookingDetailsData(mergedBooking));
   };
 
   return (
-    <div style={{
+    <div
+      style={{
         position: "fixed",
         top: 0,
         left: 0,
@@ -49,10 +56,11 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
         zIndex: 100,
       }}
     >
-      <div style={{
+      <div
+        style={{
           backgroundColor: "white",
           // padding: "3.5em",
-          padding: isMobileWidth ? '1.5em' : '3.5em',
+          padding: isMobileWidth ? "1.5em" : "3.5em",
           borderRadius: "12px",
           textAlign: "center",
           width: "95%",
@@ -61,14 +69,15 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
           position: "relative",
         }}
       >
-
-        <button onClick={handleClose} style={{
+        <button
+          onClick={handleClose}
+          style={{
             position: "absolute",
             top: "12px",
             right: "12px",
-            width: "20px", 
+            width: "20px",
             height: "20px",
-            border: "none", 
+            border: "none",
             fontSize: "20px",
             cursor: "pointer",
             color: "white",
@@ -82,11 +91,14 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
           &times;
         </button>
 
-        <h2 style={{ fontWeight: "600", fontSize: "1.5em", marginBottom: "10px" }} >
+        <h2
+          style={{ fontWeight: "600", fontSize: "1.5em", marginBottom: "10px" }}
+        >
           {totalAmount ? "" : "Need More Time?"}
         </h2>
 
-        <div style={{
+        <div
+          style={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -94,11 +106,23 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
             height: "80px",
             borderRadius: "50%",
             backgroundColor: "#2ee6a8",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", 
+            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
             margin: "30px auto",
-          }} >
-          <span style={{ fontSize: "32px", fontWeight: "bold", color: "white", fontFamily: "Arial, sans-serif"}} >
-            {totalAmount ? <img src={dollarIcon} loading="lazy" alt="dollor"/> : " i"}
+          }}
+        >
+          <span
+            style={{
+              fontSize: "32px",
+              fontWeight: "bold",
+              color: "white",
+              fontFamily: "Arial, sans-serif",
+            }}
+          >
+            {totalAmount ? (
+              <img src={dollarIcon} loading="lazy" alt="dollor" />
+            ) : (
+              " i"
+            )}
           </span>
         </div>
         {totalAmount ? (
@@ -107,12 +131,21 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
           </p>
         ) : (
           <p style={{ fontSize: "1em", color: "black", marginBottom: "20px" }}>
-            To extend your booking time, please click <span style={{fontWeight:'400'}}>"Yes"</span> below.
+            To extend your booking time, please click{" "}
+            <span style={{ fontWeight: "400" }}>"Yes"</span> below.
           </p>
         )}
 
-        <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }} >
-          <button onClick={totalAmount ? handleBook : handleExtend}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
+          <button
+            onClick={totalAmount ? handleBook : handleExtend}
             style={{
               backgroundColor: "#2ee6a8",
               color: "black",
@@ -128,7 +161,9 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
             Yes
           </button>
           {/* <button onClick={handleClose} style={{ */}
-          <button onClick={() => navigate("/")} style={{
+          <button
+            onClick={() => handleClose()}
+            style={{
               backgroundColor: "white",
               color: "black",
               padding: "10px 20px",
@@ -137,9 +172,9 @@ const BookingExtensionModal = ({show, handleClose, bookingDetails, totalAmount, 
               border: "1px solid #2ee6a8",
               cursor: "pointer",
               minWidth: "120px",
-            }} >
-             No
-            
+            }}
+          >
+            No
           </button>
         </div>
       </div>
