@@ -6932,6 +6932,8 @@ button.btn-close::before {
   margin-bottom: 20px;
 }
 
+/* written by rajan */
+
 @media screen and (max-width: 767px) {
   .location-right-hour-day {
     & .hour-slider-wrap {

@@ -764,6 +764,7 @@ function Location() {
                               src={main}
                               loading="lazy"
                               alt="Main Background"
+                              className="slide-up-image"
                               style={{
                                 position: "absolute",
                                 top: "50%",

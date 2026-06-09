@@ -37,9 +37,15 @@ export const appleConfiguration = {
   APPLE_CLIENT_ID: "com.zyvollc.web", // Your Apple Service ID
   APPLE_REDIRECT_URL: "https://zyvo-1aea1.firebaseapp.com/__/auth/handler",
 };
-
+let isLoggingOut = false;
 // Cleaned Session Eviction Utility Flow
-export const LogoutError = () => {
+export const LogoutError = (errorMessage) => {
+  console.log(errorMessage, "error message123");
+  if (isLoggingOut) return;
+
+  isLoggingOut = true;
+
+  toast.error(errorMessage || "Session expired. Please login again.");
   // 1. Instantly demote access privileges
   localStorage.setItem("USER_TYPE", "guest");
 

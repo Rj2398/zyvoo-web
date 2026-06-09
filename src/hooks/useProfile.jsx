@@ -60,6 +60,7 @@ export default function useProfile() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -94,9 +95,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -125,9 +127,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -156,9 +159,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -193,9 +197,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -228,9 +233,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -265,9 +271,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -300,9 +307,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -337,9 +345,11 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -372,9 +382,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -409,9 +420,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -444,9 +456,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -481,9 +494,11 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -516,9 +531,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -578,9 +594,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -609,9 +626,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -640,9 +658,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -671,9 +690,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -700,9 +720,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -729,9 +750,10 @@ export default function useProfile() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }

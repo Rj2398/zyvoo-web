@@ -25,10 +25,12 @@ export default function useChat() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
-        }
-        toast.error(errorMessage);
+        // if (error?.response?.data?.message === "Unauthenticated.") {
+        //   LogoutError();
+        // }
+        // toast.error(errorMessage);
+
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -54,9 +56,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -80,9 +83,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -106,9 +110,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        LogoutError(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -131,9 +136,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -160,9 +166,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -186,15 +193,16 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
     },
   });
-  
+
   const { mutateAsync: favoriteChatUser } = useMutation({
     mutationKey: ["mark_favorite_chat", "user"],
     mutationFn: async (payload) => {
@@ -212,9 +220,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -238,9 +247,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -263,9 +273,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -277,7 +288,10 @@ export default function useChat() {
     mutationFn: async (payload) => {
       try {
         setManualLoading(true);
-        const response = await guestApi.post("save_channel_timestamps", payload);
+        const response = await guestApi.post(
+          "save_channel_timestamps",
+          payload
+        );
         const { data } = response;
         return {
           ...data,
@@ -289,9 +303,10 @@ export default function useChat() {
           error.message ||
           "An unknown error occurred";
         if (error?.response?.data?.message === "Unauthenticated.") {
-          LogoutError();
+          // LogoutError();
         }
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
+        LogoutError(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -311,6 +326,6 @@ export default function useChat() {
     favoriteChatUser,
     getReportList,
     reportUser,
-    saveChatTimeStamp
+    saveChatTimeStamp,
   };
 }
