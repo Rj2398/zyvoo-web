@@ -6938,6 +6938,7 @@ button.btn-close::before {
       #slider {
         transform: scale(0.88) !important;
         margin: -30px !important;
+        -webkit-transform: scale(0.88) !important;
       }
     }
   }
