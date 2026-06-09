@@ -30,7 +30,7 @@ export default function useChat() {
         // }
         // toast.error(errorMessage);
 
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -58,7 +58,7 @@ export default function useChat() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -85,7 +85,7 @@ export default function useChat() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -112,7 +112,7 @@ export default function useChat() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -139,7 +139,7 @@ export default function useChat() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -169,7 +169,7 @@ export default function useChat() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -196,7 +196,7 @@ export default function useChat() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -223,7 +223,7 @@ export default function useChat() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -250,7 +250,7 @@ export default function useChat() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -276,7 +276,7 @@ export default function useChat() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -306,7 +306,7 @@ export default function useChat() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }

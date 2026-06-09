@@ -42,7 +42,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -72,7 +72,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -102,7 +102,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -135,7 +135,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -168,7 +168,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -195,7 +195,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -225,7 +225,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -252,7 +252,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -288,7 +288,7 @@ export default function useCommon() {
           error.message ||
           error.response?.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -315,7 +315,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -343,7 +343,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -370,7 +370,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -397,7 +397,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -427,7 +427,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -454,7 +454,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -481,7 +481,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -511,7 +511,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -574,7 +574,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -601,7 +601,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -627,7 +627,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -654,7 +654,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -681,7 +681,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -708,7 +708,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -735,7 +735,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -762,7 +762,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -789,7 +789,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -816,7 +816,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -843,7 +843,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -870,7 +870,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -897,7 +897,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -924,7 +924,7 @@ export default function useCommon() {
         // if (error?.response?.data?.message === "Unauthenticated.") {
         LogoutError();
         // }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -951,7 +951,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -978,7 +978,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -1005,7 +1005,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
@@ -1032,7 +1032,7 @@ export default function useCommon() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage); // toast.error(errorMessage);
+        LogoutError(); // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }

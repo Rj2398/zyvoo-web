@@ -60,7 +60,7 @@ export default function useProfile() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -98,7 +98,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -130,7 +130,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -162,7 +162,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -200,7 +200,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -236,7 +236,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -274,7 +274,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -309,7 +309,7 @@ export default function useProfile() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -349,7 +349,7 @@ export default function useProfile() {
         }
         // toast.error(errorMessage);
 
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -384,7 +384,7 @@ export default function useProfile() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -423,7 +423,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -459,7 +459,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -497,7 +497,7 @@ export default function useProfile() {
           // LogoutError();
         }
 
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -534,7 +534,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -597,7 +597,7 @@ export default function useProfile() {
           // LogoutError();
         }
         // toast.error(errorMessage);
-        LogoutError(errorMessage);
+        LogoutError();
       } finally {
         setManualLoading(false);
       }
@@ -628,7 +628,7 @@ export default function useProfile() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -660,7 +660,7 @@ export default function useProfile() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -692,7 +692,7 @@ export default function useProfile() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -722,7 +722,7 @@ export default function useProfile() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
@@ -752,7 +752,7 @@ export default function useProfile() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           // LogoutError();
         }
-        LogoutError(errorMessage);
+        LogoutError();
         // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
