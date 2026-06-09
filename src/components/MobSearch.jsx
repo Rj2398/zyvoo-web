@@ -402,8 +402,8 @@ const MobSearch = ({
                                         top: "50%",
                                         left: "50%",
                                         transform: "translate(-50%, -50%)",
-                                        width: "82%",
-                                        height: "82%",
+                                        width: "80%",
+                                        height: "80%",
                                         zIndex: 3,
                                         pointerEvents: "none",
                                       }}
