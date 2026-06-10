@@ -240,7 +240,9 @@ function RegisterModal(props) {
 
       if (response?.status || response?.success) {
         // Added response?.success check just in case
-        toast.success(response?.data?.message || "User Logged in Successfully");
+        toast.success(
+          props?.loginModal ? "Registered Successfully" : "Login Sucessfully"
+        );
         props?.CallBack?.(false);
         navigate("/");
       } else {
@@ -286,36 +288,47 @@ function RegisterModal(props) {
       const result = await signInWithPopup(auth, appleProvider);
       const user = result.user;
 
-      const credential = OAuthProvider.credentialFromResult(result);
-      const idToken = credential?.idToken;
+      // 1. Get the initial email returned by Firebase/Apple
+      let finalEmail = user?.email;
 
-      // 1. Initialize names with smart fallbacks
+      // 2. Intercept if the user chose "Hide My Email" and force a real email input
+      if (finalEmail && finalEmail.includes("privaterelay.appleid.com")) {
+        const realEmailInput = prompt(
+          "Apple has hidden your email address. Please provide your real email to complete registration:"
+        );
+
+        if (realEmailInput && realEmailInput.trim() !== "") {
+          finalEmail = realEmailInput.trim();
+        } else {
+          toast.error("Your real email is required to log in.");
+          return; // Halt execution if they cancel or leave it empty
+        }
+      }
+
+      // 3. Initialize names with smart fallbacks
       let fname = "Apple";
       let lname = "User";
 
-      // 2. If Apple actually gives us a name (Only happens on 1st login ever), parse it!
+      // 4. If Apple actually gives us a name (Only happens on 1st login ever), parse it!
       if (user.displayName && user.displayName.trim() !== "") {
         const nameParts = user.displayName.trim().split(" ");
         fname = nameParts[0] || "Apple";
         lname = nameParts.slice(1).join(" ") || "User";
       } else {
-        // 3. OPTIONAL: If no name is provided, you can also extract a fallback prefix from their email
-        if (user?.email) {
-          const emailPrefix = user.email.split("@")[0];
-          // If it's not a masked private relay email, use the prefix
-          if (!user.email.includes("privaterelay.appleid.com")) {
-            fname = emailPrefix;
-            lname = "User";
-          }
+        // If no name is provided, extract a fallback prefix from their verified real email
+        if (finalEmail && !finalEmail.includes("privaterelay.appleid.com")) {
+          const emailPrefix = finalEmail.split("@")[0];
+          fname = emailPrefix;
+          lname = "User";
         }
       }
 
-      // This safely ensures payload fields are NEVER empty strings
+      // 5. Construct payload using the static user.uid for backend lookups
       const payload = {
-        email: user?.email,
+        email: finalEmail, // Now guaranteed to be their real email address string
         fname: fname,
         lname: lname,
-        social_id: idToken,
+        social_id: user?.uid, // ✅ FIXED: Changed from idToken to unique static UID
       };
 
       console.log("Sending clean payload to backend:", payload);
@@ -323,7 +336,9 @@ function RegisterModal(props) {
       const response = await SocialLogin(payload);
 
       if (response.status) {
-        toast.success(response?.data?.message || "Registered Successfully");
+        toast.success(
+          props?.loginModal ? "Registered Successfully" : "Login Successfully"
+        );
         props?.CallBack?.(false);
         navigate("/");
       } else {
@@ -337,6 +352,65 @@ function RegisterModal(props) {
       toast.error(error.message || "Failed to login with Apple.");
     }
   };
+  //code commente 10-06-2026
+  // const handleAppleSignIn = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, appleProvider);
+  //     const user = result.user;
+
+  //     const credential = OAuthProvider.credentialFromResult(result);
+  //     const idToken = credential?.idToken;
+
+  //     // 1. Initialize names with smart fallbacks
+  //     let fname = "Apple";
+  //     let lname = "User";
+
+  //     // 2. If Apple actually gives us a name (Only happens on 1st login ever), parse it!
+  //     if (user.displayName && user.displayName.trim() !== "") {
+  //       const nameParts = user.displayName.trim().split(" ");
+  //       fname = nameParts[0] || "Apple";
+  //       lname = nameParts.slice(1).join(" ") || "User";
+  //     } else {
+  //       // 3. OPTIONAL: If no name is provided, you can also extract a fallback prefix from their email
+  //       if (user?.email) {
+  //         const emailPrefix = user.email.split("@")[0];
+  //         // If it's not a masked private relay email, use the prefix
+  //         if (!user.email.includes("privaterelay.appleid.com")) {
+  //           fname = emailPrefix;
+  //           lname = "User";
+  //         }
+  //       }
+  //     }
+
+  //     // This safely ensures payload fields are NEVER empty strings
+  //     const payload = {
+  //       email: user?.email,
+  //       fname: fname,
+  //       lname: lname,
+  //       social_id: idToken,
+  //     };
+
+  //     console.log("Sending clean payload to backend:", payload);
+
+  //     const response = await SocialLogin(payload);
+
+  //     if (response.status) {
+  //       toast.success(
+  //         props?.loginModal ? "Registered Successfully" : "Login Sucessfully"
+  //       );
+  //       props?.CallBack?.(false);
+  //       navigate("/");
+  //     } else {
+  //       toast.error(
+  //         response?.data?.message || "Login verification failed on backend."
+  //       );
+  //       console.error("Backend Error:", response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Apple Sign-In Error:", error);
+  //     toast.error(error.message || "Failed to login with Apple.");
+  //   }
+  // };
   // const handleAppleSignIn = async () => {
   //   try {
   //     // 1. Trigger the popup via Firebase using the provider we exported

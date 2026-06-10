@@ -22,7 +22,7 @@ export default function useAuth() {
         if (data?.data) {
           setTimeout(() => {
             dispatch(setUserInfo(data?.data));
-            dispatch(setStoreDataLoginOtp(data?.data))
+            dispatch(setStoreDataLoginOtp(data?.data));
           }, 500);
         }
 
@@ -57,7 +57,7 @@ export default function useAuth() {
             JSON.stringify({
               access_token: data?.data?.token,
               user_id: data?.data?.user_id,
-            }),
+            })
           );
         }
 
@@ -83,7 +83,6 @@ export default function useAuth() {
       try {
         setManualLoading(true);
         const response = await api.post("login_phone_number", payload);
-        
 
         const { data } = response;
         if (data?.data) {
@@ -98,7 +97,7 @@ export default function useAuth() {
           setTimeout(() => {
             // dispatch(setUserInfo(data?.data));
             // -added-------
-            dispatch(setStoreDataLoginOtp(data?.data))
+            dispatch(setStoreDataLoginOtp(data?.data));
           }, 500);
         }
         return {
@@ -133,16 +132,14 @@ export default function useAuth() {
             JSON.stringify({
               access_token: data?.data?.token,
               user_id: data?.data?.user_id,
-            }),
+            })
           );
-
 
           setTimeout(() => {
             dispatch(setUserInfo(data?.data));
             // -added-------
-            dispatch(setStoreDataLoginOtp(data?.data))
+            dispatch(setStoreDataLoginOtp(data?.data));
           }, 500);
-
         }
         return {
           ...data?.data,
@@ -181,7 +178,10 @@ export default function useAuth() {
         setManualLoading(false);
         // const errorMessage = "Account not found. Please register first22.";
         // const errorMessage = "Account not found. Please register first22.";
-        const errorMessage = error.response?.data?.message || error.message || "An unknown error occurred";
+        const errorMessage =
+          error.response?.data?.message ||
+          error.message ||
+          "An unknown error occurred";
 
         toast.error(errorMessage);
       } finally {
@@ -261,7 +261,7 @@ export default function useAuth() {
               JSON.stringify({
                 access_token: data.data.token,
                 user_id: data.data.user_id,
-              }),
+              })
             );
           } else {
             sessionStorage.setItem(
@@ -269,7 +269,7 @@ export default function useAuth() {
               JSON.stringify({
                 access_token: data.data.token,
                 user_id: data.data.user_id,
-              }),
+              })
             );
           }
           setTimeout(() => {
@@ -305,7 +305,7 @@ export default function useAuth() {
         if (data?.data) {
           setTimeout(() => {
             dispatch(setUserInfo(data?.data));
-            dispatch(setStoreDataLoginOtp(data?.data))
+            dispatch(setStoreDataLoginOtp(data?.data));
           }, 500);
         }
 
@@ -342,7 +342,7 @@ export default function useAuth() {
             JSON.stringify({
               access_token: data?.data?.token,
               user_id: data?.data?.user_id,
-            }),
+            })
           );
 
           setTimeout(() => {
@@ -405,7 +405,7 @@ export default function useAuth() {
         setManualLoading(true);
         const response = await guestApi.post(
           "otp_verify_email_verification",
-          payload,
+          payload
         );
 
         const { data } = response;
@@ -468,7 +468,7 @@ export default function useAuth() {
         setManualLoading(true);
         const response = await guestApi.post(
           "otp_verify_phone_verification",
-          payload,
+          payload
         );
 
         const { data } = response;
@@ -563,7 +563,7 @@ export default function useAuth() {
         setManualLoading(true);
         const response = await guestApi.post(
           "otp_verify_update_phone",
-          payload,
+          payload
         );
 
         const { data } = response;
@@ -598,7 +598,7 @@ export default function useAuth() {
         setManualLoading(true);
         const response = await guestApi.post(
           "otp_verify_update_email",
-          payload,
+          payload
         );
 
         const { data } = response;
@@ -670,7 +670,7 @@ export default function useAuth() {
             JSON.stringify({
               access_token: data?.data?.token,
               user_id: data?.data?.user_id,
-            }),
+            })
           );
 
           setTimeout(() => {
@@ -688,7 +688,6 @@ export default function useAuth() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-
         toast.error(errorMessage);
       } finally {
         setManualLoading(false);
