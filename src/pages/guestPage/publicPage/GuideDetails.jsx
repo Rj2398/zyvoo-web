@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Form, Button, Image, Card, } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Image,
+  Card,
+} from "react-bootstrap";
 import AuthModal from "../../../components/guest/authModal";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -21,7 +29,7 @@ function GuideDetails() {
   const [guideArr, setGuideArr] = useState([]);
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
-
+  const [rawVideoUrl, setRawVideoUrl] = useState(null);
   useEffect(() => {
     const checkWindowWidth = () => {
       setIsMobileWidth(window.innerWidth <= 768);
@@ -36,11 +44,40 @@ function GuideDetails() {
   const fetchGuideDetails = async () => {
     try {
       const response = await getGuideDetail({ guide_id: currentGuideId });
-      setGuideDetails(response?.data);
+      const guideData = response?.data;
+      setGuideDetails(guideData);
+
+      // --- EXTRACT RAW YOUTUBE LINK START ---
+      if (guideData?.description) {
+        // Matches the url string inside the <oembed> tag perfectly
+        const match = guideData.description.match(
+          /<oembed\s+url=["']([^"']+)["']/
+        );
+
+        if (match && match[1]) {
+          // Removes any escaped backslashes coming from JSON formatting
+          const cleanedUrl = match[1].replace(/\\/g, "");
+          setRawVideoUrl(cleanedUrl); // Saves: "https://www.youtube.com/watch?v=BPCEzBezS2Y"
+        } else {
+          setRawVideoUrl(null);
+        }
+      } else {
+        setRawVideoUrl(null);
+      }
+      // --- EXTRACT RAW YOUTUBE LINK END ---
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching guide details:", error);
     }
   };
+
+  // const fetchGuideDetails = async () => {
+  //   try {
+  //     const response = await getGuideDetail({ guide_id: currentGuideId });
+  //     setGuideDetails(response?.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const fetchGuides = async () => {
     const result = await getGuideList({ user_type: userType });
@@ -89,7 +126,7 @@ function GuideDetails() {
 
   return (
     <div>
-      <main  >
+      <main>
         {/* Mobile Search Filter */}
         <div className="mob-search-filter border-start-0 border-end-0">
           <Container fluid>
@@ -105,10 +142,15 @@ function GuideDetails() {
                       <i className="fa-regular fa-arrow-left"></i>
 
                     </a> */}
-                   <Link to="#" onClick={() => navigate(-1)}  >
-                      <i className="fa-regular fa-arrow-left" style={{ textAlign: 'center',marginLeft: !isMobileWidth && '10px' }}></i>
+                    <Link to="#" onClick={() => navigate(-1)}>
+                      <i
+                        className="fa-regular fa-arrow-left"
+                        style={{
+                          textAlign: "center",
+                          marginLeft: !isMobileWidth && "10px",
+                        }}
+                      ></i>
                     </Link>
-
 
                     {/* <Form style={{
                       position: "relative",
@@ -156,7 +198,13 @@ function GuideDetails() {
           </Container>
         </div>
 
-        <div className="guides-articles-details guide-details-mobile" style={{ padding: isMobileWidth ?"0":"10px 23px", position: "relative" }}>
+        <div
+          className="guides-articles-details guide-details-mobile"
+          style={{
+            padding: isMobileWidth ? "0" : "10px 23px",
+            position: "relative",
+          }}
+        >
           {/* Back Button */}
           <div
             className="web-navbar"
@@ -172,16 +220,16 @@ function GuideDetails() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              marginLeft:'10px'
+              marginLeft: "10px",
             }}
           >
             <FaArrowLeft style={{ color: "white" }} />
           </div>
 
-          <Container fluid >
+          <Container fluid>
             <Row>
               {/* Left Side - Article Details */}
-              <Col lg={8} md={6}  style={{marginLeft:'-2px'}}>
+              <Col lg={8} md={6} style={{ marginLeft: "-2px" }}>
                 <div className="guides-articles-left">
                   <div className="guides-articles-left-top">
                     <div className="guides-articles-left-top-data">
@@ -193,14 +241,16 @@ function GuideDetails() {
                         <li>
                           <Image
                             src="/images/guides-articles/date.svg"
-                            loading="lazy" alt="Date"
+                            loading="lazy"
+                            alt="Date"
                           />
                           {guideDetails?.date}
                         </li>
                         <li>
                           <Image
                             src="/images/guides-articles/time.svg"
-                            loading="lazy" alt="Time"
+                            loading="lazy"
+                            alt="Time"
                           />
                           {guideDetails?.time_required}
                         </li>
@@ -209,7 +259,8 @@ function GuideDetails() {
                     <div className="guides-articles-left-top-image guide-image-container">
                       <Image
                         src={`${imageBase}${guideDetails?.cover_image}`}
-                        loading="lazy" alt="Article"
+                        loading="lazy"
+                        alt="Article"
                         fluid
                       />
                     </div>
@@ -221,6 +272,32 @@ function GuideDetails() {
                         __html: guideDetails?.description,
                       }}
                     />
+
+                    {rawVideoUrl && (
+                      <div style={{ marginTop: "12px", margin: 10 }}>
+                        <a
+                          href={rawVideoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            color: "#007bff", // Sets label color to blue
+                            textDecoration: "none", // Removes underline by default
+                            fontWeight: "600", // Gives it prominence
+                            fontSize: "16px",
+                            display: "inline-block",
+                            cursor: "pointer",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.textDecoration = "underline")
+                          } // Adds underline effect on mouse hover
+                          onMouseLeave={(e) =>
+                            (e.target.style.textDecoration = "none")
+                          }
+                        >
+                          Watch Video
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </Col>
@@ -236,7 +313,7 @@ function GuideDetails() {
                       alignItems: "center",
                       width: "100%",
                       padding: " 0px",
-                      marginTop:'-3px'
+                      marginTop: "-3px",
                     }}
                   >
                     <Form
@@ -266,7 +343,7 @@ function GuideDetails() {
                             fontSize: "15px",
                             width: "101%",
                             height: "35px",
-                            color:'#202356'
+                            color: "#202356",
                           }}
                         />
                         <Button
@@ -279,7 +356,10 @@ function GuideDetails() {
                             fontSize: "16px",
                           }}
                         >
-                          <i className="fa-solid fa-magnifying-glass"  style={{color:'#6c757d'}}></i>{" "}
+                          <i
+                            className="fa-solid fa-magnifying-glass"
+                            style={{ color: "#6c757d" }}
+                          ></i>{" "}
                         </Button>
                       </Form.Group>
                       {filteredSuggestions.length > 0 && (
@@ -421,26 +501,30 @@ function GuideDetails() {
                                 style={{
                                   display: "flex",
                                   alignItems: "center",
-                                  gap:'10px'
+                                  gap: "10px",
                                 }}
                               >
-                               <Image   style={{width:'18px'}}
-                            src="/images/guides-articles/date.svg"
-                            loading="lazy" alt="Date"
-                          />
+                                <Image
+                                  style={{ width: "18px" }}
+                                  src="/images/guides-articles/date.svg"
+                                  loading="lazy"
+                                  alt="Date"
+                                />
                                 {data?.date || "Not Available"}
                               </div>
                               <div
                                 style={{
                                   display: "flex",
                                   alignItems: "center",
-                                   gap:'10px'
+                                  gap: "10px",
                                 }}
                               >
-                               <Image   style={{width:'18px'}}
-                            src="/images/guides-articles/time.svg"
-                            loading="lazy" alt="Time"
-                          />
+                                <Image
+                                  style={{ width: "18px" }}
+                                  src="/images/guides-articles/time.svg"
+                                  loading="lazy"
+                                  alt="Time"
+                                />
                                 {data?.time_required || "Time not available"}
                               </div>
                             </div>
@@ -455,7 +539,7 @@ function GuideDetails() {
               <Col md={4} className="author-section">
                 <Card
                   style={{
-                      borderRadius: "15px",
+                    borderRadius: "15px",
                     padding: "10px",
                     textAlign: "center",
                     display: "flex",
@@ -469,9 +553,9 @@ function GuideDetails() {
                         fontSize: isMobileWidth ? "14px" : "18px",
                         fontWeight: isMobileWidth ? "500" : "600",
                         marginBottom: "10px",
-                        textAlign:"start",
-                        marginLeft:'2px',
-                        color:'black'
+                        textAlign: "start",
+                        marginLeft: "2px",
+                        color: "black",
                       }}
                     >
                       Author:
@@ -481,11 +565,28 @@ function GuideDetails() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        gap: !isMobileWidth ?"10px":'2px',
+                        gap: !isMobileWidth ? "10px" : "2px",
                       }}
                     >
-                      <img src="/images/guides-articles/user.svg"  style={{ fontSize: "20px",width:'35.64px',height:"35.64px",color:'white',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center' }}/>
-                      <span style={{ fontSize:isMobileWidth?"14px": "16px", fontWeight: "400" }}>
+                      <img
+                        src="/images/guides-articles/user.svg"
+                        style={{
+                          fontSize: "20px",
+                          width: "35.64px",
+                          height: "35.64px",
+                          color: "white",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontSize: isMobileWidth ? "14px" : "16px",
+                          fontWeight: "400",
+                        }}
+                      >
                         {guideDetails?.author_name}
                       </span>
                     </div>
@@ -526,7 +627,7 @@ function GuideDetails() {
                         marginBottom: "10px",
                         textAlign: "center",
                         width: "100%",
-                        color:'black'
+                        color: "black",
                       }}
                     >
                       {/* {isMobileWidth ? "Share This guide:":"Share :" } */}
@@ -545,16 +646,26 @@ function GuideDetails() {
                       }}
                     >
                       {/* <img src="/images/guides-articles/share.svg" style={{ fontSize: isMobileWidth ? "16px" : "18px", color: "#333" }}/> */}
-                    <img src="/images/guides-articles/share.svg"  style={{ fontSize: "20px",width:'35.64px',height:"35.64px",color:'white',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center' }}/>
-
+                      <img
+                        src="/images/guides-articles/share.svg"
+                        style={{
+                          fontSize: "20px",
+                          width: "35.64px",
+                          height: "35.64px",
+                          color: "white",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      />
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
-            {
-
-             isMobileWidth && <hr style={{width:"95%", display:'flex', margin:"auto"}}/>
-            }
+              {isMobileWidth && (
+                <hr style={{ width: "95%", display: "flex", margin: "auto" }} />
+              )}
 
               {isMobileWidth && (
                 <Col lg={12}>
@@ -616,7 +727,6 @@ function GuideDetails() {
 }
 
 export default GuideDetails;
-
 
 // import React, { useEffect, useState } from "react";
 // import { Container, Row, Col, Form, Button, Image, Card, } from "react-bootstrap";
@@ -728,7 +838,6 @@ export default GuideDetails;
 //                    <Link to="#" onClick={() => navigate(-1)}  >
 //                       <i className="fa-regular fa-arrow-left" style={{ textAlign: 'center',marginLeft: !isMobileWidth && '10px' }}></i>
 //                     </Link>
-
 
 //                     {/* <Form style={{
 //                       position: "relative",
