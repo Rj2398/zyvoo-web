@@ -48,7 +48,7 @@ const InlineInquiry = () => {
       >
         <PersonaReact
           style={{}}
-         templateId="itmpl_W9PmcaGo9QyYW2gZPPxoFbnD"
+         templateId="itmpl_yEu1QvFA5fJ1zZ9RbUo1yroGahx2"
           environment="sandbox"
           onLoad={() => {
             console.log("Loaded inline");
