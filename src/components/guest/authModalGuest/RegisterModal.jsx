@@ -178,7 +178,36 @@ function RegisterModal(props) {
   // const fbProvider = new FacebookAuthProvider();
   // fbProvider.addScope('email');
   // fbProvider.addScope('public_profile');
+  //rajan commented by
+  // const handleFacebookSignIn = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, fbProvider);
+  //     const user = result.user;
 
+  //     console.log("Firebase User:", user);
+
+  //     const { displayName, email, uid } = user;
+  //     const nameParts = displayName ? displayName.split(" ") : [];
+  //     const fname = nameParts[0] || "";
+  //     const lname = nameParts.slice(1).join(" ") || "";
+
+  //     const payload = { email, fname, lname, social_id: uid };
+  //     const response = await SocialLogin(payload);
+
+  //     console.log("Backend Response:", response);
+
+  //     if (response.status) {
+  //       toast.success(response?.data?.message || "User Logged in Successfully");
+  //       props?.CallBack(false);
+  //       navigate("/");
+  //     } else {
+  //       toast.error("Login successful, but backend error occurred.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Facebook Sign-In Error:", error);
+  //     toast.error("Facebook login failed.");
+  //   }
+  // };
   const handleFacebookSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, fbProvider);
@@ -186,26 +215,48 @@ function RegisterModal(props) {
 
       console.log("Firebase User:", user);
 
-      const { displayName, email, uid } = user;
-      const nameParts = displayName ? displayName.split(" ") : [];
-      const fname = nameParts[0] || "";
+      const { displayName = "", email, uid = "" } = user || {};
+
+      // 1. Generate a default fallback email if Firebase returns null/undefined
+      const finalEmail = email || `fb_${uid}@temporary.com`;
+
+      // 2. Safe string splitting for first and last names
+      const nameParts = displayName ? displayName.trim().split(" ") : [];
+      const fname = nameParts[0] || "User";
       const lname = nameParts.slice(1).join(" ") || "";
 
-      const payload = { email, fname, lname, social_id: uid };
-      const response = await SocialLogin(payload);
+      // 3. Construct the payload with the valid email string
+      const payload = {
+        email: finalEmail, // Guaranteed string format
+        fname,
+        lname,
+        social_id: uid,
+      };
 
+      console.log("Sending Payload to Backend:", payload);
+
+      const response = await SocialLogin(payload);
       console.log("Backend Response:", response);
 
-      if (response.status) {
+      if (response?.status || response?.success) {
+        // Added response?.success check just in case
         toast.success(response?.data?.message || "User Logged in Successfully");
-        props?.CallBack(false);
+        props?.CallBack?.(false);
         navigate("/");
       } else {
-        toast.error("Login successful, but backend error occurred.");
+        toast.error(
+          response?.message || "Login successful, but backend error occurred."
+        );
       }
     } catch (error) {
       console.error("Facebook Sign-In Error:", error);
-      toast.error("Facebook login failed.");
+      if (error.code === "auth/account-exists-with-different-credential") {
+        toast.error(
+          "An account already exists with this email using a different login method."
+        );
+      } else {
+        toast.error("Facebook login failed. Please try again.");
+      }
     }
   };
 
@@ -394,17 +445,17 @@ function RegisterModal(props) {
         }
         const response = props?.loginModal
           ? await registerUser({
-            phone_number: data?.phoneNumber,
-            country_code: selectedCountryCode,
-            fcm_token: "bfbfb498b4644",
-            device_type: "web",
-          })
+              phone_number: data?.phoneNumber,
+              country_code: selectedCountryCode,
+              fcm_token: "bfbfb498b4644",
+              device_type: "web",
+            })
           : await LoginWithPhone({
-            phone_number: data?.phoneNumber,
-            country_code: selectedCountryCode,
-            fcm_token: "bfbfb498b4644",
-            device_type: "web",
-          });
+              phone_number: data?.phoneNumber,
+              country_code: selectedCountryCode,
+              fcm_token: "bfbfb498b4644",
+              device_type: "web",
+            });
         if (response) {
           if (props?.loginModal) {
             props?.CallBack(false);
