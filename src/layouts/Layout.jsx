@@ -8,12 +8,18 @@ import Header from "../components/guest/Header";
 import { useSelector } from "react-redux";
 
 const Layout = ({ children }) => {
-      const {userInfo} = useSelector(({user})=>user)
+  const { userInfo } = useSelector(({ user }) => user);
 
   // const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO));
-  const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO))  || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO))
-  
-  const login_id = userInfo?.user_id ? String(userInfo?.user_id) : null||localSaved?.user_id ? String(localSaved?.user_id) : null;
+  const localSaved =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+
+  const login_id = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || localSaved?.user_id
+    ? String(localSaved?.user_id)
+    : null;
   // ✅ Read once and memoize for performance (avoids repeated localStorage access)
   const userType = useMemo(() => localStorage.getItem(KEYS.USER_TYPE), []);
 

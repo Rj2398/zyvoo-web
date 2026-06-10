@@ -12,7 +12,7 @@ import LanguageModal from "../../pages/LanguageModal";
 import { toast } from "react-toastify";
 
 const Header = () => {
-      const {userInfo} = useSelector(({user})=>user)
+  const { userInfo } = useSelector(({ user }) => user);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -25,9 +25,15 @@ const Header = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [getList, setGetList] = useState({ unread_booking_count: 0 });
-  const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO))||JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const localSaved =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userType = localStorage.getItem("USER_TYPE");
-  const userId = userInfo?.user_id ? String(userInfo?.user_id) : null||localSaved?.user_id ? String(localSaved?.user_id) : null;
+  const userId = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || localSaved?.user_id
+    ? String(localSaved?.user_id)
+    : null;
 
   const [unreadCountChat, setUnreadCountChat] = useState(0);
 
@@ -39,7 +45,7 @@ const Header = () => {
         console.error(error);
       }
     };
-    if(userId){
+    if (userId) {
       handleGetProfile();
     }
   }, [userId]);
@@ -56,14 +62,12 @@ const Header = () => {
     }
   };
 
-
   useEffect(() => {
     if (userId) {
       fetchBookingList();
     }
   }, [userId, location.pathname]);
 
- 
   const newUnreadCount = Math.max(
     0,
     getList.unread_booking_count - lastReadCount
@@ -74,7 +78,6 @@ const Header = () => {
     try {
       await hostMarkBookings({ user_id: userId });
 
-
       setLastReadCount(getList.unread_booking_count);
     } catch (error) {
       console.error("Error marking bookings as read:", error);
@@ -83,7 +86,7 @@ const Header = () => {
 
   useEffect(() => {
     const fetchTwilioInfo = async () => {
-      const userId = userInfo?.user_id||localSaved?.user_id;
+      const userId = userInfo?.user_id || localSaved?.user_id;
 
       if (
         !userId ||
@@ -143,8 +146,6 @@ const Header = () => {
     { label: "Settings", to: "/profile" },
     { label: "About Us", to: "/aboutUs" },
     { label: "Feedback", to: "/feedback" },
-
-   
   ];
 
   useEffect(() => {
@@ -155,7 +156,6 @@ const Header = () => {
       navigate("/homeGuest");
     }
   }, [switchToGuest, dispatch, navigate]);
-
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -178,19 +178,19 @@ const Header = () => {
   const handleSwitch = (e) => {
     e.preventDefault();
     setSwitchToGuest(true);
-    setDropdownOpen(false); 
+    setDropdownOpen(false);
   };
 
   const handleLogout = () => {
     // Clear Redux user state
     dispatch(clearUser());
-    toast.success("Logout Successfully.")
+    toast.success("Logout Successfully.");
     localStorage.setItem(KEYS.USER_TYPE, "guest");
 
     // Then do UI cleanup
     window.location.href = "/";
     setShowLogoutModal(false);
-    setDropdownOpen(false); 
+    setDropdownOpen(false);
   };
 
   const toggleDropdown = () => {
@@ -201,7 +201,7 @@ const Header = () => {
     if (item.action) {
       item.action();
     }
-    setDropdownOpen(false); 
+    setDropdownOpen(false);
   };
 
   return (
@@ -227,7 +227,12 @@ const Header = () => {
         {/* Logo */}
         <div style={{ fontSize: "1.5rem", margin: "0 15px" }}>
           <Link to="/">
-            <img src="/images/logo.svg" loading="lazy" alt="Logo" style={{ height: "45px" }} />
+            <img
+              src="/images/logo.svg"
+              loading="lazy"
+              alt="Logo"
+              style={{ height: "45px" }}
+            />
           </Link>
         </div>
 
@@ -260,7 +265,8 @@ const Header = () => {
                 >
                   <img
                     src={item.icon}
-                    loading="lazy" alt="Nav icon"
+                    loading="lazy"
+                    alt="Nav icon"
                     style={{
                       height: "25px",
                       filter:
@@ -319,7 +325,8 @@ const Header = () => {
                       : `${imageBase + profileData?.profileData?.profile_image}`
                     : "/images/nav-section/user-profile1.png"
                 }
-                loading="lazy" alt="User Profile"
+                loading="lazy"
+                alt="User Profile"
                 style={{
                   height: "50px",
                   width: "50px",
@@ -332,7 +339,8 @@ const Header = () => {
             </div>
 
             {dropdownOpen && (
-              <div className="switch-guest-dropdown"
+              <div
+                className="switch-guest-dropdown"
                 style={{
                   position: "absolute",
                   right: 0,
@@ -457,7 +465,6 @@ const Header = () => {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 9999,
-           
           }}
         >
           <div
@@ -491,7 +498,6 @@ const Header = () => {
                 }}
               >
                 &times;
-
               </button>
             </div>
 
@@ -511,7 +517,8 @@ const Header = () => {
               <div style={{ margin: "20px 0" }}>
                 <img
                   src="/images/popups/logout.svg"
-                  loading="lazy" alt="Logout"
+                  loading="lazy"
+                  alt="Logout"
                   style={{
                     width: "90px",
                     height: "90px",
@@ -533,7 +540,7 @@ const Header = () => {
                 }}
               >
                 <button
-                  onClick={handleLogout} 
+                  onClick={handleLogout}
                   style={{
                     padding: "10px 50px",
                     borderRadius: "50px",
@@ -598,7 +605,8 @@ const Header = () => {
               >
                 <img
                   src="images/Host/properties-mobile-icon.png"
-                  loading="lazy" alt="Properties"
+                  loading="lazy"
+                  alt="Properties"
                   style={{ height: "24px", marginBottom: "5px" }}
                 />
                 Properties
@@ -639,7 +647,8 @@ const Header = () => {
                 </span>
                 <img
                   src="images/mobile/nav/2.svg"
-                  loading="lazy" alt="Inbox"
+                  loading="lazy"
+                  alt="Inbox"
                   style={{ height: "24px", marginBottom: "5px" }}
                 />
                 Inbox
@@ -680,7 +689,8 @@ const Header = () => {
                 </span>
                 <img
                   src="images/mobile/nav/3.svg"
-                  loading="lazy" alt="Bookings"
+                  loading="lazy"
+                  alt="Bookings"
                   style={{ height: "24px", marginBottom: "5px" }}
                 />
                 Bookings
@@ -700,7 +710,8 @@ const Header = () => {
               >
                 <img
                   src="images/mobile/nav/5.svg"
-                  loading="lazy" alt="Profile"
+                  loading="lazy"
+                  alt="Profile"
                   style={{ height: "24px", marginBottom: "5px" }}
                 />
                 Profile

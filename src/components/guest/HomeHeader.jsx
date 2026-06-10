@@ -1423,7 +1423,12 @@ const HomeHeader = ({ showMap, setShowMap }) => {
           <nav className="navbar navbar-expand-lg navbar-light bg-white">
             <div className="container-fluid">
               <Link className="navbar-brand" to="/" onClick={handleClick}>
-                <img src="/images/logo.svg" alt="Logo" loading="lazy" />
+                <img
+                  src="/images/logo.svg"
+                  alt="Logo"
+                  loading="lazy"
+                  style={{ height: "40px" }}
+                />
               </Link>
               <button
                 className="navbar-toggler"
