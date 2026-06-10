@@ -14,8 +14,8 @@ import RegisterModal from "./authModalGuest/RegisterModal";
 import LanguageModal from "../../pages/LanguageModal";
 
 const Header = () => {
-    const {userInfo} = useSelector(({user})=>user)
-  
+  const { userInfo } = useSelector(({ user }) => user);
+
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,9 +23,15 @@ const Header = () => {
   const { guestUnReadBookings, guestMarkBookings, isLoading } = useCommon();
 
   const { getUserProfile } = useProfile();
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO))||JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
-  
-  const userId =  userInfo?.user_id ? String(userInfo?.user_id) : null|| userData?.user_id ? String(userData?.user_id) : null;
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+
+  const userId = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || userData?.user_id
+    ? String(userData?.user_id)
+    : null;
   const [unreadCountChat, setUnreadCountChat] = useState(0);
 
   const profileData = useSelector((state) => state.profile);
@@ -41,7 +47,6 @@ const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [modalToggleValue, setModalToggleValue] = useState(false);
 
-
   useEffect(() => {
     const handleGetProfile = async () => {
       try {
@@ -50,7 +55,7 @@ const Header = () => {
         console.error(error);
       }
     };
-    if(userId){
+    if (userId) {
       handleGetProfile();
     }
   }, [userId]);
@@ -84,20 +89,36 @@ const Header = () => {
 
   const handleSwitch = () => {
     setSwitchToHost(true);
-    setDropdownOpen(false); 
+    setDropdownOpen(false);
   };
 
-  const handleLogout = () => {  
+  const handleLogout = () => {
     dispatch(clearUser());
-    toast.success("Logout Successfully.")
+    toast.success("Logout Successfully.");
     navigate("/");
     setShowLogoutModal(false);
     setDropdownOpen(false);
   };
 
+  // const toggleDropdown = () => {
+  //   if (userData||userInfo) {
+  //     setDropdownOpen(!dropdownOpen);
+  //   } else {
+  //     toast.error("Please login...");
+  //     navigate("/");
+  //   }
+  // };
+
   const toggleDropdown = () => {
-    if (userData||userInfo) {
-      setDropdownOpen(!dropdownOpen);
+    // If it's already open, we just want to close it—no login check needed!
+    if (dropdownOpen) {
+      setDropdownOpen(false);
+      return;
+    }
+
+    // If it's closed, check if they are allowed to open it
+    if (userData || userInfo) {
+      setDropdownOpen(true);
     } else {
       toast.error("Please login...");
       navigate("/");
@@ -105,7 +126,6 @@ const Header = () => {
   };
 
   const menuItems = [
-
     { label: "Language", dataTarget: "#language-popup", dataToggle: "modal" },
     { label: "Notifications", to: "/notifications", state: { type: "guest" } },
     { label: "Help Center", to: "/helpCenter", state: { type: "guest" } },
@@ -223,7 +243,12 @@ const Header = () => {
         {/* LOGO */}
         <div style={{ fontSize: "1.5rem", margin: "0 15px" }}>
           <Link to="/">
-            <img src="/images/logo.svg" loading="lazy" alt="Logo" style={{ height: "40px" }} />
+            <img
+              src="/images/logo.svg"
+              loading="lazy"
+              alt="Logo"
+              style={{ height: "40px" }}
+            />
           </Link>
         </div>
 
@@ -357,7 +382,8 @@ const Header = () => {
                 )}
                 <img
                   src="/images/nav-section/bookings.svg"
-                  loading="lazy" alt="Bookings"
+                  loading="lazy"
+                  alt="Bookings"
                   style={{
                     height: "25px",
                     marginRight: "10px",
@@ -406,7 +432,8 @@ const Header = () => {
                 )}
                 <img
                   src="/images/nav-section/chat.svg"
-                  loading="lazy" alt="Chat"
+                  loading="lazy"
+                  alt="Chat"
                   style={{
                     height: "25px",
                     marginRight: "10px",
@@ -425,7 +452,8 @@ const Header = () => {
               >
                 <img
                   src="/images/nav-section/wishlist.svg"
-                  loading="lazy" alt="Wishlist"
+                  loading="lazy"
+                  alt="Wishlist"
                   style={{
                     height: "25px",
                     marginRight: "10px",
@@ -446,7 +474,7 @@ const Header = () => {
                   alignItems: "center",
                 }}
               >
-            <img
+                <img
                   src={
                     profileData?.profileData?.profile_image
                       ? typeof profileData?.profileData?.profile_image ===
@@ -461,7 +489,8 @@ const Header = () => {
                           }`
                       : "/images/nav-section/user-profile1.png"
                   }
-                  loading="lazy" alt="User Profile"
+                  loading="lazy"
+                  alt="User Profile"
                   style={{
                     height: "50px",
                     width: "50px",
@@ -474,21 +503,22 @@ const Header = () => {
               </div>
 
               {dropdownOpen && (
-                <div className="switch-guest-dropdown"
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  minWidth: "190px",
-                  height: "auto",
-                  borderRadius: "15px",
-                  boxShadow: "0px 0px 14px 0px #0000001A",
-                  backgroundColor: "white",
-                  zIndex: 1001,
-                  padding: "5px",
-                  marginTop: "5px",
-                  color: "black",
-                }}
-              >
+                <div
+                  className="switch-guest-dropdown"
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    minWidth: "190px",
+                    height: "auto",
+                    borderRadius: "15px",
+                    boxShadow: "0px 0px 14px 0px #0000001A",
+                    backgroundColor: "white",
+                    zIndex: 1001,
+                    padding: "5px",
+                    marginTop: "5px",
+                    color: "black",
+                  }}
+                >
                   <div
                     style={{
                       padding: "3px",
@@ -496,14 +526,14 @@ const Header = () => {
                       cursor: "pointer",
                     }}
                     onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.boxShadow =
-                      "inset 0px 0px 10px rgba(0, 0, 0, 0.0)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
+                      e.currentTarget.style.backgroundColor = "transparent";
+                      e.currentTarget.style.boxShadow =
+                        "inset 0px 0px 10px rgba(0, 0, 0, 0.0)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "transparent";
+                      e.currentTarget.style.boxShadow = "none";
+                    }}
                   >
                     <button
                       onClick={handleSwitch}
@@ -533,14 +563,14 @@ const Header = () => {
                       data-bs-target={item.dataTarget}
                       data-bs-toggle={item.dataToggle}
                       onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                      e.currentTarget.style.boxShadow =
-                        "inset 0px 0px 10px rgba(0, 0, 0, 0.0)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "transparent";
-                      e.currentTarget.style.boxShadow = "none";
-                    }}
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.boxShadow =
+                          "inset 0px 0px 10px rgba(0, 0, 0, 0.0)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "transparent";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
                       onClick={() => handleMenuItemClick(item)}
                     >
                       {item.to ? (
@@ -599,7 +629,6 @@ const Header = () => {
             justifyContent: "center",
             alignItems: "center",
             zIndex: 99999,
-          
           }}
         >
           <div
@@ -617,7 +646,7 @@ const Header = () => {
                 justifyContent: "flex-end",
               }}
             >
-            <button
+              <button
                 onClick={() => setShowLogoutModal(false)}
                 style={{
                   background: "#3A4B4C",
@@ -633,7 +662,6 @@ const Header = () => {
                 }}
               >
                 &times;
-
               </button>
             </div>
 
@@ -653,7 +681,8 @@ const Header = () => {
               <div style={{ margin: "20px 0" }}>
                 <img
                   src="/images/popups/logout.svg"
-                  loading="lazy" alt="Logout"
+                  loading="lazy"
+                  alt="Logout"
                   style={{
                     width: "90px",
                     height: "90px",
@@ -722,10 +751,9 @@ const Header = () => {
         loginModal={modalToggleValue}
         ToggleVal={(bool) => setModalToggleValue(bool)}
       />
-      <LanguageModal/>
+      <LanguageModal />
     </header>
   );
 };
 
 export default Header;
-
