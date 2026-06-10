@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Container, Row, Col, Form, Button, Image, Card, } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Image,
+  Card,
+} from "react-bootstrap";
 import AuthModal from "../../../components/guest/authModal";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
@@ -19,13 +27,47 @@ function GuideDetails() {
   const navigate = useNavigate();
   const { getArticleDetails, getArticleList } = useCommon();
   const [articleDetails, setArticleDetails] = useState();
+  const [rawVideoUrl, setRawVideoUrl] = useState(null);
+  // const fetchArticleDetails = async () => {
+  //   try {
+  //     const response = await getArticleDetails({
+  //       article_id: currentArticleId,
+  //     });
+  //     setArticleDetails(response?.data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   const fetchArticleDetails = async () => {
     try {
-      const response = await getArticleDetails({ article_id: currentArticleId });
-      setArticleDetails(response?.data);
+      const response = await getArticleDetails({
+        article_id: currentArticleId,
+      });
+
+      const articleData = response?.data;
+      setArticleDetails(articleData);
+
+      // --- EXTRACT RAW YOUTUBE LINK START ---
+      if (articleData?.description) {
+        // 1. Matches the exact url parameter within the <oembed> tag, accounting for escaped backslashes from JSON
+        const match = articleData.description.match(
+          /<oembed\s+url=["']([^"']+)["']/
+        );
+
+        if (match && match[1]) {
+          // 2. Clean up any escaped backslashes coming from the raw JSON description layout
+          const cleanedUrl = match[1].replace(/\\/g, "");
+          setRawVideoUrl(cleanedUrl); // Saves: "https://youtu.be/QoQBzR1NIqI?si=-z7W0YPkI6LR_e1T"
+        } else {
+          setRawVideoUrl(null);
+        }
+      } else {
+        setRawVideoUrl(null);
+      }
+      // --- EXTRACT RAW YOUTUBE LINK END ---
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching article details:", error);
     }
   };
 
@@ -50,9 +92,9 @@ function GuideDetails() {
     };
 
     checkWindowWidth();
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   const fetchArticles = async () => {
@@ -67,9 +109,10 @@ function GuideDetails() {
     const value = e.target.value;
     setSearchTerm(value);
 
-    const suggestions = articleArr?.filter((item) =>
-      item.title.toLowerCase().includes(value.toLowerCase())
-    ) || [];
+    const suggestions =
+      articleArr?.filter((item) =>
+        item.title.toLowerCase().includes(value.toLowerCase())
+      ) || [];
 
     setFilteredSuggestions(value ? suggestions : []);
   };
@@ -77,13 +120,15 @@ function GuideDetails() {
   const handleSuggestionClick = (item) => {
     setSearchTerm(item?.title);
     setFilteredSuggestions([]);
-    navigate(`/articles-detail/${item?.id}`, { state: { currentArticleId: item?.id } });
+    navigate(`/articles-detail/${item?.id}`, {
+      state: { currentArticleId: item?.id },
+    });
   };
 
   const capitalizeFirstLetter = (title) => {
     if (!title) return title;
     return title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();
-  }
+  };
 
   return (
     <div>
@@ -99,9 +144,14 @@ function GuideDetails() {
                     </a> */}
 
                     <Link to="#" onClick={() => navigate(-1)}>
-                      <i className="fa-regular fa-arrow-left" style={{ textAlign: 'center',marginLeft: !isMobileWidth && '10px' }}></i>
+                      <i
+                        className="fa-regular fa-arrow-left"
+                        style={{
+                          textAlign: "center",
+                          marginLeft: !isMobileWidth && "10px",
+                        }}
+                      ></i>
                     </Link>
-                  
                   </div>
                 </div>
               </Col>
@@ -109,8 +159,15 @@ function GuideDetails() {
           </Container>
         </div>
 
-        <div className="guides-articles-details article-details-mobile" style={{ padding: isMobileWidth ?"0": "10px 23px", position: "relative" }} >
-          <div className="web-navbar"
+        <div
+          className="guides-articles-details article-details-mobile"
+          style={{
+            padding: isMobileWidth ? "0" : "10px 23px",
+            position: "relative",
+          }}
+        >
+          <div
+            className="web-navbar"
             onClick={() => navigate(-1)}
             style={{
               left: "15px",
@@ -123,8 +180,9 @@ function GuideDetails() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              marginLeft:'10px'
-            }} >
+              marginLeft: "10px",
+            }}
+          >
             <FaArrowLeft style={{ color: "white" }} />
           </div>
 
@@ -134,245 +192,364 @@ function GuideDetails() {
                 <div className="guides-articles-left">
                   <div className="guides-articles-left-top">
                     <div className="guides-articles-left-top-data">
-                      <p className="article-category">{articleDetails?.category}</p>
-                      <h1 className="article-title">{capitalizeFirstLetter(articleDetails?.title)}</h1>
+                      <p className="article-category">
+                        {articleDetails?.category}
+                      </p>
+                      <h1 className="article-title">
+                        {capitalizeFirstLetter(articleDetails?.title)}
+                      </h1>
                       <ul className="article-meta">
                         <li>
-                          <Image src="/images/guides-articles/date.svg" loading="lazy" alt="Date" />
+                          <Image
+                            src="/images/guides-articles/date.svg"
+                            loading="lazy"
+                            alt="Date"
+                          />
                           {articleDetails?.date}
                         </li>
                         <li>
-                          <Image src="/images/guides-articles/time.svg" loading="lazy" alt="Time" />
+                          <Image
+                            src="/images/guides-articles/time.svg"
+                            loading="lazy"
+                            alt="Time"
+                          />
                           {articleDetails?.time_required}
                         </li>
                       </ul>
                     </div>
                     <div className="guides-articles-left-top-image article-image-container">
-                      <Image src={`${imageBase}${articleDetails?.cover_image}`} loading="lazy" alt="Article" fluid />
+                      <Image
+                        src={`${imageBase}${articleDetails?.cover_image}`}
+                        loading="lazy"
+                        alt="Article"
+                        fluid
+                      />
                     </div>
                   </div>
 
                   <div className="guides-articles-left-mid article-content">
-                    <p dangerouslySetInnerHTML={{ __html: articleDetails?.description, }} />
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: articleDetails?.description,
+                      }}
+                    />
+
+                    {rawVideoUrl && (
+                      <div style={{ marginTop: "12px" }}>
+                        <a
+                          href={rawVideoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            color: "#007bff", // Keeps the text blue
+                            textDecoration: "none", // Removes underline by default
+                            fontWeight: "600", // Makes it bold/stand out
+                            fontSize: "16px",
+                            display: "inline-block",
+                            cursor: "pointer",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.textDecoration = "underline")
+                          } // Underlines on hover
+                          onMouseLeave={(e) =>
+                            (e.target.style.textDecoration = "none")
+                          }
+                        >
+                          Watch Video
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               </Col>
 
               <Col lg={4} md={6}>
                 <div className="guides-articles-right">
-                  <div className="sidebar-search-container" style={{
+                  <div
+                    className="sidebar-search-container"
+                    style={{
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                       width: "100%",
                       padding: " 0px",
-                      marginTop:'-3px'
-                  }} >
-                    <Form style={{ width: "90%", maxWidth: "400px" }} onSubmit={(e) => e.preventDefault()}>
-
-                      <Form.Group controlId="searchArticle"
+                      marginTop: "-3px",
+                    }}
+                  >
+                    <Form
+                      style={{ width: "90%", maxWidth: "400px" }}
+                      onSubmit={(e) => e.preventDefault()}
+                    >
+                      <Form.Group
+                        controlId="searchArticle"
                         style={{
                           display: "flex",
                           alignItems: "center",
                           background: "#f8f9fa",
                           borderRadius: "15px",
-                          position: "relative"
-                        }} >
-                      
-                         <Form.Control
-                                                  type="text"
-                                                  placeholder="Search article..."
-                                                  value={searchTerm}
-                                                  onChange={handleInputChange}
-                                                  style={{
-                                                    border: "none",
-                                                    background: "transparent",
-                                                    borderRadius: "15px",
-                                                    padding: "6px 40px 6px 8px",
-                                                    fontSize: "15px",
-                                                    width: "100%",
-                                                    height: "35px",
-                                                    color:'#202356'
-                                                  }}
-                                                />
-                                                <Button
-                                                  variant="link"
-                                                  style={{
-                                                    position: "absolute",
-                                                    right: "12px",
-                                                    color: "#6c757d",
-                                                    padding: "0",
-                                                    fontSize: "16px",
-                                                  }}
-                                                >
-                                                  <i className="fa-solid fa-magnifying-glass"  style={{color:'#6c757d'}}></i>{" "}
-                                                </Button>
+                          position: "relative",
+                        }}
+                      >
+                        <Form.Control
+                          type="text"
+                          placeholder="Search article..."
+                          value={searchTerm}
+                          onChange={handleInputChange}
+                          style={{
+                            border: "none",
+                            background: "transparent",
+                            borderRadius: "15px",
+                            padding: "6px 40px 6px 8px",
+                            fontSize: "15px",
+                            width: "100%",
+                            height: "35px",
+                            color: "#202356",
+                          }}
+                        />
+                        <Button
+                          variant="link"
+                          style={{
+                            position: "absolute",
+                            right: "12px",
+                            color: "#6c757d",
+                            padding: "0",
+                            fontSize: "16px",
+                          }}
+                        >
+                          <i
+                            className="fa-solid fa-magnifying-glass"
+                            style={{ color: "#6c757d" }}
+                          ></i>{" "}
+                        </Button>
                       </Form.Group>
                       {filteredSuggestions.length > 0 && (
-                        <div style={{
-                          position: "absolute",
-                          top: "60px",
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "90%",
-                          maxWidth: "400px",
-                          background: "#fff",
-                          border: "1px solid #ddd",
-                          borderRadius: "8px",
-                          boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
-                          zIndex: 1000,
-                        }} >
-                          {filteredSuggestions?.slice(0, 5).map((item, index) => (
-                            <div key={index} onClick={() => handleSuggestionClick(item)}
-                              style={{
-                                padding: "8px 12px",
-                                cursor: "pointer",
-                                borderBottom: "1px solid #f1f1f1",
-                              }} >
-                              {item.title}
-                            </div>
-                          ))}
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "60px",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: "90%",
+                            maxWidth: "400px",
+                            background: "#fff",
+                            border: "1px solid #ddd",
+                            borderRadius: "8px",
+                            boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.1)",
+                            zIndex: 1000,
+                          }}
+                        >
+                          {filteredSuggestions
+                            ?.slice(0, 5)
+                            .map((item, index) => (
+                              <div
+                                key={index}
+                                onClick={() => handleSuggestionClick(item)}
+                                style={{
+                                  padding: "8px 12px",
+                                  cursor: "pointer",
+                                  borderBottom: "1px solid #f1f1f1",
+                                }}
+                              >
+                                {item.title}
+                              </div>
+                            ))}
                         </div>
                       )}
                     </Form>
                   </div>
 
-                  <Col lg={12} md={4} sm={6} xs={12} className="related-articles-container" style={{ padding: "15px", margin: "10px", height: "400px", overflow: "auto" }} >
-                    {articleArr?.filter((a) => a.id !== currentArticleId).map((data, index) => (
-                      <Card key={index} className="article-card"
-                        style={{
-                          backgroundColor: "#374442",
-                          borderRadius: "15px",
-                          padding: "15px",
-                          margin: "10px auto",
-                          color: "#ffffff",
-                          position: "relative",
-                          width: "100%",
-                          height: "auto",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                        }} >
-                        <Card.Body style={{ padding: "0", position: "relative" }} >
-                          <div style={{
-                            position: "absolute",
-                            top: "15px",
-                            left: "15px",
-                            width: "32px",
-                            height: "32px",
-                            backgroundColor: "#ffffff",
-                            borderRadius: "50%",
+                  <Col
+                    lg={12}
+                    md={4}
+                    sm={6}
+                    xs={12}
+                    className="related-articles-container"
+                    style={{
+                      padding: "15px",
+                      margin: "10px",
+                      height: "400px",
+                      overflow: "auto",
+                    }}
+                  >
+                    {articleArr
+                      ?.filter((a) => a.id !== currentArticleId)
+                      .map((data, index) => (
+                        <Card
+                          key={index}
+                          className="article-card"
+                          style={{
+                            backgroundColor: "#374442",
+                            borderRadius: "15px",
+                            padding: "15px",
+                            margin: "10px auto",
+                            color: "#ffffff",
+                            position: "relative",
+                            width: "100%",
+                            height: "auto",
                             display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                          }} >
-                            <Image src={`${imageBase}${data?.cover_image}`} loading="lazy" alt="Article" style={{ width: "32px", height: "32px", borderRadius: "100%" }} />
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Card.Body
+                            style={{ padding: "0", position: "relative" }}
+                          >
+                            <div
+                              style={{
+                                position: "absolute",
+                                top: "15px",
+                                left: "15px",
+                                width: "32px",
+                                height: "32px",
+                                backgroundColor: "#ffffff",
+                                borderRadius: "50%",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              <Image
+                                src={`${imageBase}${data?.cover_image}`}
+                                loading="lazy"
+                                alt="Article"
+                                style={{
+                                  width: "32px",
+                                  height: "32px",
+                                  borderRadius: "100%",
+                                }}
+                              />
+                            </div>
 
-                          </div>
+                            <Card.Title
+                              as="h5"
+                              style={{
+                                fontSize: "28px",
+                                fontWeight: "400",
+                                marginTop: "70px",
+                                textAlign: "left",
+                                padding: "0 10px",
+                              }}
+                            >
+                              <Link
+                                to={`/articles-detail/${data?.id}`}
+                                state={{ currentArticleId: data?.id }}
+                                style={{
+                                  color: "#ffffff",
+                                  textDecoration: "none",
+                                }}
+                              >
+                                {data?.title || "Title No Available"}
+                              </Link>
+                            </Card.Title>
 
-                          <Card.Title as="h5" style={{
-                            fontSize: "28px",
-                            fontWeight: "400",
-                            marginTop: "70px",
-                            textAlign: "left",
-                            padding: "0 10px",
-                          }} >
-                            <Link to={`/articles-detail/${data?.id}`} state={{ currentArticleId: data?.id }}
-                              style={{ color: "#ffffff", textDecoration: "none" }} >
-                              {data?.title || "Title No Available"}
-                            </Link>
-                          </Card.Title>
-
-                               <div
-                                                        style={{
-                                                          display: "flex",
-                                                          alignItems: "center",
-                                                          gap: "20px",
-                                                          fontSize: "12px",
-                                                          opacity: "0.8",
-                                                          padding: "10px",
-                                                          marginTop: "10px",
-                                                        }}
-                                                      >
-                                                        <div
-                                                          style={{
-                                                            display: "flex",
-                                                            alignItems: "center",
-                                                            gap:'10px'
-                                                          }}
-                                                        >
-                                                         <Image   style={{width:'18px'}}
-                                                      src="/images/guides-articles/date.svg"
-                                                      loading="lazy" alt="Date"
-                                                    />
-                                                          {data?.date || "Not Available"}
-                                                        </div>
-                                                        <div
-                                                          style={{
-                                                            display: "flex",
-                                                            alignItems: "center",
-                                                             gap:'10px'
-                                                          }}
-                                                        >
-                                                         <Image   style={{width:'18px'}}
-                                                      src="/images/guides-articles/time.svg"
-                                                      loading="lazy" alt="Time"
-                                                    />
-                                                          {data?.time_required || "Time not available"}
-                                                        </div>
-                                                      </div>
-                        </Card.Body>
-                      </Card>
-                    ))}
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "20px",
+                                fontSize: "12px",
+                                opacity: "0.8",
+                                padding: "10px",
+                                marginTop: "10px",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "10px",
+                                }}
+                              >
+                                <Image
+                                  style={{ width: "18px" }}
+                                  src="/images/guides-articles/date.svg"
+                                  loading="lazy"
+                                  alt="Date"
+                                />
+                                {data?.date || "Not Available"}
+                              </div>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "10px",
+                                }}
+                              >
+                                <Image
+                                  style={{ width: "18px" }}
+                                  src="/images/guides-articles/time.svg"
+                                  loading="lazy"
+                                  alt="Time"
+                                />
+                                {data?.time_required || "Time not available"}
+                              </div>
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      ))}
                   </Col>
                 </div>
               </Col>
 
-             
+              <Col md={4} className="author-section">
+                <Card
+                  style={{
+                    borderRadius: "15px",
+                    padding: "10px",
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Card.Body>
+                    <Card.Title
+                      style={{
+                        fontSize: isMobileWidth ? "14px" : "18px",
+                        fontWeight: isMobileWidth ? "500" : "600",
+                        marginBottom: "10px",
+                        textAlign: isMobileWidth ? "" : "start",
+                        marginLeft: "2px",
+                        color: "black",
+                      }}
+                    >
+                      Author:
+                    </Card.Title>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: !isMobileWidth ? "10px" : "2px",
+                      }}
+                    >
+                      <img
+                        src="/images/guides-articles/user.svg"
+                        style={{
+                          fontSize: "20px",
+                          width: "35.64px",
+                          height: "35.64px",
+                          color: "white",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontSize: isMobileWidth ? "14px" : "16px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        {articleDetails?.author_name}
+                      </span>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
 
-               <Col md={4} className="author-section">
-                              <Card
-                                style={{
-                                    borderRadius: "15px",
-                                    padding: "10px",
-                                    textAlign: "center",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
-                              >
-                                <Card.Body>
-                                  <Card.Title
-                                    style={{
-                                      fontSize: isMobileWidth ? "14px" : "18px",
-                                      fontWeight: isMobileWidth ? "500" : "600",
-                                      marginBottom: "10px",
-                                      textAlign:isMobileWidth ? "":"start",
-                                      marginLeft:'2px',
-                                      color:'black'
-                                    }}
-                                  >
-                                    Author:
-                                  </Card.Title>
-                                  <div
-                                    style={{
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "center",
-                                      gap: !isMobileWidth ?"10px":'2px',
-                                    }}
-                                  >
-                                     <img src="/images/guides-articles/user.svg"  style={{ fontSize: "20px",width:'35.64px',height:"35.64px",color:'white',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center' }}/>
-                                    <span style={{ fontSize:isMobileWidth?"14px": "16px", fontWeight: "400" }}>
-                                      {articleDetails?.author_name}
-                                    </span>
-                                  </div>
-                                </Card.Body>
-                              </Card>
-                            </Col>
-
-           
-               <Col
+              <Col
                 md={4}
                 className="share-section"
                 onClick={() => setShowShareModal(true)}
@@ -404,7 +581,7 @@ function GuideDetails() {
                         marginBottom: "10px",
                         textAlign: "center",
                         width: "100%",
-                        color:'black'
+                        color: "black",
                       }}
                     >
                       {/* {isMobileWidth ? "Share This article:":"Share :" } */}
@@ -422,13 +599,23 @@ function GuideDetails() {
                         // marginRight: "auto",
                       }}
                     >
-                      <img src="/images/guides-articles/share.svg"  style={{ fontSize: "20px",width:'35.64px',height:"35.64px",color:'white',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center' }}/>
+                      <img
+                        src="/images/guides-articles/share.svg"
+                        style={{
+                          fontSize: "20px",
+                          width: "35.64px",
+                          height: "35.64px",
+                          color: "white",
+                          borderRadius: "50%",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      />
                     </div>
                   </Card.Body>
                 </Card>
               </Col>
-
-
 
               {isMobileWidth && (
                 <Col lg={12}>
