@@ -10,6 +10,7 @@ import ChangePassword from "../../components/guest/authProfileModals/ChangePassw
 import Modal from "react-bootstrap/Modal";
 import { openPersona } from "../../store/slices/profileSlice";
 import AddCardView from "../../components/guest/AddCardView";
+import CheckIcon from "../../assets/gallery/check_icon.png";
 
 import CardBankPayment from "../../components/host/cardBankPayment";
 import UpdatePhone from "../../components/guest/authProfileModals/UpdatePhone";
@@ -697,7 +698,17 @@ function Profile() {
                         <h1>Email Address</h1>
                         {isEmailVerified ? (
                           <p>
-                            Verified <i className="fa-solid fa-badge-check"></i>
+                            Verified{" "}
+                            {/* <i className="fa-regular fa-badge-check"></i> */}
+                            <img
+                              src={CheckIcon}
+                              loading="lazy"
+                              alt="Dotted Overlay"
+                              style={{
+                                width: "15%",
+                                height: "15%",
+                              }}
+                            />
                           </p>
                         ) : (
                           <a
@@ -722,7 +733,16 @@ function Profile() {
                         {isPhoneVerified ? (
                           <p>
                             {" "}
-                            Verified <i className="fa-solid fa-badge-check"></i>{" "}
+                            Verified{" "}
+                            <img
+                              src={CheckIcon}
+                              loading="lazy"
+                              alt="Dotted Overlay"
+                              style={{
+                                width: "15%",
+                                height: "15%",
+                              }}
+                            />
                           </p>
                         ) : (
                           <a
@@ -750,7 +770,16 @@ function Profile() {
                         profileData?.personaStatus === "approved" ||
                         profileData?.personaStatus === "completed" ? (
                           <p>
-                            Verified <i className="fa-solid fa-badge-check"></i>
+                            Verified{" "}
+                            <img
+                              src={CheckIcon}
+                              loading="lazy"
+                              alt="Dotted Overlay"
+                              style={{
+                                width: "15%",
+                                height: "15%",
+                              }}
+                            />
                           </p>
                         ) : (
                           <a

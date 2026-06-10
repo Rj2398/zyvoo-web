@@ -110,13 +110,14 @@ const Header = () => {
   // };
 
   const toggleDropdown = () => {
-    // If it's already open, we just want to close it—no login check needed!
+    // If the dropdown is ALREADY open, just close it.
+    // No need to check for userData or show an error here!
     if (dropdownOpen) {
       setDropdownOpen(false);
       return;
     }
 
-    // If it's closed, check if they are allowed to open it
+    // Only check for login when they are trying to OPEN the dropdown
     if (userData || userInfo) {
       setDropdownOpen(true);
     } else {
