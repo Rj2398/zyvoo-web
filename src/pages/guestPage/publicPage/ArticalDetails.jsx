@@ -247,6 +247,7 @@ function GuideDetails() {
                             fontSize: "16px",
                             display: "inline-block",
                             cursor: "pointer",
+                            margin: "10px",
                           }}
                           onMouseEnter={(e) =>
                             (e.target.style.textDecoration = "underline")
