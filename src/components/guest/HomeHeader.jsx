@@ -3752,6 +3752,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                   >
                     <Form.Label className="max-min-label">Maximum</Form.Label>
                     <Form.Control
+                       disabled
                       type="text"
                       value={`$${values[1]}`}
                       onChange={(e) => {
@@ -3766,13 +3767,26 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                           ),
                         ]);
                       }}
-                      style={{
+                      {/* style={{
                         outline: "none",
                         border: "none",
                         padding: 0,
                         boxShadow: "none",
                         color: "black",
                         fontSize: isMobileWidth && "15px",
+                      }} */}
+
+
+                         style={{
+                        outline: "none",
+                        border: "none",
+                        padding: 0,
+                        boxShadow: "none",
+                        color: "black",
+                        backgroundColor: "white", // keep white background
+                        opacity: 1, // remove faded look
+                        cursor: "default",
+                        fontSize: isMobileWidth ? "15px" : undefined,
                       }}
                     />
                   </div>
