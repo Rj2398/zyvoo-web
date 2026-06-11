@@ -54,7 +54,7 @@ const MobSearch = ({
     { id: 3, name: "Photo Shoot" },
     { id: 4, name: "Meeting" },
     { id: 5, name: "Party" },
-    { id: 6, name: "Flim Shoot" },
+    { id: 6, name: "Film Shoot" },
     { id: 7, name: "Performance" },
     { id: 8, name: "Workshop" },
   ],

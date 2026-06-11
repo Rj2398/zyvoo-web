@@ -296,9 +296,14 @@ function Location() {
     }
 
     if (buttonText == "Proceed to Checkout") {
-      if (!dateSelected) {
-        toast.error("Please select a date.");
+      if (!userId) {
+        handleModalToggle("login", true);
         return;
+      } else {
+        if (!dateSelected) {
+          toast.error("Please select a date.");
+          return;
+        }
       }
     }
 
