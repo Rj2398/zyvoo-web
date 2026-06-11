@@ -3767,14 +3767,14 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                           ),
                         ]);
                       }}
-                      {/* style={{
-                        outline: "none",
-                        border: "none",
-                        padding: 0,
-                        boxShadow: "none",
-                        color: "black",
-                        fontSize: isMobileWidth && "15px",
-                      }} */}
+                   // style={{
+                       // outline: "none",
+                      //  border: "none",
+                     //   padding: 0,
+                     //   boxShadow: "none",
+                     //   color: "black",
+                     //   fontSize: isMobileWidth && "15px",
+                     // }} 
 
 
                          style={{
