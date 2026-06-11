@@ -315,7 +315,7 @@ export default function useCommon() {
           error.response?.data?.message ||
           error.message ||
           "An unknown error occurred";
-        toast.error(errorMessage);
+        // toast.error(errorMessage);
       } finally {
         setManualLoading(false);
       }
