@@ -888,7 +888,7 @@ function Location() {
 
                               <CircularSlider
                                 width={isMobileWidth ? 310 : 283}
-                                min={0}
+                                min={2}
                                 max={23}
                                 trackSize={isMobileWidth ? 60 : 45}
                                 progressSize={isMobileWidth ? 60 : 45}

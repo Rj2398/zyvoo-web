@@ -3166,7 +3166,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                             `}</style>
                           <CircularSlider
                             ref={sliderRef}
-                            min={0}
+                            min={2}
                             max={24}
                             trackSize={40}
                             progressSize={40}
@@ -3948,11 +3948,11 @@ const HomeHeader = ({ showMap, setShowMap }) => {
               >
                 <option value={0}>Time</option>
                 {[
-                  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
+                  2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18,
                   19, 20, 21, 22, 23,
                 ].map((duration) => (
                   <option key={duration} value={duration}>
-                    {duration}
+                    {duration} hours
                   </option>
                 ))}
               </Form.Select>
