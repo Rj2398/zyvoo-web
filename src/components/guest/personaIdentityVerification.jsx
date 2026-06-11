@@ -17,7 +17,6 @@ const InlineInquiry = () => {
 
   const [showVerificationModal, setShowVerificationModal] = useState(false);
 
-
   useEffect(() => {
     setShowVerificationModal(showVerification);
   }, [showVerification]);
@@ -28,13 +27,12 @@ const InlineInquiry = () => {
         user_id: userId,
         identity_verify: status === "approved" || "completed" ? "1" : "0",
       });
-   
     } catch (error) {
       console.error(error, "error code of personaa");
     }
   };
 
-  if (!showVerification) return null; 
+  if (!showVerification) return null;
 
   return (
     <Modal
@@ -44,16 +42,15 @@ const InlineInquiry = () => {
         dispatch(closePersona());
       }}
     >
-      <div
-      >
+      <div>
         <PersonaReact
           style={{}}
-         templateId="itmpl_yEu1QvFA5fJ1zZ9RbUo1yroGahx2"
+          templateId="itmpl_yEu1QvFA5fJ1zZ9RbUo1yroGahx2"
           environment="sandbox"
           onLoad={() => {
             console.log("Loaded inline");
           }}
-          onComplete={({  status }) => {
+          onComplete={({ status }) => {
             dispatch(personaStatus(status));
             dispatch(closePersona());
             verifyIdentity(status);
