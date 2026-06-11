@@ -368,7 +368,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
     "Event Space",
     "Photo Shoot",
     "Music Video",
-    "Birthday Party",
+    "Party",
     "Wedding",
     "Meeting",
     "Baby Shower",
@@ -3714,7 +3714,6 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                   >
                     <Form.Label className="max-min-label">Minimum</Form.Label>
                     <Form.Control
-
                       disabled
                       type="text"
                       value={`$${values[0]}`}
@@ -3731,12 +3730,12 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                         ]);
                       }}
                       //style={{
-                        //outline: "none",
-                        //border: "none",
-                        //padding: 0,
-                        //boxShadow: "none",
-                        //color: "black",
-                        //fontSize: isMobileWidth && "15px",
+                      //outline: "none",
+                      //border: "none",
+                      //padding: 0,
+                      //boxShadow: "none",
+                      //color: "black",
+                      //fontSize: isMobileWidth && "15px",
                       //}}
 
                       style={{
@@ -3766,7 +3765,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                   >
                     <Form.Label className="max-min-label">Maximum</Form.Label>
                     <Form.Control
-                       disabled
+                      disabled
                       type="text"
                       value={`$${values[1]}`}
                       onChange={(e) => {
@@ -3781,17 +3780,16 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                           ),
                         ]);
                       }}
-                   // style={{
-                       // outline: "none",
+                      // style={{
+                      // outline: "none",
                       //  border: "none",
-                     //   padding: 0,
-                     //   boxShadow: "none",
-                     //   color: "black",
-                     //   fontSize: isMobileWidth && "15px",
-                     // }} 
+                      //   padding: 0,
+                      //   boxShadow: "none",
+                      //   color: "black",
+                      //   fontSize: isMobileWidth && "15px",
+                      // }}
 
-
-                         style={{
+                      style={{
                         outline: "none",
                         border: "none",
                         padding: 0,
