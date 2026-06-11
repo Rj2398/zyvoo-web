@@ -3714,6 +3714,8 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                   >
                     <Form.Label className="max-min-label">Minimum</Form.Label>
                     <Form.Control
+
+                      disabled
                       type="text"
                       value={`$${values[0]}`}
                       onChange={(e) => {
@@ -3728,13 +3730,25 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                           values[1],
                         ]);
                       }}
+                      //style={{
+                        //outline: "none",
+                        //border: "none",
+                        //padding: 0,
+                        //boxShadow: "none",
+                        //color: "black",
+                        //fontSize: isMobileWidth && "15px",
+                      //}}
+
                       style={{
                         outline: "none",
                         border: "none",
                         padding: 0,
                         boxShadow: "none",
                         color: "black",
-                        fontSize: isMobileWidth && "15px",
+                        backgroundColor: "white", // keep white background
+                        opacity: 1, // remove faded look
+                        cursor: "default",
+                        fontSize: isMobileWidth ? "15px" : undefined,
                       }}
                     />
                   </div>
