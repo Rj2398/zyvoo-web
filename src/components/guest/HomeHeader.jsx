@@ -94,7 +94,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
   const [fromTime, setFromTime] = useState("");
   const [isHovered1, setIsHovered1] = useState(false);
   const [toTime, setToTime] = useState("");
-  const [hour, setHour] = useState(0);
+  const [hour, setHour] = useState("0");
   const [show, setShow] = useState(false);
   const [filterShow, setFilterShow] = useState(false);
   const [newDate, setNewDate] = useState();
@@ -246,7 +246,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
     if (userData) {
       setDropdownOpen(!dropdownOpen);
     } else {
-      toast.error("Please login...");
+      // toast.error("Please login...");
       navigate("/");
     }
   };
