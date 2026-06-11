@@ -47,16 +47,16 @@ const MobSearch = ({
   handleDate,
   setFilterPrice,
   // Configuration props
+
   activities = [
     { id: 1, name: "Stays" },
     { id: 2, name: "Event Space" },
     { id: 3, name: "Photo Shoot" },
     { id: 4, name: "Meeting" },
     { id: 5, name: "Party" },
-    { id: 6, name: "Pool" },
-    { id: 7, name: "Film Shoot" },
-    { id: 8, name: "Wedding" },
-    // { id: 5, name: "Birthday Party" },
+    { id: 6, name: "Flim Shoot" },
+    { id: 7, name: "Performance" },
+    { id: 8, name: "Workshop" },
   ],
 }) => {
   const [showActivityPopup, setShowActivityPopup] = useState(false);

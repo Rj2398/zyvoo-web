@@ -363,16 +363,27 @@ const HomeHeader = ({ showMap, setShowMap }) => {
 
   const timeOptions = generateTimeOptions();
 
+  // const activities = [
+  //   "Stays",
+  //   "Event Space",
+  //   "Photo Shoot",
+  //   "Music Video",
+  //   "Party",
+  //   "Wedding",
+  //   "Meeting",
+  //   "Baby Shower",
+  //   "Pool",
+  // ];
+
   const activities = [
     "Stays",
     "Event Space",
     "Photo Shoot",
-    "Music Video",
-    "Party",
-    "Wedding",
     "Meeting",
-    "Baby Shower",
-    "Pool",
+    "Party",
+    "Flim Shoot",
+    "Performance",
+    "Workshop",
   ];
 
   // Search Query
