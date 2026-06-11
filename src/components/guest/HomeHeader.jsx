@@ -94,7 +94,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
   const [fromTime, setFromTime] = useState("");
   const [isHovered1, setIsHovered1] = useState(false);
   const [toTime, setToTime] = useState("");
-  const [hour, setHour] = useState("");
+  const [hour, setHour] = useState(0);
   const [show, setShow] = useState(false);
   const [filterShow, setFilterShow] = useState(false);
   const [newDate, setNewDate] = useState();
@@ -3952,7 +3952,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                   19, 20, 21, 22, 23,
                 ].map((duration) => (
                   <option key={duration} value={duration}>
-                    {duration} hours
+                    {duration}
                   </option>
                 ))}
               </Form.Select>
@@ -4209,11 +4209,12 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                             <Form.Control
                               type="number"
                               placeholder="Type..."
-                              value={
-                                preferences[section.name] === "Any"
-                                  ? ""
-                                  : preferences[section.name]
-                              }
+                              // value={
+                              //   preferences[section.name] === "Any"
+                              //     ? ""
+                              //     : preferences[section.name]
+                              // }
+
                               onChange={(e) =>
                                 handleInputChange(section.name, e.target.value)
                               }

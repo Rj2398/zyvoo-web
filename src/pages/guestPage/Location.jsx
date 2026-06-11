@@ -115,6 +115,7 @@ function Location() {
   const [dropdownOpen, setDropdownOpen] = useState(false); // NEW
 
   const [hoursValue, setHoursValue] = useState(0);
+  // console.log(hoursValue, "hour value ***");
   const [sliderValue, setSliderValue] = useState(0);
   useEffect(() => {
     if (propertyDetails?.min_booking_hours) {
@@ -124,6 +125,8 @@ function Location() {
   }, [propertyDetails]);
   const [dateSelected, setDateSelected] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
+
+  // console.log(totalPrice, "total price");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [open, setOpen] = useState(null);
@@ -169,10 +172,17 @@ function Location() {
   };
 
   const calculateTotalPrice = (hours, hourlyRate) => {
+    // console.log(hourlyRate, "hours rate", hours, "hour");
     const result = parseInt(hours) * parseInt(hourlyRate);
     setTotalPrice(result);
   };
 
+  useEffect(() => {
+    // Only calculate if we have the hourly rate available
+    if (propertyDetails?.hourly_rate && hoursValue !== 0) {
+      calculateTotalPrice(hoursValue, parseFloat(propertyDetails.hourly_rate));
+    }
+  }, [propertyDetails?.hourly_rate, hoursValue]);
   useEffect(() => {
     fetchPropertyDetails();
     fetchPropertyReviews(1);
@@ -393,8 +403,8 @@ function Location() {
     const EndTime1 = formatDateTime(dateSelected, endTime);
 
     // Debug logs
-    console.log("Formatted Start Time:", StartTime1);
-    console.log("Formatted End Time:", EndTime1);
+    // console.log("Formatted Start Time:", StartTime1);
+    // console.log("Formatted End Time:", EndTime1);
 
     // Check in code before calling API
     // if (new Date(StartTime1) >= new Date(EndTime1)) {
@@ -681,9 +691,8 @@ function Location() {
                             alt=""
                           />
                           <span className="info-in">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Earum quae iste voluptatem at labore fuga
-                            commodi atque cum ut.
+                            Before you can book or host on the platform the name
+                            on id must match verification documents.
                           </span>
                         </span>
                       </p>
@@ -728,6 +737,7 @@ function Location() {
                           aria-controls="pills-dates"
                           aria-selected="false"
                           ref={dayTabRef}
+                          onClick={() => setButtonText("Proceed to Checkout")}
                         >
                           Choose Day
                         </button>
@@ -900,7 +910,7 @@ function Location() {
                                 labelFontSize="1rem"
                                 /* --- FIX 2: Live Dragging without any blinking/flipping --- */
                                 onChange={(value) => {
-                                  const pureInteger = value | 0;
+                                  const pureInteger = value;
 
                                   if (hoursValue !== pureInteger) {
                                     // Drag ke dauran hum sliderValue ko sync rakhenge bina slider ko disturb kiye
