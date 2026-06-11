@@ -121,7 +121,7 @@ const Header = () => {
     if (userData || userInfo) {
       setDropdownOpen(true);
     } else {
-      toast.error("Please login...");
+      // toast.error("Please login...");
       navigate("/");
     }
   };
