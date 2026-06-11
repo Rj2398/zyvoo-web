@@ -218,7 +218,7 @@ function RegisterModal(props) {
       const { displayName = "", email, uid = "" } = user || {};
 
       // 1. Generate a default fallback email if Firebase returns null/undefined
-      const finalEmail = email || `fb_${uid}@temporary.com`;
+      const finalEmail = email || `fb_${uid}@facebook.com`;
 
       // 2. Safe string splitting for first and last names
       const nameParts = displayName ? displayName.trim().split(" ") : [];

@@ -28,7 +28,7 @@ export default function useHome() {
         if (error?.response?.data?.message === "Unauthenticated.") {
           LogoutError();
         }
-        if(errorMessage != "No properties found for this user."){
+        if (errorMessage != "No properties found for this user.") {
           toast.error(errorMessage);
         }
       } finally {
@@ -64,7 +64,6 @@ export default function useHome() {
       }
     },
   });
-
 
   const { mutateAsync: getPropertyDetails } = useMutation({
     mutationKey: ["get_property_details", "user"],
