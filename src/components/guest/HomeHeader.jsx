@@ -381,7 +381,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
     "Photo Shoot",
     "Meeting",
     "Party",
-    "Flim Shoot",
+    "Film Shoot",
     "Performance",
     "Workshop",
   ];
