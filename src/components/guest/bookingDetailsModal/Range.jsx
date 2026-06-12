@@ -20,30 +20,39 @@ const Range = ({
 }) => {
   const navigate = useNavigate();
   const [totalPrice, setTotalPrice] = useState(0);
-  const [hoursValue, setHoursValue] = useState(initialValue ?? 0);
+  const initialHours = initialValue && initialValue >= 2 ? initialValue : 2;
+  const [hoursValue, setHoursValue] = useState(initialHours);
   const [hasChanged, setHasChanged] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(
-    initialValue || "Select hours"
-  );
+  const [selectedOption, setSelectedOption] = useState(initialHours);
 
   /* --- FIXED: Fade effect ko rokne ke liye bina key-reset wala Ref add kiya --- */
   const sliderRef = useRef(null);
 
   const [show, setShow] = useState("false");
+  const wrappedRef = useRef(false);
 
   // Props change hone par state synchronized rakhne ke liye
   useEffect(() => {
     if (initialValue !== undefined && initialValue !== null) {
       const parsed = initialValue | 0;
-      setHoursValue(parsed);
+      const clamped = parsed < 2 ? 2 : parsed;
+      setHoursValue(clamped);
+      setSelectedOption(clamped);
       if (
         sliderRef.current &&
         typeof sliderRef.current.setValue === "function"
       ) {
-        sliderRef.current.setValue(parsed);
+        sliderRef.current.setValue(clamped);
       }
     }
   }, [initialValue]);
+
+  // Mount/Initialization par parent state ko default values (2 hours) ke sath sync karne ke liye
+  useEffect(() => {
+    const initialHours = initialValue && initialValue >= 2 ? initialValue : 2;
+    if (callbacTotalHrs) callbacTotalHrs(initialHours);
+    calculateTotalPrice(initialHours, perHourRate);
+  }, []);
 
   const calculateTotalPrice = (hours, hourlyRate) => {
     const result = parseInt(hours, 10) * parseFloat(hourlyRate || 0);
@@ -60,6 +69,7 @@ const Range = ({
     const numericValue = parseInt(option, 10);
     setSelectedOption(numericValue);
     setHoursValue(numericValue);
+    wrappedRef.current = false;
 
     /* --- Dropdown value par slider knob ko inject karne ki setting --- */
     if (sliderRef.current && typeof sliderRef.current.setValue === "function") {
@@ -157,8 +167,9 @@ const Range = ({
               // Grid mapping matching min=0 and max=23 logic bounds safely
               const stepIndex = Math.round((angle / 360) * 23) | 0;
               const finalVal =
-                stepIndex >= 23 ? 23 : stepIndex < 0 ? 0 : stepIndex;
+                stepIndex >= 23 ? 23 : stepIndex < 2 ? 2 : stepIndex;
 
+              wrappedRef.current = false;
               setHasChanged(true);
               setHoursValue(finalVal);
               setSelectedOption(finalVal);
@@ -250,6 +261,10 @@ const Range = ({
                   opacity: 0 !important;
                   display: none !important;
                 }
+                .hide-slider-pulse > div {
+                  opacity: 1 !important;
+                  transition: none !important;
+                }
               `}</style>
               <CircularSlider
                 ref={sliderRef} /* Attached Ref instance */
@@ -264,15 +279,40 @@ const Range = ({
                 progressColorTo="#4aeab1"
                 direction={1}
                 dataIndex={hoursValue}
+                initialValue={hoursValue}
                 labelColor="transparent"
                 valueColor="transparent"
                 valueFontSize="0rem"
                 labelFontSize="1rem"
+                isDragging={(dragging) => {
+                  if (!dragging) {
+                    if (wrappedRef.current) {
+                      wrappedRef.current = false;
+                      setTimeout(() => {
+                        setHoursValue(22);
+                        setTimeout(() => {
+                          setHoursValue(23);
+                        }, 50);
+                      }, 300);
+                    }
+                  }
+                }}
                 onChange={(value) => {
-                  const pureInteger = value | 0;
+                  let pureInteger = value | 0;
+                  if (pureInteger < 2) {
+                    pureInteger = 2;
+                  }
+                  if (pureInteger >= 24) {
+                    pureInteger = 23;
+                    wrappedRef.current = true;
+                  }
 
                   /* --- Anti looping render lock check --- */
                   if (hoursValue !== pureInteger) {
+                    if (hoursValue >= 22 && pureInteger <= 2) {
+                      wrappedRef.current = true;
+                      return;
+                    }
                     setHasChanged(true);
                     setHoursValue(pureInteger);
                     setSelectedOption(pureInteger);
@@ -280,7 +320,9 @@ const Range = ({
                     calculateTotalPrice(pureInteger, perHourRate);
                   }
                 }}
-              />
+              >
+                <></>
+              </CircularSlider>
             </div>
           </div>
 
@@ -351,26 +393,9 @@ const Range = ({
                     padding: "10px",
                   }}
                 >
-                  {/* {Array.from(
-                    { length: 23 },
-                    (_, i) => `${i + 1} Hour${i > 0 ? "s" : ""}`
-                  ).map((option) => (
-                    <div
-                      key={option}
-                      style={{
-                        padding: "10px",
-                        cursor: "pointer",
-                        borderBottom: "1px solid #eee",
-                      }}
-                      onClick={() => selectOption(option)}
-                    >
-                      {option}
-                    </div>
-                  ))} */}
-
                   {Array.from(
-                    { length: 22 }, // 22 items total from 2 to 23
-                    (_, i) => `${i + 2} Hour${i + 2 > 1 ? "s" : ""}` // Starts at 2, so it will always use "Hours"
+                    { length: 22 },
+                    (_, i) => `${i + 2} Hours`
                   ).map((option) => (
                     <div
                       key={option}
@@ -399,7 +424,7 @@ const Range = ({
                 cursor: "pointer",
               }}
               onClick={() =>
-                hoursValue == 0
+                hoursValue < 2
                   ? toast.error("please select at least 1 hour")
                   : isExtentionTime
                     ? onHide()
@@ -600,9 +625,7 @@ export default React.memo(Range);
 
 //             <div
 //               style={{ position: "relative", zIndex: 2 }}
-//               className={`hide-slider-pulse ${
-//                 !hasChanged || hoursValue == 0 ? "range-ss" : ""
-//               }`}
+//               className="hide-slider-pulse"
 //             >
 //               <style>{`
 //     .hide-slider-pulse circle[style*="animation-name: pulse"] {
@@ -708,8 +731,8 @@ export default React.memo(Range);
 //                   }}
 //                 >
 //                   {Array.from(
-//                     { length: 23 },
-//                     (_, i) => `${i + 1} Hour${i > 0 ? "s" : ""}`
+//                     { length: 22 },
+//                     (_, i) => `${i + 2} Hours`
 //                   ).map((option) => (
 //                     <div
 //                       key={option}

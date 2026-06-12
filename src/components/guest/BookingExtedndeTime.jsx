@@ -28,6 +28,7 @@ import visa from "../../assets/gallery/visa.svg";
 import ExtendedTimeModal from "./ExtendedTimeModal";
 import MessageHost from "./bookingDetailsModal/MessageHost";
 import { FiArrowLeft } from "react-icons/fi";
+import { PiClockCountdownFill } from "react-icons/pi";
 
 const BookingExtendedTime = () => {
   const stripePromise = loadStripe(
@@ -82,17 +83,17 @@ const BookingExtendedTime = () => {
 
   const [startTime, setStartTime] = useState(
     checkoutData?.startTime ||
-      formatTo12Hour(checkoutData?.booking_start?.split(" ")[1])
+    formatTo12Hour(checkoutData?.booking_start?.split(" ")[1])
   );
   const [endTime, setEndTime] = useState(
     checkoutData?.endTime ||
-      formatTo12Hour(checkoutData?.booking_end?.split(" ")[1])
+    formatTo12Hour(checkoutData?.booking_end?.split(" ")[1])
   );
   const [bookingDate, setBookingDate] = useState(
     checkoutData?.dateSelected || checkoutData?.booking_date
       ? moment(checkoutData?.dateSelected || checkoutData?.booking_date).format(
-          "MMMM DD, YYYY"
-        )
+        "MMMM DD, YYYY"
+      )
       : ""
   );
 
@@ -368,7 +369,7 @@ const BookingExtendedTime = () => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                  // style={{ minWidth: "320px " }}
+                // style={{ minWidth: "320px " }}
                 >
                   {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
                              <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
@@ -826,8 +827,8 @@ const BookingExtendedTime = () => {
                               ? "80%"
                               : "0%"
                             : showDropdown2
-                            ? "25%"
-                            : "0%",
+                              ? "25%"
+                              : "0%",
                         }}
                       >
                         <Button
@@ -868,7 +869,7 @@ const BookingExtendedTime = () => {
                 </h5>
                 <p style={{ fontSize: "15px" }}>
                   {isExpanded ||
-                  (checkoutData?.property_description?.length || 0) <= 200
+                    (checkoutData?.property_description?.length || 0) <= 200
                     ? checkoutData?.property_description
                     : `${checkoutData?.property_description?.slice(0, 200)}...`}
                 </p>
@@ -908,9 +909,8 @@ const BookingExtendedTime = () => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                              open === "collapseOne" ? "" : " "
-                            }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
+                              }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -969,9 +969,8 @@ const BookingExtendedTime = () => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseTwo" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
@@ -1229,7 +1228,7 @@ const BookingExtendedTime = () => {
                       />
                     </div>
                   </div>
-             
+
                   <MessageHost
                     type={"Host"}
                     style={{ width: "100%", marginBottom: "10px" }}
@@ -1238,7 +1237,7 @@ const BookingExtendedTime = () => {
                       property_id: params?.booking_id,
                     }}
                   />
-               
+
 
                   <div
                     style={{
@@ -1279,6 +1278,140 @@ const BookingExtendedTime = () => {
                     </p>
                   </div>
                 </div> */}
+
+
+                <div
+                  style={{
+                    background: "#FFFFFF",
+                    boxShadow: " 0 4px 12px rgba(0, 0, 0, -2.85)",
+                    border: "1px solid #E4E4E4",
+                    padding: "10px",
+                    borderRadius: "20px",
+                  }}
+                >
+                  <div style={{ textAlign: "center", marginBottom: "15px" }}>
+                    <span
+                      style={{
+                        fontWeight: "400",
+                        fontSize: "22px",
+                      }}
+                    >
+                      Hosted by
+                    </span>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      marginBottom: "15px",
+                      marginTop: "-15px",
+                    }}
+                  >
+                    <div
+                      className="chat-right-top-profile"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginBottom: "15px",
+                      }}
+                    >
+                      <img
+                        className="chat-right-top-profile-image"
+                        src={imageBase + checkoutData?.host_profile_image}
+                        loading="lazy"
+                        alt="Host"
+                        style={{
+                          width: "clamp(50px, 7vw, 60px)",
+                          height: "clamp(50px, 7vw, 60px)",
+                          borderRadius: "50%",
+                          marginRight: "10px",
+                        }}
+                      />
+                      <h2
+                        style={{
+                          fontSize: "clamp(14px, 2vw, 18px)",
+                          margin: "0 5px 0 0",
+                        }}
+                      >
+                        {checkoutData?.hosted_by}
+                      </h2>
+                      <img
+                        className="chat-right-top-batch-image"
+                        src="/images/bookings/verify-star.svg"
+                        loading="lazy"
+                        alt="Verified"
+                        style={{
+                          width: "clamp(14px, 2vw, 16px)",
+                          height: "clamp(14px, 2vw, 16px)",
+                        }}
+                      />
+
+                      {checkoutData?.is_star_host && (
+                        <Image
+                          src="/images/locations-grid/profile/batch.svg"
+                          loading="lazy"
+                          alt="Batch"
+                          style={{
+                            position: "absolute",
+                            top: "20px",
+                            left: "20px",
+                            bottom: "0",
+                            width: "25px",
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    <div
+                      style={{
+                        border: "1px solid #ccc",
+                        width: "98%",
+                        marginBottom: "15px",
+                      }}
+                    ></div>
+                    <MessageHost
+                      type={"Host"}
+                      style={{ width: "100%", marginBottom: "10px" }}
+                      data={{
+                        sender_detail: checkoutData,
+                        property_id: checkoutData?.property_id,
+                      }}
+                    />
+
+                    {/* <div
+                                                      className="chat-right-top-mob-right"
+                                                      style={{
+                                                        display: "flex",
+                                                        alignItems: "center",
+                                                        justifyContent: "center",
+                                                        marginBottom: "15px",
+                                                        fontSize: "clamp(12px, 1.5vw, 14px)",
+                                                      }}
+                                                    >
+                                                      <img
+                                                        src="/images/guides-articles/time.svg"
+                                                        loading="lazy" alt="Response time"
+                                                        style={{
+                                                          width: "clamp(14px, 2vw, 16px)",
+                                                          height: "clamp(14px, 2vw, 16px)",
+                                                          marginRight: "5px",
+                                                          backgroundColor:'#e2dadaff'
+                                                        }}
+                                                      />
+                                                      <p style={{ marginTop: "5px"}}>Typically respond within 1 hr</p>
+                                                    </div> */}
+
+                    <div className="d-flex justify-content-center mb-3">
+                      <PiClockCountdownFill size={24} color="#979797" />
+                      <span className="fs-6 ms-2">
+                        Typically respond within 1 hr
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
               </Col>
             )}
           </Row>

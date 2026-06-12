@@ -531,7 +531,7 @@ const GalleryLocation = ({
           marginLeft: "-28px",
         }}
       />
-      <h4 className="heading-title">Gallery</h4>
+      <h4 className="heading-title">Gallery <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
       <Row className="ms-0">
         {displayImg.map((img, index) => (
           <Col
@@ -606,13 +606,13 @@ const GalleryLocation = ({
         }}
       />
       {/* About the Space Section */}
-      <h4 className="heading-title">About the Space</h4>
+      <h4 className="heading-title">About the Space <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
       <Form.Control
         type="text"
         name="title"
         value={formData.title}
         onChange={handleChange}
-        placeholder="Title"
+        placeholder="Title *"
         className="mb-2 custom-input"
         style={{
           height: "45px",
@@ -639,7 +639,7 @@ const GalleryLocation = ({
         name="description"
         value={formData.description}
         onChange={handleChange}
-        placeholder="Description"
+        placeholder="Description *"
         className="mb-2 custom-input"
         style={{
           width: "100%",
@@ -745,7 +745,7 @@ const GalleryLocation = ({
           marginLeft: "-28px",
         }}
       />
-      <h4 className="mt-lg-4  heading-title">Address</h4>
+      <h4 className="mt-lg-4  heading-title">Address <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
       <div
         style={{
           // marginRight: "75px",
@@ -859,7 +859,7 @@ const GalleryLocation = ({
               fields: ["formatted_address", "address_components", "geometry"],
             }}
             value={formData.street} // ✅ just use formData.street
-            placeholder="Street Address"
+            placeholder="Street Address *"
             className="google-autocomplete custom_input"
             onChange={(e) => {
               const value = e.target.value;
@@ -901,7 +901,7 @@ const GalleryLocation = ({
 
         value={formData.city}
         onChange={handleChange}
-        placeholder="City"
+        placeholder="City *"
         className="custom-input"
         style={{
           width: "100%",
@@ -938,7 +938,7 @@ const GalleryLocation = ({
             name="zipCode"
             value={formData.zipCode}
             onChange={handleChange}
-            placeholder="Zip Code"
+            placeholder="Zip Code *"
             className="custom-input"
             style={{
               width: "100%",
@@ -970,7 +970,7 @@ const GalleryLocation = ({
             name="country"
             value={formData.country}
             onChange={handleChange}
-            placeholder="Country"
+            placeholder="Country *"
             className="custom-input"
             style={{
               width: "100%",
@@ -1003,7 +1003,7 @@ const GalleryLocation = ({
             name="state"
             value={formData.state}
             onChange={handleChange}
-            placeholder="State"
+            placeholder="State *"
             className="custom-input"
             style={{
               width: "100%",
@@ -1047,7 +1047,8 @@ const GalleryLocation = ({
           defaultZoom={12}
         >
           <img
-
+            lat={center.lat}
+            lng={center.lng}
             src={markerImage}
             loading="lazy" alt="marker"
             style={{
@@ -1089,6 +1090,8 @@ const GalleryLocation = ({
           // Add this options prop to hide everything - END
         >
           <img
+            lat={center.lat}
+            lng={center.lng}
             src={markerImage}
             loading="lazy"
             alt="marker"

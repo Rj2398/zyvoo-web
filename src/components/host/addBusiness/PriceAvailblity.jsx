@@ -508,7 +508,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         isMobileWidth && (<hr className="property-modal-hr" />)
       }
   
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Minimum hour & Pricing</h6>
+      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Minimum hour & Pricing <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
       <Row className="mb-4">
         <Col md={4} style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%", }} >
           <Form.Select value={minHour} onChange={(e) => handleMinHourChange(e.target.value)}
@@ -551,7 +551,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       <hr className="property-modal-hr" />
 
       {/* Bulk Discount */}
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Bulk Discount</h6>
+      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Bulk Discount <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
       <Row className="mb-4">
         <Col md={4} style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%", }} >
           <Form.Select value={bulkHour} onChange={(e) => setBulkHour(e.target.value)}
@@ -591,7 +591,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         </Col>
       </Row>
       <hr className="property-modal-hr" />
-      <h6   style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Add-ons from the host</h6>
+      <h6   style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Add-ons from the host <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
       <Row className="">
         <Col md={12}>
           <ItemSelector onItemsUpdate={handleItemsUpdate} propertyData={propertyData} isMobileWidth={isMobileWidth}/>
@@ -658,7 +658,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
                 type="text"
                 value={cleaningFee}
                 onChange={(e) => setCleaningFee(e.target.value)}
-                placeholder="Enter Fee"
+                placeholder="Enter Fee *"
                 style={{
                   border: "none",
                   boxShadow: "none",
@@ -688,7 +688,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       </Row>
       <hr className="property-modal-hr" />
       <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >
-        Availability - Days & Months
+        Availability - Days & Months <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span>
       </h6>
       <h6  className="heading-title" style={{  color: "black", fontWeight:isMobileWidth?"400": "500",marginLeft: isMobileWidth?"9px":'-4px' }}>
         Months
@@ -779,7 +779,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
 
       <hr className="property-modal-hr" />
       {/* Availability - Hours */}
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Availability - Hours</h6>
+      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Availability - Hours <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
       <Row>
         <Col md={4} style={{ width: "48%", marginTop: "2%" }}>
           <span style={{ paddingBottom: "10px", paddingLeft: "10px" }}>From</span>

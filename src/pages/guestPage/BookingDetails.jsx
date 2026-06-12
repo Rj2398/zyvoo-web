@@ -40,8 +40,8 @@ const BookingDetails = () => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
 
   const bookingDetails = details ?? checkoutData;
 
@@ -830,24 +830,24 @@ const BookingDetails = () => {
                   style={
                     isMobileWidth
                       ? {
-                          position: "fixed",
-                          top: 0,
-                          left: 0,
-                          width: "100vw",
-                          height: "100vh",
-                          backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
-                          zIndex: 9998,
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: "10px",
-                        }
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100vw",
+                        height: "100vh",
+                        backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
+                        zIndex: 9998,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "10px",
+                      }
                       : {
-                          position: "absolute",
-                          zIndex: 9999,
-                          right: "31%",
-                          top: "52%",
-                        }
+                        position: "absolute",
+                        zIndex: 9999,
+                        right: "31%",
+                        top: "55%",
+                      }
                   }
                 >
                   <div style={{ position: "relative" }}>
@@ -907,9 +907,8 @@ const BookingDetails = () => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingOne">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseOne" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion("collapseOne")}
                           style={{
@@ -971,9 +970,8 @@ const BookingDetails = () => {
                   <div className="accordion-item border rounded mb-2">
                     <h2 className="accordion-header" id="headingTwo">
                       <button
-                        className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                          open === "collapseTwo" ? "" : "collapsed"
-                        }`}
+                        className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                          }`}
                         type="button"
                         onClick={() => toggleAccordion2("collapseTwo")}
                         style={{

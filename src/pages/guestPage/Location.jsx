@@ -922,7 +922,9 @@ function Location() {
                                     );
                                   }
                                 }}
-                              />
+                              >
+                                <></>
+                              </CircularSlider>
                               {/* <CircularSlider
                                 width={isMobileWidth ? 310 : 283}
                                 min={0}

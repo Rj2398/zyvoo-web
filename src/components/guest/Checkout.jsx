@@ -26,6 +26,8 @@ import Loader from "../Loader";
 import SavedCardsDropdown from "./SavedCardsDropdown";
 import { FiArrowLeft } from "react-icons/fi";
 import { useSelector } from "react-redux";
+import MessageHost from "./bookingDetailsModal/MessageHost";
+import { PiClockCountdownFill } from "react-icons/pi";
 
 const Checkout = ({ setExtendedTime }) => {
   const token = JSON.parse(
@@ -34,6 +36,7 @@ const Checkout = ({ setExtendedTime }) => {
 
   const user_id = JSON.parse(sessionStorage.getItem(KEYS.USER_INFO))?.user_id;
   console.log(user_id, "test *********");
+  const userType = localStorage.getItem(KEYS.USER_TYPE);
 
   const { userInfo } = useSelector(({ user }) => user);
   const { gatewayApple } = useSelector(({ user }) => user);
@@ -52,8 +55,8 @@ const Checkout = ({ setExtendedTime }) => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
 
   useEffect(() => {
     if (!id) {
@@ -62,6 +65,7 @@ const Checkout = ({ setExtendedTime }) => {
   }, [id]);
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
+  const [isMessageClick, setIsMessageClick] = useState(false);
 
   useEffect(() => {
     const checkWindowWidth = () => {
@@ -832,7 +836,7 @@ const Checkout = ({ setExtendedTime }) => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                  // style={{ minWidth: "320px " }}
+                // style={{ minWidth: "320px " }}
                 >
                   {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
                 <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
@@ -1729,8 +1733,8 @@ const Checkout = ({ setExtendedTime }) => {
                               ? "60%"
                               : "0%"
                             : showDropdown2
-                            ? "25%"
-                            : "0%",
+                              ? "25%"
+                              : "0%",
                         }}
                       >
                         <Button
@@ -1837,7 +1841,7 @@ const Checkout = ({ setExtendedTime }) => {
                 </h5>
                 <p style={{ fontSize: "15px" }}>
                   {isExpanded ||
-                  (checkoutData?.property_description?.length || 0) <= 200
+                    (checkoutData?.property_description?.length || 0) <= 200
                     ? checkoutData?.property_description
                     : `${checkoutData?.property_description?.slice(0, 200)}...`}
                 </p>
@@ -1876,9 +1880,8 @@ const Checkout = ({ setExtendedTime }) => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                              open === "collapseOne" ? "" : " "
-                            }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
+                              }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -1941,9 +1944,8 @@ const Checkout = ({ setExtendedTime }) => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseTwo" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
@@ -2163,8 +2165,340 @@ const Checkout = ({ setExtendedTime }) => {
                     </p>
                   </div>
                 </div>
+
+
+                {/* <div className="chat-right-top-profile d-flex align-items-center">
+                  <img
+                    className="chat-right-top-profile-image img-fluid"
+                    src={
+                      userType === "host"
+                        ? checkoutData?.guest_avatar
+                          ? `${imageBase}${checkoutData?.guest_avatar}`
+                          : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                        : checkoutData?.host_image
+                          ? `${imageBase}${checkoutData?.host_image}`
+                          : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                    }
+                    loading="lazy"
+                    alt="Profile"
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      borderRadius: "50%",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <h2
+                    style={{
+                      marginLeft: "10px",
+                      fontSize: "20px",
+                      fontWeight: "400",
+                      wordWrap: "break-word",
+                    }}
+                  >
+                    {userType === "host"
+                      ? checkoutData?.guest_name?.trim() || "No Name"
+                      : checkoutData?.host_name?.trim() || "John Doe"}
+                  </h2>
+
+                  {userType === "host" ? (
+                    <>
+                      <img
+                        className="chat-right-top-batch-image"
+                        src=" /images/locations-grid/star-icon.svg"
+                        loading="lazy"
+                        alt="verified"
+                        style={{ width: "20px", color: "#FCA800" }}
+                      />{" "}
+                      <span style={{ color: "#FCA800" }}>
+                        {guestReview || "0.0"}{" "}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      {checkoutData?.is_star_host && (
+                        <img
+                          className="chat-right-top-batch-image"
+                          src="/images/bookings/verify-star.svg"
+                          loading="lazy"
+                          alt="verified"
+                          style={{ width: "20px" }}
+                        />
+                      )}
+                    </>
+                  )}
+                </div> */}
+
+                {isMobileWidth && (
+                  <div>
+                    {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
+                      <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
+                        Hosted by
+                      </span>
+                    </div> */}
+
+                    <div
+                      className="chat-right-bottom bg-white"
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginBottom: "15px",
+                      }}
+                    >
+                      <div
+                        className="chat-right-top-profile"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "15px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontWeight: "600",
+                            fontSize: "clamp(14px, 2vw, 16px)",
+                          }}
+                        >
+                          Hosted by
+                        </span>
+                        <img
+                          className="chat-right-top-profile-image"
+                          src={imageBase + checkoutData?.host_profile_image}
+                          loading="lazy"
+                          alt="Host"
+                          style={{
+                            width: "clamp(50px, 7vw, 60px)",
+                            height: "clamp(50px, 7vw, 60px)",
+                            borderRadius: "50%",
+                            // marginRight: "10px",
+                          }}
+                        />
+                        <h2
+                          style={{
+                            fontSize: "clamp(14px, 2vw, 18px)",
+                            margin: "0 5px 0 0",
+                          }}
+                        >
+                          {checkoutData?.hosted_by}
+                        </h2>
+                        <img
+                          className="chat-right-top-batch-image"
+                          src="/images/bookings/verify-star.svg"
+                          loading="lazy"
+                          alt="Verified"
+                          style={{
+                            width: "clamp(14px, 2vw, 16px)",
+                            height: "clamp(14px, 2vw, 16px)",
+                          }}
+                        />
+
+                        {checkoutData?.is_star_host && (
+                          <Image
+                            src="/images/locations-grid/profile/batch.svg"
+                            loading="lazy"
+                            alt="Batch"
+                            style={{
+                              position: "absolute",
+                              top: "20px",
+                              left: "20px",
+                              bottom: "0",
+                              width: "25px",
+                            }}
+                          />
+                        )}
+                      </div>
+
+                      <div
+                        className=""
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: "10px",
+                          fontSize: "clamp(12px, 1.5vw, 14px)",
+                        }}
+                      >
+                        <img
+                          src="/images/guides-articles/time.svg"
+                          loading="lazy"
+                          alt="Response time"
+                          style={{
+                            width: "clamp(14px, 2vw, 16px)",
+                            height: "clamp(14px, 2vw, 16px)",
+                            marginRight: "5px",
+                            backgroundColor: "black",
+                          }}
+                        />
+                        <p style={{ margin: 0 }}>respond within 1 hr</p>
+                      </div>
+
+                      <MessageHost
+                        type={"Host"}
+                        style={{ width: "100%", marginBottom: "10px" }}
+                        data={{
+                          sender_detail: checkoutData,
+                          property_id: checkoutData?.property_id,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+
+
+
+                {!isMobileWidth && (
+                  <div
+                    style={{
+                      background: "#FFFFFF",
+                      boxShadow: " 0 4px 12px rgba(0, 0, 0, -2.85)",
+                      border: "1px solid #E4E4E4",
+                      padding: "10px",
+                      borderRadius: "20px",
+                    }}
+                  >
+                    <div style={{ textAlign: "center", marginBottom: "15px" }}>
+                      <span
+                        style={{
+                          fontWeight: "400",
+                          fontSize: "22px",
+                        }}
+                      >
+                        Hosted by
+                      </span>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        marginBottom: "15px",
+                        marginTop: "-15px",
+                      }}
+                    >
+                      <div
+                        className="chat-right-top-profile"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "15px",
+                        }}
+                      >
+                        <img
+                          className="chat-right-top-profile-image"
+                          src={imageBase + checkoutData?.host_profile_image}
+                          loading="lazy"
+                          alt="Host"
+                          style={{
+                            width: "clamp(50px, 7vw, 60px)",
+                            height: "clamp(50px, 7vw, 60px)",
+                            borderRadius: "50%",
+                            marginRight: "10px",
+                          }}
+                        />
+                        <h2
+                          style={{
+                            fontSize: "clamp(14px, 2vw, 18px)",
+                            margin: "0 5px 0 0",
+                          }}
+                        >
+                          {checkoutData?.hosted_by}
+                        </h2>
+                        <img
+                          className="chat-right-top-batch-image"
+                          src="/images/bookings/verify-star.svg"
+                          loading="lazy"
+                          alt="Verified"
+                          style={{
+                            width: "clamp(14px, 2vw, 16px)",
+                            height: "clamp(14px, 2vw, 16px)",
+                          }}
+                        />
+
+                        {checkoutData?.is_star_host && (
+                          <Image
+                            src="/images/locations-grid/profile/batch.svg"
+                            loading="lazy"
+                            alt="Batch"
+                            style={{
+                              position: "absolute",
+                              top: "20px",
+                              left: "20px",
+                              bottom: "0",
+                              width: "25px",
+                            }}
+                          />
+                        )}
+                      </div>
+
+                      <div
+                        style={{
+                          border: "1px solid #ccc",
+                          width: "98%",
+                          marginBottom: "15px",
+                        }}
+                      ></div>
+                      <MessageHost
+                        type={"Host"}
+                        style={{ width: "100%", marginBottom: "10px" }}
+                        data={{
+                          sender_detail: checkoutData,
+                          property_id: checkoutData?.property_id,
+                        }}
+                      />
+
+                      {/* <div
+                                      className="chat-right-top-mob-right"
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        marginBottom: "15px",
+                                        fontSize: "clamp(12px, 1.5vw, 14px)",
+                                      }}
+                                    >
+                                      <img
+                                        src="/images/guides-articles/time.svg"
+                                        loading="lazy" alt="Response time"
+                                        style={{
+                                          width: "clamp(14px, 2vw, 16px)",
+                                          height: "clamp(14px, 2vw, 16px)",
+                                          marginRight: "5px",
+                                          backgroundColor:'#e2dadaff'
+                                        }}
+                                      />
+                                      <p style={{ marginTop: "5px"}}>Typically respond within 1 hr</p>
+                                    </div> */}
+
+                      <div className="d-flex justify-content-center mb-3">
+                        <PiClockCountdownFill size={24} color="#979797" />
+                        <span className="fs-6 ms-2">
+                          Typically respond within 1 hr
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+
+                {/* 
+                <MessageHost
+                  type={userType === "host" ? "guest" : "host"}
+                  data={{
+                    // sender_detail: selectedBooking,
+                    property_id: checkoutData?.property_id,
+                  }}
+                  isMobileWidth={isMobileWidth}
+                  handleMsgClick={() =>
+                    setIsMessageClick(!isMessageClick)
+                  }
+                /> */}
               </Col>
             )}
+
+
           </Row>
         </Container>
       </div>

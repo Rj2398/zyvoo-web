@@ -188,7 +188,6 @@ function RegisterModal(props) {
       // nahi toh empty string bhejo taaki backend crash na ho.
       const finalEmail = user.email || providerData[0]?.email || "";
 
-      console.log(displayName, finalEmail, providerData, "***********", user);
 
       // 2. Split displayName into first and last name safely
       const nameParts = displayName ? displayName.split(" ") : [];
@@ -623,17 +622,17 @@ function RegisterModal(props) {
         }
         const response = props?.loginModal
           ? await registerUser({
-              phone_number: data?.phoneNumber,
-              country_code: selectedCountryCode,
-              fcm_token: "bfbfb498b4644",
-              device_type: "web",
-            })
+            phone_number: data?.phoneNumber,
+            country_code: selectedCountryCode,
+            fcm_token: "bfbfb498b4644",
+            device_type: "web",
+          })
           : await LoginWithPhone({
-              phone_number: data?.phoneNumber,
-              country_code: selectedCountryCode,
-              fcm_token: "bfbfb498b4644",
-              device_type: "web",
-            });
+            phone_number: data?.phoneNumber,
+            country_code: selectedCountryCode,
+            fcm_token: "bfbfb498b4644",
+            device_type: "web",
+          });
         if (response) {
           if (props?.loginModal) {
             props?.CallBack(false);

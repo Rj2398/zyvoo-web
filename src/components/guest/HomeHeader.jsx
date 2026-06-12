@@ -3223,7 +3223,9 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                                 }
                               }
                             }}
-                          />
+                          >
+                            <></>
+                          </CircularSlider>
                         </div>
                       </div>
                     </div>

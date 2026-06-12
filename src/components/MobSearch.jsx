@@ -504,7 +504,9 @@ const MobSearch = ({
                                           }
                                         }}
                                         // onChange={handleHourChange}
-                                      />
+                                      >
+                                        <></>
+                                      </CircularSlider>
                                     </div>
                                   </div>
                                 </div>

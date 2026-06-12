@@ -348,6 +348,7 @@ function HostListing() {
                             padding: "7px 14px",
                             border: "1px solid gray",
                             borderRadius: "50px",
+                            marginLeft: !isMobileWidth && "80px",
                             fontSize: isMobileWidth ? "12px" : "",
                           }}
                         >
@@ -373,6 +374,7 @@ function HostListing() {
                             padding: "7px 14px",
                             border: "1px solid gray",
                             borderRadius: "50px",
+                            marginLeft: !isMobileWidth && "80px",
                             fontSize: isMobileWidth ? "12px" : "",
                           }}
                         >
@@ -401,9 +403,9 @@ function HostListing() {
                         {expanded
                           ? currentHostData?.about_host?.description
                           : `${currentHostData?.about_host?.description?.substring(
-                              0,
-                              900
-                            )}...`}{" "}
+                            0,
+                            900
+                          )}...`}{" "}
                         <a
                           href="#"
                           onClick={(e) => {
@@ -477,23 +479,23 @@ function HostListing() {
                   ))} */}
                   {isMobileWidth
                     ? currentHostData?.properties
-                        ?.slice(0, 1)
-                        ?.map((location, index) => (
-                          <HostListingItem
-                            key={index}
-                            {...location}
-                            isMobileWidth={isMobileWidth}
-                          />
-                        ))
+                      ?.slice(0, 1)
+                      ?.map((location, index) => (
+                        <HostListingItem
+                          key={index}
+                          {...location}
+                          isMobileWidth={isMobileWidth}
+                        />
+                      ))
                     : currentHostData?.properties
-                        ?.slice(0, 4)
-                        .map((location, index) => (
-                          <HostListingItem
-                            key={index}
-                            {...location}
-                            isMobileWidth={isMobileWidth}
-                          />
-                        ))}
+                      ?.slice(0, 4)
+                      .map((location, index) => (
+                        <HostListingItem
+                          key={index}
+                          {...location}
+                          isMobileWidth={isMobileWidth}
+                        />
+                      ))}
                 </div>
               </div>
 
@@ -720,12 +722,12 @@ function HostListing() {
                         // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
                       }}
                       onClick={handleLoadMoreReviews}
-                      // onMouseOver={(e) =>
-                      //   (e.target.style.backgroundColor = "#e68900")
-                      // }
-                      // onMouseOut={(e) =>
-                      //   (e.target.style.backgroundColor = "#ff9800")
-                      // }
+                    // onMouseOver={(e) =>
+                    //   (e.target.style.backgroundColor = "#e68900")
+                    // }
+                    // onMouseOut={(e) =>
+                    //   (e.target.style.backgroundColor = "#ff9800")
+                    // }
                     >
                       Show More Reviews
                     </button>
@@ -755,9 +757,8 @@ function HostListing() {
         <style>
           {`
             .modal-content {
-              border-radius: ${
-                isMobileWidth ? "0px !important" : "0px !important"
-              };
+              border-radius: ${isMobileWidth ? "0px !important" : "0px !important"
+            };
               padding-top:20px;
             }
           `}
@@ -1001,12 +1002,12 @@ function HostListing() {
                 // boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
               }}
               onClick={() => setShowAll(true)}
-              // onMouseOver={(e) =>
-              //   (e.target.style.backgroundColor = "#e68900")
-              // }
-              // onMouseOut={(e) =>
-              //   (e.target.style.backgroundColor = "#ff9800")
-              // }
+            // onMouseOver={(e) =>
+            //   (e.target.style.backgroundColor = "#e68900")
+            // }
+            // onMouseOut={(e) =>
+            //   (e.target.style.backgroundColor = "#ff9800")
+            // }
             >
               Show More
             </button>

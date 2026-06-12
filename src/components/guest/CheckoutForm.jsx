@@ -8,15 +8,15 @@ import { toast } from "react-toastify";
 import { Content } from "rsuite";
 import { useSelector } from "react-redux";
 
-const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowForm,setShowMobileModal }) => {
+const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowForm, setShowMobileModal }) => {
   const stripe = useStripe();
   const elements = useElements();
   const streetInputRef = useRef(null);
-    const {userInfo} = useSelector(({user})=>user)
+  const { userInfo } = useSelector(({ user }) => user)
 
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO))|| JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
-  
-  const userId = userInfo?.user_id ? String(userInfo?.user_id) : null||userData?.user_id ? String(userData?.user_id) : null;
+  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+
+  const userId = userInfo?.user_id ? String(userInfo?.user_id) : null || userData?.user_id ? String(userData?.user_id) : null;
 
   const { saveCardStripe, getSavedAddress, isLoading } = useCommon();
   const [showSavedCards, setShowSavedCards] = useState(true);
@@ -28,7 +28,7 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
   const [stripeToken, setStripeToken] = useState(null);
   const [isSameAsMailing, setIsSameAsMailing] = useState(false);
   const [savedAddress, setSavedAddress] = useState({});
-  const [manualAddress, setManualAddress] = useState({street: "", city: "", state: "", zip_code: "",});
+  const [manualAddress, setManualAddress] = useState({ street: "", city: "", state: "", zip_code: "", });
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
 
@@ -47,24 +47,24 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
     border: "1px solid #ccc",
     fontSize: isMobileWidth ? "12px" : "14px",
     width: "100%",
-    color:'black'
+    color: 'black'
   };
 
-  
+
 
 
   const sectionTitle = {
     fontWeight: "500",
     fontSize: isMobileWidth ? "14px" : "18px",
     marginBottom: "20px",
-    color:"black"
+    color: "black"
   };
 
   const checkboxLabelStyle = {
     fontSize: isMobileWidth ? "13px" : "14px",
     marginLeft: "5px",
     verticalAlign: "middle",
-    color:'black'
+    color: 'black'
   };
 
   const formStyle = {
@@ -94,56 +94,56 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
     };
 
     loadGoogleMapsScript().then(() => {
-        if (!streetInputRef.current) return;
-        const autocomplete = new window.google.maps.places.Autocomplete(
-          streetInputRef.current,
-          {
-            types: ["address"],
-            fields: ["address_components", "formatted_address"],
+      if (!streetInputRef.current) return;
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        streetInputRef.current,
+        {
+          types: ["address"],
+          fields: ["address_components", "formatted_address"],
+        }
+      );
+
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        const address = {
+          street: "",
+          city: "",
+          state: "",
+          zip: "",
+        };
+
+        if (!place.address_components) return;
+
+        for (const component of place.address_components) {
+          const types = component.types;
+          if (types.includes("street_number")) {
+            address.street = component.long_name + " " + address.street;
           }
-        );
-
-        autocomplete.addListener("place_changed", () => {
-          const place = autocomplete.getPlace();
-          const address = {
-            street: "",
-            city: "",
-            state: "",
-            zip: "",
-          };
-
-          if (!place.address_components) return;
-
-          for (const component of place.address_components) {
-            const types = component.types;
-            if (types.includes("street_number")) {
-              address.street = component.long_name + " " + address.street;
-            }
-            if (types.includes("route")) {
-              address.street += component.long_name;
-            }
-            if (types.includes("locality")) {
-              address.city = component.long_name;
-            }
-            if (types.includes("administrative_area_level_1")) {
-              address.state = component.long_name;
-            }
-            if (types.includes("postal_code")) {
-              address.zip = component.long_name || component?.short_name;
-            }
+          if (types.includes("route")) {
+            address.street += component.long_name;
           }
+          if (types.includes("locality")) {
+            address.city = component.long_name;
+          }
+          if (types.includes("administrative_area_level_1")) {
+            address.state = component.long_name;
+          }
+          if (types.includes("postal_code")) {
+            address.zip = component.long_name || component?.short_name;
+          }
+        }
 
-          setManualAddress((prev) => ({
-            ...prev,
-            street: address.street,
-            city: address.city,
-            state: address.state,
-            zip_code: address.zip,
-          }));
+        setManualAddress((prev) => ({
+          ...prev,
+          street: address.street,
+          city: address.city,
+          state: address.state,
+          zip_code: address.zip,
+        }));
 
-          setErrorMessage("");
-        });
-      })
+        setErrorMessage("");
+      });
+    })
       .catch((err) => {
         console.error("Failed to load Google Maps script:", err);
       });
@@ -156,7 +156,7 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
   const handleAddCard = async (event) => {
     event.preventDefault();
     setErrorMessage("");
-    if (!(manualAddress.street ||(isSameAsMailing && savedAddress?.street_address)) ||
+    if (!(manualAddress.street || (isSameAsMailing && savedAddress?.street_address)) ||
       !(manualAddress.city || (isSameAsMailing && savedAddress?.city)) ||
       !(manualAddress.state || (isSameAsMailing && savedAddress?.state)) ||
       !(manualAddress.zip_code || (isSameAsMailing && savedAddress?.zip_code))
@@ -246,16 +246,16 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
   };
 
   const cardNumbertOptions = {
-      placeholder: "card number",
+    placeholder: "Card Number:",
     style: {
       base: {
-       
+
         color: "black",
         border: "1px solid black",
         "::placeholder": {
-          color: "#7A7A7A",
-           fontSize: isMobileWidth? "12px" : "14px",
-         
+          color: "black",
+          fontSize: isMobileWidth ? "12px" : "14px",
+
         },
       },
       invalid: {
@@ -264,17 +264,18 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
     },
   };
 
-    const cardElementOptions = {
-     
+  const cardElementOptions = {
+
     style: {
       base: {
         // fontSize: "16px",
         color: "black",
         border: "1px solid black",
         "::placeholder": {
-          color: "#7A7A7A",
-          fontSize: isMobileWidth? "12px" : "14px",
-         
+          // color: "#7A7A7A",
+          color: "black",
+          fontSize: isMobileWidth ? "12px" : "14px",
+
         },
       },
       invalid: {
@@ -293,27 +294,27 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
               <Container style={isMobileWidth ? { margin: "0px", padding: "0px" } : {}} >
                 <Loader visible={isCardSave} />
                 <Form onSubmit={(e) => {
-                    e.preventDefault();
-                    handleAddCard();
-                  }} >
+                  e.preventDefault();
+                  handleAddCard();
+                }} >
                   {errorMessage && (<Alert variant="danger">{errorMessage}</Alert>)}
                   <Row>
                     <Col md={12}>
                       <div style={{ ...sectionTitle, textAlign: isMobileWidth && "center" }}>
-                    {  isMobileWidth ? "Add Card" :" Add New Card"}
-                    {
-                      isMobileWidth && (<hr/>)
-                    }
+                        {isMobileWidth ? "Add Card" : " Add New Card"}
+                        {
+                          isMobileWidth && (<hr />)
+                        }
                       </div>
                     </Col>
-                    
+
                   </Row>
                   <Row>
                     <Col md={6}>
                       <Form.Group className={isMobileWidth ? "mb-2" : "mb-3"}>
                         {/* {!isMobileWidth && (<Form.Label style={{color:'black'}}>Cardholder Name</Form.Label>)} */}
 
-                        <Form.Control type="text" className="input-placeholder" placeholder={isMobileWidth ? "Name" : "John Doe"}
+                        <Form.Control type="text" placeholder={!isMobileWidth ? "Name :" : "John Doe"}
                           value={cardholderName} required
                           onChange={(e) => {
                             setCardholderName(e.target.value);
@@ -330,7 +331,7 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
                       <Form.Group className={isMobileWidth ? "mb-2" : "mb-3"}>
                         {/* {!isMobileWidth && <Form.Label  style={{color:'black'}}>Card Number</Form.Label>} */}
                         <div style={inputStyle}>
-                          <CardNumberElement options={cardNumbertOptions } />
+                          <CardNumberElement options={cardNumbertOptions} />
                         </div>
                       </Form.Group>
                     </Col>
@@ -354,23 +355,23 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
 
                   <Row className={isMobileWidth ? "mt-2" : "mt-4"}>
                     <Col>
-                      <h5 className={isMobileWidth ? "mb-1" : "mb-3"} style={{ fontWeight: "500", fontSize: isMobileWidth ? "14px" : "18px",color:'black' }} >
+                      <h5 className={isMobileWidth ? "mb-1" : "mb-3"} style={{ fontWeight: "500", fontSize: isMobileWidth ? "14px" : "18px", color: 'black' }} >
                         Add Billing Address
                       </h5>
                       <div className="col-12">
                         <div style={{
-                            marginTop: "10px",
+                          marginTop: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                          marginBottom: "15px",
+                        }} >
+                          <label style={{
                             display: "flex",
                             alignItems: "center",
-                            marginBottom: "15px",
+                            cursor: "pointer",
                           }} >
-                          <label style={{
-                              display: "flex",
-                              alignItems: "center",
-                              cursor: "pointer",
-                            }} >
                             <input type="checkbox" id="sameAsMailing" checked={isSameAsMailing}
-                              onChange={(e) => setIsSameAsMailing(e.target.checked) }
+                              onChange={(e) => setIsSameAsMailing(e.target.checked)}
                               style={{
                                 appearance: isSameAsMailing ? "auto" : "none",
                                 WebkitAppearance: "none",
@@ -408,7 +409,7 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
                             readOnly={isSameAsMailing}
                           /> */}
 
-                          <input type="text" className="input-placeholder" placeholder="Street" style={inputStyle} ref={streetInputRef}
+                          <input type="text" placeholder="Street" style={inputStyle} ref={streetInputRef}
                             onChange={(e) => {
                               setErrorMessage("");
                               setManualAddress({
@@ -417,11 +418,11 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
                               });
                             }}
                             value={isSameAsMailing ? savedAddress?.street_address || "" : manualAddress?.street}
-                            // readOnly={isSameAsMailing}
+                          // readOnly={isSameAsMailing}
                           />
                         </div>
                         <div className={isMobileWidth ? "col-6 mt-3" : "col-md-6"}>
-                          <input type="text"  className="input-placeholder" placeholder="City" style={inputStyle}
+                          <input type="text" placeholder="City" style={inputStyle}
                             onChange={(e) => {
                               setErrorMessage("");
                               setManualAddress({
@@ -429,12 +430,12 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
                                 city: e.target.value,
                               });
                             }}
-                            value={isSameAsMailing ? savedAddress?.city || "" : manualAddress?.city }
+                            value={isSameAsMailing ? savedAddress?.city || "" : manualAddress?.city}
                             readOnly={isSameAsMailing}
                           />
                         </div>
                         <div className={isMobileWidth ? "col-6 mt-3" : "col-md-6"}>
-                          <input type="text" className="input-placeholder" placeholder="State" style={inputStyle} 
+                          <input type="text" placeholder="State" style={inputStyle}
                             onChange={(e) => {
                               setErrorMessage("");
                               setManualAddress({
@@ -442,12 +443,12 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
                                 state: e.target.value,
                               });
                             }}
-                            value={ isSameAsMailing ? savedAddress?.state || "" : manualAddress?.state }
+                            value={isSameAsMailing ? savedAddress?.state || "" : manualAddress?.state}
                             readOnly={isSameAsMailing}
                           />
                         </div>
                         <div className={isMobileWidth ? "col-6 mt-3" : "col-md-6"}>
-                          <input type="text" className="input-placeholder" placeholder="Zip code" style={inputStyle}
+                          <input type="text" placeholder="Zip code" style={inputStyle}
                             onChange={(e) => {
                               setErrorMessage("");
                               setManualAddress({
@@ -455,7 +456,7 @@ const CheckOutForm = ({ setSelected, setSelected2, refresh, setRefresh, setShowF
                                 zip_code: e.target.value,
                               });
                             }}
-                            value={ isSameAsMailing ? savedAddress?.zip_code || "" : manualAddress?.zip_code}
+                            value={isSameAsMailing ? savedAddress?.zip_code || "" : manualAddress?.zip_code}
                             readOnly={isSameAsMailing}
                           />
                         </div>
