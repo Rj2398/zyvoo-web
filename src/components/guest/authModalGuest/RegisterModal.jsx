@@ -178,53 +178,104 @@ function RegisterModal(props) {
 
   const handleGoogleSignIn = async () => {
     try {
+      console.log("Social login call started...");
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // 1. Destructure fields including providerData
-      const { displayName, email, providerData } = user;
+      // 1. Destructure fields safely
+      const { displayName, providerData } = user;
+
+      // nahi toh empty string bhejo taaki backend crash na ho.
+      const finalEmail = user.email || providerData[0]?.email || "";
+
+      console.log(displayName, finalEmail, providerData, "***********", user);
 
       // 2. Split displayName into first and last name safely
       const nameParts = displayName ? displayName.split(" ") : [];
       const fname = nameParts[0] || "";
       const lname = nameParts.slice(1).join(" ") || "";
 
-      // 3. Extract the Google provider UID if it exists, otherwise fallback to top-level uid
-      const googleUid =
+      // 3. Extract the provider-specific UID (Google/Facebook ka original ID)
+      const socialUid =
         providerData && providerData.length > 0
           ? providerData[0].uid
           : user.uid;
 
-      // 4. Construct the updated payload with social_id mapped to the Google UID
+      // 4. Construct the updated payload
       const payload = {
-        email,
+        email: finalEmail, // Updated here
         fname,
         lname,
-        social_id: googleUid,
+        social_id: socialUid,
         fcm_token: "",
         device_type: "web",
       };
 
       const response = await SocialLogin(payload);
+
       if (response.status) {
         toast.success(response?.data?.message || "User Logged in Successfully");
-
         props?.CallBack(false);
         navigate("/");
-        // if (props?.loginModal) {
-        //   console.log('asss')
-        //   props?.CallBack(false);
-        //   navigate("/");
-        // }
       } else {
-        toast.error("Login successful, but an error occurred on the server.");
+        // Backend se aane wala error message dikhayein
+        toast.error(response?.data?.message || "Server error occurred.");
         console.error("Backend Response Error:", response.data);
       }
     } catch (error) {
-      console.error("Firebase Google Login Error or Backend Error:", error);
-      toast.error("Failed to login with Google.");
+      console.error("Login Error:", error);
+      toast.error("Failed to login with Social account.");
     }
   };
+
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
+  //     // 1. Destructure fields including providerData
+  //     const { displayName, email, providerData } = user;
+  //     console.log(displayName, email, providerData, "***********", user);
+  //     // 2. Split displayName into first and last name safely
+  //     const nameParts = displayName ? displayName.split(" ") : [];
+  //     const fname = nameParts[0] || "";
+  //     const lname = nameParts.slice(1).join(" ") || "";
+
+  //     // 3. Extract the Google provider UID if it exists, otherwise fallback to top-level uid
+  //     const googleUid =
+  //       providerData && providerData.length > 0
+  //         ? providerData[0].uid
+  //         : user.uid;
+
+  //     // 4. Construct the updated payload with social_id mapped to the Google UID
+  //     const payload = {
+  //       email,
+  //       fname,
+  //       lname,
+  //       social_id: googleUid,
+  //       fcm_token: "",
+  //       device_type: "web",
+  //     };
+
+  //     const response = await SocialLogin(payload);
+  //     if (response.status) {
+  //       toast.success(response?.data?.message || "User Logged in Successfully");
+
+  //       props?.CallBack(false);
+  //       navigate("/");
+  //       // if (props?.loginModal) {
+  //       //   console.log('asss')
+  //       //   props?.CallBack(false);
+  //       //   navigate("/");
+  //       // }
+  //     } else {
+  //       toast.error("Login successful, but an error occurred on the server.");
+  //       console.error("Backend Response Error:", response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Firebase Google Login Error or Backend Error:", error);
+  //     toast.error("Failed to login with Google.");
+  //   }
+  // };
 
   //facebook sign in
 

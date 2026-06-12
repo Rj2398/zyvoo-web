@@ -25,8 +25,11 @@ const auth = getAuth(app);
 
 // 3. Setup standard providers
 const provider = new GoogleAuthProvider();
-const fbProvider = new FacebookAuthProvider();
 
+provider.addScope("email");
+provider.addScope("profile");
+const fbProvider = new FacebookAuthProvider();
+fbProvider.addScope("email");
 // 4. Setup Apple OAuth Provider (Firebase handles the scopes internally)
 const appleProvider = new OAuthProvider("apple.com");
 appleProvider.addScope("email");
