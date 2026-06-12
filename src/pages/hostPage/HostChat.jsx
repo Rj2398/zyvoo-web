@@ -3254,6 +3254,8 @@ const HostChat = () => {
                           navigate("/host-listing", { state: { hostId: booking?.receiver_id } });
                         }
                       }}>
+
+                        
                         <Image src={`${imageBase}${userTypes == "host" ? booking?.sender_profile : booking?.receiver_image}`} roundedCircle width="50" height="50" style={{ borderRadius: '50%' }}
                         />
                         <div style={{
@@ -3357,7 +3359,7 @@ const HostChat = () => {
                 <Container className="border border-2 p-3 h-100" style={{ borderRadius: "10px" }}>
                   <Row className="d-flex align-items-center border-bottom" style={{ padding: '10px' }}>
                     <Col className="d-flex align-items-center" >
-                      <div style={{
+                      {/* <div style={{
                         width: "55px",
                         height: "55px",
                         borderRadius: "50%",
@@ -3369,13 +3371,62 @@ const HostChat = () => {
                         backgroundColor: "#fff",
                         marginRight: "10px",
                       }} >
+                          
+
                         <Image src={userTypes == "host" ? imageBase + selectedBooking?.sender_profile ||
                           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                           : imageBase + selectedBooking?.receiver_image ||
                           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                         }
                           roundedCircle width="50" height="50" />
-                      </div>
+                          
+
+                          
+                      </div> */}
+
+                      <div
+  style={{
+    width: "55px",
+    height: "55px",
+    borderRadius: "50%",
+    border: "2px solid #ccc",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "visible",
+    backgroundColor: "#fff",
+    marginRight: "10px",
+    position: "relative", // important
+  }}
+>
+  <Image
+    src={
+      userTypes === "host"
+        ? imageBase + selectedBooking?.sender_profile ||
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+        : imageBase + selectedBooking?.receiver_image ||
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+    }
+    roundedCircle
+    width="50"
+    height="50"
+  />
+
+  {/* Status Dot */}
+  <div
+    style={{
+      position: "absolute",
+      bottom: "10px",
+      right: "2px",
+      width: "12px",
+      height: "12px",
+      borderRadius: "50%",
+      backgroundColor: "#8c8c8c", // gray dot
+      border: "2px solid white", // white outline
+      zIndex: 2,
+    }}
+  />
+</div>
                       <div>
                         <h5> {userTypes == "host" ? selectedBooking?.sender_name : selectedBooking?.receiver_name}  </h5>
                         <p style={{ color: "#7DD2B0", margin: "0px" }}>{targetUserStatus}</p>

@@ -348,7 +348,7 @@ function HostListing() {
                             padding: "7px 14px",
                             border: "1px solid gray",
                             borderRadius: "50px",
-                            marginLeft: !isMobileWidth && "80px",
+                            marginLeft: !isMobileWidth && "10px",
                             fontSize: isMobileWidth ? "12px" : "",
                           }}
                         >
@@ -374,7 +374,7 @@ function HostListing() {
                             padding: "7px 14px",
                             border: "1px solid gray",
                             borderRadius: "50px",
-                            marginLeft: !isMobileWidth && "80px",
+                            marginLeft: !isMobileWidth && "10px",
                             fontSize: isMobileWidth ? "12px" : "",
                           }}
                         >

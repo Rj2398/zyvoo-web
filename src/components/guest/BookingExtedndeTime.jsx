@@ -527,10 +527,10 @@ const BookingExtendedTime = () => {
                             {hour} hours
                             <span>${formatCurrency(booking_amount)}</span>
                           </li>
-                          <li>
+                          {cleaningFee> 0 && <li>
                             Cleaning Fee{" "}
                             <span>${formatCurrency(cleaningFee)}</span>
-                          </li>
+                          </li>}
                           <li>
                             Zyvo Service Fee{" "}
                             <span>${formatCurrency(service_fee)}</span>
