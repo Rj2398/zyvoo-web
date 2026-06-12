@@ -481,9 +481,10 @@ const MobSearch = ({
                                         // dataIndex={1}
 
                                         dataIndex={
-                                          (hour | 0) - 1 < 0
-                                            ? 0
-                                            : (hour | 0) - 1
+                                          // (hour | 0) - 2 < 0
+                                          //   ? 0
+                                          //   : (hour | 0) - 2
+                                          2
                                         }
                                         label=" "
                                         labelColor="transparent"
