@@ -352,9 +352,26 @@ const Range = ({
                     padding: "10px",
                   }}
                 >
-                  {Array.from(
+                  {/* {Array.from(
                     { length: 23 },
                     (_, i) => `${i + 1} Hour${i > 0 ? "s" : ""}`
+                  ).map((option) => (
+                    <div
+                      key={option}
+                      style={{
+                        padding: "10px",
+                        cursor: "pointer",
+                        borderBottom: "1px solid #eee",
+                      }}
+                      onClick={() => selectOption(option)}
+                    >
+                      {option}
+                    </div>
+                  ))} */}
+
+                  {Array.from(
+                    { length: 22 }, // 22 items total from 2 to 23
+                    (_, i) => `${i + 2} Hour${i + 2 > 1 ? "s" : ""}` // Starts at 2, so it will always use "Hours"
                   ).map((option) => (
                     <div
                       key={option}
