@@ -106,7 +106,23 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
   );
 
   const handleSelectMonths = (id) => {
-    setMonthsSelect(id);
+    if (id === "00") {
+      setMonthsSelect("00");
+    } else {
+      let selectedArray = monthselect ? String(monthselect).split(",") : [];
+      selectedArray = selectedArray.filter((x) => x !== "00" && x !== "");
+      if (selectedArray.includes(id)) {
+        selectedArray = selectedArray.filter((x) => x !== id);
+      } else {
+        selectedArray.push(id);
+      }
+      if (selectedArray.length === 0) {
+        setMonthsSelect("00");
+      } else {
+        selectedArray.sort((a, b) => parseInt(a, 10) - parseInt(b, 10));
+        setMonthsSelect(selectedArray.join(","));
+      }
+    }
   };
 
   const handleSelectAvailblity = (label) => {
@@ -708,29 +724,32 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       //   marginBottom: "10px",
       // }}
       >
-        {monthsRange.map((month) => (
-          <button key={month.id} onClick={() => handleSelectMonths(month.id)} className="month-btn "
-            style={{
-              backgroundColor: monthselect === month.id ? "#FFFFFF" : "transparent",
-              color: monthselect === month.id ? "#000000" : isMobileWidth ? "black": "#3F3D56",
-              border: monthselect === month.id ? "1px solid #FFFFFF" : "2px solid transparent",
-              width: isMobileWidth ? "7%" : "6%",
-              padding: monthselect === month.id ? "0px 25px" : "0px 20px",
-              fontSize: isMobileWidth ? "10px" :"13px",
-              borderRadius: "20px",
-              cursor: "pointer",
-              fontWeight: "400",
-              transition: "all 0.3s ease",
-              height: 30,
-              textAlign: "center",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            {month.label}
-          </button>
-        ))}
+        {monthsRange.map((month) => {
+          const isSelected = monthselect ? String(monthselect).split(",").includes(month.id) : false;
+          return (
+            <button key={month.id} onClick={() => handleSelectMonths(month.id)} className="month-btn "
+              style={{
+                backgroundColor: isSelected ? "#FFFFFF" : "transparent",
+                color: isSelected ? "#000000" : isMobileWidth ? "black": "#3F3D56",
+                border: isSelected ? "1px solid #FFFFFF" : "2px solid transparent",
+                width: isMobileWidth ? "7%" : "6%",
+                padding: isSelected ? "0px 25px" : "0px 20px",
+                fontSize: isMobileWidth ? "10px" :"13px",
+                borderRadius: "20px",
+                cursor: "pointer",
+                fontWeight: "400",
+                transition: "all 0.3s ease",
+                height: 30,
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {month.label}
+            </button>
+          );
+        })}
       </div>
 
       <h6  className="heading-title" style={{ marginTop:isMobileWidth?"0px":"20px",  color: "black", fontWeight:isMobileWidth?"400": "500",marginLeft: isMobileWidth?"9px":'-4px'  }} >

@@ -53,9 +53,26 @@ const GalleryLocation = ({
   );
 
   const [location, setLocation] = useState({
-    lat: Number(propertyDataa?.latitude) ?? null,
-    lng: Number(propertyDataa?.longitude) ?? null,
+    lat:
+      propertyDataa?.latitude && !isNaN(Number(propertyDataa.latitude))
+        ? Number(propertyDataa.latitude)
+        : null,
+    lng:
+      propertyDataa?.longitude && !isNaN(Number(propertyDataa.longitude))
+        ? Number(propertyDataa.longitude)
+        : null,
   });
+
+  useEffect(() => {
+    if (propertyDataa?.latitude && propertyDataa?.longitude) {
+      const latVal = Number(propertyDataa.latitude);
+      const lngVal = Number(propertyDataa.longitude);
+      if (!isNaN(latVal) && !isNaN(lngVal)) {
+        setLocation({ lat: latVal, lng: lngVal });
+      }
+    }
+  }, [propertyDataa]);
+
   const [address, setAddress] = useState("");
   const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
@@ -378,7 +395,13 @@ const GalleryLocation = ({
     lng: 77.209,
   };
 
-  const center = location?.lat && location?.lng ? location : defaultCenter;
+  const center =
+    location?.lat !== null &&
+    location?.lng !== null &&
+    !isNaN(location.lat) &&
+    !isNaN(location.lng)
+      ? location
+      : defaultCenter;
 
   useEffect(() => {
     const modalElement = document.getElementById("location-modal");
