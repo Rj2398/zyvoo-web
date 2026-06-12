@@ -141,16 +141,69 @@ function RegisterModal(props) {
   //   initializeAppleSignInScript();
   // }, []);
 
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     console.log("Goofle login call");
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
+  //     const { displayName, email, uid } = user;
+
+  //     console.log(user, "user*******");
+  //     const nameParts = displayName ? displayName.split(" ") : [];
+  //     const fname = nameParts[0] || "";
+  //     const lname = nameParts.slice(1).join(" ") || "";
+
+  //     const payload = { email, fname, lname, social_id: uid };
+
+  //     const response = await SocialLogin(payload);
+  //     if (response.status) {
+  //       toast.success(response?.data?.message || "User Logged in Successfully");
+
+  //       props?.CallBack(false);
+  //       navigate("/");
+  //       // if (props?.loginModal) {
+  //       //   console.log('asss')
+  //       //   props?.CallBack(false);
+  //       //   navigate("/");
+  //       // }
+  //     } else {
+  //       toast.error("Login successful, but an error occurred on the server.");
+  //       console.error("Backend Response Error:", response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Firebase Google Login Error or Backend Error:", error);
+  //     toast.error("Failed to login with Google.");
+  //   }
+  // };
+
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      const { displayName, email, uid } = user;
+
+      // 1. Destructure fields including providerData
+      const { displayName, email, providerData } = user;
+
+      // 2. Split displayName into first and last name safely
       const nameParts = displayName ? displayName.split(" ") : [];
       const fname = nameParts[0] || "";
       const lname = nameParts.slice(1).join(" ") || "";
 
-      const payload = { email, fname, lname, social_id: uid };
+      // 3. Extract the Google provider UID if it exists, otherwise fallback to top-level uid
+      const googleUid =
+        providerData && providerData.length > 0
+          ? providerData[0].uid
+          : user.uid;
+
+      // 4. Construct the updated payload with social_id mapped to the Google UID
+      const payload = {
+        email,
+        fname,
+        lname,
+        social_id: googleUid,
+        fcm_token: "",
+        device_type: "web",
+      };
 
       const response = await SocialLogin(payload);
       if (response.status) {
