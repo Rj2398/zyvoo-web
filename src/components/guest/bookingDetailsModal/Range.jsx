@@ -241,9 +241,8 @@ const Range = ({
 
             <div
               style={{ position: "relative", zIndex: 2 }}
-              className={`hide-slider-pulse ${
-                !hasChanged || hoursValue == 0 ? "range-ss" : ""
-              }`}
+              className={`hide-slider-pulse ${!hasChanged || hoursValue == 0 ? "range-ss" : ""
+                }`}
             >
               <style>{`
                 .hide-slider-pulse circle[style*="animation-name: pulse"] {
@@ -403,8 +402,8 @@ const Range = ({
                 hoursValue == 0
                   ? toast.error("please select at least 1 hour")
                   : isExtentionTime
-                  ? onHide()
-                  : setShowModal(true)
+                    ? onHide()
+                    : setShowModal(true)
               }
             >
               Save Changes
