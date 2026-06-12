@@ -891,7 +891,7 @@ function Location() {
                                 key={sliderKey}
                                 width={isMobileWidth ? 310 : 283}
                                 min={0}
-                                max={23}
+                                max={24}
                                 trackSize={isMobileWidth ? 60 : 45}
                                 progressSize={isMobileWidth ? 60 : 45}
                                 knobSize={isMobileWidth ? 78 : 59}
