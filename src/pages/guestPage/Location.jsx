@@ -891,7 +891,7 @@ function Location() {
                                 key={sliderKey}
                                 width={isMobileWidth ? 310 : 283}
                                 min={0}
-                                max={24}
+                                max={23}
                                 trackSize={isMobileWidth ? 60 : 45}
                                 progressSize={isMobileWidth ? 60 : 45}
                                 knobSize={isMobileWidth ? 78 : 59}
@@ -910,9 +910,11 @@ function Location() {
                                 valueFontSize="0rem"
                                 labelFontSize="1rem"
                                 onChange={(value) => {
-                                  const rawVal = value | 0;
-                                  const minHrs = parseInt(propertyDetails?.min_booking_hours || 2, 10);
+                                  const rawVal = value < 2 ? 2 : value;
+                                  // const minHrs = parseInt(propertyDetails?.min_booking_hours || 2, 10);
+                                  const minHrs = 2
                                   const pureInteger = (rawVal >= 24 || rawVal < minHrs) ? minHrs : rawVal;
+                                  // const pureInteger = value < 2 ? 2 : value;
 
                                   if (rawVal >= 24 || rawVal < minHrs) {
                                     setSliderKey(prev => prev + 1);

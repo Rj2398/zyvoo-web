@@ -21,6 +21,7 @@ function Notifications() {
     booking_auto_cancelled: 1,
     zyvo: 2,
     payout: 3,
+    warning: 4,
   };
 
   const [notificationArr, setNotificationArr] = useState([]);
@@ -139,8 +140,9 @@ function Notifications() {
                       style={{ backgroundColor: "#4AEAB11A !important" }}
                     >
                       <img
-                        src={`/images/notifications/${notificationSvgMap[notification.type]
-                          }.svg`}
+                        src={`/images/notifications/${
+                          notificationSvgMap[notification.type]
+                        }.svg`}
                         loading="lazy"
                         alt="notifications"
                         style={{ width: "30px", height: "30px" }}
@@ -179,26 +181,25 @@ function Notifications() {
                       style={
                         isMobileWidth
                           ? {
-                            fontSize: "12px",
-                            padding: "0px 4px",
-                            marginLeft: "auto",
-                            position: "absolute",
-                            right: "5px",
-                            top: "5px",
-                            backgroundColor: "#3a4b4c",
-                            borderRadius: "50%",
-                            color: "white",
-                            fontWeight: "bolder",
-                          }
+                              fontSize: "12px",
+                              padding: "0px 4px",
+                              marginLeft: "auto",
+                              position: "absolute",
+                              right: "5px",
+                              top: "5px",
+                              backgroundColor: "#3a4b4c",
+                              borderRadius: "50%",
+                              color: "white",
+                              fontWeight: "bolder",
+                            }
                           : {
-                            color: "#000",
-                            fontSize: "24px",
-                            padding: "5px",
-                            marginLeft: "auto",
-                          }
+                              color: "#000",
+                              fontSize: "24px",
+                              padding: "5px",
+                              marginLeft: "auto",
+                            }
                       }
                     >
-                      {/* <i className="fa-solid fa-xmark" style={{ fontSize: isMobileWidth ? '12px' : '20px', fontWeight: '100' }}></i> */}
                       <img src="/images/notifications/notificaion-cross-icon.svg" alt="close" style={{ width: '15px', height: '15px' }} />
                     </Button>
                   </Card>
@@ -214,6 +215,9 @@ function Notifications() {
 }
 
 export default Notifications;
+
+
+
 
 // import { useState, useEffect } from "react";
 // import AuthModal from "../components/guest/authModal";
