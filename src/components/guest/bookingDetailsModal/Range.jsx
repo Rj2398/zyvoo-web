@@ -25,11 +25,18 @@ const Range = ({
   const [hasChanged, setHasChanged] = useState(false);
   const [selectedOption, setSelectedOption] = useState(initialHours);
 
+  // Slider control state
+  const [sliderIndex, setSliderIndex] = useState(initialHours);
+  const [sliderKey, setSliderKey] = useState(0);
+
   /* --- FIXED: Fade effect ko rokne ke liye bina key-reset wala Ref add kiya --- */
   const sliderRef = useRef(null);
 
   const [show, setShow] = useState("false");
-  const wrappedRef = useRef(false);
+  const hoursValueRef = useRef(hoursValue);
+  useEffect(() => {
+    hoursValueRef.current = hoursValue;
+  }, [hoursValue]);
 
   // Props change hone par state synchronized rakhne ke liye
   useEffect(() => {
@@ -38,12 +45,7 @@ const Range = ({
       const clamped = parsed < 2 ? 2 : parsed;
       setHoursValue(clamped);
       setSelectedOption(clamped);
-      if (
-        sliderRef.current &&
-        typeof sliderRef.current.setValue === "function"
-      ) {
-        sliderRef.current.setValue(clamped);
-      }
+      setSliderIndex(clamped);
     }
   }, [initialValue]);
 
@@ -69,12 +71,7 @@ const Range = ({
     const numericValue = parseInt(option, 10);
     setSelectedOption(numericValue);
     setHoursValue(numericValue);
-    wrappedRef.current = false;
-
-    /* --- Dropdown value par slider knob ko inject karne ki setting --- */
-    if (sliderRef.current && typeof sliderRef.current.setValue === "function") {
-      sliderRef.current.setValue(numericValue);
-    }
+    setSliderIndex(numericValue);
 
     if (callbacTotalHrs) callbacTotalHrs(numericValue);
     calculateTotalPrice(numericValue, perHourRate);
@@ -164,25 +161,17 @@ const Range = ({
               let angle = Math.atan2(x, -y) * (180 / Math.PI);
               if (angle < 0) angle += 360;
 
-              // Grid mapping matching min=0 and max=23 logic bounds safely
-              const stepIndex = Math.round((angle / 360) * 23) | 0;
+              // Grid mapping matching 24-step logic
+              const stepIndex = Math.round((angle / 360) * 24) | 0;
               const finalVal =
-                stepIndex >= 23 ? 23 : stepIndex < 2 ? 2 : stepIndex;
+                (stepIndex >= 24 || stepIndex < 2) ? 2 : stepIndex;
 
-              wrappedRef.current = false;
               setHasChanged(true);
               setHoursValue(finalVal);
               setSelectedOption(finalVal);
+              setSliderIndex(finalVal);
               if (callbacTotalHrs) callbacTotalHrs(finalVal);
               calculateTotalPrice(finalVal, perHourRate);
-
-              /* --- REF POSITION FORCE UPDATE: Isse zero fading ke sath knob jump karega --- */
-              if (
-                sliderRef.current &&
-                typeof sliderRef.current.setValue === "function"
-              ) {
-                sliderRef.current.setValue(finalVal);
-              }
             }}
           >
             <img
@@ -267,9 +256,9 @@ const Range = ({
                 }
               `}</style>
               <CircularSlider
-                ref={sliderRef} /* Attached Ref instance */
+                key={sliderKey}
                 min={0}
-                max={23}
+                max={24}
                 trackSize={45}
                 progressSize={45}
                 knobSize={62}
@@ -278,46 +267,27 @@ const Range = ({
                 progressColorFrom="#4aeab1"
                 progressColorTo="#4aeab1"
                 direction={1}
-                dataIndex={hoursValue}
-                initialValue={hoursValue}
+                dataIndex={sliderIndex}
                 labelColor="transparent"
                 valueColor="transparent"
                 valueFontSize="0rem"
                 labelFontSize="1rem"
-                isDragging={(dragging) => {
-                  if (!dragging) {
-                    if (wrappedRef.current) {
-                      wrappedRef.current = false;
-                      setTimeout(() => {
-                        setHoursValue(22);
-                        setTimeout(() => {
-                          setHoursValue(23);
-                        }, 50);
-                      }, 300);
-                    }
-                  }
-                }}
                 onChange={(value) => {
-                  let pureInteger = value | 0;
-                  if (pureInteger < 2) {
-                    pureInteger = 2;
-                  }
-                  if (pureInteger >= 24) {
-                    pureInteger = 23;
-                    wrappedRef.current = true;
+                  const rawVal = value | 0;
+                  const clampedVal = (rawVal >= 24 || rawVal < 2) ? 2 : rawVal;
+
+                  if (rawVal >= 24 || rawVal < 2) {
+                    setSliderKey(prev => prev + 1);
                   }
 
-                  /* --- Anti looping render lock check --- */
-                  if (hoursValue !== pureInteger) {
-                    if (hoursValue >= 22 && pureInteger <= 2) {
-                      wrappedRef.current = true;
-                      return;
-                    }
+                  const currentHours = hoursValueRef.current;
+                  if (currentHours !== clampedVal) {
                     setHasChanged(true);
-                    setHoursValue(pureInteger);
-                    setSelectedOption(pureInteger);
-                    if (callbacTotalHrs) callbacTotalHrs(pureInteger);
-                    calculateTotalPrice(pureInteger, perHourRate);
+                    setSliderIndex(clampedVal);
+                    setHoursValue(clampedVal);
+                    setSelectedOption(clampedVal);
+                    if (callbacTotalHrs) callbacTotalHrs(clampedVal);
+                    calculateTotalPrice(clampedVal, perHourRate);
                   }
                 }}
               >

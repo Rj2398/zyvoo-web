@@ -117,6 +117,7 @@ function Location() {
   const [hoursValue, setHoursValue] = useState(0);
   // console.log(hoursValue, "hour value ***");
   const [sliderValue, setSliderValue] = useState(0);
+  const [sliderKey, setSliderKey] = useState(0);
   useEffect(() => {
     if (propertyDetails?.min_booking_hours) {
       setHoursValue(parseInt(propertyDetails.min_booking_hours, 10));
@@ -617,8 +618,8 @@ function Location() {
 
                 <div
                   className={`top-grid-images-${propertyDetails?.images?.length > 5
-                      ? 5
-                      : propertyDetails?.images?.length
+                    ? 5
+                    : propertyDetails?.images?.length
                     }`}
                   onClick={() => setShowPropertyImages(true)}
                   style={{ height: isMobileWidth ? "200px" : "450px" }}
@@ -865,8 +866,9 @@ function Location() {
 
                                 const pureInteger =
                                   Math.round((angle / 360) * 24) | 0;
+                                const minHrs = parseInt(propertyDetails?.min_booking_hours || 2, 10);
                                 const finalVal =
-                                  pureInteger >= 24 ? 0 : pureInteger;
+                                  (pureInteger >= 24 || pureInteger < minHrs) ? minHrs : pureInteger;
 
                                 // Yahan teenon cheezein ek sath update hongi, jisse slider khud chal kar naye spot par set ho jayega
                                 setSliderValue(finalVal);
@@ -886,9 +888,10 @@ function Location() {
   `}</style>
 
                               <CircularSlider
+                                key={sliderKey}
                                 width={isMobileWidth ? 310 : 283}
                                 min={0}
-                                max={23}
+                                max={24}
                                 trackSize={isMobileWidth ? 60 : 45}
                                 progressSize={isMobileWidth ? 60 : 45}
                                 knobSize={isMobileWidth ? 78 : 59}
@@ -900,19 +903,22 @@ function Location() {
                                 progressColorFrom="#4aeab1"
                                 progressColorTo="#4aeab1"
                                 direction={1}
-                                /* --- FIX 1: Ab dataIndex is safe state se chalega, jo tap par slider ko set karegi --- */
                                 dataIndex={sliderValue}
                                 label=" "
                                 labelColor="transparent"
                                 valueColor="transparent"
                                 valueFontSize="0rem"
                                 labelFontSize="1rem"
-                                /* --- FIX 2: Live Dragging without any blinking/flipping --- */
                                 onChange={(value) => {
-                                  const pureInteger = value;
+                                  const rawVal = value | 0;
+                                  const minHrs = parseInt(propertyDetails?.min_booking_hours || 2, 10);
+                                  const pureInteger = (rawVal >= 24 || rawVal < minHrs) ? minHrs : rawVal;
+
+                                  if (rawVal >= 24 || rawVal < minHrs) {
+                                    setSliderKey(prev => prev + 1);
+                                  }
 
                                   if (hoursValue !== pureInteger) {
-                                    // Drag ke dauran hum sliderValue ko sync rakhenge bina slider ko disturb kiye
                                     setSliderValue(pureInteger);
                                     setHoursValue(pureInteger);
                                     calculateTotalPrice(

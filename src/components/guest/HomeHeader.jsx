@@ -95,6 +95,11 @@ const HomeHeader = ({ showMap, setShowMap }) => {
   const [isHovered1, setIsHovered1] = useState(false);
   const [toTime, setToTime] = useState("");
   const [hour, setHour] = useState("");
+  const [sliderValue, setSliderValue] = useState(hour || 2);
+  const [sliderKey, setSliderKey] = useState(0);
+  useEffect(() => {
+    setSliderValue(hour || 2);
+  }, [hour]);
   const [show, setShow] = useState(false);
   const [filterShow, setFilterShow] = useState(false);
   const [newDate, setNewDate] = useState();
@@ -848,16 +853,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
   };
 
   const handleHourChange = (value) => {
-    let newHour = parseInt(value);
-    setHour(newHour);
-    // Prevent sudden jumps between 0 → 11 or 11 → 0
-    if (
-      Math.abs(newHour - hour) > 0 &&
-      !(newHour === 0 && hour === 11) &&
-      !(newHour === 11 && hour === 0)
-    ) {
-      return; // Ignore the change if it's a sudden jump
-    }
+    let newHour = parseInt(value, 10);
     setHour(newHour);
   };
 
@@ -3091,7 +3087,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                               lineHeight: "1",
                             }}
                           >
-                            {hour || 0}
+                            {hour || 2}
                           </div>
                           <div
                             style={{
@@ -3115,7 +3111,6 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                             !hasChanged || hour === 0 ? "range-ss" : ""
                           }`}
                           onClick={(e) => {
-                            // Agar direct white goli (knob) par click hai toh drag chalne do
                             if (
                               e.target.tagName === "circle" &&
                               e.target.getAttribute("fill") === "#fff"
@@ -3131,29 +3126,15 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                             let angle = Math.atan2(x, -y) * (180 / Math.PI);
                             if (angle < 0) angle += 360;
 
-                            // Total 23 items hain array mein, accurate index mapping:
                             const stepIndex =
-                              Math.round((angle / 360) * 23) | 0;
-                            const safeIndex =
-                              stepIndex >= 23
-                                ? 22
-                                : stepIndex < 0
-                                ? 0
-                                : stepIndex;
-
-                            const finalHourValue = String(safeIndex + 1);
+                              Math.round((angle / 360) * 24) | 0;
+                            const finalVal =
+                              (stepIndex >= 24 || stepIndex < 2) ? 2 : stepIndex;
 
                             setHasChanged(true);
+                            setSliderValue(finalVal);
                             if (handleHourChange) {
-                              handleHourChange(finalHourValue);
-                            }
-
-                            /* --- MAGIC LOGIC: key badle bina slider ko update karega, NO FADE! --- */
-                            if (
-                              sliderRef.current &&
-                              typeof sliderRef.current.setValue === "function"
-                            ) {
-                              sliderRef.current.setValue(finalHourValue);
+                              handleHourChange(finalVal);
                             }
                           }}
                         >
@@ -3165,8 +3146,8 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                               }
                             `}</style>
                           <CircularSlider
-                            ref={sliderRef}
-                            min={2}
+                            key={sliderKey}
+                            min={0}
                             max={24}
                             trackSize={40}
                             progressSize={40}
@@ -3175,39 +3156,24 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                             trackColor="transparent"
                             progressColorFrom="#4aeab1"
                             progressColorTo="#4aeab1"
-                            direction={0}
-                            dataIndex={(hour | 0) - 1 < 0 ? 0 : (hour | 0) - 1}
-                            // dataIndex={0}
-                            // label=" "
+                            direction={1}
+                            dataIndex={sliderValue}
                             labelColor="transparent"
                             valueColor="transparent"
                             valueFontSize="0rem"
                             labelFontSize="1rem"
-                            data={Array.from(
-                              { length: 23 },
-                              (_, i) => `${i + 1}`
-                            )}
-                            // onChange={(value) => {
-                            //   setHasChanged(true);
-                            //   const label = document.querySelector(
-                            //     '[aria-label="Hour"]'
-                            //   );
-                            //   if (label) {
-                            //     label.style.animation = "pulse 0.5s ease";
-                            //     setTimeout(() => {
-                            //       label.style.animation = "";
-                            //     }, 500);
-                            //   }
-                            //   handleHourChange(value);
-                            // }}
                             onChange={(value) => {
-                              const pureInt = value | 0;
+                              const rawVal = value | 0;
+                              const clampedVal = (rawVal >= 24 || rawVal < 2) ? 2 : rawVal;
 
-                              /* --- 4. NO BLINKING CONDITION: Renders block jab tak number change na ho --- */
-                              if ((hour | 0) !== pureInt) {
+                              if (rawVal >= 24 || rawVal < 2) {
+                                setSliderKey(prev => prev + 1);
+                              }
+
+                              if ((hour | 0) !== clampedVal) {
                                 setHasChanged(true);
+                                setSliderValue(clampedVal);
 
-                                // Aapka purana aria-label animations logic jaisa tha waisa hi rakha hai
                                 const label = document.querySelector(
                                   '[aria-label="Hour"]'
                                 );
@@ -3219,7 +3185,7 @@ const HomeHeader = ({ showMap, setShowMap }) => {
                                 }
 
                                 if (handleHourChange) {
-                                  handleHourChange(value);
+                                  handleHourChange(clampedVal);
                                 }
                               }
                             }}
