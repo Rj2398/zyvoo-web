@@ -265,12 +265,14 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
   };
 
   const handlePriceAvailbity = async () => {
+    if (isPublishing) return;
     if (!validatePricAvaility()) return;
 
+    setIsPublishing(true);
     if (propertyID != null && propertyID !== undefined) {
-      handleUpdate();
+      await handleUpdate();
     } else {
-      handleStoreDetails();
+      await handleStoreDetails();
     }
   };
 
@@ -285,9 +287,12 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         hideModal();
         dispatch(clearAddPropertyDetails());
         dispatch(setPropertyId(response?.data?.property_id));
+      } else {
+        setIsPublishing(false);
       }
     } catch (error) {
       console.error("Error adding property details:", error);
+      setIsPublishing(false);
     }
   };
 
@@ -300,10 +305,13 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         switchToGallery("home_setup");
         toast.success("Property updated successfully");
         hideModal();
+      } else {
+        setIsPublishing(false);
       }
     } catch (error) {
       console.error("Update failed:", error);
       toast.error("Failed to update property details");
+      setIsPublishing(false);
     }
   };
 
@@ -339,11 +347,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
 
   const handleMinHourChange = (value) => {
     setMinHour(value);
-    if (fromTime) {
-      if (fromTime == "00") {
-        handleFromTimeChange("00:00 AM");
-        return;
-      }
+    if (fromTime && fromTime !== "00") {
       handleFromTimeChange(fromTime);
     }
   };
@@ -351,13 +355,81 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
   const [showDropdownTime, setShowDropdownTime] = useState(false);
   const [showDropdownTime2, setShowDropdownTime2] = useState(false);
 
-  const [startTime, setStartTime] = useState(() => fromTime?.split(" ")[0].split(":")[0]?.padStart(2, "0") || "12");
-  const [startMinute, setStartMinute] = useState(() => fromTime?.split(" ")[0].split(":")[1]?.padStart(2, "0") || "00");
-  const [startMeridian, setStartMeridian] = useState(() => fromTime?.split(" ")[1] || "AM");
+  const [startTime, setStartTime] = useState(() => {
+    const hr = fromTime?.split(" ")[0].split(":")[0];
+    return hr && hr !== "00" ? hr.padStart(2, "0") : "01";
+  });
+  const [startMinute, setStartMinute] = useState(() => {
+    const min = fromTime?.split(" ")[0].split(":")[1];
+    return min && min !== "undefined" ? min.padStart(2, "0") : "00";
+  });
+  const [startMeridian, setStartMeridian] = useState(() => {
+    const mer = fromTime?.split(" ")[1];
+    return mer && mer !== "undefined" ? mer : "AM";
+  });
 
-  const [endTime, setEndTime] = useState(() => toTime?.split(" ")[0].split(":")[0]?.padStart(2, "0") || "12");
-  const [endMinute, setEndMinute] = useState(() => toTime?.split(" ")[0].split(":")[1]?.padStart(2, "0") || "00");
-  const [endMeridian, setEndMeridian] = useState(() => toTime?.split(" ")[1] || "AM");
+  const [endTime, setEndTime] = useState(() => {
+    const hr = toTime?.split(" ")[0].split(":")[0];
+    return hr && hr !== "00" ? hr.padStart(2, "0") : "12";
+  });
+  const [endMinute, setEndMinute] = useState(() => {
+    const min = toTime?.split(" ")[0].split(":")[1];
+    return min && min !== "undefined" ? min.padStart(2, "0") : "00";
+  });
+  const [endMeridian, setEndMeridian] = useState(() => {
+    const mer = toTime?.split(" ")[1];
+    return mer && mer !== "undefined" ? mer : "AM";
+  });
+
+  useEffect(() => {
+    if (fromTime && fromTime !== "00") {
+      const parts = fromTime.split(" ");
+      if (parts.length === 2) {
+        const timeParts = parts[0].split(":");
+        if (timeParts.length === 2) {
+          const hr = timeParts[0].padStart(2, "0");
+          const min = timeParts[1].padStart(2, "0");
+          const mer = parts[1];
+          if (hr !== "00") {
+            setStartTime(hr);
+          } else {
+            setStartTime("01");
+          }
+          setStartMinute(min);
+          setStartMeridian(mer);
+        }
+      }
+    } else {
+      setStartTime("01");
+      setStartMinute("00");
+      setStartMeridian("AM");
+    }
+  }, [fromTime]);
+
+  useEffect(() => {
+    if (toTime && toTime !== "00") {
+      const parts = toTime.split(" ");
+      if (parts.length === 2) {
+        const timeParts = parts[0].split(":");
+        if (timeParts.length === 2) {
+          const hr = timeParts[0].padStart(2, "0");
+          const min = timeParts[1].padStart(2, "0");
+          const mer = parts[1];
+          if (hr !== "00") {
+            setEndTime(hr);
+          } else {
+            setEndTime("12");
+          }
+          setEndMinute(min);
+          setEndMeridian(mer);
+        }
+      }
+    } else {
+      setEndTime("12");
+      setEndMinute("00");
+      setEndMeridian("PM");
+    }
+  }, [toTime]);
 
   const timeToMinutes = (h, m, mer) => {
     let hour = parseInt(h, 10);
@@ -442,6 +514,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
   //   setActiveTab(tab);
   // };
 
+  const [isPublishing, setIsPublishing] = useState(false);
   const [isMobileWidth, setIsMobileWidth] = useState(false);
 
   useEffect(() => {
@@ -479,6 +552,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
 
             </div>
             <Button className="save-continue-btn"
+              disabled={isPublishing}
               style={{
                 backgroundColor: "#4AEAB1",
                 borderColor: "#4AEAB1",
@@ -488,7 +562,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
               }}
               onClick={handlePriceAvailbity}
             >
-              Publish Now
+              {isPublishing ? "Publishing..." : "Publish Now"}
             </Button>
           </div>
           {/* </div> */}
@@ -524,7 +598,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         isMobileWidth && (<hr className="property-modal-hr" />)
       }
   
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Minimum hour & Pricing <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Minimum hour & Pricing <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
       <Row className="mb-4">
         <Col md={4} style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%", }} >
           <Form.Select value={minHour} onChange={(e) => handleMinHourChange(e.target.value)}
@@ -567,7 +641,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       <hr className="property-modal-hr" />
 
       {/* Bulk Discount */}
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Bulk Discount <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Bulk Discount <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
       <Row className="mb-4">
         <Col md={4} style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%", }} >
           <Form.Select value={bulkHour} onChange={(e) => setBulkHour(e.target.value)}
@@ -607,7 +681,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         </Col>
       </Row>
       <hr className="property-modal-hr" />
-      <h6   style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Add-ons from the host <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+      <h6   style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Add-ons from the host <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
       <Row className="">
         <Col md={12}>
           <ItemSelector onItemsUpdate={handleItemsUpdate} propertyData={propertyData} isMobileWidth={isMobileWidth}/>
@@ -704,7 +778,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       </Row>
       <hr className="property-modal-hr" />
       <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >
-        Availability - Days & Months <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span>
+        Availability - Days & Months <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>
       </h6>
       <h6  className="heading-title" style={{  color: "black", fontWeight:isMobileWidth?"400": "500",marginLeft: isMobileWidth?"9px":'-4px' }}>
         Months
@@ -731,9 +805,9 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
               style={{
                 backgroundColor: isSelected ? "#FFFFFF" : "transparent",
                 color: isSelected ? "#000000" : isMobileWidth ? "black": "#3F3D56",
-                border: isSelected ? "1px solid #FFFFFF" : "2px solid transparent",
-                width: isMobileWidth ? "7%" : "6%",
-                padding: isSelected ? "0px 25px" : "0px 20px",
+                border: isSelected ? "2px solid #FFFFFF" : "2px solid transparent",
+                width: isMobileWidth ? "auto" : "7%",
+                padding: isMobileWidth ? "0px 12px" : "0px",
                 fontSize: isMobileWidth ? "10px" :"13px",
                 borderRadius: "20px",
                 cursor: "pointer",
@@ -798,7 +872,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
 
       <hr className="property-modal-hr" />
       {/* Availability - Hours */}
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Availability - Hours <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Availability - Hours <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
       <Row>
         <Col md={4} style={{ width: "48%", marginTop: "2%" }}>
           <span style={{ paddingBottom: "10px", paddingLeft: "10px" }}>From</span>
@@ -1021,6 +1095,7 @@ onClick={() => setShowDropdownTime2(!showDropdownTime2)}  style={{
 
             {/* Save and Continue Button */}
             <Button className="save-continue-btn"
+              disabled={isPublishing}
               style={{
                 backgroundColor: "#4AEAB1",
                 borderColor: "#4AEAB1",
@@ -1031,7 +1106,7 @@ onClick={() => setShowDropdownTime2(!showDropdownTime2)}  style={{
               }}
               onClick={handlePriceAvailbity}
             >
-              Publish Now
+              {isPublishing ? "Publishing..." : "Publish Now"}
             </Button>
           </Container>
         </>

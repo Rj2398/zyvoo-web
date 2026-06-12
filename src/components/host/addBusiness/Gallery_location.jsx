@@ -554,7 +554,7 @@ const GalleryLocation = ({
           marginLeft: "-28px",
         }}
       />
-      <h4 className="heading-title">Gallery <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
+      <h4 className="heading-title">Gallery <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
       <Row className="ms-0">
         {displayImg.map((img, index) => (
           <Col
@@ -629,7 +629,7 @@ const GalleryLocation = ({
         }}
       />
       {/* About the Space Section */}
-      <h4 className="heading-title">About the Space <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
+      <h4 className="heading-title">About the Space <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
       <Form.Control
         type="text"
         name="title"
@@ -768,7 +768,7 @@ const GalleryLocation = ({
           marginLeft: "-28px",
         }}
       />
-      <h4 className="mt-lg-4  heading-title">Address <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
+      <h4 className="mt-lg-4  heading-title">Address <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h4>
       <div
         style={{
           // marginRight: "75px",

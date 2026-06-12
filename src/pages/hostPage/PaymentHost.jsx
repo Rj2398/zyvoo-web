@@ -25,9 +25,9 @@ import { useSelector } from "react-redux";
 
 
 function PaymentHost({ getStripId, getcard_id }) {
-   const {userInfo} = useSelector(({user})=>user)
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO))|| JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
-  const userId = userInfo?.user_id ||userData?.user_id;
+  const { userInfo } = useSelector(({ user }) => user)
+  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userId = userInfo?.user_id || userData?.user_id;
   const { withdrawalList, payoutBalance, availableBalance, requestWithdrawal } = useFilter();
   const { getCardorBankList, setPrimaryCardorBank, deletePayoutMethod, isLoading, } = useCardDetails();
 
@@ -94,7 +94,7 @@ function PaymentHost({ getStripId, getcard_id }) {
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
-  const perPageOptions = [20,30,40];
+  const perPageOptions = [20, 30, 40];
 
   for (let i = 1; i < totalPages; i++) {
     perPageOptions.push(i * 10);
@@ -197,7 +197,7 @@ function PaymentHost({ getStripId, getcard_id }) {
   const [bankDataArray, setBankDataArray] = useState([]);
   const [currentIndex2, setCurrentIndex2] = useState(0);
 
-   const [cardCurrency, setCardCurrency] = useState();
+  const [cardCurrency, setCardCurrency] = useState();
   const [bankCurrency, setBankCurrency] = useState();
 
 
@@ -251,16 +251,16 @@ function PaymentHost({ getStripId, getcard_id }) {
   };
 
   const formatBookingDate = (date) => {
-  const d = new Date(date);
-  const month = d.toLocaleString("en-US", { month: "short" });
-  const day = d.getDate();
-  const year = d.getFullYear();
+    const d = new Date(date);
+    const month = d.toLocaleString("en-US", { month: "short" });
+    const day = d.getDate();
+    const year = d.getFullYear();
 
-  return `${month} ${day}, ${year}`;
-};
+    return `${month} ${day}, ${year}`;
+  };
 
   const [cardId, setCardId] = useState();
-  
+
 
 
   const handlePrimary = async (id) => {
@@ -332,7 +332,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                   </div>
                 )}
                 <div
-                  style={{ position: "relative", display: "inline-block",marginLeft:isMobileWidth && "2%" }}
+                  style={{ position: "relative", display: "inline-block", marginLeft: isMobileWidth && "2%" }}
                   ref={calendarRef}
                 >
                   <InputGroup
@@ -395,8 +395,8 @@ function PaymentHost({ getStripId, getcard_id }) {
                     <div
                       className="my-place-date-range"
                       style={{
-                        position:"absolute",        // Center floating calendar
-                        top:  "560%",
+                        position: "absolute",        // Center floating calendar
+                        top: "560%",
                         left: isMobileWidth ? "51%" : "50%",
                         transform: "translate(-50%, -50%)",
                         zIndex: "1000",
@@ -485,11 +485,11 @@ function PaymentHost({ getStripId, getcard_id }) {
                 margin: "0",
                 backgroundColor: "transparent",
                 borderCollapse: "separate",
-                borderSpacing: "10px 20px"  
+                borderSpacing: "10px 20px"
                 // minWidth: "400px",
-      
+
               }} >
-                <Table  style={{
+                <Table style={{
                   fontSize: "14px",
                   fontWeight: "500",
                   borderRadius: "5px",
@@ -497,37 +497,37 @@ function PaymentHost({ getStripId, getcard_id }) {
                   marginBottom: "0",
                   // backgroundColor: "#E2E2E2",
                   borderCollapse: "separate",
-                  borderSpacing: "0px 10px",  
-             
-                 
-           
-                }} 
-                
+                  borderSpacing: "0px 10px",
+
+
+
+                }}
+
                 >
-                  { <thead style={{
+                  {<thead style={{
                     // backgroundColor: "black !important",
                     borderTop: "2px solid #ddd",
                     position: "sticky",
                     top: 0,
                     zIndex: 2,
                   }} >
-                    <tr style={{ fontSize: "16px", textAlign:"start" }}>
-                      <th className="payment-host-th" style={{borderLeft:'1px solid #E2E2E2',width:'25%',textAlign:'left',paddingLeft:"33px"}}> Amount </th>
-                      <th className="payment-host-th" style={{width:'25%',textAlign:'left'}}> Status </th>
-                      <th className="payment-host-th" style={{width:'25%',textAlign:'left'}}> Guest Name </th>
-                      <th className="payment-host-th" style={{borderRight:'1px solid #E2E2E2',width:'25%',textAlign:'left',paddingLeft:'15px'}}> Date </th>
+                    <tr style={{ fontSize: "16px", textAlign: "start" }}>
+                      <th className="payment-host-th" style={{ borderLeft: '1px solid #E2E2E2', width: '25%', textAlign: 'left', paddingLeft: "33px" }}> Amount </th>
+                      <th className="payment-host-th" style={{ width: '25%', textAlign: 'left' }}> Status </th>
+                      <th className="payment-host-th" style={{ width: '25%', textAlign: 'left' }}> Guest Name </th>
+                      <th className="payment-host-th" style={{ borderRight: '1px solid #E2E2E2', width: '25%', textAlign: 'left', paddingLeft: '15px' }}> Date </th>
                     </tr>
                   </thead>}
-                    {currentData.length > 0 ? (
-                      currentData.map((item, index) => (
-                        <tbody style={{marginTop:'10px'}} >
+                  {currentData.length > 0 ? (
+                    currentData.map((item, index) => (
+                      <tbody style={{ marginTop: '10px' }} >
                         <tr key={index} style={{
-                          border: "1px solid #E2E2E2 !important" ,
-                            // borderTop: "1px solid #E2E2E2",
-                            textAlign: "center",
-                            backgroundColor: "#FFFFFF",
-                            borderRadius: "5px",
-                            boxShadow: "0 -1px 0 #ccc, 0 1px 0 #ccc"
+                          border: "1px solid #E2E2E2 !important",
+                          // borderTop: "1px solid #E2E2E2",
+                          textAlign: "center",
+                          backgroundColor: "#FFFFFF",
+                          borderRadius: "5px",
+                          boxShadow: "0 -1px 0 #ccc, 0 1px 0 #ccc"
                           // marginTop: "100px",
                           // marginBottom:'10px',
                           // boxShadow: '0 10px 10px rgba(88, 27, 27, 0.15)'
@@ -536,10 +536,10 @@ function PaymentHost({ getStripId, getcard_id }) {
                           // border: "1px solid red"
                         }}
                         >
-                          <td style={{ padding: "15px 14px 0px 33px", fontWeight: "400", color: "black",fontSize:'15px',borderLeft:'1px solid #E2E2E2',width:'25%',textAlign:'left'}} >
+                          <td style={{ padding: "15px 14px 0px 33px", fontWeight: "400", color: "black", fontSize: '15px', borderLeft: '1px solid #E2E2E2', width: '25%', textAlign: 'left' }} >
                             ${item.booking_amount}
                           </td>
-                          <td style={{ padding: "15px 0",width:'25%',textAlign:'left' }}>
+                          <td style={{ padding: "15px 0", width: '25%', textAlign: 'left' }}>
                             {/* <span
                               className={`badge ${item.status == "pending"
                                   ? "#FFF178 text-dark"
@@ -561,31 +561,31 @@ function PaymentHost({ getStripId, getcard_id }) {
                               {item.status}
                             </span> */}
 
-                        <span
-            className="badge"
-          style={{
-               fontSize: "15px",
-               padding: "5px 15px",
-               borderRadius: "20px",
-               minWidth: "90px",
-               display: "inline-block",
-               textAlign: "center",
-               fontWeight: "400",
-               color: "black",
-               backgroundColor:
-               item.status === "pending"
-                 ? "#FFF178"
-                 : item.status === "completed"
-                 ? "#4AEAB1"
-                 : "#dc3545", // danger red
-              }}
-           >
-               {item?.status?.charAt(0)?.toUpperCase() + item?.status?.slice(1)}
-         </span>
+                            <span
+                              className="badge"
+                              style={{
+                                fontSize: "15px",
+                                padding: "5px 15px",
+                                borderRadius: "20px",
+                                minWidth: "90px",
+                                display: "inline-block",
+                                textAlign: "center",
+                                fontWeight: "400",
+                                color: "black",
+                                backgroundColor:
+                                  item.status === "pending"
+                                    ? "#FFF178"
+                                    : item.status === "completed"
+                                      ? "#4AEAB1"
+                                      : "#FFFFFF", // danger red
+                              }}
+                            >
+                              {item?.status?.charAt(0)?.toUpperCase() + item?.status?.slice(1)}
+                            </span>
 
                           </td>
                           <td style={{
-                            padding: "15px 0", textAlign: "center",width:'25%',textAlign:'left'
+                            padding: "15px 0", textAlign: "center", width: '25%', textAlign: 'left'
                             // display: "flex", alignItems: "center", justifyContent: "center",
                           }} >
                             <div style={{
@@ -599,8 +599,8 @@ function PaymentHost({ getStripId, getcard_id }) {
                             >
                               <img src={imageBase + item.guest_profile_image} loading="lazy" alt="Profile"
                                 className="me-2 rounded-circle" width="30" height="30"
-                                style={{padding: "2px" }} />
-                              <span style={{ fontWeight: "400", marginLeft: "8px",fontSize:'15px',color:'black' }}
+                                style={{ padding: "2px" }} />
+                              <span style={{ fontWeight: "400", marginLeft: "8px", fontSize: '15px', color: 'black' }}
                               >
                                 {item.guest_name}
                               </span>
@@ -613,30 +613,30 @@ function PaymentHost({ getStripId, getcard_id }) {
                               color: "black",
                               fontSize: "15px",
                               width: "max-content",
-                              borderRight: "1px solid #E2E2E2",width:'25%',textAlign:'left'
+                              borderRight: "1px solid #E2E2E2", width: '25%', textAlign: 'left'
                             }}
                           >
                             {formatBookingDate(item.booking_date)}
                           </td>
                         </tr>
 
-                         </tbody> 
-                      ))
-                      
-                    ) : (
+                      </tbody>
+                    ))
 
-                <td
-  colSpan="100%"
-  style={{
-    textAlign: 'center',
-    verticalAlign: 'middle',
-    height: '100px'
-  }}
->
-  No data available
-</td>
+                  ) : (
 
-                      )}
+                    <td
+                      colSpan="100%"
+                      style={{
+                        textAlign: 'center',
+                        verticalAlign: 'middle',
+                        height: '100px'
+                      }}
+                    >
+                      No data available
+                    </td>
+
+                  )}
                 </Table>
               </div>
               <div>
@@ -669,33 +669,33 @@ function PaymentHost({ getStripId, getcard_id }) {
                       </Dropdown.Toggle> */}
 
                       <Dropdown.Toggle
-  variant="light"
-  id="dropdown-basic"
-  className="d-flex align-items-center gap-2"
-  style={{
-    padding: "8px 15px",
-    fontSize: "14px",
-    fontWeight: "500",
-    border: "1px solid #ccc",
-    borderRadius: "15px",
-    backgroundColor: "#fff",
-    color: "#3A4B4C",
-    boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
-  }}
->
+                        variant="light"
+                        id="dropdown-basic"
+                        className="d-flex align-items-center gap-2"
+                        style={{
+                          padding: "8px 15px",
+                          fontSize: "14px",
+                          fontWeight: "500",
+                          border: "1px solid #ccc",
+                          borderRadius: "15px",
+                          backgroundColor: "#fff",
+                          color: "#3A4B4C",
+                          boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
 
 
-  {itemsPerPage} <span>per Page</span>
-  <ChevronDown size={18} />
+                        {itemsPerPage} <span>per Page</span>
+                        <ChevronDown size={18} />
 
-  <style>
-    {
-     ` .dropdown-toggle::after {
+                        <style>
+                          {
+                            ` .dropdown-toggle::after {
         display: none;
         } `
-    }
-  </style>
-</Dropdown.Toggle>
+                          }
+                        </style>
+                      </Dropdown.Toggle>
 
                       <Dropdown.Menu
                         style={{
@@ -900,10 +900,10 @@ function PaymentHost({ getStripId, getcard_id }) {
                   style={{ maxWidth: "350px", }}
                 >
                   <Card.Body className="text-center">
-                    <div className="d-flex" style={{marginTop: "-7px"}}>
+                    <div className="d-flex" style={{ marginTop: "-7px" }}>
                       <div
                         className="d-flex align-items-center justify-content-between"
-                        style={{ marginRight: "10px",}}
+                        style={{ marginRight: "10px", }}
                       >
                         <div
                           className="d-flex align-items-center justify-content-center rounded"
@@ -919,8 +919,8 @@ function PaymentHost({ getStripId, getcard_id }) {
                             // width="50"
                             // height="50"
                             style={{
-                              width:'50px',
-                              height:'50px'
+                              width: '50px',
+                              height: '50px'
                             }}
                           />
                         </div>
@@ -1008,7 +1008,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                           fontSize: isMobileWidth ? "12px" : "16px",
                           color: "black",
                           // margin: "0px -7px 0px 10px",
-                         
+
                           padding: "0px",
                           fontWeight: "400",
                           marginBottom: "10px",
@@ -1025,11 +1025,11 @@ function PaymentHost({ getStripId, getcard_id }) {
                           padding: "10px 12px",
                           fontSize: isMobileWidth ? "12px" : "13px",
                           fontWeight: "400",
-                          color:'#252849',
-                          borderColor:'#252849',
-                          marginLeft:'-15px',
-                          width:!isMobileWidth && '54%',
-                          marginTop:!isMobileWidth && '8px'
+                          color: '#252849',
+                          borderColor: '#252849',
+                          marginLeft: '-15px',
+                          width: !isMobileWidth && '54%',
+                          marginTop: !isMobileWidth && '8px'
                         }}
                         onClick={() => setShowWithdrowModal(true)}
                       >
@@ -1143,7 +1143,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                       className="d-flex align-items-center justify-content-end w-100"
                                       style={{ position: "relative", zIndex: 2 }}
 
-                                      
+
                                     >
 
                                       {/* {setCardCurrency(card?.default_for_currency)} */}
@@ -1157,7 +1157,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                             fontSize: "10px",
                                             padding: "5px 10px",
                                             borderRadius: "8px",
-                                            marginTop:'-25px'
+                                            marginTop: '-25px'
                                           }}
                                         >
                                           Primary
@@ -1241,7 +1241,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                       <div className="d-flex align-items-center">
                                         <span
                                           style={{
-                                            fontSize:isMobileWidth ?"12px":"14px",
+                                            fontSize: isMobileWidth ? "12px" : "14px",
                                             fontWeight: "bold",
                                             marginRight: "8px",
                                             letterSpacing: "2px",
@@ -1251,7 +1251,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                         </span>
                                         <span
                                           style={{
-                                            fontSize:isMobileWidth ?"12px":"14px",
+                                            fontSize: isMobileWidth ? "12px" : "14px",
                                             fontWeight: "bold",
                                             marginLeft: "5px",
                                           }}
@@ -1318,8 +1318,8 @@ function PaymentHost({ getStripId, getcard_id }) {
                                         textTransform: "uppercase",
                                         position: "relative",
                                         zIndex: 1,
-                                        color:'white',
-                                        top:!isMobileWidth && '23px'
+                                        color: 'white',
+                                        top: !isMobileWidth && '23px'
                                       }}
                                     >
                                       {card.card_holder_name}
@@ -1397,7 +1397,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                 }}
                               >
 
-                              
+
                                 <Card
                                   className="p-2 mb-2 shadow-sm border-0 rounded-3"
                                   style={{
@@ -1440,7 +1440,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                             fontSize: "10px",
                                             padding: "5px 10px",
                                             borderRadius: "8px",
-                                             marginTop:!isMobileWidth && '-25px'
+                                            marginTop: !isMobileWidth && '-25px'
                                           }}
                                         >
                                           Primary
@@ -1520,7 +1520,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                             style={{
                                               fontSize: "14px",
                                               fontWeight: "bold",
-                                              color:'white'
+                                              color: 'white'
                                             }}
                                           >
                                             {bank.bank_name}
@@ -1530,7 +1530,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                             style={{
                                               fontSize: "12px",
                                               opacity: "0.8",
-                                               color:'white'
+                                              color: 'white'
                                             }}
                                           >
                                             Bank of America
@@ -1553,7 +1553,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                             style={{
                                               fontSize: "14px",
                                               fontWeight: "bold",
-                                               color:'white'
+                                              color: 'white'
                                             }}
                                           >
                                             Account Number
@@ -1563,7 +1563,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                             style={{
                                               fontSize: "14px",
                                               letterSpacing: "2px",
-                                               color:'white'
+                                              color: 'white'
                                             }}
                                           >
                                             **** **** ****{" "}
@@ -1587,7 +1587,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                                             style={{
                                               fontSize: "14px",
                                               fontWeight: "bold",
-                                               color:'white'
+                                              color: 'white'
                                             }}
                                           >
                                             Routing Number
@@ -1597,10 +1597,10 @@ function PaymentHost({ getStripId, getcard_id }) {
                                             style={{
                                               fontSize: "14px",
                                               letterSpacing: "2px",
-                                               color:'white'
+                                              color: 'white'
                                             }}
                                           >
-                                            xxxxxxx <b>{bank?.routing_number||6789}</b>
+                                            xxxxxxx <b>{bank?.routing_number || 6789}</b>
                                           </p>
                                         </div>
                                       </div>
@@ -1657,7 +1657,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                           >
 
                             {/* Primary Badge */}
-                             {  card.default_for_currency && (
+                            {card.default_for_currency && (
                               <Badge
                                 bg="danger"
                                 style={{
@@ -1704,8 +1704,8 @@ function PaymentHost({ getStripId, getcard_id }) {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu className="shadow-sm">
-                                 <Dropdown.Item onClick={() => handlePrimary(card?.id)}> Primary </Dropdown.Item>
-                                 <Dropdown.Item onClick={() => deleteMethod(card?.id) }> Delete </Dropdown.Item>
+                                  <Dropdown.Item onClick={() => handlePrimary(card?.id)}> Primary </Dropdown.Item>
+                                  <Dropdown.Item onClick={() => deleteMethod(card?.id)}> Delete </Dropdown.Item>
                                   {/* <Dropdown.Item onClick={() => deleteMethod(card?.id?.includes("ba_") ? cardId : card?.id)}>
                                     Delete
                                   </Dropdown.Item> */}
@@ -1878,7 +1878,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                       border: "none",
                       borderRadius: "20px",
                       background:
-                      tempPaymentStatus === status ? "#fff" : "transparent",
+                        tempPaymentStatus === status ? "#fff" : "transparent",
                       color: tempPaymentStatus === status ? "#000" : "#000",
                       boxShadow:
                         tempPaymentStatus === status
@@ -1887,7 +1887,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                     }}
                   >
                     {status}
-                    
+
                   </button>
                 ))}
               </div>
@@ -1913,7 +1913,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                   boxShadow: "0px 0px 5px rgba(0,0,0,0.1)",
                   minWidth: "140px",
                   gap: "10px", // Ensures space between text and icon
-                  fontSize:'14px'
+                  fontSize: '14px'
                 }}
                 onClick={() => {
                   setPaymentStatus("");
@@ -1953,7 +1953,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                   boxShadow: "0px 0px 5px rgba(0,0,0,0.1)",
                   minWidth: "120px", // Increased for better alignment
                   gap: "10px", // Ensures spacing between text and icon
-                  fontSize:'14px'
+                  fontSize: '14px'
                 }}
                 onClick={() => {
                   setPaymentStatus(tempPaymentStatus); // Apply selected filter
@@ -1990,25 +1990,25 @@ function PaymentHost({ getStripId, getcard_id }) {
           show={showWithdrowModal}
           onHide={() => setShowWithdrowModal(false)}
           centered
-          style={{ padding: isMobileWidth ? '' : '',marginLeft:isMobileWidth && '-16px' }}
+          style={{ padding: isMobileWidth ? '' : '', marginLeft: isMobileWidth && '-16px' }}
           dialogClassName="withdrawal"
         >
-       <style>
-       {`
+          <style>
+            {`
          .withdrawal .modal-content {
            width: 76%;
            margin-left:63px;
            
          }
        `}
-       </style>
+          </style>
 
           <Modal.Body style={{ padding: "30px", borderRadius: "10px" }}>
             <div className="text-center">
               <div className="d-flex justify-content-center align-items-center position-relative">
                 <h5
                   className="m-0 position-relative"
-                  style={{ fontWeight: "500", alignItems: "center", fontSize: isMobileWidth ? '16px' : '',color:'black' }}
+                  style={{ fontWeight: "500", alignItems: "center", fontSize: isMobileWidth ? '16px' : '', color: 'black' }}
                 >
                   Withdraw Earnings
                 </h5>
@@ -2047,11 +2047,11 @@ function PaymentHost({ getStripId, getcard_id }) {
                 }}
               >
                 Available Balance :{" "}
-                <span style={{fontWeight:'600'}}>${leftBalence?.available_balance}</span>
+                <span style={{ fontWeight: '600' }}>${leftBalence?.available_balance}</span>
               </p>
             </div>
 
-            <Form  style={{padding:isMobileWidth && "-5px"}}>
+            <Form style={{ padding: isMobileWidth && "-5px" }}>
               <Form.Group className="mb-3">
                 <Form.Label
                   style={{
@@ -2115,37 +2115,37 @@ function PaymentHost({ getStripId, getcard_id }) {
 
                 <Dropdown className="w-100">
                   <Dropdown.Toggle
-  variant="light"
-  className="w-100 d-flex justify-content-between align-items-center"
-  style={{
-    borderRadius: "40px",
-    padding: isMobileWidth ? "9px" : "10px",
-    fontSize: isMobileWidth ? "12px" : "14px",
-    color: "#000000",
-    fontWeight: "400",
-    backgroundColor: "#fff",
-    border: "1px solid #ced4da",
-  }}
->
-  {withdrawalType === "" ? (
-    <>Select withdrawal type</>
-  ) : withdrawalType === "Instant (Fee 2%)" ? (
-    <> Instant (Fee 2%)</>
-  ) : (
-    <>Standard (3 to 5 business days)</>
-  )}
+                    variant="light"
+                    className="w-100 d-flex justify-content-between align-items-center"
+                    style={{
+                      borderRadius: "40px",
+                      padding: isMobileWidth ? "9px" : "10px",
+                      fontSize: isMobileWidth ? "12px" : "14px",
+                      color: "#000000",
+                      fontWeight: "400",
+                      backgroundColor: "#fff",
+                      border: "1px solid #ced4da",
+                    }}
+                  >
+                    {withdrawalType === "" ? (
+                      <>Select withdrawal type</>
+                    ) : withdrawalType === "Instant (Fee 2%)" ? (
+                      <> Instant (Fee 2%)</>
+                    ) : (
+                      <>Standard (3 to 5 business days)</>
+                    )}
 
-  {/* Your custom chevron icon */}
-  <ChevronDown size={20} />
+                    {/* Your custom chevron icon */}
+                    <ChevronDown size={20} />
 
-  <style>
-    {`
+                    <style>
+                      {`
       .dropdown-toggle::after {
         display: none !important;
       }`}
-    
-  </style>
-</Dropdown.Toggle>
+
+                    </style>
+                  </Dropdown.Toggle>
 
 
                   <Dropdown.Menu
@@ -2163,15 +2163,15 @@ function PaymentHost({ getStripId, getcard_id }) {
                         borderRadius: "10px",
                         margin: "5px",
                         padding: "10px 15px",
-                        color:'black',
+                        color: 'black',
                         backgroundColor:
                           withdrawalType === "Instant (Fee 2%)"
                             ? "#f0f0f0"
                             : "transparent",
-                            fontSize:'14px'
+                        fontSize: '14px'
                       }}
                     >
-                     <span><img src="/images/payment-methods/flashImg.png" width={20}/></span>  Instant (Fee 2%)
+                      <span><img src="/images/payment-methods/flashImg.png" width={20} /></span>  Instant (Fee 2%)
                     </Dropdown.Item>
                     <Dropdown.Item
                       onClick={() =>
@@ -2181,12 +2181,12 @@ function PaymentHost({ getStripId, getcard_id }) {
                         borderRadius: "10px",
                         margin: "5px",
                         padding: "10px 15px",
-                        color:'black',
+                        color: 'black',
                         backgroundColor:
                           withdrawalType === "Standard (3 to 5 business days)"
                             ? "#f0f0f0"
                             : "transparent",
-                              fontSize:'14px'
+                        fontSize: '14px'
                       }}
                     >
                       Standard (3 to 5 business days)
@@ -2342,7 +2342,7 @@ export default PaymentHost;
 //                 </Dropdown>
 
 //                 <style>
-//                   {` .dropdown-toggle-no-caret::after { 
+//                   {` .dropdown-toggle-no-caret::after {
 //                                           display: none !important;
 //                                         }
 //                                     `}

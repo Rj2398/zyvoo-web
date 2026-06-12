@@ -602,7 +602,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
         <div className="preferences-wrap-host">
           <h6 className="property-modal-sub-heading">
             {" "}
-            Property size (Sq ft) <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span>{" "}
+            Property size (Sq ft) <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>{" "}
           </h6>
           <div className="price-filter-wrapper">
             {priceOptions.map((price) => (
@@ -657,7 +657,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             </button>
           </div>
 
-          <h6 className="property-modal-sub-heading">Number of people <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+          <h6 className="property-modal-sub-heading">Number of people <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
           <div className="price-filter-wrapper">
             {guestOptions.map((guest) => (
               <button
@@ -712,7 +712,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             </button>
           </div>
 
-          <h6 className="property-modal-sub-heading">Bedrooms <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+          <h6 className="property-modal-sub-heading">Bedrooms <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
 
           <div className="price-filter-wrapper">
             {bedroomOptions.map((bedroom) => (
@@ -767,7 +767,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             </button>
           </div>
 
-          <h6 className="property-modal-sub-heading">Bathrooms <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+          <h6 className="property-modal-sub-heading">Bathrooms <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
 
           <div className="price-filter-wrapper">
             {bathroomOptions.map((bathroom) => (
@@ -836,7 +836,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             fontWeight: isMobileWidth && "400",
           }}
         >
-          Activities <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span>
+          Activities <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>
         </h4>
         <Container>
           <Row className="justify-content-center mt-4">
@@ -1007,7 +1007,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             fontWeight: isMobileWidth && "400",
           }}
         >
-          Amenities <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span>
+          Amenities <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>
         </h4>
         <Container style={{ marginLeft: "0px" }}>
           <Row>
@@ -1371,7 +1371,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                     fontSize: isMobileWidth ? "15px" : "18px",
                   }}
                 >
-                  {isMobileWidth ? "Cancellation " : "Cancellation Policy"} <span style={{ color: "red", fontSize: "14px", marginLeft: "4px" }}>*</span>
+                  {isMobileWidth ? "Cancellation " : "Cancellation Policy"} <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>
                 </h6>
                 <span
                   className="info-wrap"

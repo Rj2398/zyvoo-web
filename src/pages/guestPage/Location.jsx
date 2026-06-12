@@ -43,8 +43,8 @@ function Location() {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
   const [currentLocation, setCurrentLocation] = useState({
     latitude: null,
     longitude: null,
@@ -208,9 +208,8 @@ function Location() {
     } else {
       const days = Math.floor(cancellationTime / 24);
       const hours = cancellationTime % 24;
-      return `Cancel for free within ${days} days${
-        hours > 0 ? ` and ${hours} hour(s)` : ""
-      }`;
+      return `Cancel for free within ${days} days${hours > 0 ? ` and ${hours} hour(s)` : ""
+        }`;
     }
   }
 
@@ -563,11 +562,11 @@ function Location() {
 
                     {(propertyDetails?.is_instant_book ||
                       propertyDetails?.is_instant_book != 0) && (
-                      <li>
-                        {" "}
-                        <i className="fa-solid fa-bolt"></i> Instant book{" "}
-                      </li>
-                    )}
+                        <li>
+                          {" "}
+                          <i className="fa-solid fa-bolt"></i> Instant book{" "}
+                        </li>
+                      )}
 
                     <li className="location-top-share">
                       <a
@@ -617,11 +616,10 @@ function Location() {
                 </div>
 
                 <div
-                  className={`top-grid-images-${
-                    propertyDetails?.images?.length > 5
+                  className={`top-grid-images-${propertyDetails?.images?.length > 5
                       ? 5
                       : propertyDetails?.images?.length
-                  }`}
+                    }`}
                   onClick={() => setShowPropertyImages(true)}
                   style={{ height: isMobileWidth ? "200px" : "450px" }}
                 >
@@ -722,6 +720,7 @@ function Location() {
                           role="tab"
                           aria-controls="pills-hourly"
                           aria-selected="false"
+                          onClick={() => setButtonText("Start Booking")}
                         >
                           Choose Hours
                         </button>
@@ -749,7 +748,7 @@ function Location() {
                         id="pills-hourly"
                         role="tabpanel"
                         aria-labelledby="pills-hourly-tab"
-                        // style={{ height: isMobileWidth ? "510px" : "auto" }}
+                      // style={{ height: isMobileWidth ? "510px" : "auto" }}
                       >
                         <div
                           className="hour-slider-wrap"
@@ -1026,7 +1025,7 @@ function Location() {
 
                               handleValidation();
                             }}
-                            // disabled
+                          // disabled
                           >
                             {buttonText}
                           </button>
@@ -1130,20 +1129,20 @@ function Location() {
 
                     {propertyDetails?.property_description?.split(/\s+/)
                       .length > 100 && (
-                      <button
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        style={{
-                          background: "none",
-                          color: "#5EE6A0",
-                          border: "none",
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                          marginTop: "12px",
-                        }}
-                      >
-                        {isExpanded ? "Read Less" : "Read More"}
-                      </button>
-                    )}
+                        <button
+                          onClick={() => setIsExpanded(!isExpanded)}
+                          style={{
+                            background: "none",
+                            color: "#5EE6A0",
+                            border: "none",
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                            marginTop: "12px",
+                          }}
+                        >
+                          {isExpanded ? "Read Less" : "Read More"}
+                        </button>
+                      )}
                   </div>
 
                   <hr />
@@ -1180,9 +1179,8 @@ function Location() {
                           <div className="accordion-item border rounded mb-2">
                             <h2 className="accordion-header" id="headingOne">
                               <button
-                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                                  open === "collapseOne" ? "" : "collapsed"
-                                }`}
+                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"
+                                  }`}
                                 type="button"
                                 onClick={() => toggleAccordion("collapseOne")}
                                 style={{ padding: "12px" }}
@@ -1235,9 +1233,8 @@ function Location() {
                         <div className="accordion-item border rounded mb-2">
                           <h2 className="accordion-header" id="headingTwo">
                             <button
-                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                                open === "collapseTwo" ? "" : "collapsed"
-                              }`}
+                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                                }`}
                               type="button"
                               onClick={() => toggleAccordion("collapseTwo")}
                               style={{ padding: "12px" }}

@@ -198,7 +198,8 @@ function Notifications() {
                           }
                       }
                     >
-                      <i className="fa-solid fa-xmark" style={{ fontSize: isMobileWidth ? '12px' : '20px', fontWeight: '100' }}></i>
+                      {/* <i className="fa-solid fa-xmark" style={{ fontSize: isMobileWidth ? '12px' : '20px', fontWeight: '100' }}></i> */}
+                      <img src="/images/notifications/notificaion-cross-icon.svg" alt="close" style={{ width: '15px', height: '15px' }} />
                     </Button>
                   </Card>
                 ))}
