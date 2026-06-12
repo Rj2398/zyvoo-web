@@ -2440,14 +2440,14 @@ const Checkout = ({ setExtendedTime }) => {
                           marginBottom: "15px",
                         }}
                       ></div>
-                      <MessageHost
+                      {/* <MessageHost
                         type={"Host"}
                         style={{ width: "100%", marginBottom: "10px" }}
                         data={{
                           sender_detail: checkoutData,
                           property_id: checkoutData?.property_id,
                         }}
-                      />
+                      /> */}
 
                       {/* <div
                                       className="chat-right-top-mob-right"

@@ -5,6 +5,7 @@ import Footer from "../../components/guest/Footer";
 import { KEYS } from "../../config/Constant";
 import useCommon from "../../hooks/useCommon";
 import Header from "../../components/host/Header";
+import Sorry from "../../components/NoResultsFound";
 
 import Pagination from "../../components/guest/Pagination";
 import ProductItem from "../../components/guest/ProductItem";
@@ -22,14 +23,14 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
 
-      const {userInfo} = useSelector(({user})=>user)
+  const { userInfo } = useSelector(({ user }) => user)
   const { guestHomeData, isLoading } = useCommon();
   const { getTimerDetails } = useTimer();
   const [showMap, setShowMap] = useState(false);
 
   const selectorData = useSelector((state) => state.common);
- const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO))  || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO))
-  const login_id = userInfo?.user_id ? String(userInfo?.user_id) : null||localSaved?.user_id ? String(localSaved?.user_id) : null;
+  const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO))
+  const login_id = userInfo?.user_id ? String(userInfo?.user_id) : null || localSaved?.user_id ? String(localSaved?.user_id) : null;
   const [useTypes, setUserTypes] = useState(localStorage.getItem(KEYS.USER_TYPE));
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -39,8 +40,8 @@ const Home = () => {
 
   const itemsPerPage = 16;
   const [localHomeList, setLocalHomeList] = useState([]);
-   
-  const [currentLocation, setCurrentLocation] = useState({latitude: null,longitude: null});
+
+  const [currentLocation, setCurrentLocation] = useState({ latitude: null, longitude: null });
 
   useEffect(() => {
     const getLocation = () => {
@@ -52,36 +53,36 @@ const Home = () => {
               longitude: position.coords.longitude,
             });
           },
-          (error) => {console.error(error.message);}
+          (error) => { console.error(error.message); }
         );
       } else {
         console.error("Geolocation is not supported by your browser.");
       }
     };
-    if(!currentLocation?.latitude){
+    if (!currentLocation?.latitude) {
       getLocation();
     }
-  }, [currentLocation?.latitude,currentLocation]);
+  }, [currentLocation?.latitude, currentLocation]);
 
-//   useEffect(() => {
-//   if (!("geolocation" in navigator)) return;
+  //   useEffect(() => {
+  //   if (!("geolocation" in navigator)) return;
 
-//   const watchId = navigator.geolocation.watchPosition(
-//     (position) => {
-//       setCurrentLocation({
-//         latitude: position.coords.latitude,
-//         longitude: position.coords.longitude,
-//       });
-//     },
-//     (error) => console.error(error.message),
-//     {
-//       enableHighAccuracy: true,
-//       maximumAge: 0,
-//     }
-//   );
+  //   const watchId = navigator.geolocation.watchPosition(
+  //     (position) => {
+  //       setCurrentLocation({
+  //         latitude: position.coords.latitude,
+  //         longitude: position.coords.longitude,
+  //       });
+  //     },
+  //     (error) => console.error(error.message),
+  //     {
+  //       enableHighAccuracy: true,
+  //       maximumAge: 0,
+  //     }
+  //   );
 
-//   return () => navigator.geolocation.clearWatch(watchId);
-// }, []);
+  //   return () => navigator.geolocation.clearWatch(watchId);
+  // }, []);
 
 
   const fetchList = async () => {
@@ -97,19 +98,19 @@ const Home = () => {
   };
 
   useEffect(() => {// set data in userType & listshowMap
-    const handleStorageChange = () => {setUserTypes(localStorage.getItem(KEYS.USER_TYPE));};
+    const handleStorageChange = () => { setUserTypes(localStorage.getItem(KEYS.USER_TYPE)); };
 
     fetchList();
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
-  }, [currentLocation?.latitude, currentLocation?.longitude,currentLocation]);
+  }, [currentLocation?.latitude, currentLocation?.longitude, currentLocation]);
 
   useEffect(() => {
     if (selectorData?.guestHomeData) {
       setLocalHomeList(selectorData?.guestHomeData);
     }
-  }, [selectorData,currentLocation?.latitude,currentLocation,localHomeList]);
-  
+  }, [selectorData, currentLocation?.latitude, currentLocation, localHomeList]);
+
   const [isMobileWidth, setIsMobileWidth] = useState(false);
   const totalPages = Math.ceil(localHomeList.length / itemsPerPage);
   const [onGoingTime, setOngoingTime] = useState(null);
@@ -118,7 +119,7 @@ const Home = () => {
   const [initialTime, setInitialTime] = useState(0);
   const [originalDifference, setOriginalDifference] = useState(null); // NEW
 
-  const [datePart1 = "", timePart1 = ""] = onGoingTime ? onGoingTime.split(" "): [];  // Safely split onGoingTime
+  const [datePart1 = "", timePart1 = ""] = onGoingTime ? onGoingTime.split(" ") : [];  // Safely split onGoingTime
   const [datePart = "", timePart = ""] = RemainTime ? RemainTime.split(" ") : []; // Safely split RemainTime (handles undefined/null cases)
 
   // Calculate time difference whenever onGoingTime or RemainTime changes
@@ -152,8 +153,8 @@ const Home = () => {
 
   // Timer logic
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0, });
-  const [angle, setAngle] = useState(-90); 
-  const radius = 150; 
+  const [angle, setAngle] = useState(-90);
+  const radius = 150;
 
   useEffect(() => {
     if (initialTime < 0) return;
@@ -176,7 +177,7 @@ const Home = () => {
             return { hours: 0, minutes: 0, seconds: 0 };
           }
 
-          const newAngle = -90 + (1 - totalRemainingSeconds / totalSeconds) * 90; 
+          const newAngle = -90 + (1 - totalRemainingSeconds / totalSeconds) * 90;
           setAngle(newAngle);
 
           const newSeconds = (totalRemainingSeconds - 1) % 60;
@@ -274,35 +275,35 @@ const Home = () => {
 
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
-  
+
   return (
-    <div style={{ backgroundImage: "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)", backgroundSize: "20px 20px",position:"relative" }} >
-      {useTypes === "guest"||!login_id ? (<HomeHeader showMap={showMap} setShowMap={setShowMap} />) : (<Header />)}
+    <div style={{ backgroundImage: "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)", backgroundSize: "20px 20px", position: "relative" }} >
+      {useTypes === "guest" || !login_id ? (<HomeHeader showMap={showMap} setShowMap={setShowMap} />) : (<Header />)}
 
       <main className="home-main">
         <div className="mob-show-map animate__animated animate__backInUp animate__delay-1s">
-          <Link to="#" onClick={() => setShowMap(!showMap)}><img src="/images/filters/show-map.svg" loading="lazy" alt="Show Map"/>{showMap ? "Show list" : "Show Map"}</Link>
+          <Link to="#" onClick={() => setShowMap(!showMap)}><img src="/images/filters/show-map.svg" loading="lazy" alt="Show Map" />{showMap ? "Show list" : "Show Map"}</Link>
         </div>
 
-        <div  style={{ display: "flex", justifyContent: "space-between", alignItems: "center", }} >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", }} >
           <Container fluid>
             <Row>
               <Loader2 visible={isLoading} />
-              {(!paginatedData || paginatedData.length === 0) && <div style={{display:"flex", justifyContent:"center", alignItems:"center", height:"250px"}}> No properties found for the given location.</div>}
-      
+              {(!paginatedData || paginatedData.length === 0) && <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "250px" }}><Sorry /></div>}
+
               {(isMobileWidth && showMap) ? <></> : <Col lg={showMap ? 7 : 12} md={showMap ? 8 : 12} sm={12}>
                 <Row style={{ margin: "0 -12px", display: "flex", flexWrap: "wrap" }}>
                   {paginatedData?.map((item) => (
-                    <Col key={item?.property_id} xl={showMap ? 6 : 3} lg={showMap ? 6 : 4} 
-                      md={6} sm={12} style={{ padding: "12px", display: "flex", justifyContent: "center",}}>
+                    <Col key={item?.property_id} xl={showMap ? 6 : 3} lg={showMap ? 6 : 4}
+                      md={6} sm={12} style={{ padding: "12px", display: "flex", justifyContent: "center", }}>
                       <div style={{
-                          width: "100%",
-                          maxWidth: "400px",
-                          borderRadius: "18px",
-                          overflow: "hidden",
-                          background: "#fff", 
-                          boxShadow: "0 2px 4px rgba(0, 0, 0, 0.001)", 
-                        }}
+                        width: "100%",
+                        maxWidth: "400px",
+                        borderRadius: "18px",
+                        overflow: "hidden",
+                        background: "#fff",
+                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.001)",
+                      }}
                       >
                         <ProductItem
                           hourly_rate={item?.hourly_rate}
@@ -326,16 +327,16 @@ const Home = () => {
                 </Row>
               </Col>}
               {showMap && (
-                <Col lg={5} md={4} sm={12} style={{ position: "sticky", top: 0, height:"80vh", borderRadius: "500px", }} >
-                  <MultipleMarkerMap locations={localHomeList} currentLocation={currentLocation} isMobileWidth={isMobileWidth}/>
+                <Col lg={5} md={4} sm={12} style={{ position: "sticky", top: 0, height: "80vh", borderRadius: "500px", }} >
+                  <MultipleMarkerMap locations={localHomeList} currentLocation={currentLocation} isMobileWidth={isMobileWidth} />
                 </Col>
               )}
             </Row>
           </Container>
-        
+
         </div>
 
-        {(isMobileWidth && showMap) ? <></> :<div className="home-pagination-wrap">
+        {(isMobileWidth && showMap) ? <></> : <div className="home-pagination-wrap">
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-12">
@@ -385,7 +386,7 @@ const Home = () => {
                             />
                           </div>
 
-                          <img id="countdown-bg" src="/images/time-countdown/timer.svg" loading="lazy" alt="countdown" /> 
+                          <img id="countdown-bg" src="/images/time-countdown/timer.svg" loading="lazy" alt="countdown" />
                         </div>
                       </button>
 
@@ -394,7 +395,7 @@ const Home = () => {
                           show={showModal}
                           handleClose={() => setShowModal(false)}
                           bookingDetails={bookingDetails}
-                          
+
                         />
                       )}
                     </div>
@@ -420,34 +421,34 @@ const Home = () => {
             </div>
           </div>
         </div>}
-        
-        {(isMobileWidth && showMap) ? <></> :<button className="need-more-time-btn" type="button" >
-        {bookingDetails && Object.keys(bookingDetails).length > 0 && (
-          <div className="time-countdown-inner mobile-countdown"  >
-            <div className="time-countdown-data">
-              <h2>Time Left</h2>
-              <div className="countdown" id="countdown2">
-                <div className="time-section">
-                  {String(timeLeft.hours).padStart(2, "0")}
-                </div>
-                <div className="time-section">
-                  {String(timeLeft.minutes).padStart(2, "0")}
-                </div>
-                <div className="time-section">
-                  {String(timeLeft.seconds).padStart(2, "0")}
+
+        {(isMobileWidth && showMap) ? <></> : <button className="need-more-time-btn" type="button" >
+          {bookingDetails && Object.keys(bookingDetails).length > 0 && (
+            <div className="time-countdown-inner mobile-countdown"  >
+              <div className="time-countdown-data">
+                <h2>Time Left</h2>
+                <div className="countdown" id="countdown2">
+                  <div className="time-section">
+                    {String(timeLeft.hours).padStart(2, "0")}
+                  </div>
+                  <div className="time-section">
+                    {String(timeLeft.minutes).padStart(2, "0")}
+                  </div>
+                  <div className="time-section">
+                    {String(timeLeft.seconds).padStart(2, "0")}
+                  </div>
                 </div>
               </div>
+              <div id="icon-container" onClick={() => setShowModal(true)} >
+                <img id="icon" src="/images/time-countdown/timer-logo.svg" loading="lazy" alt="Icon" />
+              </div>
+              <img id="countdown-bg" src="/images/time-countdown/timer-mobile.svg" loading="lazy" alt="timer-mobile" />
             </div>
-            <div id="icon-container" onClick={() => setShowModal(true)} >
-              <img id="icon" src="/images/time-countdown/timer-logo.svg" loading="lazy" alt="Icon" />
-            </div>
-            <img id="countdown-bg" src="/images/time-countdown/timer-mobile.svg" loading="lazy" alt="timer-mobile" />
-          </div>
-         )}
+          )}
         </button>}
       </main>
       <Footer />
-     <MobFooter/>
+      <MobFooter />
     </div>
   );
 };
