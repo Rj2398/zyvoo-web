@@ -732,9 +732,9 @@ const BookingHost = () => {
                           : "#E4E4E4",
                     }}
                     className={`chat-list-in nav-link2 ${selectedBooking?.booking_id === booking.booking_id &&
-                        selectedBooking?.extension_id == booking?.extension_id
-                        ? "active"
-                        : ""
+                      selectedBooking?.extension_id == booking?.extension_id
+                      ? "active"
+                      : ""
                       }`}
                     id={`v-pills-${index}-tab`}
                     data-bs-toggle="pill"
@@ -1423,12 +1423,25 @@ const BookingHost = () => {
                               </li>
                             )}
 
-                            {viewDetails?.discount > 0 && (
+                            {/* {viewDetails?.discount > 0 && (
                               <li>
                                 discount
                                 <span>
                                   {" "}
                                   -${formatCurrency(viewDetails?.discount)}{" "}
+                                </span>
+                              </li>
+                            )} */}
+
+                            {viewDetails?.charges?.booking_hours > 2 && viewDetails?.charges?.discount > 0 && (
+
+                              <li>
+                                discount
+                                <span>
+                                  -$
+                                  {formatCurrency(
+                                    viewDetails?.charges?.discount || 0
+                                  )}
                                 </span>
                               </li>
                             )}
@@ -1502,15 +1515,22 @@ const BookingHost = () => {
                             </li>
                             {/* )} */}
                             {/* {viewDetails?.charges?.discount > 0 && ( */}
-                            <li>
-                              discount
-                              <span>
-                                -$
-                                {formatCurrency(
-                                  viewDetails?.charges?.discount || 0
-                                )}
-                              </span>
-                            </li>
+
+
+
+
+                            {viewDetails?.charges?.booking_hours > 2 && viewDetails?.charges?.discount > 0 && (
+
+                              <li>
+                                discount
+                                <span>
+                                  -$
+                                  {formatCurrency(
+                                    viewDetails?.charges?.discount || 0
+                                  )}
+                                </span>
+                              </li>
+                            )}
                             {/* )} */}
 
                             <li className="total-cost">
@@ -1584,10 +1604,10 @@ const BookingHost = () => {
                         <Link to="#" onClick={handleWishlistClick}>
                           <i
                             className={`fa-solid fa-heart me-1 ${userType == "host"
-                                ? viewDetails?.wishlist
-                                : viewDetails?.is_in_wishlist
-                                  ? "text-danger"
-                                  : "light-gray"
+                              ? viewDetails?.wishlist
+                              : viewDetails?.is_in_wishlist
+                                ? "text-danger"
+                                : "light-gray"
                               }`}
                           ></i>
                           Favorite
@@ -1602,14 +1622,14 @@ const BookingHost = () => {
                 {/* <div className={`top-grid-bookinghost-h top-grid-images-${viewDetails?.images?.length <5 ? 5 : viewDetails?.images?.length || viewDetails?.property_images?.length >5 ? 5 : viewDetails?.property_images?.length}`}> */}
                 <div
                   className={`top-grid-bookinghost-h px-3 top-grid-images-${userType === "host"
-                      ? viewDetails?.images?.length < 3 &&
-                        viewDetails?.images?.length < 3
-                        ? viewDetails?.images?.length
-                        : 3
-                      : viewDetails?.property_images?.length &&
-                        viewDetails?.property_images?.length < 3
-                        ? viewDetails?.property_images?.length
-                        : 3
+                    ? viewDetails?.images?.length < 3 &&
+                      viewDetails?.images?.length < 3
+                      ? viewDetails?.images?.length
+                      : 3
+                    : viewDetails?.property_images?.length &&
+                      viewDetails?.property_images?.length < 3
+                      ? viewDetails?.property_images?.length
+                      : 3
                     }`}
                   onClick={() => setShowPropertyImages(true)}
                 >
@@ -2679,8 +2699,8 @@ const ApproveDeclineModal = ({ show, status, data, onClose, onSubmit }) => {
                     key={reason}
                     type="button"
                     className={`btn ${selectedReason === reason
-                        ? "primary-color"
-                        : "btn-outline-secondary"
+                      ? "primary-color"
+                      : "btn-outline-secondary"
                       }`}
                     onClick={() =>
                       setSelectedReason(selectedReason === reason ? "" : reason)
