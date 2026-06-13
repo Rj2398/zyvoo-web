@@ -350,13 +350,13 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
       flag = false;
     }
 
-    if (!selectedBedrooms || selectedBedrooms == "Any") {
-      toast.error("Please select count of bedrooms", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      flag = false;
-    }
+    // if (!selectedBedrooms || selectedBedrooms == "Any") {
+    //   toast.error("Please select count of bedrooms", {
+    //     position: "top-right",
+    //     autoClose: 3000,
+    //   });
+    //   flag = false;
+    // }
 
     if (!selectedBathrooms || selectedBathrooms === "Any") {
       toast.error("Please select count bathrooms", {
