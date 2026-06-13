@@ -21,6 +21,7 @@ import { KEYS, baseURL, imageBase } from "../../config/Constant";
 import moment from "moment";
 import useCommon from "../../hooks/useCommon";
 import { toast } from "react-toastify";
+import defaultContact from "../../../src/assets/defaultContact.jpg";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Loader";
 import SavedCardsDropdown from "./SavedCardsDropdown";
@@ -871,9 +872,12 @@ const Checkout = ({ setExtendedTime }) => {
                       </span>
                       <img
                         className="chat-right-top-profile-image"
-                        src={imageBase + checkoutData?.host_profile_image}
+                        src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
                         loading="lazy"
                         alt="Host"
+                        onError={(e) => {
+                          e.target.src = defaultContact;
+                        }}
                         style={{
                           width: "clamp(50px, 7vw, 60px)",
                           height: "clamp(50px, 7vw, 60px)",
@@ -2264,9 +2268,12 @@ const Checkout = ({ setExtendedTime }) => {
                         </span>
                         <img
                           className="chat-right-top-profile-image"
-                          src={imageBase + checkoutData?.host_profile_image}
+                          src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
                           loading="lazy"
                           alt="Host"
+                          onError={(e) => {
+                            e.target.src = defaultContact;
+                          }}
                           style={{
                             width: "clamp(50px, 7vw, 60px)",
                             height: "clamp(50px, 7vw, 60px)",
@@ -2388,9 +2395,12 @@ const Checkout = ({ setExtendedTime }) => {
                       >
                         <img
                           className="chat-right-top-profile-image"
-                          src={imageBase + checkoutData?.host_profile_image}
+                          src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
                           loading="lazy"
                           alt="Host"
+                          onError={(e) => {
+                            e.target.src = defaultContact;
+                          }}
                           style={{
                             width: "clamp(50px, 7vw, 60px)",
                             height: "clamp(50px, 7vw, 60px)",

@@ -3,7 +3,7 @@ import Spinner from "react-bootstrap/Spinner";
 import Button from "react-bootstrap/Button";
 
 function Loader({ visible }) {
-  if (!visible) return null; 
+  if (!visible) return null;
 
   return (
     <div
@@ -16,7 +16,8 @@ function Loader({ visible }) {
         left: 0,
         width: "100%",
         height: "100%",
-        backgroundColor: "rgba(255, 255, 255, 0.8)", 
+        // backgroundColor: "rgba(255, 255, 255, 0.8)", 
+        backgroundColor: "transparent",
         zIndex: 1050,
       }}
     >

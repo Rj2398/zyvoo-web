@@ -349,6 +349,7 @@ import Loader2 from "../Loader2";
 import { Image } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { set } from "date-fns";
+import defaultContact from "../../assets/defaultContact.jpg";
 const ProductItem = ({
   hourly_rate,
   distance_miles,
@@ -698,8 +699,14 @@ const ProductItem = ({
             }}
           >
             <div className="carousel-inner-bottom-image">
-              {/* <img src={imageBase + hostImg} alt="Host" loading="lazy"/> */}
-              <img src={`${imageBase}${hostImg}`} alt="Host" loading="lazy" />
+              <img
+                src={hostImg && hostImg !== "undefined" && hostImg !== "null" ? `${imageBase}${hostImg}` : defaultContact}
+                alt="Host"
+                loading="lazy"
+                onError={(e) => {
+                  e.target.src = defaultContact;
+                }}
+              />
 
               {award && (
                 <Image

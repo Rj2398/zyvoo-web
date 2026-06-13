@@ -7,6 +7,7 @@ import CustomCarouselGuest from "../../components/guest/CustomCarouselGuest";
 import { imageBase, KEYS } from "../../config/Constant";
 import {  AiFillHeart } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import defaultContact from "../../assets/defaultContact.jpg";
 
 const WishListDetails = () => {
   const { getSavedItemsInWishlist, removeItemFromWishlist } = useCommon();
@@ -131,7 +132,15 @@ const WishListDetails = () => {
                           <CustomCarouselGuest images={item?.images} propertyId={item?.property_id} />
                           <div className="carousel-inner-bottom" onClick={() => navigate("/host-listing", { state: { hostId: item?.host_id }})}>
                             <div className="carousel-inner-bottom-image">
-                              <img src={imageBase + item?.host_profile_image } style={{ borderRadius:'50%' }} loading="lazy" alt="profile" />
+                              <img
+                                src={item?.host_profile_image && item?.host_profile_image !== "undefined" && item?.host_profile_image !== "null" ? imageBase + item?.host_profile_image : defaultContact}
+                                style={{ borderRadius:'50%' }}
+                                loading="lazy"
+                                alt="profile"
+                                onError={(e) => {
+                                  e.target.src = defaultContact;
+                                }}
+                              />
                               {item?.is_star_host &&( <span className="carousel-profile-batch"></span>)}
                             </div>
                             <h2>

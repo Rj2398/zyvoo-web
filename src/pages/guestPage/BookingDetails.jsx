@@ -2,6 +2,7 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { KEYS, imageBase } from "../../config/Constant";
+import defaultContact from "../../assets/defaultContact.jpg";
 import { FaCalendarAlt, FaPlus, FaRegClock } from "react-icons/fa";
 import MessageHost from "../../components/guest/bookingDetailsModal/MessageHost";
 import NotificationPopup from "../../components/guest/bookingDetailsModal/NotificationPopup";
@@ -332,9 +333,12 @@ const BookingDetails = () => {
                     </span>
                     <img
                       className="chat-right-top-profile-image"
-                      src={imageBase + bookingDetails?.host_profile_image}
+                      src={bookingDetails?.host_profile_image && bookingDetails?.host_profile_image !== "undefined" && bookingDetails?.host_profile_image !== "null" ? imageBase + bookingDetails?.host_profile_image : defaultContact}
                       loading="lazy"
                       alt="Host"
+                      onError={(e) => {
+                        e.target.src = defaultContact;
+                      }}
                       style={{
                         width: "clamp(50px, 7vw, 60px)",
                         height: "clamp(50px, 7vw, 60px)",
@@ -1300,9 +1304,12 @@ const BookingDetails = () => {
                     >
                       <img
                         className="chat-right-top-profile-image"
-                        src={imageBase + bookingDetails?.host_profile_image}
+                        src={bookingDetails?.host_profile_image && bookingDetails?.host_profile_image !== "undefined" && bookingDetails?.host_profile_image !== "null" ? imageBase + bookingDetails?.host_profile_image : defaultContact}
                         loading="lazy"
                         alt="Host"
+                        onError={(e) => {
+                          e.target.src = defaultContact;
+                        }}
                         style={{
                           width: "clamp(50px, 7vw, 60px)",
                           height: "clamp(50px, 7vw, 60px)",

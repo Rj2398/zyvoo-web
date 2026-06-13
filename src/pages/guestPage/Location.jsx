@@ -24,6 +24,7 @@ import { setBookingDetailsData } from "../../store/slices/userSlice";
 import ShareModal from "../../components/guest/bookingDetailsModal/ShareModal";
 import RegisterModal from "../../components/guest/authModalGuest/RegisterModal";
 import loactionImg from "../../assets/locationImg.png";
+import defaultContact from "../../assets/defaultContact.jpg";
 // import { now } from "moment";
 
 function Location() {
@@ -1501,9 +1502,12 @@ function Location() {
                         >
                           <div className="location-reviews-list-left">
                             <img
-                              src={`${imageBase}${item?.profile_image}`}
+                              src={item?.profile_image && item?.profile_image !== "undefined" && item?.profile_image !== "null" ? `${imageBase}${item?.profile_image}` : defaultContact}
                               loading="lazy"
                               alt="profile_image"
+                              onError={(e) => {
+                                e.target.src = defaultContact;
+                              }}
                             />
                             <h2>
                               {item?.reviewer_name} <br />
@@ -1627,9 +1631,12 @@ function Location() {
                         <div key={index} className="location-reviews-list">
                           <div className="location-reviews-list-left">
                             <img
-                              src={`${imageBase}${item?.profile_image}`}
+                              src={item?.profile_image && item?.profile_image !== "undefined" && item?.profile_image !== "null" ? `${imageBase}${item?.profile_image}` : defaultContact}
                               loading="lazy"
                               alt="profile_image"
+                              onError={(e) => {
+                                e.target.src = defaultContact;
+                              }}
                             />
                             <h2>
                               {item?.reviewer_name} <br />

@@ -14,6 +14,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { KEYS, imageBase } from "../../config/Constant";
 import moment from "moment";
 import useCommon from "../../hooks/useCommon";
+import defaultContact from "../../assets/defaultContact.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "../Loader";
@@ -404,9 +405,12 @@ const BookingExtendedTime = () => {
                       </span>
                       <img
                         className="chat-right-top-profile-image"
-                        src={imageBase + checkoutData?.host_profile_image}
+                        src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
                         loading="lazy"
                         alt="Host"
+                        onError={(e) => {
+                          e.target.src = defaultContact;
+                        }}
                         style={{
                           width: "clamp(50px, 7vw, 60px)",
                           height: "clamp(50px, 7vw, 60px)",
@@ -1217,8 +1221,11 @@ const BookingExtendedTime = () => {
                     <div className="chat-right-top-profile">
                       <img
                         className="chat-right-top-profile-image"
-                        src={imageBase + checkoutData?.host_profile_image}
+                        src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
                         loading="lazy" alt="host profile image"
+                        onError={(e) => {
+                          e.target.src = defaultContact;
+                        }}
                       />
                       <h2>{checkoutData?.hosted_by}</h2>
                       <img
@@ -1319,9 +1326,12 @@ const BookingExtendedTime = () => {
                     >
                       <img
                         className="chat-right-top-profile-image"
-                        src={imageBase + checkoutData?.host_profile_image}
+                        src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
                         loading="lazy"
                         alt="Host"
+                        onError={(e) => {
+                          e.target.src = defaultContact;
+                        }}
                         style={{
                           width: "clamp(50px, 7vw, 60px)",
                           height: "clamp(50px, 7vw, 60px)",
