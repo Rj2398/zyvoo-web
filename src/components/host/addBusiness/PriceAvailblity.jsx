@@ -3,7 +3,11 @@ import { Row, Col, Form, Button, Container } from "react-bootstrap";
 import { FaPlus, FaPen } from "react-icons/fa";
 import ItemSelector from "./ItemSelector";
 import { useDispatch, useSelector } from "react-redux";
-import { clearAddPropertyDetails, setAddnewPropertyState, setPropertyId, } from "../../../store/slices/hostuserSlice";
+import {
+  clearAddPropertyDetails,
+  setAddnewPropertyState,
+  setPropertyId,
+} from "../../../store/slices/hostuserSlice";
 import useHome from "../../../hooks/host/useHome";
 import moment from "moment";
 import { toast } from "react-toastify";
@@ -25,9 +29,20 @@ const monthsRange = [
   { id: "12", label: "Dec" },
 ];
 
-const daysRange = [{ label: "all" }, { label: "working_days" }, { label: "weekends" },];
+const daysRange = [
+  { label: "all" },
+  { label: "working_days" },
+  { label: "weekends" },
+];
 
-const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID, onBack, activeTab }) =>{
+const PriceAvailblity = ({
+  switchToGallery,
+  hideModal,
+  propertyDataa,
+  propertyID,
+  onBack,
+  activeTab,
+}) => {
   const [propertyData, setPropertyData] = useState(propertyDataa);
 
   useEffect(() => {
@@ -36,35 +51,38 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
 
   const dispatch = useDispatch();
   const { addPropertyHost, updateProperyDetails } = useHome();
-  const GallerySelect = useSelector((state) => state?.hostuser?.addPropertyDetails);
+  const GallerySelect = useSelector(
+    (state) => state?.hostuser?.addPropertyDetails,
+  );
   const [minHour, setMinHour] = useState(
     propertyData?.min_booking_hours != null &&
       propertyData?.min_booking_hours !== undefined
-      ? String(parseInt(propertyData?.min_booking_hours)) : "2"
+      ? String(parseInt(propertyData?.min_booking_hours))
+      : "2",
   );
 
   const [pricing, setPricing] = useState(
     propertyData?.hourly_rate != null && propertyData?.hourly_rate !== undefined
       ? String(parseInt(propertyData?.hourly_rate))
-      : "10"
+      : "10",
   );
   const [bulkHour, setBulkHour] = useState(
     propertyData?.bulk_discount_hour != null &&
       propertyData?.bulk_discount_hour !== undefined
       ? String(propertyData?.bulk_discount_hour)
-      : "2"
+      : "2",
   );
   const [bulkDiscount, setBulkDiscount] = useState(
     propertyData?.bulk_discount_rate != null &&
       propertyData?.bulk_discount_rate !== undefined
       ? String(parseInt(propertyData?.bulk_discount_rate))
-      : "5"
+      : "5",
   );
   const [cleaningFee, setCleaningFee] = useState(
     propertyData?.cleaning_fee != null &&
       propertyData?.cleaning_fee !== undefined
       ? propertyData?.cleaning_fee
-      : ""
+      : "",
   );
   const [showCleaningFee, setShowCleaningFee] = useState(cleaningFee || false);
 
@@ -83,26 +101,26 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
     propertyData?.available_from != null &&
       propertyData?.available_from !== undefined
       ? convertTo12HourFormat(propertyData?.available_from)
-      : "00"
+      : "00",
   );
 
   const [toTime, setToTime] = useState(
     propertyData?.available_to != null &&
       propertyData?.available_to !== undefined
       ? convertTo12HourFormat(propertyData?.available_to)
-      : "00"
+      : "00",
   );
   const [monthselect, setMonthsSelect] = useState(
     propertyData?.available_month != null &&
       propertyData?.available_month !== undefined
       ? propertyData?.available_month
-      : "00"
+      : "00",
   );
   const [selcteAvailiblity, setSelectAvailiblity] = useState(
     propertyData?.available_day != null &&
       propertyData?.available_day !== undefined
       ? propertyData?.available_day
-      : "All"
+      : "All",
   );
 
   const handleSelectMonths = (id) => {
@@ -129,7 +147,9 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
     setSelectAvailiblity(label);
   };
 
-  const [selectedItems, setSelectedItems] = useState(propertyData?.add_ons ?? []);
+  const [selectedItems, setSelectedItems] = useState(
+    propertyData?.add_ons ?? [],
+  );
 
   const handleItemsUpdate = (items) => {
     setSelectedItems(items);
@@ -191,7 +211,10 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       flag = false;
     }
 
-    if ((!propertyData?.add_ons || propertyData.add_ons.length === 0) && (selectedItems.length === 0)) {
+    if (
+      (!propertyData?.add_ons || propertyData.add_ons.length === 0) &&
+      selectedItems.length === 0
+    ) {
       toast.error("Please add at least one selected item", {
         position: "top-right",
         autoClose: 3000,
@@ -206,7 +229,6 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       });
       flag = false;
     }
-
 
     if (!selcteAvailiblity?.trim()) {
       toast.error("Please select availability", {
@@ -232,9 +254,6 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       flag = false;
     }
 
-
-
-
     if (fromTime === toTime) {
       toast.error("Start time and end time should be different");
       flag = false;
@@ -245,8 +264,22 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       const [fromH, fromM] = fromT.split(":").map(Number);
       const [toH, toM] = toT.split(":").map(Number);
 
-      let fromTotalMinutes = ((fromModifier === "PM" && fromH !== 12 ? fromH + 12 : fromH === 12 && fromModifier === "AM" ? 0 : fromH) * 60) + fromM;
-      let toTotalMinutes = ((toModifier === "PM" && toH !== 12 ? toH + 12 : toH === 12 && toModifier === "AM" ? 0 : toH) * 60) + toM;
+      let fromTotalMinutes =
+        (fromModifier === "PM" && fromH !== 12
+          ? fromH + 12
+          : fromH === 12 && fromModifier === "AM"
+            ? 0
+            : fromH) *
+          60 +
+        fromM;
+      let toTotalMinutes =
+        (toModifier === "PM" && toH !== 12
+          ? toH + 12
+          : toH === 12 && toModifier === "AM"
+            ? 0
+            : toH) *
+          60 +
+        toM;
 
       let duration = toTotalMinutes - fromTotalMinutes;
       if (duration < 0) {
@@ -259,7 +292,6 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         return;
       }
     }
-
 
     return flag;
   };
@@ -282,7 +314,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
 
       if (response) {
         toast.success("Property added successful");
-        dispatch(setAddnewPropertyState(false))
+        dispatch(setAddnewPropertyState(false));
         switchToGallery("home_setup");
         hideModal();
         dispatch(clearAddPropertyDetails());
@@ -315,14 +347,12 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
     }
   };
 
-
   const [disabledTimes, setDisabledTimes] = useState([]);
 
   const handleFromTimeChange = (value) => {
     setFromTime(value);
 
     if (value && minHour) {
-
       const [time, meridian] = value.split(" ");
       const [hour, minute] = time.split(":");
 
@@ -331,7 +361,6 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       const endTimeStrObj = minutesToTime(endMins);
       const formattedEnd = `${endTimeStrObj.hour}:${endTimeStrObj.minute} ${endTimeStrObj.meridian}`;
       setToTime(formattedEnd);
-
 
       const disabledRange = [];
       for (let i = 0; i < minHour; i++) {
@@ -481,7 +510,6 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
     setEndMinute(end.minute);
     setEndMeridian(end.meridian);
 
-
     const disabled = [];
     for (let i = startMins; i < endMins; i += 15) {
       const t = minutesToTime(i);
@@ -523,14 +551,21 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
     };
 
     checkWindowWidth();
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
-  }, [])
+    return () => window.removeEventListener("resize", checkWindowWidth);
+  }, []);
 
   return (
-    <div className="p-lg-3"  style={{marginBottom :isMobileWidth && (showDropdownTime || showDropdownTime2) ? "128px":""}}>
-
+    <div
+      className="p-lg-3"
+      style={{
+        marginBottom:
+          isMobileWidth && (showDropdownTime || showDropdownTime2)
+            ? "128px"
+            : "",
+      }}
+    >
       {isMobileWidth && (
         <>
           {/* <div className="mob-search-filter border-start-0 border-end-0"> */}
@@ -539,19 +574,26 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
               <div className="col-lg-12">
                 <div className="mob-search-filter-in">
                   <div className="mob-search-bar-back">
-                    <button  onClick={() =>  switchToGallery("gallery_location")}
-                     className="mob-back-btn"
+                    <button
+                      onClick={() => switchToGallery("gallery_location")}
+                      className="mob-back-btn"
                     >
-                      <i className="fa-regular fa-arrow-left"  style={{ textAlign: "center", appearance: "none",         
-                              WebkitAppearance: "none",    
-                              color: "black",  }}></i>
+                      <i
+                        className="fa-regular fa-arrow-left"
+                        style={{
+                          textAlign: "center",
+                          appearance: "none",
+                          WebkitAppearance: "none",
+                          color: "black",
+                        }}
+                      ></i>
                     </button>
                   </div>
                 </div>
               </div>
-
             </div>
-            <Button className="save-continue-btn"
+            <Button
+              className="save-continue-btn"
               disabled={isPublishing}
               style={{
                 backgroundColor: "#4AEAB1",
@@ -569,40 +611,68 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         </>
       )}
 
-      <hr className="property-modal-hr" style={{marginTop:isMobileWidth?'':'-9px'}} />
+      <hr
+        className="property-modal-hr"
+        style={{ marginTop: isMobileWidth ? "" : "-9px" }}
+      />
 
       {isMobileWidth && (
         <>
           <h4 className="property-modal-main-heading"> Manage your place </h4>
-          <h6 className="property-modal-main-sub-heading"> Setup places, availability, prices and more. </h6>
+          <h6 className="property-modal-main-sub-heading">
+            {" "}
+            Setup places, availability, prices and more.{" "}
+          </h6>
 
-          <div className="property-modal-radio-switch" >
-            {[{ key: "home_setup", label: "Home Setup" },
-            { key: "gallery_location", label: "Gallery & Location" },
-            { key: "price_availability", label: "Price and Availability" },
+          <div className="property-modal-radio-switch">
+            {[
+              { key: "home_setup", label: "Home Setup" },
+              { key: "gallery_location", label: "Gallery & Location" },
+              { key: "price_availability", label: "Price and Availability" },
             ].map(({ key, label }) => (
-              <button key={key} disabled className="property-modal-radio-switch-btn"
+              <button
+                key={key}
+                disabled
+                className="property-modal-radio-switch-btn"
                 onClick={() => switchToGallery(key)}
                 style={{
-                  backgroundColor: activeTab === key ? "#FFFFFF" : "transparent",
+                  backgroundColor:
+                    activeTab === key ? "#FFFFFF" : "transparent",
                   color: activeTab === key ? "#000000" : "#000",
-                  border: activeTab === key ? "1px solid #FFFFFF" : "2px solid transparent",
-                }}>
+                  border:
+                    activeTab === key
+                      ? "1px solid #FFFFFF"
+                      : "2px solid transparent",
+                }}
+              >
                 {label}
               </button>
             ))}
           </div>
         </>
       )}
-      {
-        isMobileWidth && (<hr className="property-modal-hr" />)
-      }
-  
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Minimum hour & Pricing <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+      {isMobileWidth && <hr className="property-modal-hr" />}
+
+      <h6
+        style={{
+          fontSize: isMobileWidth ? "16px" : "25px",
+          marginLeft: isMobileWidth ? "9px" : "-4px",
+          marginTop: "30px",
+          fontWeight: isMobileWidth && "400",
+        }}
+      >
+        Minimum hour & Pricing{" "}
+      </h6>
       <Row className="mb-4">
-        <Col md={4} style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%", }} >
-          <Form.Select value={minHour} onChange={(e) => handleMinHourChange(e.target.value)}
-            className="custom-input" style={{ fontSize: isMobileWidth && "13px" }}
+        <Col
+          md={4}
+          style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%" }}
+        >
+          <Form.Select
+            value={minHour}
+            onChange={(e) => handleMinHourChange(e.target.value)}
+            className="custom-input"
+            style={{ fontSize: isMobileWidth && "13px" }}
           >
             <style>
               {` .custom-input { color: black; // border:1px solid  black; border-radius:20px; padding:10px; }`}
@@ -620,8 +690,11 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
           </Form.Select>
         </Col>
         <Col md={4} style={{ width: "48%", marginTop: "2%" }}>
-          <Form.Select value={pricing} onChange={(e) => setPricing(e.target.value)}
-            className="custom-input" style={{ fontSize: isMobileWidth && "13px" }}
+          <Form.Select
+            value={pricing}
+            onChange={(e) => setPricing(e.target.value)}
+            className="custom-input"
+            style={{ fontSize: isMobileWidth && "13px" }}
           >
             <style>
               {` .custom-input {color: black; border-radius:20px; padding:10px; } `}
@@ -641,11 +714,26 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
       <hr className="property-modal-hr" />
 
       {/* Bulk Discount */}
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Bulk Discount <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+      <h6
+        style={{
+          fontSize: isMobileWidth ? "16px" : "25px",
+          marginLeft: isMobileWidth ? "9px" : "-4px",
+          marginTop: "30px",
+          fontWeight: isMobileWidth && "400",
+        }}
+      >
+        Bulk Discount{" "}
+      </h6>
       <Row className="mb-4">
-        <Col md={4} style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%", }} >
-          <Form.Select value={bulkHour} onChange={(e) => setBulkHour(e.target.value)}
-            className="custom-input" style={{ fontSize: isMobileWidth && "13px" }}
+        <Col
+          md={4}
+          style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%" }}
+        >
+          <Form.Select
+            value={bulkHour}
+            onChange={(e) => setBulkHour(e.target.value)}
+            className="custom-input"
+            style={{ fontSize: isMobileWidth && "13px" }}
           >
             <style>
               {` .custom-input { color: black; border-radius:20px; }`}
@@ -661,9 +749,15 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
             <option value="9">9 Hours minimum</option>
           </Form.Select>
         </Col>
-        <Col md={4} style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%", }} >
-          <Form.Select value={bulkDiscount} onChange={(e) => setBulkDiscount(e.target.value)}
-            className="custom-input" style={{ fontSize: isMobileWidth && "13px" }}
+        <Col
+          md={4}
+          style={{ width: isMobileWidth ? "50%" : "48%", marginTop: "2%" }}
+        >
+          <Form.Select
+            value={bulkDiscount}
+            onChange={(e) => setBulkDiscount(e.target.value)}
+            className="custom-input"
+            style={{ fontSize: isMobileWidth && "13px" }}
           >
             <style>
               {` .custom-input { color: black; border-radius:20px; } `}
@@ -681,15 +775,60 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         </Col>
       </Row>
       <hr className="property-modal-hr" />
-      <h6   style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Add-ons from the host <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+      <h6
+        style={{
+          fontSize: isMobileWidth ? "16px" : "25px",
+          marginLeft: isMobileWidth ? "9px" : "-4px",
+          marginTop: "30px",
+          fontWeight: isMobileWidth && "400",
+        }}
+      >
+        Add-ons from the host{" "}
+        <span
+          style={{
+            color: "black",
+            fontSize: "14px",
+            position: "relative",
+            top: "-8px",
+            marginLeft: "-3px",
+          }}
+        >
+          *
+        </span>
+      </h6>
+
       <Row className="">
         <Col md={12}>
-          <ItemSelector onItemsUpdate={handleItemsUpdate} propertyData={propertyData} isMobileWidth={isMobileWidth}/>
+          <ItemSelector
+            onItemsUpdate={handleItemsUpdate}
+            propertyData={propertyData}
+            isMobileWidth={isMobileWidth}
+          />
         </Col>
       </Row>
-      <hr className="property-modal-hr"  style={{marginTop:'-5px'}}/>
+      <hr className="property-modal-hr" style={{ marginTop: "-5px" }} />
       {/* Cleaning Fee */}
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Cleaning Fee</h6>
+      <h6
+        style={{
+          fontSize: isMobileWidth ? "16px" : "25px",
+          marginLeft: isMobileWidth ? "9px" : "-4px",
+          marginTop: "30px",
+          fontWeight: isMobileWidth && "400",
+        }}
+      >
+        Cleaning Fee{" "}
+        <span
+          style={{
+            color: "black",
+            fontSize: "14px",
+            position: "relative",
+            top: "-8px",
+            marginLeft: "-3px",
+          }}
+        >
+          *
+        </span>
+      </h6>
       <Row className="mb-4">
         <Col md={4}>
           {!showCleaningFee ? (
@@ -712,7 +851,12 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
             >
               <span style={{ fontWeight: "400" }}>$</span>
               <span
-                style={{ fontWeight: "400", flexGrow: 1, textAlign: "left",fontSize:isMobileWidth && "13px" }}
+                style={{
+                  fontWeight: "400",
+                  flexGrow: 1,
+                  textAlign: "left",
+                  fontSize: isMobileWidth && "13px",
+                }}
               >
                 Add Cleaning Fee
               </span>
@@ -739,7 +883,7 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
                 borderRadius: "999px",
                 backgroundColor: "#fff",
                 padding: "6px 12px",
-                width: isMobileWidth?"60%":"100%",
+                width: isMobileWidth ? "60%" : "100%",
                 gap: "10px",
               }}
             >
@@ -748,14 +892,14 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
                 type="text"
                 value={cleaningFee}
                 onChange={(e) => setCleaningFee(e.target.value)}
-                placeholder="Enter Fee *"
+                placeholder="Enter Fee"
                 style={{
                   border: "none",
                   boxShadow: "none",
                   fontWeight: "400",
-                  width: isMobileWidth?"120px":"142px",
+                  width: isMobileWidth ? "120px" : "142px",
                   padding: 0,
-                  fontSize:isMobileWidth ? "13px" :"16px"
+                  fontSize: isMobileWidth ? "13px" : "16px",
                 }}
               />
               <span
@@ -777,38 +921,75 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         </Col>
       </Row>
       <hr className="property-modal-hr" />
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >
-        Availability - Days & Months <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>
+      <h6
+        style={{
+          fontSize: isMobileWidth ? "16px" : "25px",
+          marginLeft: isMobileWidth ? "9px" : "-4px",
+          marginTop: "30px",
+          fontWeight: isMobileWidth && "400",
+        }}
+      >
+        Availability - Days & Months{" "}
+        <span
+          style={{
+            color: "black",
+            fontSize: "14px",
+            position: "relative",
+            top: "-8px",
+            marginLeft: "-3px",
+          }}
+        >
+          *
+        </span>
       </h6>
-      <h6  className="heading-title" style={{  color: "black", fontWeight:isMobileWidth?"400": "500",marginLeft: isMobileWidth?"9px":'-4px' }}>
+      <h6
+        className="heading-title"
+        style={{
+          color: "black",
+          fontWeight: isMobileWidth ? "400" : "500",
+          marginLeft: isMobileWidth ? "9px" : "-4px",
+        }}
+      >
         Months
       </h6>
-      <div className="months-selector-wrapper"
-      // style={{
-      //   display: "flex",
-      //   justifyContent: "space-around",
-      //   alignItems: "center",
-      //   border: "2px solid #EBEDED",
-      //   borderRadius: "60px",
-      //   padding: "2px 5px",
-      //   width: "100%",
-      //   margin: "20px auto",
-      //   backgroundColor: "#EBEDED",
-      //   height: 55,
-      //   marginBottom: "10px",
-      // }}
+      <div
+        className="months-selector-wrapper"
+        // style={{
+        //   display: "flex",
+        //   justifyContent: "space-around",
+        //   alignItems: "center",
+        //   border: "2px solid #EBEDED",
+        //   borderRadius: "60px",
+        //   padding: "2px 5px",
+        //   width: "100%",
+        //   margin: "20px auto",
+        //   backgroundColor: "#EBEDED",
+        //   height: 55,
+        //   marginBottom: "10px",
+        // }}
       >
         {monthsRange.map((month) => {
-          const isSelected = monthselect ? String(monthselect).split(",").includes(month.id) : false;
+          const isSelected = monthselect
+            ? String(monthselect).split(",").includes(month.id)
+            : false;
           return (
-            <button key={month.id} onClick={() => handleSelectMonths(month.id)} className="month-btn "
+            <button
+              key={month.id}
+              onClick={() => handleSelectMonths(month.id)}
+              className="month-btn "
               style={{
                 backgroundColor: isSelected ? "#FFFFFF" : "transparent",
-                color: isSelected ? "#000000" : isMobileWidth ? "black": "#3F3D56",
-                border: isSelected ? "2px solid #FFFFFF" : "2px solid transparent",
+                color: isSelected
+                  ? "#000000"
+                  : isMobileWidth
+                    ? "black"
+                    : "#3F3D56",
+                border: isSelected
+                  ? "2px solid #FFFFFF"
+                  : "2px solid transparent",
                 width: isMobileWidth ? "auto" : "7%",
                 padding: isMobileWidth ? "0px 12px" : "0px",
-                fontSize: isMobileWidth ? "10px" :"13px",
+                fontSize: isMobileWidth ? "10px" : "13px",
                 borderRadius: "20px",
                 cursor: "pointer",
                 fontWeight: "400",
@@ -826,7 +1007,15 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
         })}
       </div>
 
-      <h6  className="heading-title" style={{ marginTop:isMobileWidth?"0px":"20px",  color: "black", fontWeight:isMobileWidth?"400": "500",marginLeft: isMobileWidth?"9px":'-4px'  }} >
+      <h6
+        className="heading-title"
+        style={{
+          marginTop: isMobileWidth ? "0px" : "20px",
+          color: "black",
+          fontWeight: isMobileWidth ? "400" : "500",
+          marginLeft: isMobileWidth ? "9px" : "-4px",
+        }}
+      >
         Days
       </h6>
       <div
@@ -852,9 +1041,13 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
               // padding: "10px 20px",
               padding: "2px 5px",
               fontSize: isMobileWidth ? "10px" : "14px",
-              backgroundColor: selcteAvailiblity === label.label ? "#FFFFFF" : "transparent",
+              backgroundColor:
+                selcteAvailiblity === label.label ? "#FFFFFF" : "transparent",
               color: selcteAvailiblity === label.label ? "#000000" : "#000",
-              border: selcteAvailiblity === label.label ? "2px solid #FFFFFF" : "2px solid transparent",
+              border:
+                selcteAvailiblity === label.label
+                  ? "2px solid #FFFFFF"
+                  : "2px solid transparent",
               borderRadius: "20px",
               cursor: "pointer",
               fontWeight: "400",
@@ -865,17 +1058,44 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
             }}
           >
             {/* {label.label} */}
-            {label.label === "all" ? "All" : "Only " + label.label.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())}
+            {label.label === "all"
+              ? "All"
+              : "Only " +
+                label.label
+                  .replace(/_/g, " ")
+                  .replace(/\b\w/g, (char) => char.toUpperCase())}
           </button>
         ))}
       </div>
 
       <hr className="property-modal-hr" />
       {/* Availability - Hours */}
-      <h6  style={{fontSize:isMobileWidth?"16px":'25px',marginLeft: isMobileWidth?"9px":'-4px',marginTop:'30px',fontWeight:isMobileWidth && "400"}} >Availability - Hours <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+      <h6
+        style={{
+          fontSize: isMobileWidth ? "16px" : "25px",
+          marginLeft: isMobileWidth ? "9px" : "-4px",
+          marginTop: "30px",
+          fontWeight: isMobileWidth && "400",
+        }}
+      >
+        Availability - Hours{" "}
+        <span
+          style={{
+            color: "black",
+            fontSize: "14px",
+            position: "relative",
+            top: "-8px",
+            marginLeft: "-3px",
+          }}
+        >
+          *
+        </span>
+      </h6>
       <Row>
         <Col md={4} style={{ width: "48%", marginTop: "2%" }}>
-          <span style={{ paddingBottom: "10px", paddingLeft: "10px" }}>From</span>
+          <span style={{ paddingBottom: "10px", paddingLeft: "10px" }}>
+            From
+          </span>
           <div>
             {/* <button onClick={() => setShowDropdownTime(!showDropdownTime)} style={{ width: "100%", color: "black", borderRadius: "20px", background: "white", border: "1px solid #dee2e6", textAlign: "left", fontSize: "1rem", padding: "10px", marginTop: 5, fontWeight: "400" }}>
               {fromTime == "00" ? "Select Start Time" : fromTime}
@@ -889,20 +1109,28 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
                 background: "white",
                 border: "1px solid #dee2e6",
                 textAlign: "left",
-                fontSize: isMobileWidth?"13px":"14px",
+                fontSize: isMobileWidth ? "13px" : "14px",
                 padding: "10px",
                 marginTop: 5,
                 fontWeight: "400",
-                display: "flex",           // added
+                display: "flex", // added
                 justifyContent: "space-between", // added
-                alignItems: "center",      // added
+                alignItems: "center", // added
               }}
             >
-          {fromTime === "00" ?isMobileWidth?"Start Time": "Select Start Time" : fromTime}
-          <i className="fa-solid fa-chevron-down fa-sm" style={{width:'18.016637802124023',height:'11.019722938537598'}}></i>
-
-        </button>
-
+              {fromTime === "00"
+                ? isMobileWidth
+                  ? "Start Time"
+                  : "Select Start Time"
+                : fromTime}
+              <i
+                className="fa-solid fa-chevron-down fa-sm"
+                style={{
+                  width: "18.016637802124023",
+                  height: "11.019722938537598",
+                }}
+              ></i>
+            </button>
           </div>
 
           {showDropdownTime && (
@@ -976,29 +1204,39 @@ const PriceAvailblity = ({ switchToGallery, hideModal, propertyDataa, propertyID
               {toTime == "00" ? "Select End Time" : toTime}
             </button> */}
 
+            <button
+              onClick={() => setShowDropdownTime2(!showDropdownTime2)}
+              style={{
+                width: "100%",
+                color: "black",
+                borderRadius: "20px",
+                background: "white",
+                border: "1px solid #dee2e6",
+                textAlign: "left",
+                fontSize: isMobileWidth ? "13px" : "14px",
+                padding: "10px",
+                marginTop: 5,
+                fontWeight: "400",
 
-                   <button
-onClick={() => setShowDropdownTime2(!showDropdownTime2)}  style={{
-    width: "100%",
-    color: "black",
-    borderRadius: "20px",
-    background: "white",
-    border: "1px solid #dee2e6",
-    textAlign: "left",
-    fontSize: isMobileWidth?"13px":"14px",
-    padding: "10px",
-    marginTop: 5,
-    fontWeight: "400",
-
-    display: "flex",           // added
-    justifyContent: "space-between", // added
-    alignItems: "center",      // added
-  }}
->
-  {toTime == "00" ?isMobileWidth?"End Time": "Select End Time" : toTime}
- <i className="fa-solid fa-chevron-down fa-sm" style={{width:'18.016637802124023',height:'11.019722938537598'}}></i>
- {/* added icon */}
-</button>
+                display: "flex", // added
+                justifyContent: "space-between", // added
+                alignItems: "center", // added
+              }}
+            >
+              {toTime == "00"
+                ? isMobileWidth
+                  ? "End Time"
+                  : "Select End Time"
+                : toTime}
+              <i
+                className="fa-solid fa-chevron-down fa-sm"
+                style={{
+                  width: "18.016637802124023",
+                  height: "11.019722938537598",
+                }}
+              ></i>
+              {/* added icon */}
+            </button>
           </div>
 
           {showDropdownTime2 && (
@@ -1023,14 +1261,15 @@ onClick={() => setShowDropdownTime2(!showDropdownTime2)}  style={{
                 >
                   {[...Array(12).keys()].map((h) => {
                     const hour = (h + 1).toString().padStart(2, "0");
-                    const isDisabled = getDisabledEndHours().has(`${hour}-${endMeridian}`);
+                    const isDisabled = getDisabledEndHours().has(
+                      `${hour}-${endMeridian}`,
+                    );
                     return (
                       <option key={hour} value={hour} disabled={isDisabled}>
                         {hour}
                       </option>
                     );
                   })}
-
                 </select>
                 <select
                   value={endMinute}
@@ -1071,13 +1310,14 @@ onClick={() => setShowDropdownTime2(!showDropdownTime2)}  style={{
         </Col>
       </Row>
 
-           <hr className="property-modal-hr" />
+      <hr className="property-modal-hr" />
 
       {!isMobileWidth && (
         <>
           <Container className="mt-4 d-flex justify-content-between">
             {/* Clear All Button */}
-            <Button className="go-back-btn save-continue-btn"
+            <Button
+              className="go-back-btn save-continue-btn"
               variant="outline-success"
               onClick={() => switchToGallery("gallery_location")}
               style={{
@@ -1086,15 +1326,16 @@ onClick={() => setShowDropdownTime2(!showDropdownTime2)}  style={{
                 borderColor: "#E5E5E5",
                 fontWeight: "400",
                 borderRadius: "40px",
-                padding:'13px 26px',
-                marginLeft:'-15px'
+                padding: "13px 26px",
+                marginLeft: "-15px",
               }}
             >
-              Go back 
+              Go back
             </Button>
 
             {/* Save and Continue Button */}
-            <Button className="save-continue-btn"
+            <Button
+              className="save-continue-btn"
               disabled={isPublishing}
               style={{
                 backgroundColor: "#4AEAB1",
@@ -1102,7 +1343,7 @@ onClick={() => setShowDropdownTime2(!showDropdownTime2)}  style={{
                 fontWeight: "400",
                 color: "black",
                 borderRadius: "40px",
-                  padding:'13px 26px',
+                padding: "13px 26px",
               }}
               onClick={handlePriceAvailbity}
             >

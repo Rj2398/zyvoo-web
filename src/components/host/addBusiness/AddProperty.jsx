@@ -103,24 +103,24 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
   const [selectedOptions, setSelectedOptions] = useState(
     propertyData?.activities != null && Array.isArray(propertyData.amenities)
       ? propertyData.activities
-      : []
+      : [],
   ); // for activiites
   const [selectedAmenities, setSelectedAmenities] = useState(
     propertyData?.amenities != null && Array.isArray(propertyData.amenities)
       ? propertyData.amenities
-      : []
+      : [],
   ); // for amentites
   const [selectedRoom, setSelectedRoom] = useState(
     propertyData?.space_type != null && propertyData?.space_type !== undefined
       ? propertyData.space_type
-      : "Entire_Home"
+      : "Entire_Home",
   );
   const [showMore, setShowMore] = useState(false);
   const [selectedPrice, setSelectedPrice] = useState(
     propertyData?.property_size != null &&
       propertyData?.property_size !== undefined
       ? propertyData.property_size.toString()
-      : "Any"
+      : "Any",
   );
 
   //
@@ -130,7 +130,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
       propertyData?.property_size != null &&
         propertyData?.property_size !== undefined
         ? propertyData.property_size.toString()
-        : []
+        : [],
     );
 
   const [customPrice, setCustomPrice] = useState("");
@@ -142,7 +142,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
     propertyData?.max_guest_count != null &&
       propertyData?.max_guest_count !== undefined
       ? propertyData.max_guest_count.toString()
-      : "Any"
+      : "Any",
   ); // Default value
 
   const [customGuests, setCustomGuests] = useState("");
@@ -153,7 +153,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
     propertyData?.bedroom_count != null &&
       propertyData?.bedroom_count !== undefined
       ? propertyData.bedroom_count.toString()
-      : "Any"
+      : "Any",
   ); // Default value
   const [customBedrooms, setCustomBedrooms] = useState("");
 
@@ -164,7 +164,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
     propertyData?.bathroom_count != null &&
       propertyData?.bathroom_count !== undefined
       ? propertyData.bathroom_count.toString()
-      : "Any"
+      : "Any",
   ); // Default value
 
   const [customBathrooms, setCustomBathrooms] = useState(""); // For manual input
@@ -175,24 +175,24 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
     propertyData?.is_instant_book != null &&
       propertyData?.is_instant_book !== undefined
       ? propertyData?.is_instant_book.toString()
-      : "0"
+      : "0",
   );
   const [selfCheckIn, setSelfCheckIn] = useState(
     propertyData?.has_self_checkin != null &&
       propertyData?.has_self_checkin !== undefined
       ? propertyData?.has_self_checkin.toString()
-      : "0"
+      : "0",
   );
   const [allowsPets, setAllowsPets] = useState(
     propertyData?.allows_pets != null && propertyData?.allows_pets !== undefined
       ? propertyData?.allows_pets.toString()
-      : "0"
+      : "0",
   );
   const [selectedCancellation, setSelectedCancellation] = useState(
     propertyData?.cancellation_duration != null &&
       propertyData?.cancellation_duration !== undefined
       ? propertyData.cancellation_duration.toString()
-      : ""
+      : "",
   );
   //
 
@@ -262,7 +262,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
     setSelectedOptions((prevSelected) =>
       prevSelected.includes(id)
         ? prevSelected.filter((item) => item !== id)
-        : [...prevSelected, id]
+        : [...prevSelected, id],
     );
   };
   //other activity
@@ -271,7 +271,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
     setSelectedOptionsOtherActivity((prevSelected) =>
       prevSelected.includes(id)
         ? prevSelected.filter((item) => item !== id)
-        : [...prevSelected, id]
+        : [...prevSelected, id],
     );
   };
 
@@ -280,7 +280,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
     setSelectedAmenities((prev) =>
       prev.includes(amenity)
         ? prev.filter((item) => item !== amenity)
-        : [...prev, amenity]
+        : [...prev, amenity],
     );
   };
 
@@ -289,16 +289,16 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
   useEffect(() => {
     if (propertyDataa) {
       setSelectedOptions(
-        Array.isArray(propertyDataa.activities) ? propertyDataa.activities : []
+        Array.isArray(propertyDataa.activities) ? propertyDataa.activities : [],
       );
       setSelectedAmenities(
-        Array.isArray(propertyDataa.amenities) ? propertyDataa.amenities : []
+        Array.isArray(propertyDataa.amenities) ? propertyDataa.amenities : [],
       );
       setSelectedRoom(propertyDataa.space_type?.toLowerCase() || "Entire_Home");
       setSelectedPrice(
         propertyDataa.property_size
           ? propertyDataa.property_size.toString()
-          : "Any"
+          : "Any",
       );
       setSelectedOptionsOtherActivity([]); // Update as needed
       setSelectedGuests(propertyDataa.max_guest_count?.toString() || "Any");
@@ -308,7 +308,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
       setSelfCheckIn(propertyDataa.has_self_checkin?.toString() || "0");
       setAllowsPets(propertyDataa.allows_pets?.toString() || "0");
       setSelectedCancellation(
-        propertyDataa.cancellation_duration?.toString() || ""
+        propertyDataa.cancellation_duration?.toString() || "",
       );
     }
   }, [propertyDataa]);
@@ -433,6 +433,10 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
 
     return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
+
+  // Check if "Stays" is selected in activities
+  const isStaysSelected = selectedOptions.includes("Stays") || selectedOptionsOtherActivity.includes("Stays");
+  const isDisabled = !isStaysSelected;
 
   return (
     <>
@@ -602,7 +606,12 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
         <div className="preferences-wrap-host">
           <h6 className="property-modal-sub-heading">
             {" "}
-            Property size (Sq ft) <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>{" "}
+            Property size (Sq ft){" "}
+            <span
+              style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}
+            >
+              *
+            </span>{" "}
           </h6>
           <div className="price-filter-wrapper">
             {priceOptions.map((price) => (
@@ -657,7 +666,14 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             </button>
           </div>
 
-          <h6 className="property-modal-sub-heading">Number of people <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+          <h6 className="property-modal-sub-heading">
+            Number of people{" "}
+            <span
+              style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}
+            >
+              *
+            </span>
+          </h6>
           <div className="price-filter-wrapper">
             {guestOptions.map((guest) => (
               <button
@@ -712,9 +728,19 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             </button>
           </div>
 
-          <h6 className="property-modal-sub-heading">Bedrooms <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+          <h6 className="property-modal-sub-heading">
+            Bedrooms{" "}
+            <span
+              style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}
+            >
+              *
+            </span>
+          </h6>
 
-          <div className="price-filter-wrapper">
+          <div className="price-filter-wrapper" style={{ opacity: isDisabled ? 0.5 : 1, pointerEvents: isDisabled ? "none" : "auto", transition: "opacity 0.3s ease" }}>
+
+             {/* const isBedroomsSection = section.name === "bedroom"; */}
+            
             {bedroomOptions.map((bedroom) => (
               <button
                 className="price-filter-wrapper-btn"
@@ -730,6 +756,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                       : "2px solid transparent",
                   fontWeight: selectedBedrooms === bedroom ? "500" : "400",
                 }}
+
+                disabled={isDisabled}
               >
                 {bedroom}
               </button>
@@ -741,7 +769,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
               type="text"
               placeholder="Type..."
               className="price-filter-wrapper-input"
-              disabled={!!BedroomProp}
+              disabled={!!BedroomProp || isDisabled}
               value={
                 bedroomOptions.includes(selectedBedrooms)
                   ? customBedrooms
@@ -758,6 +786,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                   setSelectedBedrooms("");
                 }
               }}
+              disabled={isDisabled}
             >
               {BedroomProp ? (
                 <i className="fa-solid fa-xmark"></i>
@@ -767,7 +796,28 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             </button>
           </div>
 
-          <h6 className="property-modal-sub-heading">Bathrooms <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span></h6>
+          {isDisabled && (
+            <p
+              style={{
+                fontSize: isMobileWidth ? "10px" : "12px",
+                color: "#999",
+                marginTop: "0px",
+                marginLeft: "12px",
+                fontStyle: "italic",
+              }}
+            >
+              Bedrooms selection is only available for "Stays" activity
+            </p>
+          )}
+
+          <h6 className="property-modal-sub-heading">
+            Bathrooms{" "}
+            <span
+              style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}
+            >
+              *
+            </span>
+          </h6>
 
           <div className="price-filter-wrapper">
             {bathroomOptions.map((bathroom) => (
@@ -827,7 +877,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
           style={{ borderColor: "black", width: "104%", marginLeft: "-2%" }}
         />
 
-        <h4
+        {/* <h4
           style={{
             marginTop: "20px",
             fontSize: isMobileWidth ? "16px" : "28px",
@@ -837,6 +887,29 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
           }}
         >
           Activities <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>
+        </h4> */}
+
+        <h4
+          style={{
+            marginTop: "20px",
+            fontSize: isMobileWidth ? "16px" : "28px",
+            color: "#000000",
+            marginLeft: "12px",
+            fontWeight: isMobileWidth ? "400" : undefined,
+          }}
+        >
+          Activities{" "}
+          <span
+            style={{
+              color: "black",
+              fontSize: "14px",
+              position: "relative",
+              top: "-12px",
+              marginLeft: "-3px",
+            }}
+          >
+            *
+          </span>
         </h4>
         <Container>
           <Row className="justify-content-center mt-4">
@@ -879,8 +952,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                             filter: isMobileWidth
                               ? ""
                               : isSelected
-                              ? "brightness(0) invert(1)"
-                              : "none", // Turns image white when selected
+                                ? "brightness(0) invert(1)"
+                                : "none", // Turns image white when selected
                           }}
                         />
                         <Card.Text
@@ -892,8 +965,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                             color: isMobileWidth
                               ? ""
                               : isSelected
-                              ? "white"
-                              : "black",
+                                ? "white"
+                                : "black",
                           }}
                         >
                           {option.label}
@@ -932,7 +1005,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                 ?.slice(isMobileWidth ? 0 : 1, otherActiviy.length)
                 .map((option) => {
                   const isSelected = selectedOptionsOtherActivity.includes(
-                    option.id
+                    option.id,
                   );
                   return (
                     <Col
@@ -969,8 +1042,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                               filter: isMobileWidth
                                 ? ""
                                 : isSelected
-                                ? "brightness(0) invert(1)"
-                                : "none", // Turns image white when selected
+                                  ? "brightness(0) invert(1)"
+                                  : "none", // Turns image white when selected
                             }}
                           />
                           <Card.Text
@@ -981,8 +1054,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                               color: isMobileWidth
                                 ? ""
                                 : isSelected
-                                ? "white"
-                                : "black",
+                                  ? "white"
+                                  : "black",
                             }}
                           >
                             {option.label}
@@ -1007,7 +1080,18 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
             fontWeight: isMobileWidth && "400",
           }}
         >
-          Amenities <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>
+          Amenities{" "}
+          <span
+            style={{
+              color: "black",
+              fontSize: "14px",
+              position: "relative",
+              top: "-12px",
+              marginLeft: "-3px",
+            }}
+          >
+            *
+          </span>
         </h4>
         <Container style={{ marginLeft: "0px" }}>
           <Row>
@@ -1181,8 +1265,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                         ? "20px"
                         : "33px"
                       : isMobileWidth
-                      ? ""
-                      : "3px",
+                        ? ""
+                        : "3px",
                   transition: "left 0.3s",
                 }}
               />
@@ -1243,8 +1327,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                         ? "20px"
                         : "33px"
                       : isMobileWidth
-                      ? ""
-                      : "3px",
+                        ? ""
+                        : "3px",
                   transition: "left 0.3s",
                 }}
               />
@@ -1348,8 +1432,8 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                         ? "20px"
                         : "33px"
                       : isMobileWidth
-                      ? ""
-                      : "3px",
+                        ? ""
+                        : "3px",
                   transition: "left 0.3s",
                 }}
               />
@@ -1371,7 +1455,18 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                     fontSize: isMobileWidth ? "15px" : "18px",
                   }}
                 >
-                  {isMobileWidth ? "Cancellation " : "Cancellation Policy"} <span style={{ color: "black", fontSize: "14px", marginLeft: "4px" }}>*</span>
+                  {isMobileWidth ? "Cancellation " : "Cancellation Policy"}{" "}
+                  <span
+                    style={{
+                      color: "black",
+                      fontSize: "14px",
+                      position: "relative",
+                      top: "-10px",
+                      marginLeft: "-3px",
+                    }}
+                  >
+                    *
+                  </span>
                 </h6>
                 <span
                   className="info-wrap"
@@ -1521,7 +1616,7 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
                     >
                       {option}
                     </Dropdown.Item>
-                  )
+                  ),
                 )}
               </Dropdown.Menu>
             </Dropdown>

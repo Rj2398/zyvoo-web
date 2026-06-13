@@ -432,35 +432,19 @@ const ProductItem = ({
     }
   };
 
-  const handleWishlistClick = async (e) => {
-    if (e && e.stopPropagation) e.stopPropagation();
-
+  const handleWishlistClick = async () => {
     if (userId && access_token) {
-      setPropertyId(property_id);
-
-      setShowAddWishlistModal(true);
-
-      try {
-        if (is_in_wishlist) {
-          const res = await removeItemFromWishlist({
-            user_id: userId,
-            property_id: property_id,
-          });
-
-          if (res) {
-            // setIsWishlisted(false);
-            console.log(res, "setShowAddWishlistModal(true);");
-          }
-        }
-
-        // 3. FETCH DATA IN THE BACKGROUND
-        // Use await to ensure these finish before we signal a "refresh"
-        await Promise.all([getWishlist()]);
-
-        setRefresh((prev) => prev + 1);
-      } catch (error) {
-        console.error("Wishlist action failed:", error);
+      if (is_in_wishlist) {
+        await removeItemFromWishlist({
+          user_id: userId,
+          property_id: property_id,
+        });
       }
+      setShowAddWishlistModal(!is_in_wishlist);
+      setRefresh((prev) => prev + 1);
+      fetchList();
+      getWishlist();
+      setPropertyId(property_id);
     } else {
       setIsLoginModal(true);
     }
