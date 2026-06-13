@@ -120,7 +120,11 @@ const handleResponseSuccess = (response) => {
   const resData = response.data;
 
   if (resData && resData.success === false) {
-    // Rejects the promise so your component/page can catch 'resData' and show its own toast
+    // 💡 OPTIONAL SAFETYSWITCH: If backend returns 200 OK but says Unauthenticated
+    if (resData.message === "Unauthenticated.") {
+      LogoutError(resData.message);
+      return new Promise(() => {}); // Halts code execution down the line
+    }
     return Promise.reject(resData);
   }
 
@@ -132,6 +136,19 @@ const handleResponseSuccess = (response) => {
  */
 const handleResponseError = (err) => {
   const errorResponse = err?.response?.data;
+  const statusCode = err?.response?.status;
+
+  // 💡 GLOBAL AUTH CHECKER: Intercepts 401s or Unauthenticated payloads across all 3 APIs
+  if (statusCode === 401 || errorResponse?.message === "Unauthenticated.") {
+    LogoutError(errorResponse?.message);
+
+    /* CRITICAL: Return a permanently pending promise. 
+      This cleanly stops the error from leaking into your component's useMutation catch block, 
+      effectively silencing the second toast!
+    */
+    return new Promise(() => {});
+  }
+
   return Promise.reject(errorResponse || err);
 };
 
