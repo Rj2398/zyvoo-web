@@ -2067,6 +2067,39 @@ const HostChat = () => {
     }
   };
 
+
+
+    useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getChannelUser({
+          user_id: String(userId),
+          type: userTypes,
+        });
+
+        if (!senderDetail?.user_id && !senderDetail?.host_id) {
+          if (response?.data) {
+            setGetList(response.data);
+          } else {
+            setGetList([]);
+            setSelectedBooking(null);
+          }
+        } else {
+          if (response?.data) {
+            setGetList(response.data);
+          } else {
+            setGetList([]);
+          }
+        }
+      } catch (error) {
+        setGetList([]);
+        console.error("Error fetching user list:", error);
+      }
+    };
+
+    fetchUsers();
+  }, [selectedBooking]);
+
   useEffect(() => {
     const markMessagesRead = async () => {
       if (!userData || !userData.user_id) return;
