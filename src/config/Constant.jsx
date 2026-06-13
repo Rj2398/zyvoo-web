@@ -45,7 +45,7 @@ export const LogoutError = (errorMessage) => {
 
   isLoggingOut = true;
 
-  toast.error(errorMessage || "Session expired. Please login again.");
+  toast.error("Session expired. Please login again.");
   // 1. Instantly demote access privileges
   localStorage.setItem("USER_TYPE", "guest");
 
