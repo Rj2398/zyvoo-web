@@ -53,9 +53,6 @@ export const LogoutError = (errorMessage) => {
   localStorage.removeItem("USER_INFO");
   sessionStorage.removeItem("USER_INFO");
 
-  // 3. Optional: toast feedback
-  // toast.error("Session Expired. Logged out successfully.");
-
   // 4. Force state alignment after a micro-timeout
   setTimeout(() => {
     window.location.replace("/"); // Replaces the window history entry to prevent back-button loops
