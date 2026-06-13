@@ -3,7 +3,7 @@ import useCommon from "../../../hooks/useCommon";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 
-const CreateNewWishlistModal = ({ show, handleCreateModalClose, propertyId, userId, }) => {
+const CreateNewWishlistModal = ({ show, handleCreateModalClose, propertyId, userId, onAddSuccess, fetchList, }) => {
   const { createNewWishlist } = useCommon();
   const { register, handleSubmit, reset, formState: { errors }, } = useForm();
 
@@ -26,6 +26,14 @@ const CreateNewWishlistModal = ({ show, handleCreateModalClose, propertyId, user
     data.user_id = userId;
     data.property_id = propertyId;
     const submitResponse = await createNewWishlist(data);
+    if (onAddSuccess) {
+      onAddSuccess();
+    }
+    if (fetchList) {
+      setTimeout(() => {
+        fetchList();
+      }, 100);
+    }
     handleCreateModalClose();
   };
 

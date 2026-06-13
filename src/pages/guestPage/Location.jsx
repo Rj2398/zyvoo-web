@@ -68,6 +68,9 @@ function Location() {
     getPropertyReviews,
     guestWishlistData,
     check_host_property_availability,
+    removeItemFromWishlist,
+    saveItemInWishlist,
+    createNewWishlist,
   } = useCommon();
 
   useEffect(() => {
@@ -150,6 +153,30 @@ function Location() {
       latitude: currentLocation.latitude,
     });
     setPropertyDetails(result.data);
+  };
+
+  const handleWishlistClick = async () => {
+    if (!userId) {
+      handleModalToggle("login", true);
+      return;
+    }
+
+    if (propertyDetails?.is_in_wishlist) {
+      setPropertyDetails((prev) => ({ ...prev, is_in_wishlist: false }));
+      try {
+        await removeItemFromWishlist({
+          user_id: userId,
+          property_id: propertyId,
+        });
+        fetchPropertyDetails();
+        getWishlist();
+      } catch (error) {
+        setPropertyDetails((prev) => ({ ...prev, is_in_wishlist: true }));
+      }
+    } else {
+      setShowAddWishlistModal(true);
+      getWishlist();
+    }
   };
 
   const fetchPropertyReviews = async (page) => {
@@ -584,19 +611,7 @@ function Location() {
 
                     <li>
                       <a
-                        onClick={() => {
-                          if (userId) {
-                            if (!propertyDetails?.is_in_wishlist) {
-                              setShowAddWishlistModal(true);
-                              setPropertyDetails((prev) => ({
-                                ...prev,
-                                is_in_wishlist: true, // ✅ Update wishlist state
-                              }));
-                            }
-                          } else {
-                            handleModalToggle("login", true);
-                          }
-                        }}
+                        onClick={handleWishlistClick}
                         style={{
                           cursor: "pointer",
                           display: "flex",
@@ -1765,6 +1780,8 @@ function Location() {
         handleClose={() => {
           setShowAddWishlistModal(false);
         }}
+        fetchList={fetchPropertyDetails}
+        onAddSuccess={() => setPropertyDetails((prev) => ({ ...prev, is_in_wishlist: true }))}
       />
 
       <LocationImagesModal

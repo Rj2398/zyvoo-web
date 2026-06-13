@@ -3,7 +3,7 @@ import useCommon from "../../../hooks/useCommon";
 import CreateNewWishlistModal from "./CreateNewWishlistModal";
 import React, { useState } from "react";
 
-const AddToWishlistModal = ({ showAddWishlistModal, handleClose, wishlistArr, propertyId, userId, fetchList,}) => {
+const AddToWishlistModal = ({ showAddWishlistModal, handleClose, wishlistArr, propertyId, userId, fetchList, onAddSuccess,}) => {
   console.log("showAddWishlistModal3333", showAddWishlistModal)
   const { saveItemInWishlist } = useCommon();
 
@@ -28,6 +28,9 @@ const AddToWishlistModal = ({ showAddWishlistModal, handleClose, wishlistArr, pr
                     saveItemInWishlist({user_id: userId, property_id: propertyId, 
                       wishlist_id: item?.wishlist_id,
                     });
+                    if (onAddSuccess) {
+                      onAddSuccess();
+                    }
                     setTimeout(() => { fetchList(); }, 100);
                     handleClose();
                 }}>
@@ -78,6 +81,8 @@ const AddToWishlistModal = ({ showAddWishlistModal, handleClose, wishlistArr, pr
       </Modal>
       <CreateNewWishlistModal show={showCreateWishlistModal} userId={userId}
         propertyId={selectedPropertyId} handleCreateModalClose={() => setShowCreateWishlistModal(false)}
+        onAddSuccess={onAddSuccess}
+        fetchList={fetchList}
       />
     </div>
   );

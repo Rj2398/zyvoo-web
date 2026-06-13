@@ -397,7 +397,11 @@ const ProductItem = ({
   const [showAddWishlistModal, setShowAddWishlistModal] = useState(false);
   const [propertyId, setPropertyId] = useState(null);
   const [refresh, setRefresh] = useState(0);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(is_in_wishlist);
+
+  useEffect(() => {
+    setIsWishlisted(is_in_wishlist);
+  }, [is_in_wishlist]);
 
   const [modalToggleValue, setModalToggleValue] = useState(false);
 
@@ -434,17 +438,24 @@ const ProductItem = ({
 
   const handleWishlistClick = async () => {
     if (userId && access_token) {
-      if (is_in_wishlist) {
-        await removeItemFromWishlist({
-          user_id: userId,
-          property_id: property_id,
-        });
+      if (isWishlisted) {
+        setIsWishlisted(false);
+        try {
+          await removeItemFromWishlist({
+            user_id: userId,
+            property_id: property_id,
+          });
+          fetchList();
+          getWishlist();
+        } catch (error) {
+          setIsWishlisted(true);
+        }
+      } else {
+        setShowAddWishlistModal(true);
+        setPropertyId(property_id);
+        getWishlist();
       }
-      setShowAddWishlistModal(!is_in_wishlist);
       setRefresh((prev) => prev + 1);
-      fetchList();
-      getWishlist();
-      setPropertyId(property_id);
     } else {
       setIsLoginModal(true);
     }
@@ -590,7 +601,7 @@ const ProductItem = ({
               {isWishlisted !== null && (
                 <img
                   src={
-                    isWishlisted || is_in_wishlist
+                    isWishlisted
                       ? "/images/locations-grid/profile/heart-fill.svg"
                       : isMobileWidth
                       ? "/images/mobileBlankHeart.png"
@@ -628,7 +639,7 @@ const ProductItem = ({
               {isWishlisted !== null && (
                 <img
                   src={
-                    isWishlisted || is_in_wishlist
+                    isWishlisted
                       ? "/images/locations-grid/profile/heart-fill.svg"
                       : isMobileWidth
                       ? "/images/mobileBlankHeart.png"
@@ -836,6 +847,7 @@ const ProductItem = ({
           setShowAddWishlistModal(false);
         }}
         fetchList={fetchList}
+        onAddSuccess={() => setIsWishlisted(true)}
       />
 
       <RegisterModal

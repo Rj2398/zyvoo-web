@@ -2,7 +2,7 @@ import React, { useEffect, useState, forwardRef, useRef } from "react";
 import { Button } from "react-bootstrap";
 import useCommon from "../../hooks/useCommon";
 import { KEYS } from "../../config/Constant";
-import Loader from "../Loader";
+// import Loader from "../Loader";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
 import Dropdown from "react-bootstrap/Dropdown";
@@ -188,7 +188,7 @@ function AddCardView({ type }) {
               borderRadius: isMobileWidth ? "10px" : "8px",
             }}
           >
-            <Loader visible={isLoading} />
+            {/* <Loader visible={isLoading} /> */}
             {!isMobileWidth && savedCards.length === 0 ? (
               <div className="text-center p-2">No saved cards found.</div>
             ) : (
