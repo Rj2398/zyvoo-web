@@ -312,13 +312,14 @@ const AddProperty = ({ onCallBack, propertyDataa, onBack, activeTab }) => {
       );
     }
   }, [propertyDataa]);
-
+ let bedroomCount =
+    selectedBedrooms === "Any" ? 0 : parseInt(selectedBedrooms);
   let params = {
     user_id: userId,
     space_type: selectedRoom?.toLowerCase(),
     property_size: selectedPrice,
     max_guest_count: parseInt(selectedGuests),
-    bedroom_count: selectedBedrooms,
+    bedroom_count: bedroomCount,
     bathroom_count: selectedBathrooms,
     is_instant_book: instantBook,
     has_self_checkin: selfCheckIn,
