@@ -1,7 +1,7 @@
 import React from "react";
 import Spinner from "react-bootstrap/Spinner";
 
-function Loader2({ visible }) {
+function Loader({ visible }) {
   if (!visible) return null;
 
   return (
@@ -34,4 +34,4 @@ function Loader2({ visible }) {
   );
 }
 
-export default React.memo(Loader2);
+export default React.memo(Loader);
