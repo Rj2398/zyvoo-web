@@ -1113,18 +1113,18 @@
   }
 }
 
-
+@media screen and (max-width: 499px) {
+  .ajdestmobileView {
+    margin-top: 45%;
+  }
+}
 @media screen and (max-width: 500px) {
   .ajdestmobileView {
     margin-top: 50%;
   }
 }
 
-@media screen and (max-width: 499px) {
-  .ajdestmobileView {
-    margin-top: 45%;
-  }
-}
+
 @media screen and (min-width: 500px) and (max-width: 1100px) {
   .ajdestmobileView {
     margin-top: 25%;
@@ -1133,7 +1133,7 @@
 
 @media screen and (min-width: 1100px) {
   .ajdestmobileView {
-    margin-top: 20%;
+    margin-top: 25%;
   }
 }
 
