@@ -1730,8 +1730,9 @@ const Checkout = ({ setExtendedTime }) => {
                     {/* Add New Card Button */}
                     {selected && (
                       <div
-                        className="text-center "
-                        style={{
+                                                className="text-center ajdestmobileView"
+
+                        {/* style={{
                           marginTop: isMobileWidth
                             ? showDropdown2
                               ? "60%"
@@ -1739,7 +1740,7 @@ const Checkout = ({ setExtendedTime }) => {
                             : showDropdown2
                               ? "25%"
                               : "0%",
-                        }}
+                        }} */}
                       >
                         <Button
                           variant="success"
