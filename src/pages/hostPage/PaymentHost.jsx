@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import CardBankPayment from "../../components/host/cardBankPayment";
 import { CheckLg } from "react-bootstrap-icons";
 import { useSelector } from "react-redux";
+import Loader2 from "../../components/Loader2";
 
 
 function PaymentHost({ getStripId, getcard_id }) {
@@ -1080,7 +1081,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                           }}
                         >
                           {cardId?.includes("card_") && !cardId?.includes("ba_") && (
-                            <Loader visible={isLoading} />
+                            <Loader2  visible={isLoading} />
                           )}
 
                           <div
@@ -1376,7 +1377,7 @@ function PaymentHost({ getStripId, getcard_id }) {
                           }}
                         >
                           {cardId?.includes("card_") && !cardId?.includes("ba_") && (
-                            <Loader visible={isLoading} />
+                            <Loader2 visible={isLoading} />
                           )}
                           <div
                             style={{
