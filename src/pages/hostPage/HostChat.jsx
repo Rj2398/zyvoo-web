@@ -3447,17 +3447,18 @@ const HostChat = () => {
 
   {/* Status Dot */}
   <div
-    style={{
-      position: "absolute",
-      bottom: "10px",
-      right: "2px",
-      width: "12px",
-      height: "12px",
-      borderRadius: "50%",
-      backgroundColor: "#8c8c8c", // gray dot
-      border: "2px solid white", // white outline
-      zIndex: 2,
-    }}
+   style={{
+                              position: "absolute",
+                              bottom: "6px",
+                              right: "2px",
+                              width: "14px",
+                              height: "14px",
+                              borderRadius: "50%",
+                              backgroundColor: "#8c8c8c", // gray dot
+                              border: "2px solid white", // white outline
+                              zIndex: 2,
+                              marginRight: "5px",
+                            }}
   />
 </div>
                       <div>
