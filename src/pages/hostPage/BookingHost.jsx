@@ -221,7 +221,7 @@ const BookingHost = () => {
           },
           (error) => {
             console.error(error.message);
-          }
+          },
         );
       } else {
         console.error("Geolocation is not supported by your browser.");
@@ -233,23 +233,23 @@ const BookingHost = () => {
   const filteredBookings = useMemo(() => {
     return userType == "host"
       ? getList?.filter((booking) => {
-        const matchesName = booking?.guest_name
-          ?.toLowerCase()
-          .includes(searchQuery?.toLowerCase());
-        const matchesStatus = selectedStatus
-          ? booking?.booking_status == selectedStatus
-          : true;
-        return matchesName && matchesStatus;
-      })
+          const matchesName = booking?.guest_name
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase());
+          const matchesStatus = selectedStatus
+            ? booking?.booking_status == selectedStatus
+            : true;
+          return matchesName && matchesStatus;
+        })
       : getList?.filter((booking) => {
-        const matchesName = booking?.property_name
-          ?.toLowerCase()
-          .includes(searchQuery?.toLowerCase());
-        const matchesStatus = selectedStatus
-          ? booking?.booking_status == selectedStatus
-          : true;
-        return matchesName && matchesStatus;
-      });
+          const matchesName = booking?.property_name
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase());
+          const matchesStatus = selectedStatus
+            ? booking?.booking_status == selectedStatus
+            : true;
+          return matchesName && matchesStatus;
+        });
   }, [getList, searchQuery, selectedStatus, userType]);
 
   const fetchDetailsData = async (bookingData) => {
@@ -353,7 +353,7 @@ const BookingHost = () => {
   useEffect(() => {
     if (bookingId && getList) {
       const filteredBooking = getList.find(
-        (item) => item.booking_id == bookingId
+        (item) => item.booking_id == bookingId,
       );
       setSelectedBooking(filteredBooking);
     }
@@ -366,9 +366,9 @@ const BookingHost = () => {
     return number % 1 === 0
       ? number.toLocaleString("en-IN", { maximumFractionDigits: 0 }) // Integer
       : number.toLocaleString("en-IN", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }); // Decimal
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }); // Decimal
   }
 
   function formatReview(value) {
@@ -433,17 +433,17 @@ const BookingHost = () => {
           {/* First Row */}
           <div
             className="mb-4 booking-left-sid-box"
-          // style={{
-          //   width: "100%",
-          //   minWidth: "300px",
-          //   boxSizing: "border-box",
-          //   overflowY: !isMobileWidth &&"auto",
-          //   padding: isMobileWidth ? "0px" : "10px",
-          //   maxWidth: isMobileWidth ? undefined : "380px",
-          //   maxHeight: isMobileWidth ? undefined : "calc(110vh)",
-          //   marginBottom: isMobileWidth ? "0px" : "20px",
-          //   flex: isMobileWidth ? "1 0 100%" : "1 0 400px",
-          //   }}
+            // style={{
+            //   width: "100%",
+            //   minWidth: "300px",
+            //   boxSizing: "border-box",
+            //   overflowY: !isMobileWidth &&"auto",
+            //   padding: isMobileWidth ? "0px" : "10px",
+            //   maxWidth: isMobileWidth ? undefined : "380px",
+            //   maxHeight: isMobileWidth ? undefined : "calc(110vh)",
+            //   marginBottom: isMobileWidth ? "0px" : "20px",
+            //   flex: isMobileWidth ? "1 0 100%" : "1 0 400px",
+            //   }}
           >
             {!isMobileWidth && (
               <>
@@ -722,20 +722,21 @@ const BookingHost = () => {
                       boxSizing: "border-box",
                       backgroundColor:
                         selectedBooking?.booking_id === booking.booking_id &&
-                          selectedBooking?.extension_id == booking?.extension_id
+                        selectedBooking?.extension_id == booking?.extension_id
                           ? "#f0f0f0"
                           : "white",
                       borderColor:
                         selectedBooking?.booking_id === booking.booking_id &&
-                          selectedBooking?.extension_id == booking?.extension_id
+                        selectedBooking?.extension_id == booking?.extension_id
                           ? "#3A4B4C"
                           : "#E4E4E4",
                     }}
-                    className={`chat-list-in nav-link2 ${selectedBooking?.booking_id === booking.booking_id &&
+                    className={`chat-list-in nav-link2 ${
+                      selectedBooking?.booking_id === booking.booking_id &&
                       selectedBooking?.extension_id == booking?.extension_id
-                      ? "active"
-                      : ""
-                      }`}
+                        ? "active"
+                        : ""
+                    }`}
                     id={`v-pills-${index}-tab`}
                     data-bs-toggle="pill"
                     type="button"
@@ -843,11 +844,11 @@ const BookingHost = () => {
                         >
                           {userType === "host"
                             ? truncateText(booking.guest_name?.trim(), 15) ||
-                            "No Name"
+                              "No Name"
                             : truncateText(
-                              booking?.property_name?.trim(),
-                              15
-                            ) || "No Name"}
+                                booking?.property_name?.trim(),
+                                15,
+                              ) || "No Name"}
                         </h1>
                         <h2
                           style={
@@ -861,7 +862,7 @@ const BookingHost = () => {
                           )}
                         </h2>
                         {userType == "host" &&
-                          booking.booking_status == "Pending" ? (
+                        booking.booking_status == "Pending" ? (
                           <div style={{ display: "flex", gap: "3px" }}>
                             {/* {booking.is_approve && ( */}
                             <button
@@ -911,16 +912,16 @@ const BookingHost = () => {
                             style={{
                               backgroundColor:
                                 booking.booking_status?.toLowerCase() ===
-                                  "confirmed"
+                                "confirmed"
                                   ? "#85D6FF"
                                   : booking.booking_status?.toLowerCase() ===
-                                    "pending"
+                                      "pending"
                                     ? "#ffc107"
                                     : booking.booking_status?.toLowerCase() ===
-                                      "finished"
+                                        "finished"
                                       ? "#4AEAB1"
                                       : booking.booking_status?.toLowerCase() ===
-                                        "awaiting payment"
+                                          "awaiting payment"
                                         ? "#FFF178"
                                         : "#F5F6F6",
                               fontSize: isMobileWidth ? "12px" : "16px",
@@ -1072,11 +1073,11 @@ const BookingHost = () => {
                           >
                             {userType === "host"
                               ? selectedBooking?.guest_name
-                                ?.trim()
-                                .split(" ")[0] + ".." || "No Name"
+                                  ?.trim()
+                                  .split(" ")[0] + ".." || "No Name"
                               : selectedBooking?.host_name
-                                ?.trim()
-                                .split(" ")[0] + ".."}
+                                  ?.trim()
+                                  .split(" ")[0] + ".."}
                           </h2>
 
                           {userType === "host" ? (
@@ -1156,7 +1157,7 @@ const BookingHost = () => {
                             (selectedBooking?.booking_status ===
                               "Awaiting Payment" ||
                               selectedBooking?.booking_status ===
-                              "finished") && (
+                                "finished") && (
                               <a
                                 className="review-btn"
                                 style={{
@@ -1192,7 +1193,7 @@ const BookingHost = () => {
                             (viewDetails.status
                               ? viewDetails.status
                               : selectedBooking?.booking_status) !=
-                            "Cancelled" && (
+                              "Cancelled" && (
                               <button
                                 style={{
                                   width: "auto",
@@ -1213,7 +1214,7 @@ const BookingHost = () => {
                           ))}
 
                         {selectedBooking?.booking_status === "Cancelled" &&
-                          userType != "host" ? (
+                        userType != "host" ? (
                           <button
                             style={{
                               // width: "70%",
@@ -1225,7 +1226,7 @@ const BookingHost = () => {
                               cursor: "pointer",
                               height: "fit-content",
                             }}
-                          // disabled
+                            // disabled
                           >
                             Cancelled
                           </button>
@@ -1273,8 +1274,8 @@ const BookingHost = () => {
                                 propertyId
                                   ? setShowReportModal(true)
                                   : toast.error(
-                                    "Please select a booking first"
-                                  );
+                                      "Please select a booking first",
+                                    );
                               }}
                               style={{
                                 width: "120%",
@@ -1325,7 +1326,7 @@ const BookingHost = () => {
                                     : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                                   : viewDetails?.first_property_image
                                     ? imageBase +
-                                    viewDetails?.first_property_image
+                                      viewDetails?.first_property_image
                                     : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                               }
                               loading="lazy"
@@ -1346,9 +1347,9 @@ const BookingHost = () => {
                             >
                               {userType == "host"
                                 ? viewDetails?.property_title ||
-                                "Cabin in Peshastin"
+                                  "Cabin in Peshastin"
                                 : viewDetails?.property_name ||
-                                "Cabin in Peshastin"}
+                                  "Cabin in Peshastin"}
                             </h1>
                             <p>
                               <FaStar
@@ -1374,8 +1375,9 @@ const BookingHost = () => {
                               {viewDetails?.booking_hour} hours
                               <span>
                                 {" "}
-                                ${formatCurrency(
-                                  viewDetails?.booking_amount
+                                $
+                                {formatCurrency(
+                                  viewDetails?.booking_amount,
                                 )}{" "}
                               </span>
                             </li>
@@ -1385,8 +1387,9 @@ const BookingHost = () => {
                                 Cleaning Fee
                                 <span>
                                   {" "}
-                                  ${formatCurrency(
-                                    viewDetails?.cleaning_fee
+                                  $
+                                  {formatCurrency(
+                                    viewDetails?.cleaning_fee,
                                   )}{" "}
                                 </span>
                               </li>
@@ -1397,8 +1400,9 @@ const BookingHost = () => {
                                 Zyvo Service Fee
                                 <span>
                                   {" "}
-                                  ${formatCurrency(
-                                    viewDetails?.service_fee
+                                  $
+                                  {formatCurrency(
+                                    viewDetails?.service_fee,
                                   )}{" "}
                                 </span>
                               </li>
@@ -1416,8 +1420,9 @@ const BookingHost = () => {
                                 Add-on
                                 <span>
                                   {" "}
-                                  ${formatCurrency(
-                                    viewDetails?.add_on_total
+                                  $
+                                  {formatCurrency(
+                                    viewDetails?.add_on_total,
                                   )}{" "}
                                 </span>
                               </li>
@@ -1433,18 +1438,18 @@ const BookingHost = () => {
                               </li>
                             )} */}
 
-                            {viewDetails?.charges?.booking_hours > 2 && viewDetails?.charges?.discount > 0 && (
-
-                              <li>
-                                discount
-                                <span>
-                                  -$
-                                  {formatCurrency(
-                                    viewDetails?.charges?.discount || 0
-                                  )}
-                                </span>
-                              </li>
-                            )}
+                            {viewDetails?.charges?.booking_hours > 2 &&
+                              viewDetails?.charges?.discount > 0 && (
+                                <li>
+                                  discount
+                                  <span>
+                                    -$
+                                    {formatCurrency(
+                                      viewDetails?.charges?.discount || 0,
+                                    )}
+                                  </span>
+                                </li>
+                              )}
 
                             <li className="total-cost">
                               Total
@@ -1452,7 +1457,7 @@ const BookingHost = () => {
                                 {" "}
                                 ${" "}
                                 {formatCurrency(
-                                  viewDetails?.booking_total_amount
+                                  viewDetails?.booking_total_amount,
                                 )}{" "}
                               </span>
                             </li>
@@ -1464,7 +1469,7 @@ const BookingHost = () => {
                               <span>
                                 $
                                 {formatCurrency(
-                                  viewDetails?.charges?.booking_amount
+                                  viewDetails?.charges?.booking_amount,
                                 )}
                               </span>
                             </li>
@@ -1474,7 +1479,7 @@ const BookingHost = () => {
                                 <span>
                                   $
                                   {formatCurrency(
-                                    viewDetails?.charges?.cleaning_fee
+                                    viewDetails?.charges?.cleaning_fee,
                                   )}
                                 </span>
                               </li>
@@ -1486,7 +1491,7 @@ const BookingHost = () => {
                                 <span>
                                   $
                                   {formatCurrency(
-                                    viewDetails?.charges?.zyvo_service_fee
+                                    viewDetails?.charges?.zyvo_service_fee,
                                   )}
                                 </span>
                               </li>
@@ -1509,28 +1514,25 @@ const BookingHost = () => {
                               <span>
                                 ${" "}
                                 {formatCurrency(
-                                  viewDetails?.charges?.add_on_price || 0
+                                  viewDetails?.charges?.add_on_price || 0,
                                 )}
                               </span>
                             </li>
                             {/* )} */}
                             {/* {viewDetails?.charges?.discount > 0 && ( */}
 
-
-
-
-                            {viewDetails?.charges?.booking_hours > 2 && viewDetails?.charges?.discount > 0 && (
-
-                              <li>
-                                discount
-                                <span>
-                                  -$
-                                  {formatCurrency(
-                                    viewDetails?.charges?.discount || 0
-                                  )}
-                                </span>
-                              </li>
-                            )}
+                            {viewDetails?.charges?.booking_hours > 2 &&
+                              viewDetails?.charges?.discount > 0 && (
+                                <li>
+                                  discount
+                                  <span>
+                                    -$
+                                    {formatCurrency(
+                                      viewDetails?.charges?.discount || 0,
+                                    )}
+                                  </span>
+                                </li>
+                              )}
                             {/* )} */}
 
                             <li className="total-cost">
@@ -1561,16 +1563,17 @@ const BookingHost = () => {
                             : viewDetails?.status) == "Confirmed"
                             ? "#85D6FF"
                             : (userType == "host"
-                              ? viewDetails?.booking_status
-                              : viewDetails?.status) == "Pending"
+                                  ? viewDetails?.booking_status
+                                  : viewDetails?.status) == "Pending"
                               ? "#ffc107"
                               : (userType == "host"
-                                ? viewDetails?.booking_status
-                                : viewDetails?.status) == "Finished"
+                                    ? viewDetails?.booking_status
+                                    : viewDetails?.status) == "Finished"
                                 ? "#4AEAB1"
                                 : (userType == "host"
-                                  ? viewDetails?.booking_status
-                                  : viewDetails?.status) == "Waiting_payment"
+                                      ? viewDetails?.booking_status
+                                      : viewDetails?.status) ==
+                                    "Waiting_payment"
                                   ? "#FFF178"
                                   : "#ebe1e1",
                         color: "black",
@@ -1603,12 +1606,13 @@ const BookingHost = () => {
                       <li>
                         <Link to="#" onClick={handleWishlistClick}>
                           <i
-                            className={`fa-solid fa-heart me-1 ${userType == "host"
-                              ? viewDetails?.wishlist
-                              : viewDetails?.is_in_wishlist
-                                ? "text-danger"
-                                : "light-gray"
-                              }`}
+                            className={`fa-solid fa-heart me-1 ${
+                              userType == "host"
+                                ? viewDetails?.wishlist
+                                : viewDetails?.is_in_wishlist
+                                  ? "text-danger"
+                                  : "light-gray"
+                            }`}
                           ></i>
                           Favorite
                         </Link>
@@ -1621,39 +1625,40 @@ const BookingHost = () => {
                 </div>
                 {/* <div className={`top-grid-bookinghost-h top-grid-images-${viewDetails?.images?.length <5 ? 5 : viewDetails?.images?.length || viewDetails?.property_images?.length >5 ? 5 : viewDetails?.property_images?.length}`}> */}
                 <div
-                  className={`top-grid-bookinghost-h px-3 top-grid-images-${userType === "host"
-                    ? viewDetails?.images?.length < 3 &&
-                      viewDetails?.images?.length < 3
-                      ? viewDetails?.images?.length
-                      : 3
-                    : viewDetails?.property_images?.length &&
-                      viewDetails?.property_images?.length < 3
-                      ? viewDetails?.property_images?.length
-                      : 3
-                    }`}
+                  className={`top-grid-bookinghost-h px-3 top-grid-images-${
+                    userType === "host"
+                      ? viewDetails?.images?.length < 3 &&
+                        viewDetails?.images?.length < 3
+                        ? viewDetails?.images?.length
+                        : 3
+                      : viewDetails?.property_images?.length &&
+                          viewDetails?.property_images?.length < 3
+                        ? viewDetails?.property_images?.length
+                        : 3
+                  }`}
                   onClick={() => setShowPropertyImages(true)}
                 >
                   <div className="top-grid-images-left">
                     {(viewDetails?.images?.[0] ||
                       viewDetails?.first_property_image?.[0]) && (
-                        <img
-                          src={
-                            userType == "host"
-                              ? Array.isArray(viewDetails?.images) &&
+                      <img
+                        src={
+                          userType == "host"
+                            ? Array.isArray(viewDetails?.images) &&
                               imageBase + viewDetails?.images[0] &&
                               imageBase + viewDetails?.images?.[0]
-                              : imageBase + viewDetails?.first_property_image
-                          }
-                          loading="lazy"
-                          alt="Main Property"
-                          style={{
-                            width: "100%",
-                            height: "100%",
-                            objectFit: "cover",
-                            display: "block",
-                          }}
-                        />
-                      )}
+                            : imageBase + viewDetails?.first_property_image
+                        }
+                        loading="lazy"
+                        alt="Main Property"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          display: "block",
+                        }}
+                      />
+                    )}
                   </div>
 
                   <div
@@ -1662,37 +1667,37 @@ const BookingHost = () => {
                   >
                     {userType == "host"
                       ? viewDetails?.images
-                        ?.slice(1, 3)
-                        .map((item, index) => (
-                          <img
-                            key={index}
-                            src={`https://zyvo.tgastaging.com/${item}`}
-                            loading="lazy"
-                            alt="Main Property"
-                          />
-                        ))
+                          ?.slice(1, 3)
+                          .map((item, index) => (
+                            <img
+                              key={index}
+                              src={`https://zyvo.tgastaging.com/${item}`}
+                              loading="lazy"
+                              alt="Main Property"
+                            />
+                          ))
                       : viewDetails?.property_images
-                        ?.slice(1, 3)
-                        .map((item, index) => (
-                          <img
-                            src={imageBase + item}
-                            key={index}
-                            loading="lazy"
-                            alt="Main Property"
-                          />
-                        ))}
+                          ?.slice(1, 3)
+                          .map((item, index) => (
+                            <img
+                              src={imageBase + item}
+                              key={index}
+                              loading="lazy"
+                              alt="Main Property"
+                            />
+                          ))}
                   </div>
                 </div>
                 {(viewDetails?.property_images?.length >= 3 ||
                   viewDetails?.images?.length >= 3) && (
-                    <div
-                      className=" px-3 "
-                      style={{ textAlign: "right", cursor: "pointer" }}
-                      onClick={() => setShowPropertyImages(true)}
-                    >
-                      See more
-                    </div>
-                  )}
+                  <div
+                    className=" px-3 "
+                    style={{ textAlign: "right", cursor: "pointer" }}
+                    onClick={() => setShowPropertyImages(true)}
+                  >
+                    See more
+                  </div>
+                )}
 
                 <hr className="property-modal-hr" />
 
@@ -1723,26 +1728,32 @@ const BookingHost = () => {
                         [
                           "time.svg",
                           userType == "host"
-                            ? `${Number(viewDetails?.original_booking_hour) ||
-                            "no data"
-                            } hours `
-                            : `${viewDetails?.booking_detail?.time || "no data"
-                            }  `,
+                            ? `${
+                                Number(viewDetails?.original_booking_hour) ||
+                                "no data"
+                              } hours `
+                            : `${
+                                viewDetails?.booking_detail?.time || "no data"
+                              }  `,
                         ],
                         [
                           "time.svg",
                           userType == "host"
-                            ? ` From ${viewDetails?.booking_start_time || "start time"
-                            } to ${viewDetails?.booking_end_time || "end time"
-                            }`
+                            ? ` From ${
+                                viewDetails?.booking_start_time || "start time"
+                              } to ${
+                                viewDetails?.booking_end_time || "end time"
+                              }`
                             : `
-                          ${(!isMobileWidth &&
+                          ${
+                            (!isMobileWidth &&
                               viewDetails?.booking_detail?.time) ||
                             " "
-                            } ${!isMobileWidth ? "|" : ""}
-                          ${viewDetails?.booking_detail?.start_end_time ||
+                          } ${!isMobileWidth ? "|" : ""}
+                          ${
+                            viewDetails?.booking_detail?.start_end_time ||
                             "start time"
-                            }`,
+                          }`,
                         ],
                         [
                           "price.svg",
@@ -1767,7 +1778,7 @@ const BookingHost = () => {
                               />
                               <span style={{ color: "#000000" }}>{text}</span>
                             </div>
-                          )
+                          ),
                       )}
                     </div>
                   </div>
@@ -1793,27 +1804,30 @@ const BookingHost = () => {
                             [
                               "calendar-icon.svg",
                               viewDetails?.extension_details?.extension_date ||
-                              "date",
+                                "date",
                             ],
                             [
                               "time.svg",
-                              `${viewDetails?.extension_details
-                                ?.extension_hours || "no data"
+                              `${
+                                viewDetails?.extension_details
+                                  ?.extension_hours || "no data"
                               } hours`,
                             ],
                             [
                               "time.svg",
-                              `From ${viewDetails?.extension_details
-                                ?.extension_start_time || "start time"
-                              } to ${viewDetails?.extension_details
-                                ?.extension_end_time || "end time"
+                              `From ${
+                                viewDetails?.extension_details
+                                  ?.extension_start_time || "start time"
+                              } to ${
+                                viewDetails?.extension_details
+                                  ?.extension_end_time || "end time"
                               }`,
                             ],
                             [
                               "price.svg",
                               parseFloat(
                                 viewDetails?.extension_details
-                                  ?.extension_booking_amount
+                                  ?.extension_booking_amount,
                               ),
                             ],
                           ].map(([icon, text], i) => (
@@ -1846,23 +1860,26 @@ const BookingHost = () => {
                             [
                               "calendar-icon.svg",
                               viewDetails?.extension_details?.extension_date ||
-                              "date",
+                                "date",
                             ],
                             [
                               "time.svg",
-                              `${viewDetails?.extension_details
-                                ?.extension_hours || "no data"
-                              } hours | From ${viewDetails?.extension_details
-                                ?.extension_start_time || "start time"
-                              } to ${viewDetails?.extension_details
-                                ?.extension_end_time || "end time"
+                              `${
+                                viewDetails?.extension_details
+                                  ?.extension_hours || "no data"
+                              } hours | From ${
+                                viewDetails?.extension_details
+                                  ?.extension_start_time || "start time"
+                              } to ${
+                                viewDetails?.extension_details
+                                  ?.extension_end_time || "end time"
                               }`,
                             ],
                             [
                               "price.svg",
                               parseFloat(
                                 viewDetails?.extension_details
-                                  ?.extension_booking_amount
+                                  ?.extension_booking_amount,
                               ),
                             ],
                           ].map(([icon, text], i) => (
@@ -1959,8 +1976,9 @@ const BookingHost = () => {
                       >
                         <h2 className="accordion-header">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === id ? "" : "collapsed"
-                              }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                              open === id ? "" : "collapsed"
+                            }`}
                             type="button"
                             onClick={() => toggleAccordion(id)}
                             style={{ padding: "12px" }}
@@ -2545,7 +2563,7 @@ const BookingHost = () => {
                           <span>
                             $
                             {formatCurrency(
-                              viewDetails?.charges?.zyvo_service_fee
+                              viewDetails?.charges?.zyvo_service_fee,
                             )}
                           </span>
                         </li>
@@ -2569,14 +2587,15 @@ const BookingHost = () => {
                           </span>
                         </li>
                       )}
-                      {viewDetails?.charges?.discount > 0 && (
-                        <li>
-                          discount
-                          <span>
-                            -${formatCurrency(viewDetails?.charges?.discount)}
-                          </span>
-                        </li>
-                      )}
+                      {viewDetails?.charges?.booking_hours > 2 &&
+                        viewDetails?.charges?.discount > 0 && (
+                          <li>
+                            discount
+                            <span>
+                              -${formatCurrency(viewDetails?.charges?.discount)}
+                            </span>
+                          </li>
+                        )}
 
                       <li className="total-cost">
                         Total
@@ -2606,17 +2625,14 @@ const BookingHost = () => {
         booking_id={selectedBooking?.booking_id}
         property_id={propertyId}
       />
-      {
-        viewDetails?.property_images.lenght > 3 || viewDetails?.images > 3
-        && (
+      {viewDetails?.property_images?.lenght > 3 ||
+        (viewDetails?.images > 3 && (
           <LocationImagesModal
             show={showPropertyImages}
             handleClose={() => setShowPropertyImages(false)}
             images={viewDetails?.property_images || viewDetails?.images}
           />
-        )
-      }
-
+        ))}
 
       <AddToWishlistModal
         wishlistArr={wishlistArr}
@@ -2698,10 +2714,11 @@ const ApproveDeclineModal = ({ show, status, data, onClose, onSubmit }) => {
                   <button
                     key={reason}
                     type="button"
-                    className={`btn ${selectedReason === reason
-                      ? "primary-color"
-                      : "btn-outline-secondary"
-                      }`}
+                    className={`btn ${
+                      selectedReason === reason
+                        ? "primary-color"
+                        : "btn-outline-secondary"
+                    }`}
                     onClick={() =>
                       setSelectedReason(selectedReason === reason ? "" : reason)
                     }
