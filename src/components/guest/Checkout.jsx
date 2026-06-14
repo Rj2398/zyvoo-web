@@ -1732,15 +1732,7 @@ const Checkout = ({ setExtendedTime }) => {
                       <div
                                                 className="text-center ajdestmobileView"
 
-                        {/* style={{
-                          marginTop: isMobileWidth
-                            ? showDropdown2
-                              ? "60%"
-                              : "0%"
-                            : showDropdown2
-                              ? "25%"
-                              : "0%",
-                        }} */}
+                        
                       >
                         <Button
                           variant="success"
