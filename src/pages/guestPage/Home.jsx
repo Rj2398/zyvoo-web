@@ -47,7 +47,7 @@ const Home = () => {
 
   const itemsPerPage = 16;
   const [localHomeList, setLocalHomeList] = useState([]);
-
+  const [locationClear, setLocationClear] = useState(false);
   const [currentLocation, setCurrentLocation] = useState({
     latitude: null,
     longitude: null,
@@ -97,16 +97,36 @@ const Home = () => {
   // }, []);
 
   const fetchList = async () => {
+    console.log(locationClear, "locationClearlocationClear");
     try {
       const res = await guestHomeData({
         user_id: login_id || "",
-        latitude: currentLocation?.latitude,
-        longitude: currentLocation?.longitude,
+        latitude: locationClear ? null : currentLocation?.latitude,
+        longitude: locationClear ? null : currentLocation?.longitude,
       });
     } catch (error) {
       console.error("Error fetching guest home data:", error);
     }
   };
+
+  // const fetchList = async () => {
+  //   try {
+
+  //     locationClear= true // then send null lat long
+  //     // Check if we have valid coordinates
+  //     const hasLocation =
+  //       currentLocation?.latitude && currentLocation?.longitude;
+
+  //     const res = await guestHomeData({
+  //       user_id: login_id || "",
+  //       // If location exists, send it. Otherwise, send null.
+  //       latitude: hasLocation ? currentLocation.latitude : null,
+  //       longitude: hasLocation ? currentLocation.longitude : null,
+  //     });
+  //   } catch (error) {
+  //     console.error("Error fetching guest home data:", error);
+  //   }
+  // };
 
   useEffect(() => {
     // set data in userType & listshowMap
@@ -120,10 +140,21 @@ const Home = () => {
   }, [currentLocation?.latitude, currentLocation?.longitude, currentLocation]);
 
   useEffect(() => {
-    if (selectorData?.guestHomeData) {
-      setLocalHomeList(selectorData?.guestHomeData);
+    if (selectorData?.guestHomeData && selectorData.guestHomeData.length > 0) {
+      setLocalHomeList(selectorData.guestHomeData);
+    } else {
+      setLocalHomeList([]); // 💡 Clear the local state if global data is empty or missing
     }
-  }, [selectorData, currentLocation?.latitude, currentLocation, localHomeList]);
+  }, [
+    selectorData?.guestHomeData,
+    currentLocation?.latitude,
+    currentLocation?.longitude,
+  ]);
+  // useEffect(() => {
+  //   if (selectorData?.guestHomeData) {
+  //     setLocalHomeList(selectorData?.guestHomeData);
+  //   }
+  // }, [selectorData, currentLocation?.latitude, currentLocation, localHomeList]);
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
   const totalPages = Math.ceil(localHomeList.length / itemsPerPage);
@@ -314,7 +345,11 @@ const Home = () => {
       }}
     >
       {useTypes === "guest" || !login_id ? (
-        <HomeHeader showMap={showMap} setShowMap={setShowMap} />
+        <HomeHeader
+          showMap={showMap}
+          setShowMap={setShowMap}
+          callback={(txt) => setLocationClear(txt)}
+        />
       ) : (
         <Header />
       )}
