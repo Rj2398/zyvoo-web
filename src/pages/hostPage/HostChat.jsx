@@ -3443,25 +3443,25 @@ const HostChat = () => {
                           style={{ borderRadius: "50%" }}
                         />
                         <div
-                          style={{
-                            position: "absolute",
-                            bottom: "4px",
-                            right: "4px",
-                            width: "20px",
-                            height: "20px",
-                            borderRadius: "50%",
-                            // backgroundColor:
-                            //   userStatuses[booking.group_name] == "online"
-                            //     ? "#4AEAB1"
-                            //     : "gray",
+                          // style={{
+                          //   position: "absolute",
+                          //   bottom: "4px",
+                          //   right: "4px",
+                          //   width: "20px",
+                          //   height: "20px",
+                          //   borderRadius: "50%",
+                          //   // backgroundColor:
+                          //   //   userStatuses[booking.group_name] == "online"
+                          //   //     ? "#4AEAB1"
+                          //   //     : "gray",
 
-                            backgroundColor:
-                              userStatuses[booking.group_name] == "online"
-                                ? "#54E49F"
-                                : "gray",
-                            border: "4px solid white",
-                            zIndex: "1",
-                          }}
+                          //   backgroundColor:
+                          //     userStatuses[booking.group_name] == "online"
+                          //       ? "#54E49F"
+                          //       : "gray",
+                          //   border: "4px solid white",
+                          //   zIndex: "1",
+                          // }}
                           title={userStatuses[booking.group_name]}
                         />
                       </div>
