@@ -63,7 +63,6 @@
 //   const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
 //   const userTypes = localStorage.getItem(KEYS.USER_TYPE);
 
-
 //   const userId = userInfo?.user_id ? String(userInfo?.user_id) : null || userData?.user_id ? String(userData?.user_id) : null;
 //   const messagesContainerRef = React.useRef(null);
 
@@ -156,7 +155,6 @@
 //         });
 //       });
 
-
 //       const paginator = await client.getSubscribedConversations();
 
 //       for (const convo of paginator.items) {
@@ -216,7 +214,6 @@
 //     // setShowDropdown(false);
 //     return filtered;
 //   }, [getList, searchQuery, selectedFilter, unreadStatus, conversationTimestamps]);
-
 
 //   // console.log(filteredBookings, "let get stated ");
 
@@ -315,7 +312,6 @@
 //   //   fetchConversationDetails();
 //   // }, [filteredBookings, twilioToken, userId, userTypes]);
 
-
 //   useEffect(() => {
 //     const fetchConversationDetails = async () => {
 //       if (!filteredBookings?.length || !twilioToken || isInitializingRef.current) return;
@@ -410,7 +406,6 @@
 //     }
 //   }, [filteredBookings, twilioToken, userId, userTypes]);
 
-
 //   useEffect(() => {
 //     let isMounted = true;
 
@@ -483,7 +478,6 @@
 //         const user = await client.getUser(targetUserId);
 //         setTargetUser(user);
 //         setTargetUserStatus(user.isOnline ? "Online" : "Offline");
-
 
 //         user.on("updated", ({ user: updatedUser, updateReasons }) => {
 //           if (updateReasons.includes("reachabilityOnline")) {
@@ -691,7 +685,7 @@
 //     // const sortedMessages = messagesResponse.items.sort(
 //     //   (a, b) => new Date(a.dateCreated) - new Date(b.dateCreated)
 //     // );
-    
+
 //           const processedMessages = await Promise.all(
 //             messagesResponse.items.map(async (msg) => {
 //               const messageAuthor = msg.author || userId;
@@ -1082,7 +1076,6 @@
 //   //   }
 //   // };
 
-
 //   const handleArchieveUnarchieve = async (data) => {
 //     const res = await archieveUnarchieveUser({
 //       user_id: userId,
@@ -1361,7 +1354,7 @@
 //                             }}> */}
 //                           <Dropdown show={!isMobileWidth ? selectedBooking?.property_id === booking?.property_id && activeDropdown === index : activeDropdown == index}
 //                             onToggle={(isOpen) => {
-//                               //  if (isMobileWidth && !isSelected) return;   // only 
+//                               //  if (isMobileWidth && !isSelected) return;   // only
 //                               setActiveDropdown(isOpen ? index : null)
 //                             }
 
@@ -1389,8 +1382,6 @@
 
 //                               <Dropdown.Item as="button" onClick={() => { handleArchieveUnarchieve(selectedBooking || booking) }} >
 //                                 {(booking?.is_archived) ? "Unarchived" : "Archived"}
-
-
 
 //                               </Dropdown.Item>
 
@@ -1507,7 +1498,6 @@
 //                               minute: '2-digit',  // "32"
 //                               hour12: true        // "AM"/"PM"
 //                             });
-
 
 //                             return (
 //                               <div key={index} className={`d-flex mb-2 flex-wrap ${isMyMessage ? "justify-content-start" : "justify-content-start"}`} style={{ fontWeight: 'lighter' }} >
@@ -1676,8 +1666,6 @@
 //                             {selectedBooking?.is_star_host && (<Image src="/images/locations-grid/profile/batch.svg" loading="lazy" alt="Batch" style={{ marginLeft: "5px", width: "30px" }} />)}
 //                           </>)}
 //                     </Col>
-
-
 
 //                   </Row>
 //                   <hr style={{ marginTop: '-14px', marginBottom: '30px' }} />
@@ -1928,13 +1916,18 @@
 
 // export default HostChat;
 
-
-
-
-
-
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Card, Button, Image, Dropdown, FormControl, InputGroup, Container, Modal, Form, } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Image,
+  Dropdown,
+  FormControl,
+  InputGroup,
+  Container,
+  Modal,
+  Form,
+} from "react-bootstrap";
 import { PiClockCountdownFill } from "react-icons/pi";
 import { LuSend } from "react-icons/lu";
 import { ImAttachment } from "react-icons/im";
@@ -1958,20 +1951,36 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { containsInappropriateWord } from "../../config/ReusableFn";
 
 const HostChat = () => {
-  const { getTwilioToken, getChannelUser, JoinChannel, muteUmuteUser, blockUnblockUser, archieveUnarchieveUser, deleteChatUser, favoriteChatUser, reportUser, getReportList, isLoading, saveChatTimeStamp } = useChat();
+  const {
+    getTwilioToken,
+    getChannelUser,
+    JoinChannel,
+    muteUmuteUser,
+    blockUnblockUser,
+    archieveUnarchieveUser,
+    deleteChatUser,
+    favoriteChatUser,
+    reportUser,
+    getReportList,
+    isLoading,
+    saveChatTimeStamp,
+  } = useChat();
   const { hostMarkBookings } = useCommon();
   const { fetchGuestReview } = useBook();
   const navigate = useNavigate();
-  const { userInfo } = useSelector(({ user }) => user)
+  const { userInfo } = useSelector(({ user }) => user);
   const profileData = useSelector((state) => state.profile);
 
   const location = useLocation();
   const [targetUser, setTargetUser] = useState(null);
   const [targetUserStatus, setTargetUserStatus] = useState("offline");
   const selectedMsg = location?.state?.selectedReason;
-  const senderDetail = (location?.state?.data?.sender_detail || location?.state?.sender_detail);
-  const property_id = (location?.state?.data?.property_id || location?.state?.property_id);
-  const fallbackImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+  const senderDetail =
+    location?.state?.data?.sender_detail || location?.state?.sender_detail;
+  const property_id =
+    location?.state?.data?.property_id || location?.state?.property_id;
+  const fallbackImg =
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s";
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -1979,9 +1988,9 @@ const HostChat = () => {
   const [showModal, setShowModal] = useState(false); // For show the dropdown of chat option
   const [showReportForm, setShowReportForm] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("All Conversations");
-  const [twilioToken, setTwilioToken] = useState(null)
+  const [twilioToken, setTwilioToken] = useState(null);
   const sendChannelOnceRef = useRef(false); // Place this in your React component
-  const [guestReview, setGuestReview] = useState(null)
+  const [guestReview, setGuestReview] = useState(null);
   const hasSentAutoMessage = useRef(false);
   const isInitializingRef = useRef(false); // ADD THIS LINE
   const twilioClientRef = useRef(null); // ADD THIS LINE TOO
@@ -1995,11 +2004,16 @@ const HostChat = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
 
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userTypes = localStorage.getItem(KEYS.USER_TYPE);
 
-
-  const userId = userInfo?.user_id ? String(userInfo?.user_id) : null || userData?.user_id ? String(userData?.user_id) : null;
+  const userId = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || userData?.user_id
+    ? String(userData?.user_id)
+    : null;
   const messagesContainerRef = React.useRef(null);
 
   // NEW STATES FOR FIXES
@@ -2023,20 +2037,20 @@ const HostChat = () => {
   useEffect(() => {
     getUserList();
     if (selectedBooking) {
-      guestReviewDetail(selectedBooking)
+      guestReviewDetail(selectedBooking);
     }
   }, [senderDetail, userId, userTypes]);
 
   const guestReviewDetail = async (data) => {
     if (userTypes == "host") {
-      const response = await fetchGuestReview({ user_id: data?.sender_id })
+      const response = await fetchGuestReview({ user_id: data?.sender_id });
       // const response = await fetchGuestReview({user_id : data?.receiver_id})
 
       if (response?.success) {
-        setGuestReview(response?.data?.total_rating)
+        setGuestReview(response?.data?.total_rating);
       }
     }
-  }
+  };
 
   const getUserList = async () => {
     try {
@@ -2049,7 +2063,7 @@ const HostChat = () => {
           setGetList(response.data);
         } else {
           setGetList([]);
-          setSelectedBooking(null)
+          setSelectedBooking(null);
         }
       } else {
         // If sender detail exists, filter for specific user
@@ -2067,9 +2081,7 @@ const HostChat = () => {
     }
   };
 
-
-
-    useEffect(() => {
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await getChannelUser({
@@ -2107,7 +2119,7 @@ const HostChat = () => {
         user_id: String(userData.user_id),
         role: userTypes || "host",
       });
-      setTwilioToken(response?.data?.token)
+      setTwilioToken(response?.data?.token);
 
       // const client = await ConversationsClient.create(response?.data?.token);
 
@@ -2115,15 +2127,14 @@ const HostChat = () => {
 
       // Wait for client to be initialized
       await new Promise((resolve, reject) => {
-        client.on('stateChanged', (state) => {
-          if (state === 'initialized') {
+        client.on("stateChanged", (state) => {
+          if (state === "initialized") {
             resolve();
-          } else if (state === 'failed') {
-            reject(new Error('Client failed to initialize'));
+          } else if (state === "failed") {
+            reject(new Error("Client failed to initialize"));
           }
         });
       });
-
 
       const paginator = await client.getSubscribedConversations();
 
@@ -2143,8 +2154,12 @@ const HostChat = () => {
     // Apply search filter
     filtered = filtered.filter((booking) =>
       userTypes == "host"
-        ? booking?.sender_name?.toLowerCase().includes(searchQuery?.toLowerCase())
-        : booking?.receiver_name?.toLowerCase().includes(searchQuery?.toLowerCase())
+        ? booking?.sender_name
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase())
+        : booking?.receiver_name
+            ?.toLowerCase()
+            .includes(searchQuery?.toLowerCase())
     );
 
     // filtered = filtered.filter(
@@ -2157,7 +2172,8 @@ const HostChat = () => {
     //     )?.toLowerCase().includes(searchQuery?.toLowerCase())
     // )
 
-    if (selectedFilter == "Archived") {    // Apply selected filter logic
+    if (selectedFilter == "Archived") {
+      // Apply selected filter logic
       filtered = filtered.filter((booking) => booking?.is_archived);
     }
 
@@ -2183,8 +2199,13 @@ const HostChat = () => {
 
     // setShowDropdown(false);
     return filtered;
-  }, [getList, searchQuery, selectedFilter, unreadStatus, conversationTimestamps]);
-
+  }, [
+    getList,
+    searchQuery,
+    selectedFilter,
+    unreadStatus,
+    conversationTimestamps,
+  ]);
 
   // console.log(filteredBookings, "let get stated ");
 
@@ -2283,10 +2304,14 @@ const HostChat = () => {
   //   fetchConversationDetails();
   // }, [filteredBookings, twilioToken, userId, userTypes]);
 
-
   useEffect(() => {
     const fetchConversationDetails = async () => {
-      if (!filteredBookings?.length || !twilioToken || isInitializingRef.current) return;
+      if (
+        !filteredBookings?.length ||
+        !twilioToken ||
+        isInitializingRef.current
+      )
+        return;
 
       isInitializingRef.current = true;
 
@@ -2297,11 +2322,11 @@ const HostChat = () => {
 
           // Wait for initialization
           await new Promise((resolve, reject) => {
-            twilioClientRef.current.on('stateChanged', (state) => {
-              if (state === 'initialized') {
+            twilioClientRef.current.on("stateChanged", (state) => {
+              if (state === "initialized") {
                 resolve();
-              } else if (state === 'failed') {
-                reject(new Error('Twilio client failed to initialize'));
+              } else if (state === "failed") {
+                reject(new Error("Twilio client failed to initialize"));
               }
             });
           });
@@ -2315,7 +2340,9 @@ const HostChat = () => {
 
         for (const booking of filteredBookings) {
           try {
-            const convo = await client.getConversationByUniqueName(booking.group_name);
+            const convo = await client.getConversationByUniqueName(
+              booking.group_name
+            );
 
             // Get the current user's participant info
             const participant = await convo.getParticipantByIdentity(userId);
@@ -2326,38 +2353,51 @@ const HostChat = () => {
             const lastMsg = messagesResponse.items[0];
 
             // Check if unread (only if message is from someone else)
-            const isUnread = lastMsg && lastMsg.index > lastReadIndex && lastMsg.author !== userId;
+            const isUnread =
+              lastMsg &&
+              lastMsg.index > lastReadIndex &&
+              lastMsg.author !== userId;
 
             // Store last message data
             messagesData[booking.group_name] = {
               body: lastMsg?.body || "No message",
-              timestamp: lastMsg?.dateCreated ? new Date(lastMsg.dateCreated).toLocaleString() : "N/A",
+              timestamp: lastMsg?.dateCreated
+                ? new Date(lastMsg.dateCreated).toLocaleString()
+                : "N/A",
               unread: isUnread,
-              lastMessageDate: lastMsg?.dateCreated || booking.booking_date || new Date(0)
+              lastMessageDate:
+                lastMsg?.dateCreated || booking.booking_date || new Date(0),
             };
 
             // Store unread status
             unreadData[booking.group_name] = isUnread;
 
             // Store timestamp for sorting
-            timestamps[booking.group_name] = lastMsg?.dateCreated || booking.booking_date || new Date(0);
+            timestamps[booking.group_name] =
+              lastMsg?.dateCreated || booking.booking_date || new Date(0);
 
             // Get online status for other user
-            const otherUserId = userTypes === "host" ? booking.sender_id : booking.receiver_id;
-            const otherParticipant = await convo.getParticipantByIdentity(otherUserId);
+            const otherUserId =
+              userTypes === "host" ? booking.sender_id : booking.receiver_id;
+            const otherParticipant = await convo.getParticipantByIdentity(
+              otherUserId
+            );
             const isOnline = otherParticipant?.isOnline ?? false;
             statuses[booking.group_name] = isOnline ? "online" : "offline";
-
           } catch (err) {
-            console.error(`Error fetching conversation for ${booking.group_name}`, err);
+            console.error(
+              `Error fetching conversation for ${booking.group_name}`,
+              err
+            );
             messagesData[booking.group_name] = {
               body: "No messages yet",
               timestamp: "N/A",
               unread: false,
-              lastMessageDate: booking.booking_date || new Date(0)
+              lastMessageDate: booking.booking_date || new Date(0),
             };
             unreadData[booking.group_name] = false;
-            timestamps[booking.group_name] = booking.booking_date || new Date(0);
+            timestamps[booking.group_name] =
+              booking.booking_date || new Date(0);
           }
         }
 
@@ -2378,24 +2418,24 @@ const HostChat = () => {
     }
   }, [filteredBookings, twilioToken, userId, userTypes]);
 
-
   useEffect(() => {
     let isMounted = true;
 
     if (selectedBooking) {
-      guestReviewDetail(selectedBooking)
+      guestReviewDetail(selectedBooking);
     }
 
     const initializeChat = async () => {
       try {
         const targetUserId = selectedBooking
-          ? userTypes == "host" ? selectedBooking.sender_id : selectedBooking.receiver_id
+          ? userTypes == "host"
+            ? selectedBooking.sender_id
+            : selectedBooking.receiver_id
           : senderDetail?.user_id || senderDetail?.host_id;
         const targetPropertyId = property_id || selectedBooking?.property_id;
 
         if (property_id) {
           if (!targetUserId || !targetPropertyId) {
-
             return;
           }
         }
@@ -2437,9 +2477,9 @@ const HostChat = () => {
 
                 // ✅ Update unread status when selecting a conversation
                 if (chatChannel.uniqueName) {
-                  setUnreadStatus(prev => ({
+                  setUnreadStatus((prev) => ({
                     ...prev,
-                    [chatChannel.uniqueName]: false
+                    [chatChannel.uniqueName]: false,
                   }));
                 }
               }
@@ -2452,12 +2492,10 @@ const HostChat = () => {
         setTargetUser(user);
         setTargetUserStatus(user.isOnline ? "Online" : "Offline");
 
-
         user.on("updated", ({ user: updatedUser, updateReasons }) => {
           if (updateReasons.includes("reachabilityOnline")) {
             const newStatus = updatedUser.isOnline ? "Online" : "Offline";
             setTargetUserStatus(newStatus);
-
           }
         });
 
@@ -2514,8 +2552,12 @@ const HostChat = () => {
         )}_${propertyId}`;
       } else {
         // Use existing group_name if available
-        channelName = selectedBooking?.group_name ||
-          `ZYVOOPROJ_${Math.min(guestId, hostId)}_${Math.max(guestId, hostId)}_${propertyId}`;
+        channelName =
+          selectedBooking?.group_name ||
+          `ZYVOOPROJ_${Math.min(guestId, hostId)}_${Math.max(
+            guestId,
+            hostId
+          )}_${propertyId}`;
       }
 
       let chatChannel;
@@ -2635,7 +2677,7 @@ const HostChat = () => {
 
       // Try to find the booking that matches current property_id
       const matchedBooking = channels.find((item) => {
-        const groupParts = item?.group_name?.split('_');
+        const groupParts = item?.group_name?.split("_");
         const groupPropertyId = parseInt(groupParts?.[groupParts.length - 1]);
         return groupPropertyId == property_id;
       });
@@ -2655,11 +2697,11 @@ const HostChat = () => {
         try {
           const messagesResponse = await channel.getMessages(30);
 
-              // FIX: Sort messages by date (oldest first for proper display)
-    // const sortedMessages = messagesResponse.items.sort(
-    //   (a, b) => new Date(a.dateCreated) - new Date(b.dateCreated)
-    // );
-    
+          // FIX: Sort messages by date (oldest first for proper display)
+          // const sortedMessages = messagesResponse.items.sort(
+          //   (a, b) => new Date(a.dateCreated) - new Date(b.dateCreated)
+          // );
+
           const processedMessages = await Promise.all(
             messagesResponse.items.map(async (msg) => {
               const messageAuthor = msg.author || userId;
@@ -2680,7 +2722,7 @@ const HostChat = () => {
                   };
                 } catch (error) {
                   console.warn("Error fetching media URL:", error);
-                  return { ...baseMsg, type: "text", };
+                  return { ...baseMsg, type: "text" };
                 }
               }
               return {
@@ -2697,21 +2739,20 @@ const HostChat = () => {
 
           // ✅ Update unread status for this conversation
           if (channel.uniqueName) {
-            setUnreadStatus(prev => ({
+            setUnreadStatus((prev) => ({
               ...prev,
-              [channel.uniqueName]: false
+              [channel.uniqueName]: false,
             }));
 
             // ✅ Update timestamp for sorting
             if (processedMessages.length > 0) {
               const lastMsg = processedMessages[processedMessages.length - 1];
-              setConversationTimestamps(prev => ({
+              setConversationTimestamps((prev) => ({
                 ...prev,
-                [channel.uniqueName]: lastMsg.dateCreated || new Date()
+                [channel.uniqueName]: lastMsg.dateCreated || new Date(),
               }));
             }
           }
-
         } catch (error) {
           console.error("Error loading messages:", error);
         }
@@ -2740,15 +2781,15 @@ const HostChat = () => {
 
           // ✅ Update unread status when receiving new message
           if (channel.uniqueName) {
-            setUnreadStatus(prev => ({
+            setUnreadStatus((prev) => ({
               ...prev,
-              [channel.uniqueName]: true
+              [channel.uniqueName]: true,
             }));
 
             // ✅ Update timestamp for sorting
-            setConversationTimestamps(prev => ({
+            setConversationTimestamps((prev) => ({
               ...prev,
-              [channel.uniqueName]: newMessage.dateCreated || new Date()
+              [channel.uniqueName]: newMessage.dateCreated || new Date(),
             }));
           }
 
@@ -2780,7 +2821,10 @@ const HostChat = () => {
         const blockedUsers = updatedChannel.attributes?.blockedUsers || {};
         const amIBlocked = blockedUsers[String(userId)] === true;
 
-        setSelectedBooking(prev => ({ ...prev, is_other_block: amIBlocked ? 1 : 0 }));
+        setSelectedBooking((prev) => ({
+          ...prev,
+          is_other_block: amIBlocked ? 1 : 0,
+        }));
 
         if (amIBlocked) {
           toast.error("You have been blocked");
@@ -2803,14 +2847,16 @@ const HostChat = () => {
     const isBlocked = await checkIfBlocked(channel, myIdentity);
     if (selectedBooking?.is_other_block === 1 || isBlocked) {
       // if (isBlocked) {
-        toast.error("You are blocked");
-        return;
+      toast.error("You are blocked");
+      return;
       // }
     }
 
     // 2. Check for Profanity
     if (containsInappropriateWord(message)) {
-      toast.error("This message contains inappropriate words and is not allowed");
+      toast.error(
+        "This message contains inappropriate words and is not allowed"
+      );
       setMessage(""); // Clear the message input field
       return; // Stop execution
     }
@@ -2892,8 +2938,7 @@ const HostChat = () => {
         document.getElementById("fileUpload").value = "";
       }
       return; // Exit after handling file sending
-    }
-    else if (message.trim()) {
+    } else if (message.trim()) {
       messageToSend = message.trim();
       setMessage(""); // Clear the input field for user messages
     } else {
@@ -2923,20 +2968,19 @@ const HostChat = () => {
 
         // ✅ Update timestamp for sorting when sending a message
         if (channel.uniqueName) {
-          setConversationTimestamps(prev => ({
+          setConversationTimestamps((prev) => ({
             ...prev,
-            [channel.uniqueName]: sentMessage.dateCreated || new Date()
+            [channel.uniqueName]: sentMessage.dateCreated || new Date(),
           }));
         }
 
         // ✅ Don't mark as unread when you send a message
         if (channel.uniqueName) {
-          setUnreadStatus(prev => ({
+          setUnreadStatus((prev) => ({
             ...prev,
-            [channel.uniqueName]: false // Keep as read when you send
+            [channel.uniqueName]: false, // Keep as read when you send
           }));
         }
-
       } catch (error) {
         console.error("Failed to send message:", error);
         if (!isAutoMessage) {
@@ -2948,7 +2992,7 @@ const HostChat = () => {
     }
   };
 
-  const alreadSend = localStorage.getItem('is_already_sent')
+  const alreadSend = localStorage.getItem("is_already_sent");
 
   useEffect(() => {
     if (channel && selectedMsg && !hasSentAutoMessage.current) {
@@ -2957,7 +3001,7 @@ const HostChat = () => {
       } else {
         if (!alreadSend) {
           sendMessage(null, selectedMsg);
-          localStorage.setItem("is_already_sent", true)
+          localStorage.setItem("is_already_sent", true);
         }
         hasSentAutoMessage.current = true; // Mark as sent after the first successful attempt
       }
@@ -3001,9 +3045,11 @@ const HostChat = () => {
     const isCurrentlyBlocked = data?.is_blocked === 1;
     const newBlockStatus = isCurrentlyBlocked ? 0 : 1;
 
-    const blockerId = userTypes === "host" ? data?.receiver_id : data?.sender_id;
+    const blockerId =
+      userTypes === "host" ? data?.receiver_id : data?.sender_id;
 
-    const blockedId = userTypes === "host" ? data?.sender_id : data?.receiver_id;
+    const blockedId =
+      userTypes === "host" ? data?.sender_id : data?.receiver_id;
 
     // 1️⃣ Update DB (authority)
     const res = await blockUnblockUser({
@@ -3024,10 +3070,10 @@ const HostChat = () => {
       delete blockedUsers[String(blockedId)];
     }
 
-    await channel.updateAttributes({ ...attributes, blockedUsers, });
+    await channel.updateAttributes({ ...attributes, blockedUsers });
 
     // 3️⃣ Update local UI
-    setSelectedBooking(prev => ({ ...prev, is_blocked: newBlockStatus }));
+    setSelectedBooking((prev) => ({ ...prev, is_blocked: newBlockStatus }));
 
     toast.success(newBlockStatus === 1 ? "User blocked" : "User unblocked");
   };
@@ -3050,7 +3096,6 @@ const HostChat = () => {
   //   }
   // };
 
-
   const handleArchieveUnarchieve = async (data) => {
     const res = await archieveUnarchieveUser({
       user_id: userId,
@@ -3059,8 +3104,8 @@ const HostChat = () => {
 
     if (res?.success) {
       // Update the specific booking in getList array
-      setGetList(prevList =>
-        prevList.map(booking =>
+      setGetList((prevList) =>
+        prevList.map((booking) =>
           booking.group_name === data?.group_name
             ? { ...booking, is_archived: data?.is_archived == 1 ? 0 : 1 }
             : booking
@@ -3069,7 +3114,7 @@ const HostChat = () => {
 
       // Also update selectedBooking if it's the same conversation
       if (selectedBooking?.group_name === data?.group_name) {
-        setSelectedBooking(prev => ({
+        setSelectedBooking((prev) => ({
           ...prev,
           is_archived: data?.is_archived == 1 ? 0 : 1,
         }));
@@ -3085,7 +3130,7 @@ const HostChat = () => {
     });
     if (res.success) {
       getUserList();
-      toast.success("chat deleted successfully")
+      toast.success("chat deleted successfully");
     }
   };
 
@@ -3098,14 +3143,12 @@ const HostChat = () => {
     });
 
     if (res?.success) {
-
       setSelectedBooking((prev) => ({
         ...prev,
         is_favorite: data?.is_favorite == 0 ? 1 : 0,
       }));
       getUserList();
     }
-
   };
 
   const handleReport = async (data, selectedBooking) => {
@@ -3150,18 +3193,31 @@ const HostChat = () => {
 
   function convertDate(dateStr) {
     const date = new Date(dateStr);
-    const day = date.getDate().toString().padStart(2, '0');
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const day = date.getDate().toString().padStart(2, "0");
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
     const month = monthNames[date.getMonth()];
     const year = date.getFullYear();
     return `${day} ${month} ${year}`;
   }
 
   const handleClose = () => {
-    setSelectedBooking(null)
-  }
+    setSelectedBooking(null);
+  };
 
-  const [isMobileWidth, setIsMobileWidth] = useState(false)
+  const [isMobileWidth, setIsMobileWidth] = useState(false);
 
   useEffect(() => {
     const checkWindowWidth = () => {
@@ -3169,9 +3225,9 @@ const HostChat = () => {
     };
 
     checkWindowWidth(); // run on mount
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   return (
@@ -3184,21 +3240,55 @@ const HostChat = () => {
                 <div className="mob-search-bar-back">
                   <form action="" onSubmit={(e) => e.preventDefault()}>
                     <label>
-                      <input type="text" placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-                      <button type="submit"><i className="fa-regular fa-magnifying-glass"></i></button>
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                      />
+                      <button type="submit">
+                        <i className="fa-regular fa-magnifying-glass"></i>
+                      </button>
                     </label>
                   </form>
                 </div>
                 <div className="mob-filter-in ms-auto dropdown">
-                  <a href="#" className="dropdown-toggle" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <img src="/images/mobile/filters/filter.svg" loading="lazy" alt="" />
+                  <a
+                    href="#"
+                    className="dropdown-toggle"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img
+                      src="/images/mobile/filters/filter.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                   </a>
                   <div className="dropdown-menu">
                     <ul>
-                      <li><a href="#" onClick={() => setSelectedFilter("All Conversations")} >All Conversations</a></li>
-                      <li><a href="#" onClick={() => setSelectedFilter("Archived")} >Archived</a></li>
-                      <li><a href="#" onClick={() => setSelectedFilter("Unread")} >Unread</a></li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={() => setSelectedFilter("All Conversations")}
+                        >
+                          All Conversations
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="#"
+                          onClick={() => setSelectedFilter("Archived")}
+                        >
+                          Archived
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#" onClick={() => setSelectedFilter("Unread")}>
+                          Unread
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -3209,190 +3299,378 @@ const HostChat = () => {
       </div>
 
       <div className="container-fluid mt-lg-4">
-        <div className="d-flex flex-column flex-md-row gap-3" style={!isMobileWidth ? { height: "calc(100vh - 17vh)" } : {}} >
-          <div className="flex-grow p-lg-2" style={{ borderRadius: "8px", overflowY: isMobileWidth ? "" : "auto", height: "100%", }} >
-            {(!showSearch && !isMobileWidth) ? (
+        <div
+          className="d-flex flex-column flex-md-row gap-3"
+          style={!isMobileWidth ? { height: "calc(100vh - 17vh)" } : {}}
+        >
+          <div
+            className="flex-grow p-lg-2"
+            style={{
+              borderRadius: "8px",
+              overflowY: isMobileWidth ? "" : "auto",
+              height: "100%",
+            }}
+          >
+            {!showSearch && !isMobileWidth ? (
               <div className="d-flex align-items-center justify-content-between">
                 <div className="d-flex align-items-center gap-2">
                   <div style={{ fontWeight: "600" }}>{selectedFilter}</div>
-                  <Dropdown show={showDropdown} onToggle={() => setShowDropdown(!showDropdown)} >
-                    <img src={"/images/dropdown.svg"} style={{ cursor: "pointer", width: "12px" }} onClick={() => setShowDropdown(!showDropdown)} />
+                  <Dropdown
+                    show={showDropdown}
+                    onToggle={() => setShowDropdown(!showDropdown)}
+                  >
+                    <img
+                      src={"/images/dropdown.svg"}
+                      style={{ cursor: "pointer", width: "12px" }}
+                      onClick={() => setShowDropdown(!showDropdown)}
+                    />
                     {/* <RiArrowDropDownLine style={{ cursor: "pointer", marginLeft: 5 }} onClick={() => setShowDropdown (!showDropdown)} /> */}
 
-                    <Dropdown.Menu show align="end" style={{ marginTop: "0.2rem" }} >
-                      <Dropdown.Item as="button" onClick={() => setSelectedFilter("All Conversations")} >
+                    <Dropdown.Menu
+                      show
+                      align="end"
+                      style={{ marginTop: "0.2rem" }}
+                    >
+                      <Dropdown.Item
+                        as="button"
+                        onClick={() => setSelectedFilter("All Conversations")}
+                      >
                         All Conversations
                       </Dropdown.Item>
 
-                      <Dropdown.Item as="button" onClick={() => setSelectedFilter("Archived")} >
+                      <Dropdown.Item
+                        as="button"
+                        onClick={() => setSelectedFilter("Archived")}
+                      >
                         Archived
                       </Dropdown.Item>
 
-                      <Dropdown.Item as="button" onClick={() => setSelectedFilter("Unread")} >
+                      <Dropdown.Item
+                        as="button"
+                        onClick={() => setSelectedFilter("Unread")}
+                      >
                         Unread
                       </Dropdown.Item>
-
                     </Dropdown.Menu>
                   </Dropdown>
                 </div>
-                <IoSearch onClick={() => setShowSearch(true)} style={{ marginRight: 5, fontSize: "20px" }} />
+                <IoSearch
+                  onClick={() => setShowSearch(true)}
+                  style={{ marginRight: 5, fontSize: "20px" }}
+                />
               </div>
             ) : (
-              !isMobileWidth && (<InputGroup>
-                <FormControl type="text"
-                  style={{
-                    outline: "none",
-                    boxShadow: "none",
-                    borderColor: "#e4e4e4",
-                    borderRightColor: "#6c757d",
-                  }}
-                  placeholder="Search..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+              !isMobileWidth && (
+                <InputGroup>
+                  <FormControl
+                    type="text"
+                    style={{
+                      outline: "none",
+                      boxShadow: "none",
+                      borderColor: "#e4e4e4",
+                      borderRightColor: "#6c757d",
+                    }}
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
 
-                <Button variant="outline-secondary" onClick={() => {
-                  setShowSearch(false);
-                  setSearchQuery("");
-                }} >
-                  X
-                </Button>
-              </InputGroup>)
+                  <Button
+                    variant="outline-secondary"
+                    onClick={() => {
+                      setShowSearch(false);
+                      setSearchQuery("");
+                    }}
+                  >
+                    X
+                  </Button>
+                </InputGroup>
+              )
             )}
 
             {filteredBookings?.length > 0 ? (
               filteredBookings.map((booking, index) => (
-                <Card key={index} className={`mt-3 mt-lg-4 ${selectedBooking?.group_name == booking.group_name
-                  ? "border border-black" : ""}`} style={{
+                <Card
+                  key={index}
+                  className={`mt-3 mt-lg-4 ${
+                    selectedBooking?.group_name == booking.group_name
+                      ? "border border-black"
+                      : ""
+                  }`}
+                  style={{
                     cursor: "pointer",
                     borderRadius: "20px",
-                  }} onClick={() => {
+                  }}
+                  onClick={() => {
                     setSelectedBooking(booking);
-                  }} >
+                  }}
+                >
                   <Card.Body>
                     <div className="d-flex align-items-center">
-                      <div style={{
-                        width: "65px",
-                        height: "65px",
-                        borderRadius: "50%",
-                        border: "2px solid #ccc",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        overflow: "hidden",
-                        backgroundColor: "#fff",
-                        marginRight: "10px",
-                        position: "relative"
-                      }} onClick={(e) => {
-                        e.stopPropagation();
+                      <div
+                        style={{
+                          width: "65px",
+                          height: "65px",
+                          borderRadius: "50%",
+                          border: "2px solid #ccc",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          overflow: "hidden",
+                          backgroundColor: "#fff",
+                          marginRight: "10px",
+                          position: "relative",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
 
-                        if (userTypes === "guest") {
-                          navigate("/host-listing", { state: { hostId: booking?.receiver_id } });
-                        }
-                      }}>
-
-                        
-                        <Image src={`${imageBase}${userTypes == "host" ? booking?.sender_profile : booking?.receiver_image}`} roundedCircle width="50" height="50" style={{ borderRadius: '50%' }}
+                          if (userTypes === "guest") {
+                            navigate("/host-listing", {
+                              state: { hostId: booking?.receiver_id },
+                            });
+                          }
+                        }}
+                      >
+                        <Image
+                          src={`${imageBase}${
+                            userTypes == "host"
+                              ? booking?.sender_profile
+                              : booking?.receiver_image
+                          }`}
+                          roundedCircle
+                          width="50"
+                          height="50"
+                          style={{ borderRadius: "50%" }}
                         />
-                        <div style={{
-                          position: "absolute", bottom: "4px", right: "4px", width: "20px",
-                          height: "20px", borderRadius: "50%", backgroundColor: userStatuses[booking.group_name] == "online" ? "#4AEAB1" : "gray", border: "4px solid white", zIndex: "1"
-                        }} title={userStatuses[booking.group_name]} />
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: "4px",
+                            right: "4px",
+                            width: "20px",
+                            height: "20px",
+                            borderRadius: "50%",
+                            backgroundColor:
+                              userStatuses[booking.group_name] == "online"
+                                ? "#4AEAB1"
+                                : "gray",
+                            border: "4px solid white",
+                            zIndex: "1",
+                          }}
+                          title={userStatuses[booking.group_name]}
+                        />
                       </div>
                       <div>
-                        <Card.Title style={{ fontSize: isMobileWidth ? "13px" : "15px", width: "99%" }}>
-                          {userTypes == "host" ? booking?.sender_name : booking?.receiver_name}{" "}{isMobileWidth && <br />}
-                          ({booking?.property_title})
+                        <Card.Title
+                          style={{
+                            fontSize: isMobileWidth ? "13px" : "15px",
+                            width: "99%",
+                          }}
+                        >
+                          {userTypes == "host"
+                            ? booking?.sender_name
+                            : booking?.receiver_name}{" "}
+                          {isMobileWidth && <br />}({booking?.property_title})
                         </Card.Title>
 
-                        <Card.Subtitle className="mb-2 text-muted"> {booking.booking_date} </Card.Subtitle>
+                        <Card.Subtitle className="mb-2 text-muted">
+                          {" "}
+                          {booking.booking_date}{" "}
+                        </Card.Subtitle>
 
                         {/* {console.log(lastMessages[booking.group_name]?.timestamp,"@@@@@@@@@@@")} */}
 
                         {lastMessages[booking.group_name]?.timestamp ? (
                           <div style={{ fontSize: "12px", color: "#b9b9b9" }}>
                             {/* {formatTimeAgo(lastMessages[booking.group_name]?.timestamp) || ""} */}
-                            {formatTimeAgo(lastMessages[booking.group_name]?.lastMessageDate) || ""}
+                            {formatTimeAgo(
+                              lastMessages[booking.group_name]?.lastMessageDate
+                            ) || ""}
                             {/* {console.log(lastMessages[booking.group_name], "lastMessages[booking.group_name]@@@@@")} */}
                             {/* {console.log(lastMessages[booking.group_name]?.timestamp, "lastMessages[booking.group_name]?.timestamp#####")} */}
                           </div>
-                        ) : <div style={{ fontSize: "12px", color: "#b9b9b9" }}> Loading... </div>}
+                        ) : (
+                          <div style={{ fontSize: "12px", color: "#b9b9b9" }}>
+                            {" "}
+                            Loading...{" "}
+                          </div>
+                        )}
 
                         {lastMessages[booking.group_name]?.body && (
-                          <p style={{ fontSize: "14px", marginBottom: "0px", fontWeight: lastMessages[booking.group_name]?.unread ? "bold" : "normal" }}>
-                            {lastMessages[booking.group_name].body.split(" ").length > 5 ? lastMessages[booking.group_name].body.split(" ").slice(0, 3).join(" ") + "..." : lastMessages[booking.group_name].body}
+                          <p
+                            style={{
+                              fontSize: "14px",
+                              marginBottom: "0px",
+                              fontWeight: lastMessages[booking.group_name]
+                                ?.unread
+                                ? "bold"
+                                : "normal",
+                            }}
+                          >
+                            {lastMessages[booking.group_name].body.split(" ")
+                              .length > 5
+                              ? lastMessages[booking.group_name].body
+                                  .split(" ")
+                                  .slice(0, 3)
+                                  .join(" ") + "..."
+                              : lastMessages[booking.group_name].body}
                           </p>
                         )}
                       </div>
 
-                      <div style={{ position: "absolute", top: "10px", right: "0px" }} onClick={(e) => e.stopPropagation()}  >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          right: "0px",
+                        }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         <Col className="d-flex justify-content-end align-items-center">
                           {/* <Dropdown show={selectedBooking?.property_id === booking?.property_id && activeDropdown === index}
                             onToggle={(isOpen) => {
                               // if (!isSelected) return;   // only selected property can open
                               setActiveDropdown(isOpen ? index : null);
                             }}> */}
-                          <Dropdown show={!isMobileWidth ? selectedBooking?.property_id === booking?.property_id && activeDropdown === index : activeDropdown == index}
-                            onToggle={(isOpen) => {
-                              //  if (isMobileWidth && !isSelected) return;   // only 
-                              setActiveDropdown(isOpen ? index : null)
+                          <Dropdown
+                            show={
+                              !isMobileWidth
+                                ? selectedBooking?.property_id ===
+                                    booking?.property_id &&
+                                  activeDropdown === index
+                                : activeDropdown == index
                             }
-
-                            } >
-                            <Dropdown.Toggle className="no-caret" variant="link" id="dropdown-custom-components" >
-                              <style> {` .no-caret::after { display: none !important; }`} </style>
-                              <BsThreeDotsVertical size={26} color="#ccc" style={{ backgroundColor: "white" }} />
+                            onToggle={(isOpen) => {
+                              //  if (isMobileWidth && !isSelected) return;   // only
+                              setActiveDropdown(isOpen ? index : null);
+                            }}
+                          >
+                            <Dropdown.Toggle
+                              className="no-caret"
+                              variant="link"
+                              id="dropdown-custom-components"
+                            >
+                              <style>
+                                {" "}
+                                {` .no-caret::after { display: none !important; }`}{" "}
+                              </style>
+                              <BsThreeDotsVertical
+                                size={26}
+                                color="#ccc"
+                                style={{ backgroundColor: "white" }}
+                              />
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
-                              <Dropdown.Item as="button" onClick={() => { handleMuteUnmute(selectedBooking || booking) }} >
-                                {(selectedBooking?.is_muted || booking?.is_muted) ? "Unmute" : "Mute"}
+                              <Dropdown.Item
+                                as="button"
+                                onClick={() => {
+                                  handleMuteUnmute(selectedBooking || booking);
+                                }}
+                              >
+                                {selectedBooking?.is_muted || booking?.is_muted
+                                  ? "Unmute"
+                                  : "Mute"}
                               </Dropdown.Item>
 
-                              <Dropdown.Item as="button" onClick={() => { handleReport(selectedBooking || booking); setShowReportForm(true) }} >
+                              <Dropdown.Item
+                                as="button"
+                                onClick={() => {
+                                  handleReport(selectedBooking || booking);
+                                  setShowReportForm(true);
+                                }}
+                              >
                                 Report
                               </Dropdown.Item>
 
-                              <Dropdown.Item as="button" onClick={() => { handleChatDelete(selectedBooking || booking) }} >
+                              <Dropdown.Item
+                                as="button"
+                                onClick={() => {
+                                  handleChatDelete(selectedBooking || booking);
+                                }}
+                              >
                                 Delete chat
                               </Dropdown.Item>
 
-                              <Dropdown.Item as="button" onClick={() => { handleBlockUnblock(selectedBooking || booking) }} >
-                                {(selectedBooking?.is_blocked == 1 || booking?.is_blocked == 1) ? "Unblock" : "Block"}
+                              <Dropdown.Item
+                                as="button"
+                                onClick={() => {
+                                  handleBlockUnblock(
+                                    selectedBooking || booking
+                                  );
+                                }}
+                              >
+                                {selectedBooking?.is_blocked == 1 ||
+                                booking?.is_blocked == 1
+                                  ? "Unblock"
+                                  : "Block"}
                               </Dropdown.Item>
 
-                              <Dropdown.Item as="button" onClick={() => { handleArchieveUnarchieve(selectedBooking || booking) }} >
-                                {(booking?.is_archived) ? "Unarchived" : "Archived"}
-
-
-
+                              <Dropdown.Item
+                                as="button"
+                                onClick={() => {
+                                  handleArchieveUnarchieve(
+                                    selectedBooking || booking
+                                  );
+                                }}
+                              >
+                                {booking?.is_archived
+                                  ? "Unarchived"
+                                  : "Archived"}
                               </Dropdown.Item>
-
                             </Dropdown.Menu>
                           </Dropdown>
                         </Col>
                       </div>
-
                     </div>
                   </Card.Body>
                 </Card>
               ))
             ) : (
-              <div className="text-center mt-4" style={{ minWidth: "250px" }}> <p className="text-muted">No chatlist found.</p> </div>
+              <div className="text-center mt-4" style={{ minWidth: "250px" }}>
+                {" "}
+                <p className="text-muted">No chatlist found.</p>{" "}
+              </div>
             )}
           </div>
-          {!isMobileWidth ? <>
-            {/* second row */}
-            {!selectedBooking ? (
-              <div className="w-100 mb-4" style={{ flex: "1 0 400px", overflowY: "auto", height: "100%", }} >
-                <Container fluid className="border border-2 p-3" style={{ minWidth: "250px", height: "100%" }} >
-                  <div className="h-100 d-flex justify-content-center align-items-center text-center">
-                    {filteredBookings?.length > 0 ? "Please select a User to chat" : "No messages found."}
-                  </div>
-                </Container>
-              </div>
-            ) : (
-              <div className="flex-grow-1 w-50 h-100" style={{ overflowY: "auto" }}  >
-                <Container className="border border-2 p-3 h-100" style={{ borderRadius: "10px" }}>
-                  <Row className="d-flex align-items-center border-bottom" style={{ padding: '10px' }}>
-                    <Col className="d-flex align-items-center" >
-                      {/* <div style={{
+          {!isMobileWidth ? (
+            <>
+              {/* second row */}
+              {!selectedBooking ? (
+                <div
+                  className="w-100 mb-4"
+                  style={{
+                    flex: "1 0 400px",
+                    overflowY: "auto",
+                    height: "100%",
+                  }}
+                >
+                  <Container
+                    fluid
+                    className="border border-2 p-3"
+                    style={{ minWidth: "250px", height: "100%" }}
+                  >
+                    <div className="h-100 d-flex justify-content-center align-items-center text-center">
+                      {filteredBookings?.length > 0
+                        ? "Please select a User to chat"
+                        : "No messages found."}
+                    </div>
+                  </Container>
+                </div>
+              ) : (
+                <div
+                  className="flex-grow-1 w-50 h-100"
+                  style={{ overflowY: "auto" }}
+                >
+                  <Container
+                    className="border border-2 p-3 h-100"
+                    style={{ borderRadius: "10px" }}
+                  >
+                    <Row
+                      className="d-flex align-items-center border-bottom"
+                      style={{ padding: "10px" }}
+                    >
+                      <Col className="d-flex align-items-center">
+                        {/* <div style={{
                         width: "55px",
                         height: "55px",
                         borderRadius: "50%",
@@ -3417,458 +3695,355 @@ const HostChat = () => {
                           
                       </div> */}
 
-                      <div
-  style={{
-    width: "55px",
-    height: "55px",
-    borderRadius: "50%",
-    border: "2px solid #ccc",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "visible",
-    backgroundColor: "#fff",
-    marginRight: "10px",
-    position: "relative", // important
-  }}
->
-  <Image
-    src={
-      userTypes === "host"
-        ? imageBase + selectedBooking?.sender_profile ||
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
-        : imageBase + selectedBooking?.receiver_image ||
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
-    }
-    roundedCircle
-    width="50"
-    height="50"
-  />
+                        <div
+                          style={{
+                            width: "55px",
+                            height: "55px",
+                            borderRadius: "50%",
+                            border: "2px solid #ccc",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            overflow: "visible",
+                            backgroundColor: "#fff",
+                            marginRight: "10px",
+                            position: "relative", // important
+                          }}
+                        >
+                          <Image
+                            src={
+                              userTypes === "host"
+                                ? imageBase + selectedBooking?.sender_profile ||
+                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                : imageBase + selectedBooking?.receiver_image ||
+                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                            }
+                            roundedCircle
+                            width="50"
+                            height="50"
+                          />
 
-  {/* Status Dot */}
-  <div
-   style={{
+                          {/* Status Dot */}
+                          <div
+                            style={{
                               position: "absolute",
                               bottom: "6px",
                               right: "2px",
                               width: "14px",
                               height: "14px",
                               borderRadius: "50%",
-                              backgroundColor: "#8c8c8c", // gray dot
+                              backgroundColor: "#54E49F", // gray dot
                               border: "2px solid white", // white outline
                               zIndex: 2,
                               marginRight: "5px",
                             }}
-  />
-</div>
-                      <div>
-                        <h5> {userTypes == "host" ? selectedBooking?.sender_name : selectedBooking?.receiver_name}  </h5>
-                        <p style={{ color: "#7DD2B0", margin: "0px" }}>{targetUserStatus}</p>
-                      </div>
-                    </Col>
-
-                    <Col className="d-flex justify-content-end align-items-center">
-                      <span style={{ border: '1px solid #ccc', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: "center", padding: '7px' }}>
-                        {selectedBooking?.is_favorite == 1 ? <FaStar size={isMobileWidth?20:25} style={{ color: '#2ee3a0', }} role="button" onClick={() => handleFavoriteUnfavorite(selectedBooking)} /> :
-                          <FaRegStar size={isMobileWidth?20:25} role="button" onClick={() => handleFavoriteUnfavorite(selectedBooking)} />}
-                      </span>
-                      <Dropdown show={showModal} onToggle={() => setShowModal(!showModal)} >
-                        <Dropdown.Toggle className="no-caret" variant="link" id="dropdown-custom-components" >
-                          <style> {` .no-caret::after { display: none !important; }`} </style>
-                          <span style={{ border: '1px solid #ccc', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: "center", padding: '7px' }}>
-                            <BsThreeDots size={25} color="black" />
-                          </span>
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          <Dropdown.Item as="button" onClick={() => { handleMuteUnmute(selectedBooking); }} >
-                            {selectedBooking?.is_muted ? "Unmute" : "Mute"}
-                          </Dropdown.Item>
-
-                          <Dropdown.Item as="button" onClick={() => { handleReport(selectedBooking); setShowReportForm(true) }} >
-                            Report
-                          </Dropdown.Item>
-
-                          <Dropdown.Item as="button" onClick={() => { handleChatDelete(selectedBooking); }} >
-                            Delete chat
-                          </Dropdown.Item>
-
-                          <Dropdown.Item as="button" onClick={() => { handleBlockUnblock(selectedBooking); }} >
-                            {selectedBooking?.is_blocked == 1 ? "Unblock" : "Block"}
-                          </Dropdown.Item>
-
-                          <Dropdown.Item as="button" onClick={() => { handleArchieveUnarchieve(selectedBooking); }} >
-                            {selectedBooking?.is_archived ? "Unarchived" : "Archive"}
-                          </Dropdown.Item>
-
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </Col>
-                  </Row>
-                  <Row className="rounded-3 p-3 w-100" style={{ height: "calc(100% - 30%)", }}>
-                    <Col xs={12} className="mb-3 chat-box" style={{ height: "100%", overflowY: "auto", }} ref={messagesContainerRef} >
-                      {twilioLoading ? (
-                        <div className="d-flex justify-content-center align-items-center" style={{ height: "250px", border: "1px solid #E5E5E5" }} >
-                          <div className="spinner-border text-primary" role="status" >
-                            <span className="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      ) : (
-                        <>
-                          {messages.map((msg, index) => {
-                            const isMyMessage = msg.isMyMessage;
-                            const messageDate = msg?.dateCreated || msg?.state?.timestamp || new Date();
-
-                            const formattedDate = new Date(messageDate).toLocaleString('en-US', {
-                              month: 'short',     // "Jul"
-                              day: 'numeric',     // "20"
-                              year: 'numeric',    // "2023"
-                              hour: 'numeric',    // "11"
-                              minute: '2-digit',  // "32"
-                              hour12: true        // "AM"/"PM"
-                            });
-
-
-                            return (
-                              <div key={index} className={`d-flex mb-2 flex-wrap ${isMyMessage ? "justify-content-start" : "justify-content-start"}`} style={{ fontWeight: 'lighter' }} >
-
-                                <div className='chat-wrp-main' >
-                                  <div className="chat-single-upr">
-                                    <div className="chat-single-left">
-                                      {!isMyMessage ? (
-                                        <Image src={userTypes == "host" ? imageBase + selectedBooking?.sender_profile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s" : imageBase + selectedBooking?.receiver_image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"}
-                                          roundedCircle width="40" height="40px"
-                                        />
-                                      ) : (<Image src={imageBase + profileData?.profileData?.profile_image || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"} roundedCircle width="40" height="40px" />
-                                      )}
-
-                                      {!isMyMessage ? (
-                                        <h3 className="mb-0" style={{ fontSize: '16px', fontWeight: '500' }}>
-                                          {userTypes === "host" ? selectedBooking?.sender_name : `${selectedBooking?.receiver_name}`}
-                                        </h3>
-                                      ) : (
-                                        <h3 className="mb-0" style={{ fontSize: '16px', fontWeight: '500' }}>
-                                          {userTypes === "host" ? `${selectedBooking?.receiver_name}` : selectedBooking?.sender_name}
-                                        </h3>
-                                      )}
-                                    </div>
-                                    <span> {formattedDate} </span>
-                                  </div>
-
-                                  {msg.type == "media" ? (
-                                    <div className='chat-body'>
-                                      <Image src={msg.mediaUrl} loading="lazy" alt="Sent media" width="200" className="rounded" />
-                                    </div>
-                                  ) : (
-                                    <div className='chat-body' style={{ fontSize: '14px' }}> {msg.body} </div>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </>
-                      )}
-                    </Col>
-                    <Col xs={12} className="p-2" style={{ display: "flex", marginBottom: "0%" }}>
-                      {selectedBooking?.is_blocked == 1 ?
-                        <button onClick={() => handleBlockUnblock(selectedBooking)} style={{
-                          width: "100%", backgroundColor: "#4AEAB1", borderRadius: "25px", border: "none", padding: "10px"
-                        }}> Unblock </button> :
-                        <div className="d-flex align-items-center" style={{ width: "100%" }} >
-                          <div className="d-flex align-items-center px-3 flex-grow-1"
-                            style={{ background: "#f7f7f7", borderRadius: "30px", marginRight: "0px", height: "48px" }} >
-                            <input type="file" id="fileUpload" className="d-none"
-                              onChange={(e) => {
-                                const file = e.target.files[0];
-                                if (!file) return;
-
-                                const allowedTypes = [
-                                  "image/jpeg",
-                                  "image/png",
-                                  "image/jpg",
-                                  "image/webp",
-                                  "image/gif"
-                                ];
-
-                                const maxSizeMB = 5;
-
-                                if (!allowedTypes.includes(file.type)) {
-                                  toast.error("Only image files are allowed");
-                                  e.target.value = "";
-                                  return;
-                                }
-
-                                if (file.size > maxSizeMB * 1024 * 1024) {
-                                  toast.error("Image size must be less than 5MB");
-                                  e.target.value = "";
-                                  return;
-                                }
-
-                                sendMessage(file);
-                                e.target.value = "";
-                              }}
-                            />
-
-                            <input type="text" className="form-control border-0 bg-transparent flex-grow-1"
-                              placeholder="Type a message..." style={{ boxShadow: "none" }} value={message}
-                              onChange={(e) => setMessage(e.target.value)} onKeyDown={(e) => {
-                                if (e.key === "Enter" && !e.shiftKey) {
-                                  e.preventDefault(); // Prevent newline
-                                  handleSendMessageClick()
-                                }
-                              }
-                              }
-                            />
-
-                            <label htmlFor="fileUpload" className="ms-2" style={{ cursor: "pointer", color: "#555", flexShrink: 0 }}
-                              onClick={async (e) => {
-                                const isBlocked = await checkIfBlocked(channel, userId);
-
-                                if (selectedBooking?.is_other_block == 1 || isBlocked) {
-                                  e.preventDefault();
-                                  toast.error("You are blocked");
-                                } else { sendMessage() }
-                              }}>
-                              <ImAttachment />
-                            </label>
-                          </div>
-
-                          <button className="ms-2 d-flex align-items-center justify-content-center"
-                            style={{
-                              backgroundColor: "#2ee3a0",
-                              border: "none",
-                              borderRadius: "50%",
-                              width: "40px",
-                              height: "40px",
-                              color: "#fff",
-                              flexShrink: 0,
-
-                            }}
-                            onClick={handleSendMessageClick}
-                            disabled={!message.trim() && !document.getElementById("fileUpload")?.files?.length} >
-                            <img src="images/chat/send.svg" style={{ color: 'white', margin: '5px', width: '20px' }} loading="lazy" alt="" />
-                          </button>
-                        </div>}
-                    </Col>
-                  </Row>
-                </Container>
-              </div>
-            )}
-            {/* third row  */}
-            {selectedBooking && (
-              <div className="flex-grow-1"
-                style={{
-                  borderRadius: "8px",
-                  padding: "0rem",
-                  overflowY: "auto",
-                  height: "100%",
-                  minWidth: "285px"
-                }} >
-                <Container className="border rounded-3">
-                  <h5 className="mt-3 text-center" style={{ fontWeight: "300", color: '#000000', fontSize: '18px' }}>{userTypes == "host" ? "Guest by" : "Hosted by"}</h5>
-                  <Row className="mb-3 px-3" >
-                    <Col xs={8} className="d-flex align-items-center justify-content-center  border-2  w-100 pb-2 " style={{ marginBottom: '10px' }} >
-                      <div style={{
-                        width: "55px",
-                        height: "55px",
-                        borderRadius: "50%",
-                        border: "2px solid #ccc",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        overflow: "hidden",
-                        backgroundColor: "#fff",
-                        marginRight: "5px",
-                      }} >
-                        <Image src={userTypes == "host" ? imageBase + selectedBooking?.sender_profile : selectedBooking?.receiver_image ? imageBase + selectedBooking?.receiver_image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"}
-                          roundedCircle
-                          width="50" height="50" />
-                      </div>
-                      <div>
-                        <h6 className="mb-0" style={{ color: "black", fontSize: '20px' }}> {userTypes == "host" ? selectedBooking?.sender_name : selectedBooking?.receiver_name} </h6>
-                      </div>
-                      {userTypes == "host" ?
-                        <>
-                          <FaStar className="text-warning mx-1" style={{ marginTop: "-2px" }} />
-                          <span style={{ color: "#FCA800", }}> {guestReview || "0.0"} </span>
-                        </> : (
-                          <>
-                            {selectedBooking?.is_star_host && (<Image src="/images/locations-grid/profile/batch.svg" loading="lazy" alt="Batch" style={{ marginLeft: "5px", width: "30px" }} />)}
-                          </>)}
-                    </Col>
-
-
-
-                  </Row>
-                  <hr style={{ marginTop: '-14px', marginBottom: '30px' }} />
-
-                  {/* <Row className="mt-3 mb-3 px-3 w-100"> */}
-                  {userTypes == "host" ?
-                    <Button className="border border-1 border-black w-100" variant="light"
-                      onClick={() => navigate("/booking", { state: { bookingId: selectedBooking?.booking_id }, })} style={{ fontSize: "20px", marginTop: '-9px', marginBottom: '16px' }}>
-                      Guest booking
-                    </Button> :
-                    <Button className=" border border-1 border-black w-100" variant="light"
-                      onClick={() => navigate("/host-listing", { state: { hostId: selectedBooking?.receiver_id } })} style={{ fontSize: "20px", marginTop: '-9px', marginBottom: '16px' }}>
-                      Host Properties
-                    </Button>
-                  }
-                  {/* </Row> */}
-                  <div className="d-flex justify-content-center mb-3">
-                    <PiClockCountdownFill size={24} color="#979797" />
-                    <span className="fs-7 ms-2">Typically respond within 1 hr</span>
-                  </div>
-                </Container>
-                <Container className="border rounded-3 w-100 p-3 mt-3 d-flex flex-column gap-4">
-                  <Row>
-                    <Col>From</Col>
-                    <Col className="text-end fw-bold"> {selectedBooking?.receiver_address || "Not Available"} </Col>
-                  </Row>
-                  <Row>
-                    <Col>Member Since</Col>
-                    <Col className="text-end"> {convertDate(selectedBooking?.receiver_member_since)} </Col>
-                  </Row>
-                  <Row>
-                    <Col>Language</Col>
-                    <Col className="text-end"> {selectedBooking?.receiver_language?.join(", ") || "Not Available"} </Col>
-                  </Row>
-                </Container>
-              </div>
-            )}
-          </> :
-            <Modal show={!!selectedBooking} onHide={handleClose} dialogClassName="custom-modal chat-screen-modal custom-modal-css">
-              <Modal.Body className="chat-screen-body">
-                <div className="chat-screen-header"  >
-                  <span className="chat-screen-back-btn" onClick={handleClose}>
-                    <i className="fa-regular fa-arrow-left"></i>
-                  </span>
-                </div>
-
-                <div className="chat-screen-content">
-                  <Container className="chat-screen-container">
-                    <Row className="chat-screen-top-row">
-                      <Col className="chat-screen-user-col">
-                        <div className="chat-screen-pic-wrapper">
-                          <Image src={userTypes === "host" ? imageBase + (selectedBooking?.sender_profile || fallbackImg)
-                            : imageBase + (selectedBooking?.receiver_image || fallbackImg)
-                          }
-                            roundedCircle width="50" height="50"
                           />
                         </div>
-                        <div className="chat-screen-user-info">
-                          <h6 className="chat-screen-username">
-                            {userTypes === "host" ? selectedBooking?.sender_name : selectedBooking?.receiver_name}
-                          </h6>
-                          <p className="chat-screen-status">{targetUserStatus}</p>
+                        <div>
+                          <h5>
+                            {" "}
+                            {userTypes == "host"
+                              ? selectedBooking?.sender_name
+                              : selectedBooking?.receiver_name}{" "}
+                          </h5>
+                          <p style={{ color: "#7DD2B0", margin: "0px" }}>
+                            {targetUserStatus}
+                          </p>
                         </div>
                       </Col>
 
-                      <Col className="chat-screen-actions-col">
-                        <span className="chat-screen-fav-btn">
+                      <Col className="d-flex justify-content-end align-items-center">
+                        <span
+                          style={{
+                            border: "1px solid #ccc",
+                            borderRadius: "50%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            padding: "7px",
+                          }}
+                        >
                           {selectedBooking?.is_favorite == 1 ? (
-                            <FaStar size={isMobileWidth?20:25} style={{ color: "#2ee3a0" }} role="button" onClick={() => handleFavoriteUnfavorite(selectedBooking)} />
+                            <FaStar
+                              size={isMobileWidth ? 20 : 25}
+                              style={{ color: "#2ee3a0" }}
+                              role="button"
+                              onClick={() =>
+                                handleFavoriteUnfavorite(selectedBooking)
+                              }
+                            />
                           ) : (
-                            <FaRegStar size={isMobileWidth?20:25} role="button"
-                              onClick={() => handleFavoriteUnfavorite(selectedBooking)}
+                            <FaRegStar
+                              size={isMobileWidth ? 20 : 25}
+                              role="button"
+                              onClick={() =>
+                                handleFavoriteUnfavorite(selectedBooking)
+                              }
                             />
                           )}
                         </span>
-
-                        <Dropdown show={showModal} onToggle={() => setShowModal(!showModal)} >
-                          <Dropdown.Toggle className="chat-screen-dropdown-toggle" variant="link" >
-                            <span className="chat-screen-dropdown-icon">
-                              <BsThreeDots size={isMobileWidth?20:25} color="black" />
+                        <Dropdown
+                          show={showModal}
+                          onToggle={() => setShowModal(!showModal)}
+                        >
+                          <Dropdown.Toggle
+                            className="no-caret"
+                            variant="link"
+                            id="dropdown-custom-components"
+                          >
+                            <style>
+                              {" "}
+                              {` .no-caret::after { display: none !important; }`}{" "}
+                            </style>
+                            <span
+                              style={{
+                                border: "1px solid #ccc",
+                                borderRadius: "50%",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                padding: "7px",
+                              }}
+                            >
+                              <BsThreeDots size={25} color="black" />
                             </span>
                           </Dropdown.Toggle>
 
                           <Dropdown.Menu>
-                            <Dropdown.Item as="button" onClick={() => handleMuteUnmute(selectedBooking)}>
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() => {
+                                handleMuteUnmute(selectedBooking);
+                              }}
+                            >
                               {selectedBooking?.is_muted ? "Unmute" : "Mute"}
                             </Dropdown.Item>
 
-                            <Dropdown.Item as="button" onClick={() => { handleReport(selectedBooking); }} >
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() => {
+                                handleReport(selectedBooking);
+                                setShowReportForm(true);
+                              }}
+                            >
                               Report
                             </Dropdown.Item>
 
-                            <Dropdown.Item as="button" onClick={() => handleChatDelete(selectedBooking)}>
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() => {
+                                handleChatDelete(selectedBooking);
+                              }}
+                            >
                               Delete chat
                             </Dropdown.Item>
 
-                            <Dropdown.Item as="button" onClick={() => handleBlockUnblock(selectedBooking)}>
-                              {selectedBooking?.is_blocked === 1 ? "Unblock" : "Block"}
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() => {
+                                handleBlockUnblock(selectedBooking);
+                              }}
+                            >
+                              {selectedBooking?.is_blocked == 1
+                                ? "Unblock"
+                                : "Block"}
                             </Dropdown.Item>
 
-                            <Dropdown.Item as="button" onClick={() => handleArchieveUnarchieve(selectedBooking)} >
-                              {selectedBooking?.is_archived ? "Unarchived" : "Archive"}
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() => {
+                                handleArchieveUnarchieve(selectedBooking);
+                              }}
+                            >
+                              {selectedBooking?.is_archived
+                                ? "Unarchived"
+                                : "Archive"}
                             </Dropdown.Item>
                           </Dropdown.Menu>
                         </Dropdown>
                       </Col>
                     </Row>
-
-                    <Row className="chat-screen-messages-row">
-                      <Col xs={12} className="chat-screen-chat-box" ref={messagesContainerRef} >
+                    <Row
+                      className="rounded-3 p-3 w-100"
+                      style={{ height: "calc(100% - 30%)" }}
+                    >
+                      <Col
+                        xs={12}
+                        className="mb-3 chat-box"
+                        style={{ height: "100%", overflowY: "auto" }}
+                        ref={messagesContainerRef}
+                      >
                         {twilioLoading ? (
-                          <div className="chat-screen-loading">
-                            <div className="spinner-border text-primary" role="status">
-                              <span className="visually-hidden">Loading...</span>
+                          <div
+                            className="d-flex justify-content-center align-items-center"
+                            style={{
+                              height: "250px",
+                              border: "1px solid #E5E5E5",
+                            }}
+                          >
+                            <div
+                              className="spinner-border text-primary"
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
                             </div>
                           </div>
                         ) : (
-                          messages.map((msg, index) => {
-                            const isMy = msg.isMyMessage;
-                            const messageDate = msg?.dateCreated || msg?.state?.timestamp || new Date();
-                            const formattedDate = new Date(messageDate).toLocaleString("en-US", {
-                              month: "short",
-                              day: "numeric",
-                              hour: "numeric",
-                              minute: "2-digit",
-                              hour12: true,
-                            });
+                          <>
+                            {messages.map((msg, index) => {
+                              const isMyMessage = msg.isMyMessage;
+                              const messageDate =
+                                msg?.dateCreated ||
+                                msg?.state?.timestamp ||
+                                new Date();
 
-                            return (
-                              <div key={index} className="chat-screen-message-row">
-                                <div className="chat-screen-message-container">
-                                  <div className="chat-screen-message-top">
-                                    <div className="chat-screen-message-user">
-                                      <Image src={
-                                        !isMy ? userTypes === "host" ? imageBase + (selectedBooking?.sender_profile || fallbackImg)
-                                          : imageBase + (selectedBooking?.receiver_image || fallbackImg)
-                                          : imageBase + (profileData?.profileData?.profile_image || fallbackImg)
-                                      }
-                                        roundedCircle width="40" height="40"
-                                      />
-                                      <h3 className="chat-screen-message-username">
-                                        {!isMy ? userTypes === "host" ? selectedBooking?.sender_name : selectedBooking?.receiver_name
-                                          : userTypes === "host" ? selectedBooking?.receiver_name : selectedBooking?.sender_name}
-                                      </h3>
+                              const formattedDate = new Date(
+                                messageDate
+                              ).toLocaleString("en-US", {
+                                month: "short", // "Jul"
+                                day: "numeric", // "20"
+                                year: "numeric", // "2023"
+                                hour: "numeric", // "11"
+                                minute: "2-digit", // "32"
+                                hour12: true, // "AM"/"PM"
+                              });
+
+                              return (
+                                <div
+                                  key={index}
+                                  className={`d-flex mb-2 flex-wrap ${
+                                    isMyMessage
+                                      ? "justify-content-start"
+                                      : "justify-content-start"
+                                  }`}
+                                  style={{ fontWeight: "lighter" }}
+                                >
+                                  <div className="chat-wrp-main">
+                                    <div className="chat-single-upr">
+                                      <div className="chat-single-left">
+                                        {!isMyMessage ? (
+                                          <Image
+                                            src={
+                                              userTypes == "host"
+                                                ? imageBase +
+                                                    selectedBooking?.sender_profile ||
+                                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                                : imageBase +
+                                                    selectedBooking?.receiver_image ||
+                                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                            }
+                                            roundedCircle
+                                            width="40"
+                                            height="40px"
+                                          />
+                                        ) : (
+                                          <Image
+                                            src={
+                                              imageBase +
+                                                profileData?.profileData
+                                                  ?.profile_image ||
+                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                            }
+                                            roundedCircle
+                                            width="40"
+                                            height="40px"
+                                          />
+                                        )}
+
+                                        {!isMyMessage ? (
+                                          <h3
+                                            className="mb-0"
+                                            style={{
+                                              fontSize: "16px",
+                                              fontWeight: "500",
+                                            }}
+                                          >
+                                            {userTypes === "host"
+                                              ? selectedBooking?.sender_name
+                                              : `${selectedBooking?.receiver_name}`}
+                                          </h3>
+                                        ) : (
+                                          <h3
+                                            className="mb-0"
+                                            style={{
+                                              fontSize: "16px",
+                                              fontWeight: "500",
+                                            }}
+                                          >
+                                            {userTypes === "host"
+                                              ? `${selectedBooking?.receiver_name}`
+                                              : selectedBooking?.sender_name}
+                                          </h3>
+                                        )}
+                                      </div>
+                                      <span> {formattedDate} </span>
                                     </div>
-                                    <span className="chat-screen-message-date"> {formattedDate} </span>
+
+                                    {msg.type == "media" ? (
+                                      <div className="chat-body">
+                                        <Image
+                                          src={msg.mediaUrl}
+                                          loading="lazy"
+                                          alt="Sent media"
+                                          width="200"
+                                          className="rounded"
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className="chat-body"
+                                        style={{ fontSize: "14px" }}
+                                      >
+                                        {" "}
+                                        {msg.body}{" "}
+                                      </div>
+                                    )}
                                   </div>
-
-                                  {msg.type === "media" ? (
-                                    <div className="chat-screen-message-body">
-                                      <Image src={msg.mediaUrl} loading="lazy" alt="media" width="200" className="rounded" />
-                                    </div>
-                                  ) : (
-                                    <div className="chat-screen-message-body">{msg.body}</div>
-                                  )}
                                 </div>
-                              </div>
-                            );
-                          })
+                              );
+                            })}
+                          </>
                         )}
                       </Col>
-
-                      <Col xs={12} className="chat-screen-input-row">
-                        {selectedBooking?.is_blocked === 1 ? (
-                          <button className="chat-screen-unblock-button" onClick={() => handleBlockUnblock(selectedBooking)} >
-                            Unblock
+                      <Col
+                        xs={12}
+                        className="p-2"
+                        style={{ display: "flex", marginBottom: "0%" }}
+                      >
+                        {selectedBooking?.is_blocked == 1 ? (
+                          <button
+                            onClick={() => handleBlockUnblock(selectedBooking)}
+                            style={{
+                              width: "100%",
+                              backgroundColor: "#4AEAB1",
+                              borderRadius: "25px",
+                              border: "none",
+                              padding: "10px",
+                            }}
+                          >
+                            {" "}
+                            Unblock{" "}
                           </button>
                         ) : (
-                          <div className="chat-screen-input-wrapper">
-                            <div className="chat-screen-input-area">
-                              <input type="file" id="chat-screen-file" className="d-none"
+                          <div
+                            className="d-flex align-items-center"
+                            style={{ width: "100%" }}
+                          >
+                            <div
+                              className="d-flex align-items-center px-3 flex-grow-1"
+                              style={{
+                                background: "#f7f7f7",
+                                borderRadius: "30px",
+                                marginRight: "0px",
+                                height: "48px",
+                              }}
+                            >
+                              <input
+                                type="file"
+                                id="fileUpload"
+                                className="d-none"
                                 onChange={(e) => {
                                   const file = e.target.files[0];
                                   if (!file) return;
@@ -3878,7 +4053,7 @@ const HostChat = () => {
                                     "image/png",
                                     "image/jpg",
                                     "image/webp",
-                                    "image/gif"
+                                    "image/gif",
                                   ];
 
                                   const maxSizeMB = 5;
@@ -3890,7 +4065,9 @@ const HostChat = () => {
                                   }
 
                                   if (file.size > maxSizeMB * 1024 * 1024) {
-                                    toast.error("Image size must be less than 5MB");
+                                    toast.error(
+                                      "Image size must be less than 5MB"
+                                    );
                                     e.target.value = "";
                                     return;
                                   }
@@ -3899,33 +4076,592 @@ const HostChat = () => {
                                   e.target.value = "";
                                 }}
                               />
-                              <label htmlFor="chat-screen-file" className="chat-screen-file-label"
-                                onClick={async (e) => {
-                                  const isBlocked = await checkIfBlocked(channel, userId);
 
-                                  if (selectedBooking?.is_other_block === 1 || isBlocked) {
+                              <input
+                                type="text"
+                                className="form-control border-0 bg-transparent flex-grow-1"
+                                placeholder="Type a message..."
+                                style={{ boxShadow: "none" }}
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" && !e.shiftKey) {
+                                    e.preventDefault(); // Prevent newline
+                                    handleSendMessageClick();
+                                  }
+                                }}
+                              />
+
+                              <label
+                                htmlFor="fileUpload"
+                                className="ms-2"
+                                style={{
+                                  cursor: "pointer",
+                                  color: "#555",
+                                  flexShrink: 0,
+                                }}
+                                onClick={async (e) => {
+                                  const isBlocked = await checkIfBlocked(
+                                    channel,
+                                    userId
+                                  );
+
+                                  if (
+                                    selectedBooking?.is_other_block == 1 ||
+                                    isBlocked
+                                  ) {
                                     e.preventDefault();
-                                    toast.error("You are blocked")
+                                    toast.error("You are blocked");
                                   } else {
                                     sendMessage();
                                   }
-                                }} >
+                                }}
+                              >
                                 <ImAttachment />
                               </label>
-                              <input type="text" className="chat-screen-text-input form-control" style={{ padding: isMobileWidth ? "10px" : "15px", border: "1px solid #000", borderRadius: "10px" }} placeholder="Type a message..." value={message} onChange={(e) => setMessage(e.target.value)}
+                            </div>
+
+                            <button
+                              className="ms-2 d-flex align-items-center justify-content-center"
+                              style={{
+                                backgroundColor: "#2ee3a0",
+                                border: "none",
+                                borderRadius: "50%",
+                                width: "40px",
+                                height: "40px",
+                                color: "#fff",
+                                flexShrink: 0,
+                              }}
+                              onClick={handleSendMessageClick}
+                              disabled={
+                                !message.trim() &&
+                                !document.getElementById("fileUpload")?.files
+                                  ?.length
+                              }
+                            >
+                              <img
+                                src="images/chat/send.svg"
+                                style={{
+                                  color: "white",
+                                  margin: "5px",
+                                  width: "20px",
+                                }}
+                                loading="lazy"
+                                alt=""
+                              />
+                            </button>
+                          </div>
+                        )}
+                      </Col>
+                    </Row>
+                  </Container>
+                </div>
+              )}
+              {/* third row  */}
+              {selectedBooking && (
+                <div
+                  className="flex-grow-1"
+                  style={{
+                    borderRadius: "8px",
+                    padding: "0rem",
+                    overflowY: "auto",
+                    height: "100%",
+                    minWidth: "285px",
+                  }}
+                >
+                  <Container className="border rounded-3">
+                    <h5
+                      className="mt-3 text-center"
+                      style={{
+                        fontWeight: "300",
+                        color: "#000000",
+                        fontSize: "18px",
+                      }}
+                    >
+                      {userTypes == "host" ? "Guest by" : "Hosted by"}
+                    </h5>
+                    <Row className="mb-3 px-3">
+                      <Col
+                        xs={8}
+                        className="d-flex align-items-center justify-content-center  border-2  w-100 pb-2 "
+                        style={{ marginBottom: "10px" }}
+                      >
+                        <div
+                          style={{
+                            width: "55px",
+                            height: "55px",
+                            borderRadius: "50%",
+                            border: "2px solid #ccc",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            overflow: "hidden",
+                            backgroundColor: "#fff",
+                            marginRight: "5px",
+                          }}
+                        >
+                          <Image
+                            src={
+                              userTypes == "host"
+                                ? imageBase + selectedBooking?.sender_profile
+                                : selectedBooking?.receiver_image
+                                ? imageBase + selectedBooking?.receiver_image
+                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                            }
+                            roundedCircle
+                            width="50"
+                            height="50"
+                          />
+                        </div>
+                        <div>
+                          <h6
+                            className="mb-0"
+                            style={{ color: "black", fontSize: "20px" }}
+                          >
+                            {" "}
+                            {userTypes == "host"
+                              ? selectedBooking?.sender_name
+                              : selectedBooking?.receiver_name}{" "}
+                          </h6>
+                        </div>
+                        {userTypes == "host" ? (
+                          <>
+                            <FaStar
+                              className="text-warning mx-1"
+                              style={{ marginTop: "-2px" }}
+                            />
+                            <span style={{ color: "#FCA800" }}>
+                              {" "}
+                              {guestReview || "0.0"}{" "}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            {selectedBooking?.is_star_host && (
+                              <Image
+                                src="/images/locations-grid/profile/batch.svg"
+                                loading="lazy"
+                                alt="Batch"
+                                style={{ marginLeft: "5px", width: "30px" }}
+                              />
+                            )}
+                          </>
+                        )}
+                      </Col>
+                    </Row>
+                    <hr style={{ marginTop: "-14px", marginBottom: "30px" }} />
+
+                    {/* <Row className="mt-3 mb-3 px-3 w-100"> */}
+                    {userTypes == "host" ? (
+                      <Button
+                        className="border border-1 border-black w-100"
+                        variant="light"
+                        onClick={() =>
+                          navigate("/booking", {
+                            state: { bookingId: selectedBooking?.booking_id },
+                          })
+                        }
+                        style={{
+                          fontSize: "20px",
+                          marginTop: "-9px",
+                          marginBottom: "16px",
+                        }}
+                      >
+                        Guest booking
+                      </Button>
+                    ) : (
+                      <Button
+                        className=" border border-1 border-black w-100"
+                        variant="light"
+                        onClick={() =>
+                          navigate("/host-listing", {
+                            state: { hostId: selectedBooking?.receiver_id },
+                          })
+                        }
+                        style={{
+                          fontSize: "20px",
+                          marginTop: "-9px",
+                          marginBottom: "16px",
+                        }}
+                      >
+                        Host Properties
+                      </Button>
+                    )}
+                    {/* </Row> */}
+                    <div className="d-flex justify-content-center mb-3">
+                      <PiClockCountdownFill size={24} color="#979797" />
+                      <span className="fs-7 ms-2">
+                        Typically respond within 1 hr
+                      </span>
+                    </div>
+                  </Container>
+                  <Container className="border rounded-3 w-100 p-3 mt-3 d-flex flex-column gap-4">
+                    <Row>
+                      <Col>From</Col>
+                      <Col className="text-end fw-bold">
+                        {" "}
+                        {selectedBooking?.receiver_address ||
+                          "Not Available"}{" "}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>Member Since</Col>
+                      <Col className="text-end">
+                        {" "}
+                        {convertDate(
+                          selectedBooking?.receiver_member_since
+                        )}{" "}
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>Language</Col>
+                      <Col className="text-end">
+                        {" "}
+                        {selectedBooking?.receiver_language?.join(", ") ||
+                          "Not Available"}{" "}
+                      </Col>
+                    </Row>
+                  </Container>
+                </div>
+              )}
+            </>
+          ) : (
+            <Modal
+              show={!!selectedBooking}
+              onHide={handleClose}
+              dialogClassName="custom-modal chat-screen-modal custom-modal-css"
+            >
+              <Modal.Body className="chat-screen-body">
+                <div className="chat-screen-header">
+                  <span className="chat-screen-back-btn" onClick={handleClose}>
+                    <i className="fa-regular fa-arrow-left"></i>
+                  </span>
+                </div>
+
+                <div className="chat-screen-content">
+                  <Container className="chat-screen-container">
+                    <Row className="chat-screen-top-row">
+                      <Col className="chat-screen-user-col">
+                        <div className="chat-screen-pic-wrapper">
+                          <Image
+                            src={
+                              userTypes === "host"
+                                ? imageBase +
+                                  (selectedBooking?.sender_profile ||
+                                    fallbackImg)
+                                : imageBase +
+                                  (selectedBooking?.receiver_image ||
+                                    fallbackImg)
+                            }
+                            roundedCircle
+                            width="50"
+                            height="50"
+                          />
+                        </div>
+                        <div className="chat-screen-user-info">
+                          <h6 className="chat-screen-username">
+                            {userTypes === "host"
+                              ? selectedBooking?.sender_name
+                              : selectedBooking?.receiver_name}
+                          </h6>
+                          <p className="chat-screen-status">
+                            {targetUserStatus}
+                          </p>
+                        </div>
+                      </Col>
+
+                      <Col className="chat-screen-actions-col">
+                        <span className="chat-screen-fav-btn">
+                          {selectedBooking?.is_favorite == 1 ? (
+                            <FaStar
+                              size={isMobileWidth ? 20 : 25}
+                              style={{ color: "#2ee3a0" }}
+                              role="button"
+                              onClick={() =>
+                                handleFavoriteUnfavorite(selectedBooking)
+                              }
+                            />
+                          ) : (
+                            <FaRegStar
+                              size={isMobileWidth ? 20 : 25}
+                              role="button"
+                              onClick={() =>
+                                handleFavoriteUnfavorite(selectedBooking)
+                              }
+                            />
+                          )}
+                        </span>
+
+                        <Dropdown
+                          show={showModal}
+                          onToggle={() => setShowModal(!showModal)}
+                        >
+                          <Dropdown.Toggle
+                            className="chat-screen-dropdown-toggle"
+                            variant="link"
+                          >
+                            <span className="chat-screen-dropdown-icon">
+                              <BsThreeDots
+                                size={isMobileWidth ? 20 : 25}
+                                color="black"
+                              />
+                            </span>
+                          </Dropdown.Toggle>
+
+                          <Dropdown.Menu>
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() => handleMuteUnmute(selectedBooking)}
+                            >
+                              {selectedBooking?.is_muted ? "Unmute" : "Mute"}
+                            </Dropdown.Item>
+
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() => {
+                                handleReport(selectedBooking);
+                              }}
+                            >
+                              Report
+                            </Dropdown.Item>
+
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() => handleChatDelete(selectedBooking)}
+                            >
+                              Delete chat
+                            </Dropdown.Item>
+
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() =>
+                                handleBlockUnblock(selectedBooking)
+                              }
+                            >
+                              {selectedBooking?.is_blocked === 1
+                                ? "Unblock"
+                                : "Block"}
+                            </Dropdown.Item>
+
+                            <Dropdown.Item
+                              as="button"
+                              onClick={() =>
+                                handleArchieveUnarchieve(selectedBooking)
+                              }
+                            >
+                              {selectedBooking?.is_archived
+                                ? "Unarchived"
+                                : "Archive"}
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Col>
+                    </Row>
+
+                    <Row className="chat-screen-messages-row">
+                      <Col
+                        xs={12}
+                        className="chat-screen-chat-box"
+                        ref={messagesContainerRef}
+                      >
+                        {twilioLoading ? (
+                          <div className="chat-screen-loading">
+                            <div
+                              className="spinner-border text-primary"
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
+                            </div>
+                          </div>
+                        ) : (
+                          messages.map((msg, index) => {
+                            const isMy = msg.isMyMessage;
+                            const messageDate =
+                              msg?.dateCreated ||
+                              msg?.state?.timestamp ||
+                              new Date();
+                            const formattedDate = new Date(
+                              messageDate
+                            ).toLocaleString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              hour: "numeric",
+                              minute: "2-digit",
+                              hour12: true,
+                            });
+
+                            return (
+                              <div
+                                key={index}
+                                className="chat-screen-message-row"
+                              >
+                                <div className="chat-screen-message-container">
+                                  <div className="chat-screen-message-top">
+                                    <div className="chat-screen-message-user">
+                                      <Image
+                                        src={
+                                          !isMy
+                                            ? userTypes === "host"
+                                              ? imageBase +
+                                                (selectedBooking?.sender_profile ||
+                                                  fallbackImg)
+                                              : imageBase +
+                                                (selectedBooking?.receiver_image ||
+                                                  fallbackImg)
+                                            : imageBase +
+                                              (profileData?.profileData
+                                                ?.profile_image || fallbackImg)
+                                        }
+                                        roundedCircle
+                                        width="40"
+                                        height="40"
+                                      />
+                                      <h3 className="chat-screen-message-username">
+                                        {!isMy
+                                          ? userTypes === "host"
+                                            ? selectedBooking?.sender_name
+                                            : selectedBooking?.receiver_name
+                                          : userTypes === "host"
+                                          ? selectedBooking?.receiver_name
+                                          : selectedBooking?.sender_name}
+                                      </h3>
+                                    </div>
+                                    <span className="chat-screen-message-date">
+                                      {" "}
+                                      {formattedDate}{" "}
+                                    </span>
+                                  </div>
+
+                                  {msg.type === "media" ? (
+                                    <div className="chat-screen-message-body">
+                                      <Image
+                                        src={msg.mediaUrl}
+                                        loading="lazy"
+                                        alt="media"
+                                        width="200"
+                                        className="rounded"
+                                      />
+                                    </div>
+                                  ) : (
+                                    <div className="chat-screen-message-body">
+                                      {msg.body}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })
+                        )}
+                      </Col>
+
+                      <Col xs={12} className="chat-screen-input-row">
+                        {selectedBooking?.is_blocked === 1 ? (
+                          <button
+                            className="chat-screen-unblock-button"
+                            onClick={() => handleBlockUnblock(selectedBooking)}
+                          >
+                            Unblock
+                          </button>
+                        ) : (
+                          <div className="chat-screen-input-wrapper">
+                            <div className="chat-screen-input-area">
+                              <input
+                                type="file"
+                                id="chat-screen-file"
+                                className="d-none"
+                                onChange={(e) => {
+                                  const file = e.target.files[0];
+                                  if (!file) return;
+
+                                  const allowedTypes = [
+                                    "image/jpeg",
+                                    "image/png",
+                                    "image/jpg",
+                                    "image/webp",
+                                    "image/gif",
+                                  ];
+
+                                  const maxSizeMB = 5;
+
+                                  if (!allowedTypes.includes(file.type)) {
+                                    toast.error("Only image files are allowed");
+                                    e.target.value = "";
+                                    return;
+                                  }
+
+                                  if (file.size > maxSizeMB * 1024 * 1024) {
+                                    toast.error(
+                                      "Image size must be less than 5MB"
+                                    );
+                                    e.target.value = "";
+                                    return;
+                                  }
+
+                                  sendMessage(file);
+                                  e.target.value = "";
+                                }}
+                              />
+                              <label
+                                htmlFor="chat-screen-file"
+                                className="chat-screen-file-label"
+                                onClick={async (e) => {
+                                  const isBlocked = await checkIfBlocked(
+                                    channel,
+                                    userId
+                                  );
+
+                                  if (
+                                    selectedBooking?.is_other_block === 1 ||
+                                    isBlocked
+                                  ) {
+                                    e.preventDefault();
+                                    toast.error("You are blocked");
+                                  } else {
+                                    sendMessage();
+                                  }
+                                }}
+                              >
+                                <ImAttachment />
+                              </label>
+                              <input
+                                type="text"
+                                className="chat-screen-text-input form-control"
+                                style={{
+                                  padding: isMobileWidth ? "10px" : "15px",
+                                  border: "1px solid #000",
+                                  borderRadius: "10px",
+                                }}
+                                placeholder="Type a message..."
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
                                 onKeyDown={(e) => {
                                   if (e.key === "Enter" && !e.shiftKey) {
                                     e.preventDefault();
-                                    handleSendMessageClick()
+                                    handleSendMessageClick();
                                   }
                                 }}
                               />
                             </div>
-                            <button className="chat-screen-send-button" onClick={() => {
-                              handleSendMessageClick()
-                            }}
-                              disabled={!message.trim() && !document.getElementById("chat-screen-file")?.files?.length} >
-                              <img src="images/chat/send.svg" style={{ color: 'white', height: isMobileWidth ? "20px" : "" }} />
+                            <button
+                              className="chat-screen-send-button"
+                              onClick={() => {
+                                handleSendMessageClick();
+                              }}
+                              disabled={
+                                !message.trim() &&
+                                !document.getElementById("chat-screen-file")
+                                  ?.files?.length
+                              }
+                            >
+                              <img
+                                src="images/chat/send.svg"
+                                style={{
+                                  color: "white",
+                                  height: isMobileWidth ? "20px" : "",
+                                }}
+                              />
                             </button>
                           </div>
                         )}
@@ -3935,11 +4671,14 @@ const HostChat = () => {
                 </div>
               </Modal.Body>
             </Modal>
-          }
+          )}
         </div>
       </div>
-      <ReportBookingModal show={showReportForm} handleClose={() => setShowReportForm(false)}
-        user_id={userId} booking_id={selectedBooking?.booking_id}
+      <ReportBookingModal
+        show={showReportForm}
+        handleClose={() => setShowReportForm(false)}
+        user_id={userId}
+        booking_id={selectedBooking?.booking_id}
         property_id={selectedBooking?.property_id}
       />
     </>
@@ -3947,8 +4686,3 @@ const HostChat = () => {
 };
 
 export default React.memo(HostChat);
-
-
-
-
-

@@ -21,7 +21,7 @@ function Notifications() {
     booking_auto_cancelled: 1,
     zyvo: 2,
     payout: 3,
-    warning: 4,
+    warning: 2,
   };
 
   const [notificationArr, setNotificationArr] = useState([]);
@@ -200,7 +200,11 @@ function Notifications() {
                             }
                       }
                     >
-                      <img src="/images/notifications/notificaion-cross-icon.svg" alt="close" style={{ width: '15px', height: '15px' }} />
+                      <img
+                        src="/images/notifications/notificaion-cross-icon.svg"
+                        alt="close"
+                        style={{ width: "15px", height: "15px" }}
+                      />
                     </Button>
                   </Card>
                 ))}
@@ -215,9 +219,6 @@ function Notifications() {
 }
 
 export default Notifications;
-
-
-
 
 // import { useState, useEffect } from "react";
 // import AuthModal from "../components/guest/authModal";
