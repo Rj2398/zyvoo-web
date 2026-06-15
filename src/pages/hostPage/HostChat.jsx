@@ -3450,10 +3450,15 @@ const HostChat = () => {
                             width: "20px",
                             height: "20px",
                             borderRadius: "50%",
+                            // backgroundColor:
+                            //   userStatuses[booking.group_name] == "online"
+                            //     ? "#4AEAB1"
+                            //     : "gray",
+
                             backgroundColor:
                               userStatuses[booking.group_name] == "online"
-                                ? "#4AEAB1"
-                                : "gray",
+                                ? "#54E49F"
+                                : "#54E49F",
                             border: "4px solid white",
                             zIndex: "1",
                           }}
