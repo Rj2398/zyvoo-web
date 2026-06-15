@@ -379,37 +379,35 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                     `}
                   </style>
 
-                  {createPasswordValue?.length > 0 && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        right: "15px",
-                        top: "50%",
-                        transform: "translateY(-50%)",
-                        // backgroundColor: passwordRegex.test(createPasswordValue) ? "green" : "red",
-                        borderRadius: "50%",
-                        width: "20px",
-                        height: "20px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: "#fff",
-                      }}
-                    >
-                      {/* {passwordRegex.test(createPasswordValue) ? ( <IoCheckmark /> ) : ( <IoClose /> )} */}
-                      {createPassword ? (
-                        <GoEye
-                          color="black"
-                          onClick={() => setCreatePassword(!createPassword)}
-                        />
-                      ) : (
-                        <GoEyeClosed
-                          color="black"
-                          onClick={() => setCreatePassword(!createPassword)}
-                        />
-                      )}
-                    </div>
-                  )}
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: "15px",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      // backgroundColor: passwordRegex.test(createPasswordValue) ? "green" : "red",
+                      borderRadius: "50%",
+                      width: "20px",
+                      height: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      color: "#fff",
+                    }}
+                  >
+                    {/* {passwordRegex.test(createPasswordValue) ? ( <IoCheckmark /> ) : ( <IoClose /> )} */}
+                    {createPassword ? (
+                      <GoEye
+                        color="black"
+                        onClick={() => setCreatePassword(!createPassword)}
+                      />
+                    ) : (
+                      <GoEyeClosed
+                        color="black"
+                        onClick={() => setCreatePassword(!createPassword)}
+                      />
+                    )}
+                  </div>
                 </>
               )}
             </div>
