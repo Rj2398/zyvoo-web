@@ -82,15 +82,15 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
           JSON.stringify({
             email: data.email,
             password: encryptData(data.password),
-          }),
+          })
         );
       } else {
-         sessionStorage.setItem(
+        sessionStorage.setItem(
           "zyvoCredentials",
           JSON.stringify({
             email: data.email,
             password: encryptData(data.password),
-          }),
+          })
         );
         localStorage.removeItem("zyvoCredentials");
         localStorage.removeItem("USER_INFO");
@@ -230,9 +230,7 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
           ) : (
             <>
               {/* <h3 style={{ fontSize: isMobileWidth ? "14px" : "20px" }}> */}
-              <h3 className="register-modal-body-h3">
-                Welcome to Zyvo
-              </h3>{" "}
+              <h3 className="register-modal-body-h3">Welcome to Zyvo</h3>{" "}
               {/* <p
                 style={{
                   fontSize: isMobileWidth ? "13px" : "16px",
@@ -244,7 +242,7 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                   marginBottom: "10px",
                 }}
               > */}
-                <p className="register-modal-body-p">
+              <p className="register-modal-body-p">
                 Enter your email to Register your account.
               </p>
             </>
@@ -276,7 +274,7 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                 }}
               />
             </div>
-            {(errors.email && hasInput) && (
+            {errors.email && hasInput && (
               <p style={{ color: "red" }}>{errors.email.message}</p>
             )}
 
@@ -314,11 +312,13 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                   <style>
                     {` input::placeholder {
                         color: #6e6464ff !important; /* gray placeholder */
-                        font-size: ${isMobileWidth ? "13px" : "14px"} !important;
+                        font-size: ${
+                          isMobileWidth ? "13px" : "14px"
+                        } !important;
                     }`}
                   </style>
 
-                  {hasInput && (
+                  {/* {hasInput && (
                     <div
                       onClick={() => setShowPassword((prev) => !prev)}
                       style={{
@@ -329,7 +329,18 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                     >
                       {showPassword ? <IoEye /> : <IoEyeOff />}
                     </div>
-                  )}
+                  )} */}
+
+                  <div
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    style={{
+                      position: "absolute",
+                      right: "15px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {showPassword ? <IoEye /> : <IoEyeOff />}
+                  </div>
                 </>
               ) : (
                 <>
@@ -361,7 +372,9 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                     {`
                       input::placeholder {
                         color: #6e6464ff !important; /* gray placeholder */
-                        font-size: ${isMobileWidth ? "13px" : "14px"} !important;
+                        font-size: ${
+                          isMobileWidth ? "13px" : "14px"
+                        } !important;
                       }
                     `}
                   </style>
@@ -400,12 +413,14 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                 </>
               )}
             </div>
-            {(errors.password && !hasInput && !errors.email) &&(
+            {errors.password && !hasInput && !errors.email && (
               <p style={{ color: "red" }}>{errors.password.message}</p>
             )}
 
-            {errors.email && errors.password &&  !hasInput && (
-              <p style={{ color: "red" }}>Please enter your email and password.</p>
+            {errors.email && errors.password && !hasInput && (
+              <p style={{ color: "red" }}>
+                Please enter your email and password.
+              </p>
             )}
 
             <div className="custom-modal-label mt-3">
@@ -421,7 +436,7 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                   fontWeight: isMobileWidth ? "500" : "600",
                   color: "black",
                   paddingTop: isMobileWidth ? "10px" : "",
-                  paddingBottom: isMobileWidth ? "10px" : ""
+                  paddingBottom: isMobileWidth ? "10px" : "",
                 }}
               >
                 {toggleModel ? "Login" : "Create Account"}
