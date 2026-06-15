@@ -44,8 +44,8 @@ function Location() {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-      ? String(userData?.user_id)
-      : null;
+    ? String(userData?.user_id)
+    : null;
   const [currentLocation, setCurrentLocation] = useState({
     latitude: null,
     longitude: null,
@@ -237,8 +237,9 @@ function Location() {
     } else {
       const days = Math.floor(cancellationTime / 24);
       const hours = cancellationTime % 24;
-      return `Cancel for free within ${days} days${hours > 0 ? ` and ${hours} hour(s)` : ""
-        }`;
+      return `Cancel for free within ${days} days${
+        hours > 0 ? ` and ${hours} hour(s)` : ""
+      }`;
     }
   }
 
@@ -591,11 +592,11 @@ function Location() {
 
                     {(propertyDetails?.is_instant_book ||
                       propertyDetails?.is_instant_book != 0) && (
-                        <li>
-                          {" "}
-                          <i className="fa-solid fa-bolt"></i> Instant book{" "}
-                        </li>
-                      )}
+                      <li>
+                        {" "}
+                        <i className="fa-solid fa-bolt"></i> Instant book{" "}
+                      </li>
+                    )}
 
                     <li className="location-top-share">
                       <a
@@ -633,10 +634,11 @@ function Location() {
                 </div>
 
                 <div
-                  className={`top-grid-images-${propertyDetails?.images?.length > 5
-                    ? 5
-                    : propertyDetails?.images?.length
-                    }`}
+                  className={`top-grid-images-${
+                    propertyDetails?.images?.length > 5
+                      ? 5
+                      : propertyDetails?.images?.length
+                  }`}
                   onClick={() => setShowPropertyImages(true)}
                   style={{ height: isMobileWidth ? "200px" : "450px" }}
                 >
@@ -765,7 +767,7 @@ function Location() {
                         id="pills-hourly"
                         role="tabpanel"
                         aria-labelledby="pills-hourly-tab"
-                      // style={{ height: isMobileWidth ? "510px" : "auto" }}
+                        // style={{ height: isMobileWidth ? "510px" : "auto" }}
                       >
                         <div
                           className="hour-slider-wrap"
@@ -882,9 +884,14 @@ function Location() {
 
                                 const pureInteger =
                                   Math.round((angle / 360) * 24) | 0;
-                                const minHrs = parseInt(propertyDetails?.min_booking_hours || 2, 10);
+                                const minHrs = parseInt(
+                                  propertyDetails?.min_booking_hours || 2,
+                                  10
+                                );
                                 const finalVal =
-                                  (pureInteger >= 24 || pureInteger < minHrs) ? minHrs : pureInteger;
+                                  pureInteger >= 24 || pureInteger < minHrs
+                                    ? minHrs
+                                    : pureInteger;
 
                                 // Yahan teenon cheezein ek sath update hongi, jisse slider khud chal kar naye spot par set ho jayega
                                 setSliderValue(finalVal);
@@ -928,12 +935,15 @@ function Location() {
                                 onChange={(value) => {
                                   const rawVal = value < 2 ? 2 : value;
                                   // const minHrs = parseInt(propertyDetails?.min_booking_hours || 2, 10);
-                                  const minHrs = 2
-                                  const pureInteger = (rawVal >= 24 || rawVal < minHrs) ? minHrs : rawVal;
+                                  const minHrs = 2;
+                                  const pureInteger =
+                                    rawVal >= 24 || rawVal < minHrs
+                                      ? minHrs
+                                      : rawVal;
                                   // const pureInteger = value < 2 ? 2 : value;
 
                                   if (rawVal >= 24 || rawVal < minHrs) {
-                                    setSliderKey(prev => prev + 1);
+                                    setSliderKey((prev) => prev + 1);
                                   }
 
                                   if (hoursValue !== pureInteger) {
@@ -1049,7 +1059,7 @@ function Location() {
 
                               handleValidation();
                             }}
-                          // disabled
+                            // disabled
                           >
                             {buttonText}
                           </button>
@@ -1153,20 +1163,20 @@ function Location() {
 
                     {propertyDetails?.property_description?.split(/\s+/)
                       .length > 100 && (
-                        <button
-                          onClick={() => setIsExpanded(!isExpanded)}
-                          style={{
-                            background: "none",
-                            color: "#5EE6A0",
-                            border: "none",
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                            marginTop: "12px",
-                          }}
-                        >
-                          {isExpanded ? "Read Less" : "Read More"}
-                        </button>
-                      )}
+                      <button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        style={{
+                          background: "none",
+                          color: "#5EE6A0",
+                          border: "none",
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          marginTop: "12px",
+                        }}
+                      >
+                        {isExpanded ? "Read Less" : "Read More"}
+                      </button>
+                    )}
                   </div>
 
                   <hr />
@@ -1203,8 +1213,9 @@ function Location() {
                           <div className="accordion-item border rounded mb-2">
                             <h2 className="accordion-header" id="headingOne">
                               <button
-                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"
-                                  }`}
+                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                                  open === "collapseOne" ? "" : "collapsed"
+                                }`}
                                 type="button"
                                 onClick={() => toggleAccordion("collapseOne")}
                                 style={{ padding: "12px" }}
@@ -1257,8 +1268,9 @@ function Location() {
                         <div className="accordion-item border rounded mb-2">
                           <h2 className="accordion-header" id="headingTwo">
                             <button
-                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
-                                }`}
+                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                                open === "collapseTwo" ? "" : "collapsed"
+                              }`}
                               type="button"
                               onClick={() => toggleAccordion("collapseTwo")}
                               style={{ padding: "12px" }}
@@ -1502,7 +1514,13 @@ function Location() {
                         >
                           <div className="location-reviews-list-left">
                             <img
-                              src={item?.profile_image && item?.profile_image !== "undefined" && item?.profile_image !== "null" ? `${imageBase}${item?.profile_image}` : defaultContact}
+                              src={
+                                item?.profile_image &&
+                                item?.profile_image !== "undefined" &&
+                                item?.profile_image !== "null"
+                                  ? `${imageBase}${item?.profile_image}`
+                                  : defaultContact
+                              }
                               loading="lazy"
                               alt="profile_image"
                               onError={(e) => {
@@ -1631,7 +1649,13 @@ function Location() {
                         <div key={index} className="location-reviews-list">
                           <div className="location-reviews-list-left">
                             <img
-                              src={item?.profile_image && item?.profile_image !== "undefined" && item?.profile_image !== "null" ? `${imageBase}${item?.profile_image}` : defaultContact}
+                              src={
+                                item?.profile_image &&
+                                item?.profile_image !== "undefined" &&
+                                item?.profile_image !== "null"
+                                  ? `${imageBase}${item?.profile_image}`
+                                  : defaultContact
+                              }
                               loading="lazy"
                               alt="profile_image"
                               onError={(e) => {
@@ -1788,7 +1812,9 @@ function Location() {
           setShowAddWishlistModal(false);
         }}
         fetchList={fetchPropertyDetails}
-        onAddSuccess={() => setPropertyDetails((prev) => ({ ...prev, is_in_wishlist: true }))}
+        onAddSuccess={() =>
+          setPropertyDetails((prev) => ({ ...prev, is_in_wishlist: true }))
+        }
       />
 
       <LocationImagesModal
@@ -1798,7 +1824,10 @@ function Location() {
       />
 
       {showShareModal && (
-        <ShareModal onClose={() => setShowShareModal(false)} />
+        <ShareModal
+          onClose={() => setShowShareModal(false)}
+          property_id_Share={propertyId}
+        />
       )}
       <AuthModal />
 
