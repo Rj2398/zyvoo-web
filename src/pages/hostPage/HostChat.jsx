@@ -3465,7 +3465,7 @@ const HostChat = () => {
                           title={userStatuses[booking.group_name]}
                         />
                       </div>
-                      <div>
+                      <div className="text-card">
                         <Card.Title
                           style={{
                             fontSize: isMobileWidth ? "13px" : "15px",
@@ -3702,6 +3702,7 @@ const HostChat = () => {
 
                         <div
                           style={{
+                            padding: "3px",
                             width: "55px",
                             height: "55px",
                             borderRadius: "50%",
@@ -3716,6 +3717,10 @@ const HostChat = () => {
                           }}
                         >
                           <Image
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                            }}
                             src={
                               userTypes === "host"
                                 ? selectedBooking?.sender_profile

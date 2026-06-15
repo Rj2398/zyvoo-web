@@ -1167,3 +1167,7 @@
     position: relative;
   }
 }
+
+.text-card {
+  width: 75%;
+}
