@@ -3450,7 +3450,7 @@ const HostChat = () => {
                               userStatuses[booking.group_name] == "online"
                                 ? "#54E49F"
                                 : "#54E49F",
-                            border: "4px solid white",
+                            // border: "4px solid white",
                             zIndex: "1",
                           }}
                           title={userStatuses[booking.group_name]}
