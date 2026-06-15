@@ -3408,19 +3408,10 @@ const HostChat = () => {
                   <Card.Body>
                     <div className="d-flex align-items-center">
                       <div
-                        style={{
-                          width: "65px",
-                          height: "65px",
-                          borderRadius: "50%",
-                          border: "2px solid #ccc",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          overflow: "hidden",
-                          backgroundColor: "#fff",
-                          marginRight: "10px",
-                          position: "relative",
-                        }}
+                        className="CircleView"
+                        // style={{
+
+                        // }}
                         onClick={(e) => {
                           e.stopPropagation();
 
