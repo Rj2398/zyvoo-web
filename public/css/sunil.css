@@ -1151,3 +1151,19 @@
     position: relative;
   }
 }
+
+@media screen and (max-width: 1099px) {
+  .CircleView {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #fff;
+    margin-right: 10px;
+    position: relative;
+  }
+}
