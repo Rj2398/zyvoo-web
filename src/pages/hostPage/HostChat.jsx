@@ -2020,6 +2020,7 @@ const HostChat = () => {
   const [lastMessages, setLastMessages] = useState({});
   const [unreadStatus, setUnreadStatus] = useState({});
   const [userStatuses, setUserStatuses] = useState({});
+
   const [conversationTimestamps, setConversationTimestamps] = useState({});
 
   const scrollToBottom = () => {
@@ -3423,11 +3424,19 @@ const HostChat = () => {
                         }}
                       >
                         <Image
-                          src={`${imageBase}${
-                            userTypes == "host"
-                              ? booking?.sender_profile
-                              : booking?.receiver_image
-                          }`}
+                          src={
+                            (
+                              userTypes === "host"
+                                ? booking?.sender_profile
+                                : booking?.receiver_image
+                            )
+                              ? `${imageBase}${
+                                  userTypes === "host"
+                                    ? booking?.sender_profile
+                                    : booking?.receiver_image
+                                }`
+                              : "/src/assets/defaultContact.jpg"
+                          }
                           roundedCircle
                           width="50"
                           height="50"
@@ -3449,7 +3458,7 @@ const HostChat = () => {
                             backgroundColor:
                               userStatuses[booking.group_name] == "online"
                                 ? "#54E49F"
-                                : "#54E49F",
+                                : "gray",
                             border: "4px solid white",
                             zIndex: "1",
                           }}
@@ -3709,10 +3718,12 @@ const HostChat = () => {
                           <Image
                             src={
                               userTypes === "host"
-                                ? imageBase + selectedBooking?.sender_profile ||
-                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
-                                : imageBase + selectedBooking?.receiver_image ||
-                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                ? selectedBooking?.sender_profile
+                                  ? `${imageBase}${selectedBooking.sender_profile}`
+                                  : "/src/assets/defaultContact.jpg"
+                                : selectedBooking?.receiver_image
+                                ? `${imageBase}${selectedBooking.receiver_image}`
+                                : "/src/assets/defaultContact.jpg"
                             }
                             roundedCircle
                             width="50"
@@ -3728,7 +3739,15 @@ const HostChat = () => {
                               width: "14px",
                               height: "14px",
                               borderRadius: "50%",
-                              backgroundColor: "#54E49F", // gray dot
+
+                              // targetUserStatus
+
+                              backgroundColor:
+                                targetUserStatus == "Online"
+                                  ? "#54E49F"
+                                  : "gray",
+
+                              // backgroundColor: "#54E49F", // gray dot
                               border: "2px solid white", // white outline
                               zIndex: 2,
                               marginRight: "5px",
@@ -3920,27 +3939,54 @@ const HostChat = () => {
                                     <div className="chat-single-upr">
                                       <div className="chat-single-left">
                                         {!isMyMessage ? (
+                                          // <Image
+                                          //   src={
+                                          //     userTypes == "host"
+                                          //       ? imageBase +
+                                          //           selectedBooking?.sender_profile ||
+                                          //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                          //       : imageBase +
+                                          //           selectedBooking?.receiver_image ||
+                                          //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                          //   }
+                                          //   roundedCircle
+                                          //   width="40"
+                                          //   height="40px"
+                                          // />
+
                                           <Image
                                             src={
-                                              userTypes == "host"
-                                                ? imageBase +
-                                                    selectedBooking?.sender_profile ||
-                                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
-                                                : imageBase +
-                                                    selectedBooking?.receiver_image ||
-                                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                              userTypes === "host"
+                                                ? selectedBooking?.sender_profile
+                                                  ? `${imageBase}${selectedBooking.sender_profile}`
+                                                  : "/src/assets/defaultContact.jpg"
+                                                : selectedBooking?.receiver_image
+                                                ? `${imageBase}${selectedBooking.receiver_image}`
+                                                : "/src/assets/defaultContact.jpg"
                                             }
                                             roundedCircle
                                             width="40"
                                             height="40px"
                                           />
                                         ) : (
+                                          // <Image
+                                          //   src={
+                                          //     imageBase +
+                                          //       profileData?.profileData
+                                          //         ?.profile_image ||
+                                          //     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                          //   }
+                                          //   roundedCircle
+                                          //   width="40"
+                                          //   height="40px"
+                                          // />
+
                                           <Image
                                             src={
-                                              imageBase +
-                                                profileData?.profileData
-                                                  ?.profile_image ||
-                                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                              profileData?.profileData
+                                                ?.profile_image
+                                                ? `${imageBase}${profileData.profileData.profile_image}`
+                                                : "/src/assets/defaultContact.jpg"
                                             }
                                             roundedCircle
                                             width="40"
@@ -4196,13 +4242,28 @@ const HostChat = () => {
                             marginRight: "5px",
                           }}
                         >
-                          <Image
+                          {/* <Image
                             src={
                               userTypes == "host"
                                 ? imageBase + selectedBooking?.sender_profile
                                 : selectedBooking?.receiver_image
                                 ? imageBase + selectedBooking?.receiver_image
                                 : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                            }
+                            roundedCircle
+                            width="50"
+                            height="50"
+                          /> */}
+
+                          <Image
+                            src={
+                              userTypes === "host"
+                                ? selectedBooking?.sender_profile
+                                  ? `${imageBase}${selectedBooking.sender_profile}`
+                                  : "/src/assets/defaultContact.jpg"
+                                : selectedBooking?.receiver_image
+                                ? `${imageBase}${selectedBooking.receiver_image}`
+                                : "/src/assets/defaultContact.jpg"
                             }
                             roundedCircle
                             width="50"
