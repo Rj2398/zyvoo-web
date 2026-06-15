@@ -1,7 +1,8 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-const ShareModal = ({ onClose }) => {
+const ShareModal = ({ onClose, property_id_Share }) => {
+  console.log(property_id_Share, "property share idddd***");
   const backdropStyle = {
     position: "fixed",
     top: 0,
@@ -71,36 +72,34 @@ const ShareModal = ({ onClose }) => {
   };
 
   const currentUrl = window.location.href;
-  const encodedUrl = encodeURIComponent(currentUrl);
+  // const encodedUrl = encodeURIComponent(currentUrl);
+  const shareUrl = `${window.location.origin}/location/${property_id_Share}`;
 
   const icons = [
     {
       label: "Copy Link",
       logo: "/images/popups/share/1.svg",
-      url: "#",
+      url: shareUrl,
     },
     {
       label: "WhatsApp",
       logo: "/images/popups/share/2.svg",
-      url: `https://wa.me/?text=${encodedUrl}`,
+      url: `https://wa.me/?text=${shareUrl}`,
     },
     {
       label: "Facebook",
       logo: "/images/popups/share/3.svg",
-      url: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+      url: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
     },
     {
       label: "Email",
       logo: "/images/popups/share/4.svg",
-      // url: `mailto:?subject=Check this out&body=${encodedUrl}`,
-      url: `https://mail.google.com/mail/?view=cm&fs=1&su=${encodeURIComponent(
-      "Check this out"
-    )}&body=${encodedUrl}`,
+      url: `https://mail.google.com/mail/?view=cm&fs=1&su=Check this out&body=${shareUrl}`,
     },
     {
       label: "X",
       logo: "/images/popups/share/5.svg",
-      url: `https://x.com/intent/tweet?url=${encodedUrl}`,
+      url: `https://x.com/intent/tweet?url=${shareUrl}`,
     },
     {
       label: "Instagram",
@@ -110,18 +109,27 @@ const ShareModal = ({ onClose }) => {
     {
       label: "LinkedIn",
       logo: "/images/popups/share/7.svg",
-      url: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      url: `https://www.linkedin.com/sharing/share-offsite/?url=${shareUrl}`,
     },
     {
       label: "Message",
       logo: "/images/popups/share/8.svg",
-      url: `sms:?body=${encodedUrl}`,
+      url: `sms:?body=${shareUrl}`,
     },
   ];
 
+  // const handleCopyLink = async () => {
+  //   try {
+  //     await navigator.clipboard.writeText(currentUrl);
+  //     toast.success("Link copied to clipboard!");
+  //   } catch (err) {
+  //     console.error("Failed to copy: ", err);
+  //   }
+  // };
+
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(currentUrl);
+      await navigator.clipboard.writeText(shareUrl);
       toast.success("Link copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy: ", err);
@@ -143,14 +151,19 @@ const ShareModal = ({ onClose }) => {
             height: "18px",
             width: "18px",
           }}
-          onClick={onClose}>
+          onClick={onClose}
+        >
           ✕
         </button>
         <div style={titleStyle}>Share with friends</div>
         <div style={gridStyle}>
           {icons.map((item, idx) => (
-            <a key={idx} target="_blank" rel="noopener noreferrer"
-              href={item.label === "Copy Link" ? "#" : item.url} onClick={(e) => {
+            <a
+              key={idx}
+              target="_blank"
+              rel="noopener noreferrer"
+              href={item.label === "Copy Link" ? "#" : item.url}
+              onClick={(e) => {
                 if (item.label === "Copy Link") {
                   e.preventDefault();
                   handleCopyLink();
@@ -176,8 +189,6 @@ const ShareModal = ({ onClose }) => {
                 <div style={labelStyle}>{item.label}</div>
               </div>
             </a>
-            
-            
           ))}
         </div>
       </div>

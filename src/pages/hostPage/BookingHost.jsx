@@ -74,6 +74,7 @@ const BookingHost = () => {
 
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [viewDetails, setViewDetails] = useState();
+  console.log(viewDetails?.property_id, "discusss********");
 
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
@@ -221,7 +222,7 @@ const BookingHost = () => {
           },
           (error) => {
             console.error(error.message);
-          },
+          }
         );
       } else {
         console.error("Geolocation is not supported by your browser.");
@@ -353,7 +354,7 @@ const BookingHost = () => {
   useEffect(() => {
     if (bookingId && getList) {
       const filteredBooking = getList.find(
-        (item) => item.booking_id == bookingId,
+        (item) => item.booking_id == bookingId
       );
       setSelectedBooking(filteredBooking);
     }
@@ -779,8 +780,8 @@ const BookingHost = () => {
                                   ? `${imageBase}${booking.guest_avatar}`
                                   : "https://cvhrma.org/wp-content/uploads/2015/07/default-profile-photo.jpg"
                                 : booking?.property_image
-                                  ? `${imageBase}${booking.property_image}`
-                                  : "https://he.cecollaboratory.com/public/layouts/images/community-default-logo.png"
+                                ? `${imageBase}${booking.property_image}`
+                                : "https://he.cecollaboratory.com/public/layouts/images/community-default-logo.png"
                             }
                             style={{
                               border: isMobileWidth
@@ -847,7 +848,7 @@ const BookingHost = () => {
                               "No Name"
                             : truncateText(
                                 booking?.property_name?.trim(),
-                                15,
+                                15
                               ) || "No Name"}
                         </h1>
                         <h2
@@ -915,15 +916,15 @@ const BookingHost = () => {
                                 "confirmed"
                                   ? "#85D6FF"
                                   : booking.booking_status?.toLowerCase() ===
-                                      "pending"
-                                    ? "#ffc107"
-                                    : booking.booking_status?.toLowerCase() ===
-                                        "finished"
-                                      ? "#4AEAB1"
-                                      : booking.booking_status?.toLowerCase() ===
-                                          "awaiting payment"
-                                        ? "#FFF178"
-                                        : "#F5F6F6",
+                                    "pending"
+                                  ? "#ffc107"
+                                  : booking.booking_status?.toLowerCase() ===
+                                    "finished"
+                                  ? "#4AEAB1"
+                                  : booking.booking_status?.toLowerCase() ===
+                                    "awaiting payment"
+                                  ? "#FFF178"
+                                  : "#F5F6F6",
                               fontSize: isMobileWidth ? "12px" : "16px",
                               // padding: "5px 15px",
                               // borderRadius: "20px",
@@ -1052,8 +1053,8 @@ const BookingHost = () => {
                                   ? `${imageBase}${selectedBooking?.guest_avatar}`
                                   : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                                 : selectedBooking?.host_image
-                                  ? `${imageBase}${selectedBooking?.host_image}`
-                                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                ? `${imageBase}${selectedBooking?.host_image}`
+                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                             }
                             loading="lazy"
                             alt="Profile"
@@ -1274,7 +1275,7 @@ const BookingHost = () => {
                                 propertyId
                                   ? setShowReportModal(true)
                                   : toast.error(
-                                      "Please select a booking first",
+                                      "Please select a booking first"
                                     );
                               }}
                               style={{
@@ -1325,9 +1326,9 @@ const BookingHost = () => {
                                     ? imageBase + viewDetails?.images?.[0]
                                     : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                                   : viewDetails?.first_property_image
-                                    ? imageBase +
-                                      viewDetails?.first_property_image
-                                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                  ? imageBase +
+                                    viewDetails?.first_property_image
+                                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                               }
                               loading="lazy"
                               alt="property"
@@ -1375,9 +1376,8 @@ const BookingHost = () => {
                               {viewDetails?.booking_hour} hours
                               <span>
                                 {" "}
-                                $
-                                {formatCurrency(
-                                  viewDetails?.booking_amount,
+                                ${formatCurrency(
+                                  viewDetails?.booking_amount
                                 )}{" "}
                               </span>
                             </li>
@@ -1387,9 +1387,8 @@ const BookingHost = () => {
                                 Cleaning Fee
                                 <span>
                                   {" "}
-                                  $
-                                  {formatCurrency(
-                                    viewDetails?.cleaning_fee,
+                                  ${formatCurrency(
+                                    viewDetails?.cleaning_fee
                                   )}{" "}
                                 </span>
                               </li>
@@ -1400,9 +1399,8 @@ const BookingHost = () => {
                                 Zyvo Service Fee
                                 <span>
                                   {" "}
-                                  $
-                                  {formatCurrency(
-                                    viewDetails?.service_fee,
+                                  ${formatCurrency(
+                                    viewDetails?.service_fee
                                   )}{" "}
                                 </span>
                               </li>
@@ -1420,9 +1418,8 @@ const BookingHost = () => {
                                 Add-on
                                 <span>
                                   {" "}
-                                  $
-                                  {formatCurrency(
-                                    viewDetails?.add_on_total,
+                                  ${formatCurrency(
+                                    viewDetails?.add_on_total
                                   )}{" "}
                                 </span>
                               </li>
@@ -1445,7 +1442,7 @@ const BookingHost = () => {
                                   <span>
                                     -$
                                     {formatCurrency(
-                                      viewDetails?.charges?.discount || 0,
+                                      viewDetails?.charges?.discount || 0
                                     )}
                                   </span>
                                 </li>
@@ -1457,7 +1454,7 @@ const BookingHost = () => {
                                 {" "}
                                 ${" "}
                                 {formatCurrency(
-                                  viewDetails?.booking_total_amount,
+                                  viewDetails?.booking_total_amount
                                 )}{" "}
                               </span>
                             </li>
@@ -1469,7 +1466,7 @@ const BookingHost = () => {
                               <span>
                                 $
                                 {formatCurrency(
-                                  viewDetails?.charges?.booking_amount,
+                                  viewDetails?.charges?.booking_amount
                                 )}
                               </span>
                             </li>
@@ -1479,7 +1476,7 @@ const BookingHost = () => {
                                 <span>
                                   $
                                   {formatCurrency(
-                                    viewDetails?.charges?.cleaning_fee,
+                                    viewDetails?.charges?.cleaning_fee
                                   )}
                                 </span>
                               </li>
@@ -1491,7 +1488,7 @@ const BookingHost = () => {
                                 <span>
                                   $
                                   {formatCurrency(
-                                    viewDetails?.charges?.zyvo_service_fee,
+                                    viewDetails?.charges?.zyvo_service_fee
                                   )}
                                 </span>
                               </li>
@@ -1514,7 +1511,7 @@ const BookingHost = () => {
                               <span>
                                 ${" "}
                                 {formatCurrency(
-                                  viewDetails?.charges?.add_on_price || 0,
+                                  viewDetails?.charges?.add_on_price || 0
                                 )}
                               </span>
                             </li>
@@ -1528,7 +1525,7 @@ const BookingHost = () => {
                                   <span>
                                     -$
                                     {formatCurrency(
-                                      viewDetails?.charges?.discount || 0,
+                                      viewDetails?.charges?.discount || 0
                                     )}
                                   </span>
                                 </li>
@@ -1563,19 +1560,18 @@ const BookingHost = () => {
                             : viewDetails?.status) == "Confirmed"
                             ? "#85D6FF"
                             : (userType == "host"
-                                  ? viewDetails?.booking_status
-                                  : viewDetails?.status) == "Pending"
-                              ? "#ffc107"
-                              : (userType == "host"
-                                    ? viewDetails?.booking_status
-                                    : viewDetails?.status) == "Finished"
-                                ? "#4AEAB1"
-                                : (userType == "host"
-                                      ? viewDetails?.booking_status
-                                      : viewDetails?.status) ==
-                                    "Waiting_payment"
-                                  ? "#FFF178"
-                                  : "#ebe1e1",
+                                ? viewDetails?.booking_status
+                                : viewDetails?.status) == "Pending"
+                            ? "#ffc107"
+                            : (userType == "host"
+                                ? viewDetails?.booking_status
+                                : viewDetails?.status) == "Finished"
+                            ? "#4AEAB1"
+                            : (userType == "host"
+                                ? viewDetails?.booking_status
+                                : viewDetails?.status) == "Waiting_payment"
+                            ? "#FFF178"
+                            : "#ebe1e1",
                         color: "black",
                       }}
                     >
@@ -1610,8 +1606,8 @@ const BookingHost = () => {
                               userType == "host"
                                 ? viewDetails?.wishlist
                                 : viewDetails?.is_in_wishlist
-                                  ? "text-danger"
-                                  : "light-gray"
+                                ? "text-danger"
+                                : "light-gray"
                             }`}
                           ></i>
                           Favorite
@@ -1620,7 +1616,10 @@ const BookingHost = () => {
                     </ul>
                   )}
                   {showModal && (
-                    <ShareModal onClose={() => setShowModal(false)} />
+                    <ShareModal
+                      onClose={() => setShowModal(false)}
+                      property_id_Share={viewDetails?.property_id}
+                    />
                   )}
                 </div>
                 {/* <div className={`top-grid-bookinghost-h top-grid-images-${viewDetails?.images?.length <5 ? 5 : viewDetails?.images?.length || viewDetails?.property_images?.length >5 ? 5 : viewDetails?.property_images?.length}`}> */}
@@ -1632,9 +1631,9 @@ const BookingHost = () => {
                         ? viewDetails?.images?.length
                         : 3
                       : viewDetails?.property_images?.length &&
-                          viewDetails?.property_images?.length < 3
-                        ? viewDetails?.property_images?.length
-                        : 3
+                        viewDetails?.property_images?.length < 3
+                      ? viewDetails?.property_images?.length
+                      : 3
                   }`}
                   onClick={() => setShowPropertyImages(true)}
                 >
@@ -1778,7 +1777,7 @@ const BookingHost = () => {
                               />
                               <span style={{ color: "#000000" }}>{text}</span>
                             </div>
-                          ),
+                          )
                       )}
                     </div>
                   </div>
@@ -1827,7 +1826,7 @@ const BookingHost = () => {
                               "price.svg",
                               parseFloat(
                                 viewDetails?.extension_details
-                                  ?.extension_booking_amount,
+                                  ?.extension_booking_amount
                               ),
                             ],
                           ].map(([icon, text], i) => (
@@ -1879,7 +1878,7 @@ const BookingHost = () => {
                               "price.svg",
                               parseFloat(
                                 viewDetails?.extension_details
-                                  ?.extension_booking_amount,
+                                  ?.extension_booking_amount
                               ),
                             ],
                           ].map(([icon, text], i) => (
@@ -2274,8 +2273,8 @@ const BookingHost = () => {
                             ? `${imageBase}${selectedBooking?.guest_avatar}`
                             : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                           : selectedBooking?.host_image
-                            ? `${imageBase}${selectedBooking?.host_image}`
-                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                          ? `${imageBase}${selectedBooking?.host_image}`
+                          : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                       }
                       loading="lazy"
                       alt="Profile"
@@ -2445,8 +2444,8 @@ const BookingHost = () => {
                               ? imageBase + viewDetails?.images?.[0]
                               : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                             : viewDetails?.first_property_image
-                              ? imageBase + viewDetails?.first_property_image
-                              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                            ? imageBase + viewDetails?.first_property_image
+                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                         }
                         loading="lazy"
                         alt="property"
@@ -2563,7 +2562,7 @@ const BookingHost = () => {
                           <span>
                             $
                             {formatCurrency(
-                              viewDetails?.charges?.zyvo_service_fee,
+                              viewDetails?.charges?.zyvo_service_fee
                             )}
                           </span>
                         </li>

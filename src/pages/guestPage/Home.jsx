@@ -22,16 +22,23 @@ import MobFooter from "../../components/MobFooter";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-
-  const { userInfo } = useSelector(({ user }) => user)
+  const { userInfo } = useSelector(({ user }) => user);
   const { guestHomeData, isLoading } = useCommon();
   const { getTimerDetails } = useTimer();
   const [showMap, setShowMap] = useState(false);
 
   const selectorData = useSelector((state) => state.common);
-  const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO))
-  const login_id = userInfo?.user_id ? String(userInfo?.user_id) : null || localSaved?.user_id ? String(localSaved?.user_id) : null;
-  const [useTypes, setUserTypes] = useState(localStorage.getItem(KEYS.USER_TYPE));
+  const localSaved =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const login_id = userInfo?.user_id
+    ? String(userInfo?.user_id)
+    : null || localSaved?.user_id
+    ? String(localSaved?.user_id)
+    : null;
+  const [useTypes, setUserTypes] = useState(
+    localStorage.getItem(KEYS.USER_TYPE)
+  );
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
@@ -41,7 +48,10 @@ const Home = () => {
   const itemsPerPage = 16;
   const [localHomeList, setLocalHomeList] = useState([]);
 
-  const [currentLocation, setCurrentLocation] = useState({ latitude: null, longitude: null });
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: null,
+    longitude: null,
+  });
 
   useEffect(() => {
     const getLocation = () => {
@@ -53,7 +63,9 @@ const Home = () => {
               longitude: position.coords.longitude,
             });
           },
-          (error) => { console.error(error.message); }
+          (error) => {
+            console.error(error.message);
+          }
         );
       } else {
         console.error("Geolocation is not supported by your browser.");
@@ -84,7 +96,6 @@ const Home = () => {
   //   return () => navigator.geolocation.clearWatch(watchId);
   // }, []);
 
-
   const fetchList = async () => {
     try {
       const res = await guestHomeData({
@@ -97,8 +108,11 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {// set data in userType & listshowMap
-    const handleStorageChange = () => { setUserTypes(localStorage.getItem(KEYS.USER_TYPE)); };
+  useEffect(() => {
+    // set data in userType & listshowMap
+    const handleStorageChange = () => {
+      setUserTypes(localStorage.getItem(KEYS.USER_TYPE));
+    };
 
     fetchList();
     window.addEventListener("storage", handleStorageChange);
@@ -119,8 +133,12 @@ const Home = () => {
   const [initialTime, setInitialTime] = useState(0);
   const [originalDifference, setOriginalDifference] = useState(null); // NEW
 
-  const [datePart1 = "", timePart1 = ""] = onGoingTime ? onGoingTime.split(" ") : [];  // Safely split onGoingTime
-  const [datePart = "", timePart = ""] = RemainTime ? RemainTime.split(" ") : []; // Safely split RemainTime (handles undefined/null cases)
+  const [datePart1 = "", timePart1 = ""] = onGoingTime
+    ? onGoingTime.split(" ")
+    : []; // Safely split onGoingTime
+  const [datePart = "", timePart = ""] = RemainTime
+    ? RemainTime.split(" ")
+    : []; // Safely split RemainTime (handles undefined/null cases)
 
   // Calculate time difference whenever onGoingTime or RemainTime changes
   useEffect(() => {
@@ -128,7 +146,9 @@ const Home = () => {
       if (datePart1 === datePart) {
         // Convert time strings (HH:MM:SS) into total seconds
         const getTimeInSeconds = (timeStr) => {
-          const [hours = 0, minutes = 0, seconds = 0] = timeStr.split(":").map(Number);
+          const [hours = 0, minutes = 0, seconds = 0] = timeStr
+            .split(":")
+            .map(Number);
           return hours * 3600 + minutes * 60 + seconds;
         };
 
@@ -152,7 +172,11 @@ const Home = () => {
   }, [onGoingTime, RemainTime]);
 
   // Timer logic
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0, });
+  const [timeLeft, setTimeLeft] = useState({
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   const [angle, setAngle] = useState(-90);
   const radius = 150;
 
@@ -171,13 +195,15 @@ const Home = () => {
     if (totalSeconds > 0) {
       timer = setInterval(() => {
         setTimeLeft((prevTime) => {
-          const totalRemainingSeconds = prevTime.hours * 3600 + prevTime.minutes * 60 + prevTime.seconds;
+          const totalRemainingSeconds =
+            prevTime.hours * 3600 + prevTime.minutes * 60 + prevTime.seconds;
           if (totalRemainingSeconds <= 0) {
             clearInterval(timer);
             return { hours: 0, minutes: 0, seconds: 0 };
           }
 
-          const newAngle = -90 + (1 - totalRemainingSeconds / totalSeconds) * 90;
+          const newAngle =
+            -90 + (1 - totalRemainingSeconds / totalSeconds) * 90;
           setAngle(newAngle);
 
           const newSeconds = (totalRemainingSeconds - 1) % 60;
@@ -210,9 +236,11 @@ const Home = () => {
   // const paginatedData =isMobileWidth?localHomeList: localHomeList.slice((currentPage - 1) * itemsPerPage,currentPage * itemsPerPage);
   const paginatedData = useMemo(() => {
     if (isMobileWidth) return localHomeList;
-    return localHomeList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    return localHomeList.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
   }, [localHomeList, currentPage, isMobileWidth]);
-
 
   useEffect(() => {
     const checkWindowWidth = () => {
@@ -220,9 +248,9 @@ const Home = () => {
     };
 
     checkWindowWidth(); // run on mount
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   //get provided time formate
@@ -277,175 +305,293 @@ const Home = () => {
   }
 
   return (
-    <div style={{ backgroundImage: "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)", backgroundSize: "20px 20px", position: "relative" }} >
-      {useTypes === "guest" || !login_id ? (<HomeHeader showMap={showMap} setShowMap={setShowMap} />) : (<Header />)}
+    <div
+      style={{
+        backgroundImage:
+          "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)",
+        backgroundSize: "20px 20px",
+        position: "relative",
+      }}
+    >
+      {useTypes === "guest" || !login_id ? (
+        <HomeHeader showMap={showMap} setShowMap={setShowMap} />
+      ) : (
+        <Header />
+      )}
 
       <main className="home-main">
         <div className="mob-show-map animate__animated animate__backInUp animate__delay-1s">
-          <Link to="#" onClick={() => setShowMap(!showMap)}><img src="/images/filters/show-map.svg" loading="lazy" alt="Show Map" />{showMap ? "Show list" : "Show Map"}</Link>
+          <Link to="#" onClick={() => setShowMap(!showMap)}>
+            <img
+              src="/images/filters/show-map.svg"
+              loading="lazy"
+              alt="Show Map"
+            />
+            {showMap ? "Show list" : "Show Map"}
+          </Link>
         </div>
 
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", }} >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Container fluid>
             <Row>
-              <Loader2 visible={isLoading} />
-              {(!paginatedData || paginatedData.length === 0) && <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "250px" }}><Sorry /></div>}
-
-              {(isMobileWidth && showMap) ? <></> : <Col lg={showMap ? 7 : 12} md={showMap ? 8 : 12} sm={12}>
-                <Row style={{ margin: "0 -12px", display: "flex", flexWrap: "wrap" }}>
-                  {paginatedData?.map((item) => (
-                    <Col key={item?.property_id} xl={showMap ? 6 : 3} lg={showMap ? 6 : 4}
-                      md={6} sm={12} style={{ padding: "12px", display: "flex", justifyContent: "center", }}>
-                      <div style={{
-                        width: "100%",
-                        maxWidth: "400px",
-                        borderRadius: "18px",
-                        overflow: "hidden",
-                        background: "#fff",
-                        boxShadow: "0 2px 4px rgba(0, 0, 0, 0.001)",
-                      }}
+              {/* <Loader2 visible={isLoading} /> */}
+              {/* {(!paginatedData || paginatedData.length === 0) && <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "250px" }}><Sorry /></div>} */}
+              {isLoading ? (
+                <Loader2 />
+              ) : !paginatedData || paginatedData.length === 0 ? (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "250px",
+                  }}
+                >
+                  <Sorry />
+                </div>
+              ) : null}
+              {isMobileWidth && showMap ? (
+                <></>
+              ) : (
+                <Col lg={showMap ? 7 : 12} md={showMap ? 8 : 12} sm={12}>
+                  <Row
+                    style={{
+                      margin: "0 -12px",
+                      display: "flex",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {paginatedData?.map((item) => (
+                      <Col
+                        key={item?.property_id}
+                        xl={showMap ? 6 : 3}
+                        lg={showMap ? 6 : 4}
+                        md={6}
+                        sm={12}
+                        style={{
+                          padding: "12px",
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
                       >
-                        <ProductItem
-                          hourly_rate={item?.hourly_rate}
-                          distance_miles={item?.distance_miles}
-                          images={item?.images}
-                          is_in_wishlist={item?.is_in_wishlist}
-                          is_instant_book={item?.is_instant_book}
-                          property_id={item?.property_id}
-                          rating={item?.rating}
-                          title={item?.title}
-                          reviewCount={item?.review_count}
-                          hosted_by={item?.host_name}
-                          hostImg={item?.host_profile_image}
-                          address={item?.host_address}
-                          award={item?.is_star_host}
-                          currentLocation={currentLocation?.latitude && currentLocation}
-                        />
-                      </div>
-                    </Col>
-                  ))}
-                </Row>
-              </Col>}
+                        <div
+                          style={{
+                            width: "100%",
+                            maxWidth: "400px",
+                            borderRadius: "18px",
+                            overflow: "hidden",
+                            background: "#fff",
+                            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.001)",
+                          }}
+                        >
+                          <ProductItem
+                            hourly_rate={item?.hourly_rate}
+                            distance_miles={item?.distance_miles}
+                            images={item?.images}
+                            is_in_wishlist={item?.is_in_wishlist}
+                            is_instant_book={item?.is_instant_book}
+                            property_id={item?.property_id}
+                            rating={item?.rating}
+                            title={item?.title}
+                            reviewCount={item?.review_count}
+                            hosted_by={item?.host_name}
+                            hostImg={item?.host_profile_image}
+                            address={item?.host_address}
+                            award={item?.is_star_host}
+                            currentLocation={
+                              currentLocation?.latitude && currentLocation
+                            }
+                          />
+                        </div>
+                      </Col>
+                    ))}
+                  </Row>
+                </Col>
+              )}
               {showMap && (
-                <Col lg={5} md={4} sm={12} style={{ position: "sticky", top: 0, height: "80vh", borderRadius: "500px", }} >
-                  <MultipleMarkerMap locations={localHomeList} currentLocation={currentLocation} isMobileWidth={isMobileWidth} />
+                <Col
+                  lg={5}
+                  md={4}
+                  sm={12}
+                  style={{
+                    position: "sticky",
+                    top: 0,
+                    height: "80vh",
+                    borderRadius: "500px",
+                  }}
+                >
+                  <MultipleMarkerMap
+                    locations={localHomeList}
+                    currentLocation={currentLocation}
+                    isMobileWidth={isMobileWidth}
+                  />
                 </Col>
               )}
             </Row>
           </Container>
-
         </div>
 
-        {(isMobileWidth && showMap) ? <></> : <div className="home-pagination-wrap">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="time-and-pagination">
-                  {bookingDetails && Object.keys(bookingDetails).length > 0 && (
-                    <div className="time-countdown" style={{ position: "relative" }} >
-                      <button type="button" className="need-more-time-btn">
-                        <div className="time-countdown-inner desktop-tablet-countdown">
-                          <div className="time-countdown-data">
-                            <h2>Time Left</h2>
-                            <div className="countdown" id="countdown1">
-                              <div className="time-section">
-                                <div className="hours1">
-                                  {String(timeLeft.hours).padStart(2, "0")}
+        {isMobileWidth && showMap ? (
+          <></>
+        ) : (
+          <div className="home-pagination-wrap">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="time-and-pagination">
+                    {bookingDetails &&
+                      Object.keys(bookingDetails).length > 0 && (
+                        <div
+                          className="time-countdown"
+                          style={{ position: "relative" }}
+                        >
+                          <button type="button" className="need-more-time-btn">
+                            <div className="time-countdown-inner desktop-tablet-countdown">
+                              <div className="time-countdown-data">
+                                <h2>Time Left</h2>
+                                <div className="countdown" id="countdown1">
+                                  <div className="time-section">
+                                    <div className="hours1">
+                                      {String(timeLeft.hours).padStart(2, "0")}
+                                    </div>
+                                    <div className="label">Hour</div>
+                                  </div>
+                                  <div className="time-section">
+                                    <div className="minutes1">
+                                      {String(timeLeft.minutes).padStart(
+                                        2,
+                                        "0"
+                                      )}
+                                    </div>
+                                    <div className="label">Min</div>
+                                  </div>
+                                  <div className="time-section">
+                                    <div className="seconds1">
+                                      {String(timeLeft.seconds).padStart(
+                                        2,
+                                        "0"
+                                      )}
+                                    </div>
+                                    <div className="label">Sec</div>
+                                  </div>
                                 </div>
-                                <div className="label">Hour</div>
                               </div>
-                              <div className="time-section">
-                                <div className="minutes1">
-                                  {String(timeLeft.minutes).padStart(2, "0")}
-                                </div>
-                                <div className="label">Min</div>
+
+                              {/* Circular Motion Icon */}
+                              <div
+                                id="icon-container"
+                                style={{
+                                  position: "relative",
+                                  width: "100%",
+                                  height: "100%",
+                                }}
+                              >
+                                <img
+                                  id="icon"
+                                  src="/images/time-countdown/timer-logo.svg"
+                                  loading="lazy"
+                                  alt="Icon"
+                                  style={{
+                                    position: "absolute",
+                                    width: "40px",
+                                    height: "40px",
+                                    top: `calc(50% + ${y}px - 100px)`,
+                                    left: `calc(50% + ${x}px - 10px)`,
+                                    zIndex: 10,
+                                    transition: "top 1s linear, left 1s linear",
+                                    cursor: "pointer",
+                                  }}
+                                  onClick={() => setShowModal(true)} // Open modal on click
+                                />
                               </div>
-                              <div className="time-section">
-                                <div className="seconds1">
-                                  {String(timeLeft.seconds).padStart(2, "0")}
-                                </div>
-                                <div className="label">Sec</div>
-                              </div>
+
+                              <img
+                                id="countdown-bg"
+                                src="/images/time-countdown/timer.svg"
+                                loading="lazy"
+                                alt="countdown"
+                              />
+                            </div>
+                          </button>
+
+                          {showModal && (
+                            <BookingExtensionModal
+                              show={showModal}
+                              handleClose={() => setShowModal(false)}
+                              bookingDetails={bookingDetails}
+                            />
+                          )}
+                        </div>
+                      )}
+
+                    {!isMobileWidth && (
+                      <div className="home-pagination-wrap">
+                        <div className="container-fluid">
+                          <div className="row">
+                            <div className="col-lg-12">
+                              {
+                                <Pagination
+                                  currentPage={currentPage}
+                                  totalPages={totalPages}
+                                  onPageChange={setCurrentPage}
+                                />
+                              }
                             </div>
                           </div>
-
-                          {/* Circular Motion Icon */}
-                          <div id="icon-container" style={{ position: "relative", width: "100%", height: "100%" }}>
-                            <img id="icon" src="/images/time-countdown/timer-logo.svg" loading="lazy" alt="Icon"
-                              style={{
-                                position: "absolute",
-                                width: "40px",
-                                height: "40px",
-                                top: `calc(50% + ${y}px - 100px)`,
-                                left: `calc(50% + ${x}px - 10px)`,
-                                zIndex: 10,
-                                transition: "top 1s linear, left 1s linear",
-                                cursor: "pointer",
-                              }}
-                              onClick={() => setShowModal(true)} // Open modal on click
-                            />
-                          </div>
-
-                          <img id="countdown-bg" src="/images/time-countdown/timer.svg" loading="lazy" alt="countdown" />
-                        </div>
-                      </button>
-
-                      {showModal && (
-                        <BookingExtensionModal
-                          show={showModal}
-                          handleClose={() => setShowModal(false)}
-                          bookingDetails={bookingDetails}
-
-                        />
-                      )}
-                    </div>
-                  )}
-
-                  {!isMobileWidth && <div className="home-pagination-wrap">
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="col-lg-12">
-                          {
-                            <Pagination
-                              currentPage={currentPage}
-                              totalPages={totalPages}
-                              onPageChange={setCurrentPage}
-                            />
-                          }
                         </div>
                       </div>
-                    </div>
-                  </div>}
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>}
+        )}
 
-        {(isMobileWidth && showMap) ? <></> : <button className="need-more-time-btn" type="button" >
-          {bookingDetails && Object.keys(bookingDetails).length > 0 && (
-            <div className="time-countdown-inner mobile-countdown"  >
-              <div className="time-countdown-data">
-                <h2>Time Left</h2>
-                <div className="countdown" id="countdown2">
-                  <div className="time-section">
-                    {String(timeLeft.hours).padStart(2, "0")}
-                  </div>
-                  <div className="time-section">
-                    {String(timeLeft.minutes).padStart(2, "0")}
-                  </div>
-                  <div className="time-section">
-                    {String(timeLeft.seconds).padStart(2, "0")}
+        {isMobileWidth && showMap ? (
+          <></>
+        ) : (
+          <button className="need-more-time-btn" type="button">
+            {bookingDetails && Object.keys(bookingDetails).length > 0 && (
+              <div className="time-countdown-inner mobile-countdown">
+                <div className="time-countdown-data">
+                  <h2>Time Left</h2>
+                  <div className="countdown" id="countdown2">
+                    <div className="time-section">
+                      {String(timeLeft.hours).padStart(2, "0")}
+                    </div>
+                    <div className="time-section">
+                      {String(timeLeft.minutes).padStart(2, "0")}
+                    </div>
+                    <div className="time-section">
+                      {String(timeLeft.seconds).padStart(2, "0")}
+                    </div>
                   </div>
                 </div>
+                <div id="icon-container" onClick={() => setShowModal(true)}>
+                  <img
+                    id="icon"
+                    src="/images/time-countdown/timer-logo.svg"
+                    loading="lazy"
+                    alt="Icon"
+                  />
+                </div>
+                <img
+                  id="countdown-bg"
+                  src="/images/time-countdown/timer-mobile.svg"
+                  loading="lazy"
+                  alt="timer-mobile"
+                />
               </div>
-              <div id="icon-container" onClick={() => setShowModal(true)} >
-                <img id="icon" src="/images/time-countdown/timer-logo.svg" loading="lazy" alt="Icon" />
-              </div>
-              <img id="countdown-bg" src="/images/time-countdown/timer-mobile.svg" loading="lazy" alt="timer-mobile" />
-            </div>
-          )}
-        </button>}
+            )}
+          </button>
+        )}
       </main>
       <Footer />
       <MobFooter />
