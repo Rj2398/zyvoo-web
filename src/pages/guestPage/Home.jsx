@@ -159,10 +159,10 @@ const Home = () => {
   const [isMobileWidth, setIsMobileWidth] = useState(false);
   const totalPages = Math.ceil(localHomeList.length / itemsPerPage);
   const [onGoingTime, setOngoingTime] = useState(null);
+  const [bookingStartTime, setBookingStartTime] = useState(null);
   const [RemainTime, setRemainTime] = useState(); // Initially undefined
   const [timeDifference, setTimeDifference] = useState(null);
   const [initialTime, setInitialTime] = useState(0);
-  const [originalDifference, setOriginalDifference] = useState(null); // NEW
 
   const [datePart1 = "", timePart1 = ""] = onGoingTime
     ? onGoingTime.split(" ")
@@ -188,12 +188,7 @@ const Home = () => {
 
         const differenceInSeconds = time1InSeconds - time2InSeconds;
 
-        if (differenceInSeconds === 18) {
-          setShowModal(true);
-        }
-
         setTimeDifference(differenceInSeconds);
-        setOriginalDifference(differenceInSeconds); // NEW
         setInitialTime(Math.abs(differenceInSeconds));
       } else {
         setTimeDifference("time is not available");
@@ -208,8 +203,6 @@ const Home = () => {
     minutes: 0,
     seconds: 0,
   });
-  const [angle, setAngle] = useState(-90);
-  const radius = 150;
 
   useEffect(() => {
     if (initialTime < 0) return;
@@ -233,10 +226,6 @@ const Home = () => {
             return { hours: 0, minutes: 0, seconds: 0 };
           }
 
-          const newAngle =
-            -90 + (1 - totalRemainingSeconds / totalSeconds) * 90;
-          setAngle(newAngle);
-
           const newSeconds = (totalRemainingSeconds - 1) % 60;
           const newMinutes = Math.floor((totalRemainingSeconds - 1) / 60) % 60;
           const newHours = Math.floor((totalRemainingSeconds - 1) / 3600);
@@ -249,20 +238,40 @@ const Home = () => {
   }, [initialTime]);
 
   useEffect(() => {
-    if (originalDifference !== null) {
-      const currentTotalSeconds =
-        timeLeft.hours * 3600 + timeLeft.minutes * 60 + timeLeft.seconds;
+    const currentTotalSeconds =
+      timeLeft.hours * 3600 + timeLeft.minutes * 60 + timeLeft.seconds;
 
-      if (currentTotalSeconds === originalDifference - 20) {
-        setShowModal(true); // Show modal at 20 seconds left
-      }
+    if (currentTotalSeconds === 1800) {
+      setShowModal(true); // Show modal when exactly 30 minutes left
     }
-  }, [timeLeft, originalDifference]);
+  }, [timeLeft]);
 
-  // Convert angle to radians for smooth movement
-  const radians = (angle * Math.PI) / 180;
-  const x = radius * Math.cos(radians);
-  const y = radius * Math.sin(radians);
+  // Calculate responsive progress ratio based on the total booking duration
+  const elapsedRatio = useMemo(() => {
+    if (!onGoingTime || !bookingStartTime || !timeLeft) return 0;
+    try {
+      const start = new Date(bookingStartTime.replace(' ', 'T')).getTime();
+      const end = new Date(onGoingTime.replace(' ', 'T')).getTime();
+      const now = new Date().getTime();
+
+      if (now >= end) return 1;
+
+      const totalDuration = (end - start) / 1000;
+      if (totalDuration <= 0) return 0;
+
+      const currentRemaining = Math.max(0, (end - now) / 1000);
+      const ratio = 1 - (currentRemaining / totalDuration);
+      return Math.max(0, Math.min(1, ratio));
+    } catch (e) {
+      console.error(e);
+      return 0;
+    }
+  }, [onGoingTime, bookingStartTime, timeLeft]);
+
+  // Convert progress ratio to radians for smooth movement along the curve
+  const radians = elapsedRatio * (Math.PI / 2);
+  const xPercent = Math.sin(radians) * 100;
+  const yPercent = (1 - Math.cos(radians)) * 100;
 
   // const paginatedData =isMobileWidth?localHomeList: localHomeList.slice((currentPage - 1) * itemsPerPage,currentPage * itemsPerPage);
   const paginatedData = useMemo(() => {
@@ -306,7 +315,9 @@ const Home = () => {
 
           if (Array.isArray(bookings) && bookings.length > 0) {
             const bookingEnd = bookings[0].booking_end;
+            const bookingStart = bookings[0].booking_start;
             setOngoingTime(bookingEnd);
+            setBookingStartTime(bookingStart);
           }
 
           setBookingDetails(response.data);
@@ -522,9 +533,11 @@ const Home = () => {
                               <div
                                 id="icon-container"
                                 style={{
-                                  position: "relative",
+                                  position: "absolute",
                                   width: "100%",
                                   height: "100%",
+                                  top: 0,
+                                  left: 0,
                                 }}
                               >
                                 <img
@@ -536,8 +549,8 @@ const Home = () => {
                                     position: "absolute",
                                     width: "40px",
                                     height: "40px",
-                                    top: `calc(50% + ${y}px - 100px)`,
-                                    left: `calc(50% + ${x}px - 10px)`,
+                                    top: `calc(${yPercent}% - 20px)`,
+                                    left: `calc(${xPercent}% - 20px)`,
                                     zIndex: 10,
                                     transition: "top 1s linear, left 1s linear",
                                     cursor: "pointer",
