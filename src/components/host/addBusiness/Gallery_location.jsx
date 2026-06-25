@@ -143,15 +143,70 @@ const GalleryLocation = ({
   //   }
   // };
 
+  // const handleImageUpload = (event) => {
+  //   const files = Array.from(event.target.files); // convert FileList to array
+  //   const totalImages = images.length + displayImg.length + files.length;
+
+  //   if (totalImages > 5) {
+  //     toast.error("You can only upload up to five images");
+  //     return;
+  //   }
+
+  //   files.forEach((file) => {
+  //     const reader = new FileReader();
+
+  //     reader.onloadend = () => {
+  //       const base64String = reader.result;
+
+  //       setImages((prevImages) => [...prevImages, base64String]);
+  //       setDisplayImg((prevImages) => [
+  //         ...prevImages,
+  //         { id: null, image_url: base64String },
+  //       ]);
+  //     };
+
+  //     reader.readAsDataURL(file);
+  //   });
+  // };
   const handleImageUpload = (event) => {
-    const files = Array.from(event.target.files); // convert FileList to array
+    const files = Array.from(event.target.files); // Convert FileList to array
     const totalImages = images.length + displayImg.length + files.length;
 
+    // 1. Check: Total images limit (Max 5)
     if (totalImages > 5) {
       toast.error("You can only upload up to five images");
       return;
     }
 
+    // --- Validation Configurations ---
+    const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+
+    // Validations check karne ke liye flag aur errors arrays
+    let hasError = false;
+
+    // 2. Loop through files to validate Type and Size first
+    files.forEach((file) => {
+      if (!ALLOWED_TYPES.includes(file.type)) {
+        toast.error(
+          `Unsupported format: ${file.name}. Only JPG, PNG, and WebP are allowed.`
+        );
+        hasError = true;
+      } else if (file.size > MAX_FILE_SIZE) {
+        toast.error(
+          `File too large: ${file.name}. Maximum size allowed is 5MB.`
+        );
+        hasError = true;
+      }
+    });
+
+    // Agar koi bhi file validation fail karti hai, toh upload yahin rok do
+    if (hasError) {
+      event.target.value = ""; // Input clear karo taaki same action retry ho sake
+      return;
+    }
+
+    // 3. If all files are valid, proceed with FileReader
     files.forEach((file) => {
       const reader = new FileReader();
 
@@ -554,17 +609,20 @@ const GalleryLocation = ({
           marginLeft: "-28px",
         }}
       />
-      <h4 className="heading-title">Gallery   <span
-    style={{
-      color: "black",
-      fontSize: "14px",
-      position: "relative",
-      top: "-8px",
-      marginLeft: "-3px",
-    }}
-  >
-    *
-  </span></h4>
+      <h4 className="heading-title">
+        Gallery{" "}
+        <span
+          style={{
+            color: "black",
+            fontSize: "14px",
+            position: "relative",
+            top: "-8px",
+            marginLeft: "-3px",
+          }}
+        >
+          *
+        </span>
+      </h4>
       <Row className="ms-0">
         {displayImg.map((img, index) => (
           <Col
@@ -622,7 +680,7 @@ const GalleryLocation = ({
               Add More
               <input
                 type="file"
-                accept="image/*"
+                accept="image/jpeg, image/png, image/webp"
                 multiple
                 onChange={handleImageUpload}
                 style={{ display: "none", border: "1px dashed grey" }}
@@ -639,17 +697,20 @@ const GalleryLocation = ({
         }}
       />
       {/* About the Space Section */}
-      <h4 className="heading-title">About the Space   <span
-    style={{
-      color: "black",
-      fontSize: "14px",
-      position: "relative",
-      top: "-8px",
-      marginLeft: "-3px",
-    }}
-  >
-    *
-  </span></h4>
+      <h4 className="heading-title">
+        About the Space{" "}
+        <span
+          style={{
+            color: "black",
+            fontSize: "14px",
+            position: "relative",
+            top: "-8px",
+            marginLeft: "-3px",
+          }}
+        >
+          *
+        </span>
+      </h4>
       <Form.Control
         type="text"
         name="title"
@@ -788,17 +849,20 @@ const GalleryLocation = ({
           marginLeft: "-28px",
         }}
       />
-      <h4 className="mt-lg-4  heading-title">Address   <span
-    style={{
-      color: "black",
-      fontSize: "14px",
-      position: "relative",
-      top: "-8px",
-      marginLeft: "-3px",
-    }}
-  >
-    *
-  </span></h4>
+      <h4 className="mt-lg-4  heading-title">
+        Address{" "}
+        <span
+          style={{
+            color: "black",
+            fontSize: "14px",
+            position: "relative",
+            top: "-8px",
+            marginLeft: "-3px",
+          }}
+        >
+          *
+        </span>
+      </h4>
       <div
         style={{
           // marginRight: "75px",

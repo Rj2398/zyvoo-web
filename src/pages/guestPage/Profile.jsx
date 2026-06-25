@@ -46,7 +46,7 @@ function Profile() {
   } = useProfile();
   const { userInfo } = useSelector(({ user }) => user);
   const profileData = useSelector((state) => state.profile);
-
+  const [isUploading, setIsUploading] = useState(false);
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
     JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
@@ -128,6 +128,8 @@ function Profile() {
 
   const [showFileUploadModal, setShowFileUploadModal] = useState(false);
   const [preview, setPreview] = useState(null);
+
+  console.log(preview, "preview******");
 
   //  verified
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -1954,7 +1956,7 @@ function Profile() {
             )}
 
             <label htmlFor="file-upload" className="upload-option">
-              <img
+              {/* <img
                 style={{ borderRadius: "50%" }}
                 src={
                   preview
@@ -1963,8 +1965,28 @@ function Profile() {
                       : `${imageBase + preview}`
                     : uploadImg
                 }
+
+              
                 loading="lazy"
                 alt="Upload"
+              /> */}
+
+              <img
+                style={{ borderRadius: "50%", objectFit: "cover" }} // objectFit prevents the image from squishing
+                src={
+                  preview
+                    ? typeof preview === "string" && preview.startsWith("blob:")
+                      ? preview // 1. If it's a local blob preview, use it directly!
+                      : typeof preview === "object"
+                      ? `${imageBase + preview?.profile_image_url}` // 2. Handle object fallback
+                      : `${imageBase + preview}` // 3. Handle standard backend image string
+                    : uploadImg // 4. Default fallback if no preview exists
+                }
+                loading="lazy"
+                alt="Upload"
+                onError={(e) => {
+                  e.target.src = uploadImg; // Double fallback safety net
+                }}
               />
               <span>Upload from Device</span>
               <input
@@ -2026,7 +2048,7 @@ function Profile() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            zIndex: 2,
+            zIndex: 20,
           }}
         >
           <div

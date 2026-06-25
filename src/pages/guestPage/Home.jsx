@@ -542,7 +542,7 @@ const Home = () => {
                                     transition: "top 1s linear, left 1s linear",
                                     cursor: "pointer",
                                   }}
-                                  onClick={() => setShowModal(true)} // Open modal on click
+                                  // onClick={() => setShowModal(true)} // Open modal on click
                                 />
                               </div>
 

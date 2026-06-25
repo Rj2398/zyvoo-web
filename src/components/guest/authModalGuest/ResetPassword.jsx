@@ -10,7 +10,12 @@ import { CheckCircle } from "react-bootstrap-icons";
 const ResetPassword = ({ show, handleClose }) => {
   const user = useSelector((state) => state?.user?.storeData);
   const { reset_password, isLoading } = useAuth();
-  const { register, handleSubmit, formState: { errors }, watch, } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
 
   const password = watch("password", "");
   const confirmPassword = watch("confirmPassword", "");
@@ -42,9 +47,9 @@ const ResetPassword = ({ show, handleClose }) => {
     };
 
     checkWindowWidth();
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   return (
@@ -92,7 +97,10 @@ const ResetPassword = ({ show, handleClose }) => {
           </style>
         </Modal.Header>
 
-        <Modal.Title className="w-100 text-center register-modal-header-title" style={{ paddingBottom: isMobileWidth ? "0" : "17px" }} >
+        <Modal.Title
+          className="w-100 text-center register-modal-header-title"
+          style={{ paddingBottom: isMobileWidth ? "0" : "17px" }}
+        >
           New Password
         </Modal.Title>
 
@@ -109,12 +117,24 @@ const ResetPassword = ({ show, handleClose }) => {
         <Modal.Body className="text-center" style={{ paddingBottom: "30px" }}>
           <p className="register-modal-body-p">Enter your new password here</p>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="custom-modal-label mb-3" style={{ position: "relative" }} >
-              <label style={{ display: "flex", alignItems: "center", width: "100%" }} >
-                <img src="/images/popups/lock-input.svg" loading="lazy" alt="Password Icon"
-                  style={{ marginRight: "10px" }} />
+            <div
+              className="custom-modal-label mb-3"
+              style={{ position: "relative" }}
+            >
+              <label
+                style={{ display: "flex", alignItems: "center", width: "100%" }}
+              >
+                <img
+                  src="/images/popups/lock-input.svg"
+                  loading="lazy"
+                  alt="Password Icon"
+                  style={{ marginRight: "10px" }}
+                />
 
-                <input type="password" placeholder="Enter password" className="form-control "
+                <input
+                  type="password"
+                  placeholder="Enter password"
+                  className="form-control "
                   style={{ flex: 1, fontSize: isMobileWidth ? "13px" : "" }}
                   {...register("password", {
                     required: "Enter password",
@@ -136,12 +156,24 @@ const ResetPassword = ({ show, handleClose }) => {
 
             {/* {errors.password && (<p style={{ color: "red" }}>{errors.password.message}</p>)} */}
 
-            <div className="custom-modal-label" style={{ position: "relative" }} >
-              <label style={{ display: "flex", alignItems: "center", width: "100%" }} >
-                <img src="/images/popups/lock-input.svg" loading="lazy" alt="Confirm Password Icon"
-                  style={{ marginRight: "10px" }} />
-                  
-                <input type="password" placeholder="Enter Confirm password" className="form-control"
+            <div
+              className="custom-modal-label"
+              style={{ position: "relative" }}
+            >
+              <label
+                style={{ display: "flex", alignItems: "center", width: "100%" }}
+              >
+                <img
+                  src="/images/popups/lock-input.svg"
+                  loading="lazy"
+                  alt="Confirm Password Icon"
+                  style={{ marginRight: "10px" }}
+                />
+
+                <input
+                  type="password"
+                  placeholder="Enter Confirm password"
+                  className="form-control"
                   style={{ flex: 1, fontSize: isMobileWidth ? "13px" : "" }}
                   {...register("confirmPassword", {
                     required: "Enter confirm password",
@@ -164,14 +196,27 @@ const ResetPassword = ({ show, handleClose }) => {
               <p style={{ color: "red" }}>{errors.confirmPassword.message}</p>
               // <p style={{ color: "red" }}>Please enter your new password</p>
             )} */}
-            {errors.confirmPassword && errors.password && (
+            {/* {errors.confirmPassword && errors.password && (
               // <p style={{ color: "red" }}>{errors.confirmPassword.message}</p>
               <p style={{ color: "red" }}>Please enter your new password</p>
+            )} */}
+
+            {errors.password && (
+              <p
+                style={{ color: "red", fontSize: "14px", marginBottom: "10px" }}
+              >
+                {errors.password.message}
+              </p>
+            )}
+
+            {errors.confirmPassword && (
+              <p style={{ color: "red", fontSize: "14px", marginTop: "5px" }}>
+                {errors.confirmPassword.message}
+              </p>
             )}
 
             <div className="custom-modal-label mt-3">
-              <Button type="submit" className="register-modal-body-submit-btn"
-              >
+              <Button type="submit" className="register-modal-body-submit-btn">
                 Submit
               </Button>
             </div>
@@ -180,7 +225,8 @@ const ResetPassword = ({ show, handleClose }) => {
       </Modal>
 
       {showSuccess && (
-        <div style={{
+        <div
+          style={{
             position: "fixed",
             top: 0,
             left: 0,
@@ -190,7 +236,7 @@ const ResetPassword = ({ show, handleClose }) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            zIndex: 2,
+            zIndex: 20,
           }}
         >
           <div
@@ -213,7 +259,7 @@ const ResetPassword = ({ show, handleClose }) => {
                 position: "absolute",
                 top: "15px",
                 right: "15px",
-                backgroundColor: "#2D3E3F", 
+                backgroundColor: "#2D3E3F",
                 color: "white",
                 border: "none",
                 width: "20px",
@@ -225,7 +271,7 @@ const ResetPassword = ({ show, handleClose }) => {
                 fontSize: "12px",
                 fontWeight: "bold",
                 cursor: "pointer",
-                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)", 
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
               }}
             >
               {" "}
@@ -244,10 +290,14 @@ const ResetPassword = ({ show, handleClose }) => {
                 justifyContent: "center",
                 alignItems: "center",
                 margin: "15px 0",
-                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)", 
+                boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.15)",
               }}
             >
-              <svg width={isMobileWidth ? "24" : "48"} height="37.65" viewBox="0 0 48 37" fill="none"
+              <svg
+                width={isMobileWidth ? "24" : "48"}
+                height="37.65"
+                viewBox="0 0 48 37"
+                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
@@ -260,7 +310,13 @@ const ResetPassword = ({ show, handleClose }) => {
               </svg>
             </div>
 
-            <p className="register-modal-body-p" style={{ color: "#333", fontSize: "14px", marginBottom: "20px" }}> Your password has been changed successfully.</p>
+            <p
+              className="register-modal-body-p"
+              style={{ color: "#333", fontSize: "14px", marginBottom: "20px" }}
+            >
+              {" "}
+              Your password has been changed successfully.
+            </p>
 
             <button
               onClick={() => setShowSuccess(false)}
