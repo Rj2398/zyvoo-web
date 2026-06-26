@@ -7,7 +7,12 @@ import { useSelector } from "react-redux";
 
 const AuthModal = () => {
   const [error, setError] = useState("");
-  const {register, handleSubmit, setValue, formState: { errors }, } = useForm();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm();
 
   const { loginUser, numOtpVerify } = useAuth();
   const navigate = useNavigate();
@@ -16,7 +21,7 @@ const AuthModal = () => {
 
   const user = useSelector((state) => state?.user?.userInfo);
   const onSubmit = async (data, event) => {
-    event?.preventDefault(); 
+    event?.preventDefault();
 
     if (Object.keys(errors).length === 0) {
       try {
@@ -77,7 +82,7 @@ const AuthModal = () => {
 
       if (response) {
         navigate("/create-profile");
-        setError(""); 
+        setError("");
 
         const currentModalEl = document.getElementById(
           "phone-otp-verification-popup"
@@ -95,15 +100,15 @@ const AuthModal = () => {
   };
   const handleResend = () => {
     if (canResend) {
-      resendApi(); 
-      setTimeLeft(59); 
+      resendApi();
+      setTimeLeft(59);
       setCanResend(false);
     }
   };
 
   const resendApi = async () => {
     try {
-      let user_num = user?.otp_send_to; 
+      let user_num = user?.otp_send_to;
       let clean_num = user_num.replace(/^(\+91)/, "");
 
       const response = await loginUser({
@@ -119,7 +124,7 @@ const AuthModal = () => {
 
   const handleInput = (e, index) => {
     const { value } = e.target;
-    const isBackspace = e.nativeEvent.inputType === "deleteContentBackward"; 
+    const isBackspace = e.nativeEvent.inputType === "deleteContentBackward";
 
     e.target.value = value.replace(/\D/g, "").slice(0, 1);
     setValue(`otp${index}`, e.target.value);
@@ -135,6 +140,7 @@ const AuthModal = () => {
 
   const handlelogout = () => {
     navigate("/");
+    localStorage.removeItem("SocialLogin");
   };
   return (
     <>
@@ -192,20 +198,29 @@ const AuthModal = () => {
                 <ul>
                   <li>
                     <a href="#">
-                      <img src="/images/popups/google.svg" loading="lazy" alt="Google Login" />
+                      <img
+                        src="/images/popups/google.svg"
+                        loading="lazy"
+                        alt="Google Login"
+                      />
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img
                         src="/images/popups/facebook.svg"
-                        loading="lazy" alt="Facebook Login"
+                        loading="lazy"
+                        alt="Facebook Login"
                       />
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <img src="/images/popups/apple.svg" loading="lazy" alt="Apple Login" />
+                      <img
+                        src="/images/popups/apple.svg"
+                        loading="lazy"
+                        alt="Apple Login"
+                      />
                     </a>
                   </li>
                   <li>
@@ -215,7 +230,11 @@ const AuthModal = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#login-mail-popup"
                     >
-                      <img src="/images/popups/mail.svg" loading="lazy" alt="Email Login" />
+                      <img
+                        src="/images/popups/mail.svg"
+                        loading="lazy"
+                        alt="Email Login"
+                      />
                     </a>
                   </li>
                 </ul>
@@ -302,20 +321,29 @@ const AuthModal = () => {
                 <ul>
                   <li>
                     <a href="#">
-                      <img src="/images/popups/google.svg" loading="lazy" alt="Google Login" />
+                      <img
+                        src="/images/popups/google.svg"
+                        loading="lazy"
+                        alt="Google Login"
+                      />
                     </a>
                   </li>
                   <li>
                     <a href="#">
                       <img
                         src="/images/popups/facebook.svg"
-                        loading="lazy" alt="Facebook Login"
+                        loading="lazy"
+                        alt="Facebook Login"
                       />
                     </a>
                   </li>
                   <li>
                     <a href="#">
-                      <img src="/images/popups/apple.svg" loading="lazy" alt="Apple Login" />
+                      <img
+                        src="/images/popups/apple.svg"
+                        loading="lazy"
+                        alt="Apple Login"
+                      />
                     </a>
                   </li>
                   <li>
@@ -325,7 +353,11 @@ const AuthModal = () => {
                       data-bs-toggle="modal"
                       data-bs-target="#login-mail-popup"
                     >
-                      <img src="/images/popups/mail.svg" loading="lazy" alt="Email Login" />
+                      <img
+                        src="/images/popups/mail.svg"
+                        loading="lazy"
+                        alt="Email Login"
+                      />
                     </a>
                   </li>
                 </ul>
@@ -385,7 +417,11 @@ const AuthModal = () => {
                 <p className="mb-0">-OR-</p>
                 <div className="custom-modal-label">
                   <label>
-                    <img src="/images/popups/mail-input.svg" loading="lazy" alt="Email Icon" />
+                    <img
+                      src="/images/popups/mail-input.svg"
+                      loading="lazy"
+                      alt="Email Icon"
+                    />
                     <input type="text" placeholder="Enter your email here" />
                   </label>
                 </div>
@@ -586,7 +622,11 @@ const AuthModal = () => {
               <form>
                 <div className="custom-modal-label">
                   <label>
-                    <img src="/images/popups/lock-input.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/popups/lock-input.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                     <input
                       type="password"
                       placeholder="Enter password"
@@ -597,7 +637,11 @@ const AuthModal = () => {
                 </div>
                 <div className="custom-modal-label">
                   <label>
-                    <img src="/images/popups/lock-input.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/popups/lock-input.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                     <input
                       type="password"
                       placeholder="Enter Confirm password"
@@ -642,7 +686,11 @@ const AuthModal = () => {
             <div className="modal-body">
               <h2>Success</h2>
               <div className="password-changed-successfully-icon">
-                <img src="/images/popups/success-icon.svg" loading="lazy" alt="" />
+                <img
+                  src="/images/popups/success-icon.svg"
+                  loading="lazy"
+                  alt=""
+                />
               </div>
               <p className="mb-3">
                 Your password has been changed successfully.
@@ -683,13 +731,21 @@ const AuthModal = () => {
               <form>
                 <div className="custom-modal-label">
                   <label>
-                    <img src="/images/popups/mail-input.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/popups/mail-input.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                     <input type="text" placeholder="Enter your email here" />
                   </label>
                 </div>
                 <div className="custom-modal-label">
                   <label>
-                    <img src="/images/popups/lock-input.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/popups/lock-input.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                     <input
                       type="password"
                       placeholder="Enter password"
@@ -765,13 +821,21 @@ const AuthModal = () => {
               <form action="create-/" method="post">
                 <div className="custom-modal-label">
                   <label>
-                    <img src="/images/popups/mail-input.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/popups/mail-input.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                     <input type="text" placeholder="Enter your email here" />
                   </label>
                 </div>
                 <div className="custom-modal-label">
                   <label>
-                    <img src="/images/popups/lock-input.svg" loading="lazy" alt="" />
+                    <img
+                      src="/images/popups/lock-input.svg"
+                      loading="lazy"
+                      alt=""
+                    />
                     <input
                       type="password"
                       placeholder="Enter password"

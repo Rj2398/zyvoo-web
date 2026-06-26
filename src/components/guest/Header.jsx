@@ -97,6 +97,7 @@ const Header = () => {
     toast.success("Logout Successfully.");
     navigate("/");
     setShowLogoutModal(false);
+    localStorage.removeItem("SocialLogin");
     setDropdownOpen(false);
   };
 

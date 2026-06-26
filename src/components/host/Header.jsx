@@ -191,6 +191,7 @@ const Header = () => {
     window.location.href = "/";
     setShowLogoutModal(false);
     setDropdownOpen(false);
+    localStorage.removeItem("SocialLogin");
   };
 
   const toggleDropdown = () => {

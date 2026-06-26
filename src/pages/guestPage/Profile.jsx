@@ -440,6 +440,7 @@ function Profile() {
     toast.success("Logout Successfully.");
     navigate("/");
     setShowLogoutModal(false);
+    localStorage.removeItem("SocialLogin");
   };
 
   useEffect(() => {
