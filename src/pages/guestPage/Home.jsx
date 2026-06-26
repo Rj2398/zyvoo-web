@@ -250,8 +250,8 @@ const Home = () => {
   const elapsedRatio = useMemo(() => {
     if (!onGoingTime || !bookingStartTime || !timeLeft) return 0;
     try {
-      const start = new Date(bookingStartTime.replace(' ', 'T')).getTime();
-      const end = new Date(onGoingTime.replace(' ', 'T')).getTime();
+      const start = new Date(bookingStartTime.replace(" ", "T")).getTime();
+      const end = new Date(onGoingTime.replace(" ", "T")).getTime();
       const now = new Date().getTime();
 
       if (now >= end) return 1;
@@ -260,7 +260,7 @@ const Home = () => {
       if (totalDuration <= 0) return 0;
 
       const currentRemaining = Math.max(0, (end - now) / 1000);
-      const ratio = 1 - (currentRemaining / totalDuration);
+      const ratio = 1 - currentRemaining / totalDuration;
       return Math.max(0, Math.min(1, ratio));
     } catch (e) {
       console.error(e);
@@ -274,13 +274,21 @@ const Home = () => {
   const yPercent = (1 - Math.cos(radians)) * 100;
 
   // const paginatedData =isMobileWidth?localHomeList: localHomeList.slice((currentPage - 1) * itemsPerPage,currentPage * itemsPerPage);
-  const paginatedData = useMemo(() => {
-    if (isMobileWidth) return localHomeList;
-    return localHomeList.slice(
-      (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
-    );
-  }, [localHomeList, currentPage, isMobileWidth]);
+  // const paginatedData = useMemo(() => {
+  //   if (isMobileWidth) return localHomeList;
+  //   return localHomeList.slice(
+  //     (currentPage - 1) * itemsPerPage,
+  //     currentPage * itemsPerPage
+  //   );
+  // }, [localHomeList, currentPage, isMobileWidth]);
+
+  // Calculate paginated data directly on every render
+  const paginatedData = isMobileWidth
+    ? localHomeList
+    : localHomeList?.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      );
 
   useEffect(() => {
     const checkWindowWidth = () => {
