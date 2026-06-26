@@ -45,6 +45,8 @@ function Profile() {
     addZip,
   } = useProfile();
   const { userInfo } = useSelector(({ user }) => user);
+
+  const isShowPasswordfield = localStorage.getItem("SocialLogin");
   const profileData = useSelector((state) => state.profile);
   const [isUploading, setIsUploading] = useState(false);
   const userData =
@@ -1318,31 +1320,37 @@ function Profile() {
                           </button>
                         </div>
                       </div>
-                      <h2>Password</h2>
-                      <div className="user-data-list-inner">
-                        <div
-                          className="user-data-list-item input-field"
-                          style={{ width: isMobileWidth && "100%" }}
-                        >
-                          <input
-                            type="password"
-                            placeholder="Enter Your Password"
-                            defaultValue="***********"
-                            readOnly
-                          />
-                          <button
-                            type="button"
-                            className="edit-field"
-                            onClick={() => setShowChangePasswordModal(true)}
-                            style={{
-                              width: isMobileWidth ? "25px" : "30px",
-                              height: isMobileWidth ? "25px" : "30px",
-                            }}
-                          >
-                            <i className="fa-solid fa-pen"></i>
-                          </button>
-                        </div>
-                      </div>
+
+                      {!isShowPasswordfield && (
+                        <>
+                          <h2>Password</h2>
+                          <div className="user-data-list-inner">
+                            <div
+                              className="user-data-list-item input-field"
+                              style={{ width: isMobileWidth && "100%" }}
+                            >
+                              <input
+                                type="password"
+                                placeholder="Enter Your Password"
+                                defaultValue="***********"
+                                readOnly
+                              />
+                              <button
+                                type="button"
+                                className="edit-field"
+                                onClick={() => setShowChangePasswordModal(true)}
+                                style={{
+                                  width: isMobileWidth ? "25px" : "30px",
+                                  height: isMobileWidth ? "25px" : "30px",
+                                }}
+                              >
+                                <i className="fa-solid fa-pen"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </>
+                      )}
+
                       <h2>Mailing Address</h2>
                       <div
                         className="user-data-list-inner mailing-address-wrap"

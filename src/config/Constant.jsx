@@ -52,6 +52,7 @@ export const LogoutError = (errorMessage) => {
   // 2. Clear out identifying tokens completely immediately
   localStorage.removeItem("USER_INFO");
   sessionStorage.removeItem("USER_INFO");
+  localStorage.removeItem("SocialLogin");
 
   // 4. Force state alignment after a micro-timeout
   setTimeout(() => {

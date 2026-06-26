@@ -188,7 +188,6 @@ function RegisterModal(props) {
       // nahi toh empty string bhejo taaki backend crash na ho.
       const finalEmail = user.email || providerData[0]?.email || "";
 
-
       // 2. Split displayName into first and last name safely
       const nameParts = displayName ? displayName.split(" ") : [];
       const fname = nameParts[0] || "";
@@ -215,6 +214,7 @@ function RegisterModal(props) {
       if (response.status) {
         toast.success(response?.data?.message || "User Logged in Successfully");
         props?.CallBack(false);
+        localStorage.setItem("SocialLogin", true);
         navigate("/");
       } else {
         // Backend se aane wala error message dikhayein
@@ -347,6 +347,7 @@ function RegisterModal(props) {
           props?.loginModal ? "Registered Successfully" : "Login Sucessfully"
         );
         props?.CallBack?.(false);
+        localStorage.setItem("SocialLogin", true);
         navigate("/");
       } else {
         toast.error(
@@ -501,6 +502,7 @@ function RegisterModal(props) {
         toast.success(
           props?.loginModal ? "Registered Successfully" : "Login Sucessfully"
         );
+        localStorage.setItem("SocialLogin", true);
         props?.CallBack?.(false);
         navigate("/");
       } else {
@@ -622,17 +624,17 @@ function RegisterModal(props) {
         }
         const response = props?.loginModal
           ? await registerUser({
-            phone_number: data?.phoneNumber,
-            country_code: selectedCountryCode,
-            fcm_token: "bfbfb498b4644",
-            device_type: "web",
-          })
+              phone_number: data?.phoneNumber,
+              country_code: selectedCountryCode,
+              fcm_token: "bfbfb498b4644",
+              device_type: "web",
+            })
           : await LoginWithPhone({
-            phone_number: data?.phoneNumber,
-            country_code: selectedCountryCode,
-            fcm_token: "bfbfb498b4644",
-            device_type: "web",
-          });
+              phone_number: data?.phoneNumber,
+              country_code: selectedCountryCode,
+              fcm_token: "bfbfb498b4644",
+              device_type: "web",
+            });
         if (response) {
           if (props?.loginModal) {
             props?.CallBack(false);
