@@ -189,7 +189,7 @@ const GalleryLocation = ({
     files.forEach((file) => {
       if (!ALLOWED_TYPES.includes(file.type)) {
         toast.error(
-          `Unsupported format: ${file.name}. Only JPG, PNG, and WebP are allowed.`
+          `Unsupported format: ${file.name}. Only JPG, PNG, JFIF,and WebP are allowed.`
         );
         hasError = true;
       } else if (file.size > MAX_FILE_SIZE) {
