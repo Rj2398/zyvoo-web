@@ -1980,7 +1980,11 @@ function Profile() {
               /> */}
 
               <img
-                style={{ borderRadius: "50%", objectFit: "cover" }} // objectFit prevents the image from squishing
+                style={{
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  marginTop: -40,
+                }} // objectFit prevents the image from squishing
                 src={
                   preview
                     ? typeof preview === "string" && preview.startsWith("blob:")
