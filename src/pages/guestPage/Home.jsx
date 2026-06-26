@@ -52,7 +52,9 @@ const Home = () => {
     latitude: null,
     longitude: null,
   });
-
+  // const hasNoLocation =
+  //   !currentLocation?.latitude || !currentLocation?.longitude;
+  // console.log(hasNoLocation, "hasl location ******");
   useEffect(() => {
     const getLocation = () => {
       if ("geolocation" in navigator) {
