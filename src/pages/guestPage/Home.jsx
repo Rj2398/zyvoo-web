@@ -140,16 +140,39 @@ const Home = () => {
   }, [currentLocation?.latitude, currentLocation?.longitude, currentLocation]);
 
   useEffect(() => {
-    if (selectorData?.guestHomeData && selectorData.guestHomeData.length > 0) {
-      setLocalHomeList(selectorData.guestHomeData);
+    // 1. Check if location coordinates are missing/null
+    const hasNoLocation =
+      !currentLocation?.latitude || !currentLocation?.longitude;
+
+    // 2. If location is missing OR global data is empty, set local data to empty
+    if (
+      hasNoLocation ||
+      !selectorData?.guestHomeData ||
+      selectorData.guestHomeData.length === 0
+    ) {
+      setLocalHomeList([]);
     } else {
-      setLocalHomeList([]); // 💡 Clear the local state if global data is empty or missing
+      // 3. Otherwise, set the fetched data
+      setLocalHomeList(selectorData.guestHomeData);
     }
   }, [
     selectorData?.guestHomeData,
     currentLocation?.latitude,
     currentLocation?.longitude,
   ]);
+
+  //date26-06-2026
+  // useEffect(() => {
+  //   if (selectorData?.guestHomeData && selectorData.guestHomeData.length > 0) {
+  //     setLocalHomeList(selectorData.guestHomeData);
+  //   } else {
+  //     setLocalHomeList([]); // 💡 Clear the local state if global data is empty or missing
+  //   }
+  // }, [
+  //   selectorData?.guestHomeData,
+  //   currentLocation?.latitude,
+  //   currentLocation?.longitude,
+  // ]);
   // useEffect(() => {
   //   if (selectorData?.guestHomeData) {
   //     setLocalHomeList(selectorData?.guestHomeData);
