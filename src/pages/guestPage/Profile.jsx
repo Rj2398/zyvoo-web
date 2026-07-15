@@ -828,7 +828,7 @@ function Profile() {
                       </>
                     )}
                     <div className="user-data-list-wrap">
-                      <h2>Where I live*</h2>
+                      <h2>Please Add Location (Where I Live)</h2>
                       <div className="user-data-list-inner">
                         {places.map((location, index) => (
                           <div
