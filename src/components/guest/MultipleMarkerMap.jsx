@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import GoogleMapReact from "google-map-react";
 
 const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
-  console.log(locations, "locationssss*****");
+  // console.log(locations, "locationssss*****");
   const mapRef = useRef(null);
   const mapsRef = useRef(null);
   const markersRef = useRef([]);
@@ -217,8 +217,8 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyC9NuN_f-wESHh3kihTvpbvdrmKlTQurxw" }}
         defaultCenter={{
-          lat: currentLocation?.latitude || 40.712776,
-          lng: currentLocation?.longitude || -74.005974,
+          lat: currentLocation?.latitude,
+          lng: currentLocation?.longitude,
         }}
         defaultZoom={10}
         options={createMapOptions}
