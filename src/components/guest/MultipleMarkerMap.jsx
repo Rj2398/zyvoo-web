@@ -2,19 +2,26 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import GoogleMapReact from "google-map-react";
 
 const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
+  console.log(locations, "locationssss*****");
   const mapRef = useRef(null);
   const mapsRef = useRef(null);
   const markersRef = useRef([]);
-  const [mapReady, setMapReady] = useState(false); // New state to track if map instances are loaded
+  const [mapReady, setMapReady] = useState(false);
 
-  const parsedLocations = locations.map((loc) => ({
-    ...loc,
-    latitude: parseFloat(loc.latitude),
-    longitude: parseFloat(loc.longitude),
-  }));
+  // 1. Valid coordinates filter aur parse karein (0.00 lat/long ko hatakar)
+  const parsedLocations = locations
+    .filter(
+      (loc) => loc.latitude && loc.longitude && parseFloat(loc.latitude) !== 0
+    )
+    .map((loc) => ({
+      ...loc,
+      latitude: parseFloat(loc.latitude),
+      longitude: parseFloat(loc.longitude),
+    }));
 
+  // Haversine Formula distance calculate karne ke liye (KM mein)
   const getDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371;
+    const R = 6371; // Earth Radius in KM
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLon = (lon2 - lon1) * (Math.PI / 180);
     const a =
@@ -33,43 +40,60 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
 
     if (!map || !maps) return;
 
-    // Clear old markers
+    // Purane markers clean karein taaki duplicate glitch na ho
     markersRef.current.forEach((marker) => marker.setMap(null));
     markersRef.current = [];
 
-    // Zoom and Center to nearest
-    if (currentLocation && parsedLocations.length > 0) {
-      let nearestLoc = parsedLocations[0];
-      let minDistance = Infinity;
+    if (parsedLocations.length > 0) {
+      if (
+        currentLocation &&
+        currentLocation.latitude &&
+        currentLocation.longitude
+      ) {
+        let nearestLoc = parsedLocations[0];
+        let minDistance = Infinity;
 
-      parsedLocations.forEach((location) => {
-        const dist = getDistance(
-          parseFloat(currentLocation.latitude),
-          parseFloat(currentLocation.longitude),
-          location.latitude,
-          location.longitude
-        );
-        if (dist < minDistance) {
-          minDistance = dist;
-          nearestLoc = location;
+        // Ekdum simple logic: Array ki sabhi properties mein se jo aapke system ke sabse paas hai, use dhoondho
+        parsedLocations.forEach((location) => {
+          const dist = getDistance(
+            parseFloat(currentLocation.latitude),
+            parseFloat(currentLocation.longitude),
+            location.latitude,
+            location.longitude
+          );
+          if (dist < minDistance) {
+            minDistance = dist;
+            nearestLoc = location;
+          }
+        });
+
+        if (nearestLoc) {
+          console.log("🎯 Final Target Zoom Location Details:", {
+            property_id: nearestLoc.property_id,
+            location_name: nearestLoc.title,
+            host_address: nearestLoc.host_address,
+            latitude: nearestLoc.latitude,
+            longitude: nearestLoc.longitude,
+            zoomLevel: 17,
+          });
+
+          const targetCenter = new maps.LatLng(
+            nearestLoc.latitude,
+            nearestLoc.longitude
+          );
+          map.setCenter(targetCenter);
+          map.setZoom(17); // Street level zoom executed
         }
-      });
-
-      const targetCenter = new maps.LatLng(
-        nearestLoc.latitude,
-        nearestLoc.longitude
-      );
-      map.setCenter(targetCenter);
-      map.setZoom(17);
-    } else if (parsedLocations.length > 0) {
-      const bounds = new maps.LatLngBounds();
-      parsedLocations.forEach((loc) =>
-        bounds.extend(new maps.LatLng(loc.latitude, loc.longitude))
-      );
-      map.fitBounds(bounds);
+      } else {
+        const bounds = new maps.LatLngBounds();
+        parsedLocations.forEach((loc) =>
+          bounds.extend(new maps.LatLng(loc.latitude, loc.longitude))
+        );
+        map.fitBounds(bounds);
+      }
     }
 
-    // Render new markers
+    // Saare markers render karne ka loop
     parsedLocations.forEach((location) => {
       const position = new maps.LatLng(location.latitude, location.longitude);
       const markerDiv = document.createElement("div");
@@ -127,7 +151,6 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
     });
   }, [currentLocation, locations]);
 
-  // Handle changes when filters update or when the map first becomes ready
   useEffect(() => {
     if (mapReady) {
       updateMap();
@@ -142,7 +165,7 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
     mapDiv.style.borderRadius = isMobileWidth ? "0px" : "20px";
     mapDiv.style.overflow = "hidden";
 
-    setMapReady(true); // Explicitly trigger updateMap now that references exist
+    setMapReady(true);
   };
 
   const createMapOptions = (maps) => {
@@ -194,10 +217,10 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyC9NuN_f-wESHh3kihTvpbvdrmKlTQurxw" }}
         defaultCenter={{
-          lat: currentLocation?.latitude,
-          lng: currentLocation?.longitude,
+          lat: currentLocation?.latitude || 40.712776,
+          lng: currentLocation?.longitude || -74.005974,
         }}
-        defaultZoom={1}
+        defaultZoom={10}
         options={createMapOptions}
         yesIWantToUseGoogleMapApiInternals
         onGoogleApiLoaded={handleApiLoaded}
