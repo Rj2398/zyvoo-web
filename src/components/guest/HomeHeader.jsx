@@ -245,7 +245,7 @@ const HomeHeader = ({ showMap, setShowMap, callback }) => {
     navigate("/");
     setShowLogoutModal(false);
     setDropdownOpen(false); // Close dropdown after selection
-    localStorage.removeItem('SocialLogin')
+    localStorage.removeItem("SocialLogin");
   };
 
   const toggleDropdown = () => {
