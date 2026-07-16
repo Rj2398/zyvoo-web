@@ -1,12 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import GoogleMapReact from "google-map-react";
-import { Link, useLocation } from "react-router-dom";
 
 const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
   const mapRef = useRef(null);
   const mapsRef = useRef(null);
-  const markersRef = useRef([]); // Track markers to clean them up on rerender
-  const [currentZoom, setCurrentZoom] = useState(10);
+  const markersRef = useRef([]);
+  const [mapReady, setMapReady] = useState(false); // New state to track if map instances are loaded
 
   const parsedLocations = locations.map((loc) => ({
     ...loc,
@@ -14,7 +13,6 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
     longitude: parseFloat(loc.longitude),
   }));
 
-  // Helper function to calculate distance (Haversine formula)
   const getDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371;
     const dLat = (lat2 - lat1) * (Math.PI / 180);
@@ -29,18 +27,17 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
     return R * c;
   };
 
-  // Run this effect every time currentLocation or locations change
-  useEffect(() => {
+  const updateMap = useCallback(() => {
     const map = mapRef.current;
     const maps = mapsRef.current;
 
     if (!map || !maps) return;
 
-    // 1. Clear existing custom markers to prevent duplicates on filter changes
+    // Clear old markers
     markersRef.current.forEach((marker) => marker.setMap(null));
     markersRef.current = [];
 
-    // 2. Center and Zoom to the nearest location based on the new filter values
+    // Zoom and Center to nearest
     if (currentLocation && parsedLocations.length > 0) {
       let nearestLoc = parsedLocations[0];
       let minDistance = Infinity;
@@ -64,7 +61,6 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
       );
       map.setCenter(targetCenter);
       map.setZoom(17);
-      setCurrentZoom(17);
     } else if (parsedLocations.length > 0) {
       const bounds = new maps.LatLngBounds();
       parsedLocations.forEach((loc) =>
@@ -73,7 +69,7 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
       map.fitBounds(bounds);
     }
 
-    // 3. Render the updated markers
+    // Render new markers
     parsedLocations.forEach((location) => {
       const position = new maps.LatLng(location.latitude, location.longitude);
       const markerDiv = document.createElement("div");
@@ -123,15 +119,20 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
 
       const customMarker = new CustomMarker();
       customMarker.setMap(map);
-
-      // Save reference to clean up later
       markersRef.current.push(customMarker);
 
       markerDiv.addEventListener("click", () => {
         window.location.href = `/location/${location.property_id}`;
       });
     });
-  }, [currentLocation, locations]); // <- Triggers updates instantly when these change
+  }, [currentLocation, locations]);
+
+  // Handle changes when filters update or when the map first becomes ready
+  useEffect(() => {
+    if (mapReady) {
+      updateMap();
+    }
+  }, [mapReady, updateMap]);
 
   const handleApiLoaded = ({ map, maps }) => {
     mapRef.current = map;
@@ -141,8 +142,7 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
     mapDiv.style.borderRadius = isMobileWidth ? "0px" : "20px";
     mapDiv.style.overflow = "hidden";
 
-    // Trigger an artificial state toggle to ensure the useEffect catches the initial load
-    setCurrentZoom((prev) => prev);
+    setMapReady(true); // Explicitly trigger updateMap now that references exist
   };
 
   const createMapOptions = (maps) => {
@@ -194,8 +194,8 @@ const MultipleMarkerMap = ({ locations, currentLocation, isMobileWidth }) => {
       <GoogleMapReact
         bootstrapURLKeys={{ key: "AIzaSyC9NuN_f-wESHh3kihTvpbvdrmKlTQurxw" }}
         defaultCenter={{
-          lat: currentLocation?.latitude || 59.9375,
-          lng: currentLocation?.longitude || 30.3086,
+          lat: currentLocation?.latitude,
+          lng: currentLocation?.longitude,
         }}
         defaultZoom={1}
         options={createMapOptions}
