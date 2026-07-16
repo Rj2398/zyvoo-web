@@ -824,6 +824,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   };
 
   const handleFilterData = async () => {
+    console.log("TFR**");
     try {
       setShowModal(false);
       // if (!start_time || !end_time) {
@@ -857,6 +858,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
         property_price: filterPrice,
       });
 
+      getSearchLocation(coordinates);
       if (!response?.data) {
         // console.log("Response is null or empty:", response?.data);
         navigate("*");
@@ -1231,10 +1233,10 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                                       place.formatted_address || place.name
                                     );
                                     setCoordinates({ lat, lng });
-                                    getSearchLocation({ lat, lng })
+                                    // getSearchLocation({ lat, lng });
                                   } else {
                                     setSelectedPlace("");
-                                    getSearchLocation(null)
+                                    // getSearchLocation(null);
                                   }
                                 }}
                                 options={{ types: ["(cities)"] }}
@@ -1594,14 +1596,14 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                                           );
 
                                           setCoordinates({ lat, lng });
-                                          getSearchLocation({ lat, lng });
+                                          // getSearchLocation({ lat, lng });
                                         } else {
                                           console.warn(
                                             "No valid address or location found in the selected place."
                                           );
 
                                           setSelectedPlace("");
-                                          getSearchLocation(null);
+                                          // getSearchLocation(null);
                                         }
                                       }}
                                       options={{ types: ["(cities)"] }}
