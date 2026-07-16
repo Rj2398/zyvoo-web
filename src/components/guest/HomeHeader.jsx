@@ -705,6 +705,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   ];
 
   const handleRemoveData = async (setValue) => {
+    console.log("hanlde remove**");
     setCoordinates({ lat: null, lng: null });
 
     if (setValue === setFlexibleDate) {
@@ -719,6 +720,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
         longitude: null, // 💡 Explicitly passing null to clear backend filter
       });
       callback(true);
+      getSearchLocation(null);
     } catch (error) {
       console.error("Error fetching filtered data:", error);
     }
@@ -1006,7 +1008,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       latitude: currentLocation?.latitude,
       longitude: currentLocation?.longitude,
     });
-
+    getSearchLocation(null);
     setRemoveFilter(false);
   };
 
