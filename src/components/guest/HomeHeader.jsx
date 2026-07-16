@@ -705,7 +705,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   ];
 
   const handleRemoveData = async (setValue) => {
-    console.log("hanlde remove**");
+    // console.log("hanlde remove**");
     setCoordinates({ lat: null, lng: null });
 
     if (setValue === setFlexibleDate) {
