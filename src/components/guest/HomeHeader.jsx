@@ -62,7 +62,7 @@ const generateTimeOptions = () => {
   return times;
 };
 
-const HomeHeader = ({ showMap, setShowMap, callback }) => {
+const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const sliderRef = useRef(null);
@@ -1231,8 +1231,10 @@ const HomeHeader = ({ showMap, setShowMap, callback }) => {
                                       place.formatted_address || place.name
                                     );
                                     setCoordinates({ lat, lng });
+                                    getSearchLocation({ lat, lng })
                                   } else {
                                     setSelectedPlace("");
+                                    getSearchLocation(null)
                                   }
                                 }}
                                 options={{ types: ["(cities)"] }}
@@ -1592,12 +1594,14 @@ const HomeHeader = ({ showMap, setShowMap, callback }) => {
                                           );
 
                                           setCoordinates({ lat, lng });
+                                          getSearchLocation({ lat, lng });
                                         } else {
                                           console.warn(
                                             "No valid address or location found in the selected place."
                                           );
 
                                           setSelectedPlace("");
+                                          getSearchLocation(null);
                                         }
                                       }}
                                       options={{ types: ["(cities)"] }}

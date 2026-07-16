@@ -26,7 +26,7 @@ const Home = () => {
   const { guestHomeData, isLoading } = useCommon();
   const { getTimerDetails } = useTimer();
   const [showMap, setShowMap] = useState(false);
-
+  const [searchLocation, setSearchLocaton] = useState(null);
   const selectorData = useSelector((state) => state.common);
   const localSaved =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
@@ -388,6 +388,7 @@ const Home = () => {
           showMap={showMap}
           setShowMap={setShowMap}
           callback={(txt) => setLocationClear(txt)}
+          getSearchLocation={(txt) => setSearchLocaton(txt)}
         />
       ) : (
         <Header />
@@ -502,6 +503,7 @@ const Home = () => {
                     locations={localHomeList}
                     currentLocation={currentLocation}
                     isMobileWidth={isMobileWidth}
+                    searchLocation={searchLocation}
                   />
                 </Col>
               )}
