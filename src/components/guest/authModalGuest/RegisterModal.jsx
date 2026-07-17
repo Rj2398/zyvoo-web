@@ -48,7 +48,7 @@ function RegisterModal(props) {
 
   const { registerUser, SocialLogin, LoginWithPhone, isLoading } = useAuth();
   const [selectedCountryFlag, setSelectedCountryFlag] = useState("");
-  const [selectedCountryCode, setSelectedCountryCode] = useState("");
+  const [selectedCountryCode, setSelectedCountryCode] = useState("+1");
   const [regionCodeTemp, setRegionCodeTemp] = useState("");
   const [switchLogin, setSwitchLogin] = useState(false);
   const [logigWithEmailModle, setLoingWithEmailModle] = useState(false);
@@ -625,13 +625,13 @@ function RegisterModal(props) {
         const response = props?.loginModal
           ? await registerUser({
               phone_number: data?.phoneNumber,
-              country_code: selectedCountryCode,
+              country_code: selectedCountryCode || "+1",
               fcm_token: "bfbfb498b4644",
               device_type: "web",
             })
           : await LoginWithPhone({
               phone_number: data?.phoneNumber,
-              country_code: selectedCountryCode,
+              country_code: selectedCountryCode || "+1",
               fcm_token: "bfbfb498b4644",
               device_type: "web",
             });
