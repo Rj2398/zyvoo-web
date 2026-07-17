@@ -49,10 +49,11 @@ function RegisterModal(props) {
   const { registerUser, SocialLogin, LoginWithPhone, isLoading } = useAuth();
   const [selectedCountryFlag, setSelectedCountryFlag] = useState("");
   const [selectedCountryCode, setSelectedCountryCode] = useState("+1");
-  const [regionCodeTemp, setRegionCodeTemp] = useState("");
+
+  const [regionCodeTemp, setRegionCodeTemp] = useState("US");
   const [switchLogin, setSwitchLogin] = useState(false);
   const [logigWithEmailModle, setLoingWithEmailModle] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("United States");
   const [forgotEmailModal, setForgotemailModal] = useState(false);
   const [vefiModl, setVefiModl] = useState(false);
   const [LoginVerification, setloginVerification] = useState(false);
@@ -1074,10 +1075,11 @@ function RegisterModal(props) {
 
             {errors.phoneNumber && (
               <p style={{ color: "red", fontSize: "12px", marginTop: "-10px" }}>
-                {/* {errors.phoneNumber.message}. */}
                 Please enter your phone number
               </p>
             )}
+
+            {console.log(errors, "error for call**")}
             <div
               className="custom-modal-label mt-3"
               style={{ marginLeft: isMobileWidth ? "5px" : "" }}
