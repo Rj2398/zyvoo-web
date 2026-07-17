@@ -639,10 +639,14 @@ function RegisterModal(props) {
           if (props?.loginModal) {
             props?.CallBack(false);
             setVefiModl(true);
+            // console.log(response, "data *******");
+            localStorage.setItem("user_id", String(response.user_id));
           } else {
             setloginVerification(true);
             props?.CallBack(false);
             setVefiModl(true);
+            localStorage.setItem("user_id", String(response.user_id));
+            // console.log(response, "data *******");
           }
         }
       } catch (error) {

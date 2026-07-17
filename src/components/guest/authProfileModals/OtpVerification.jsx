@@ -10,32 +10,60 @@ import useProfile from "../../../hooks/useProfile";
 import OtpInput from "react-otp-input";
 import { KEYS } from "../../../config/Constant";
 
-function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, verificationBy,
-  createPassword, passEmail, passPhone, conutryCode, verPhone, verEmail }) {
-  const { formState: { errors }, } = useForm();
+function VerificationModal({
+  show,
+  onHide,
+  veficationByEmailOpen,
+  regiserMail,
+  verificationBy,
+  createPassword,
+  passEmail,
+  passPhone,
+  conutryCode,
+  verPhone,
+  verEmail,
+}) {
+  const {
+    formState: { errors },
+  } = useForm();
   //
-  const { registerUser, signup_email, forgot_password_email, verify_email_verification_otp,
-    verify_phone_verification_otp, otp_verify_update_phone, update_email, otp_verify_update_email,
-    isLoading, } = useAuth();
-    const user = useSelector(
-      (state) => state?.user?.userInfo || state?.user?.storeData
-    );
-    
+  const {
+    registerUser,
+    signup_email,
+    forgot_password_email,
+    verify_email_verification_otp,
+    verify_phone_verification_otp,
+    otp_verify_update_phone,
+    update_email,
+    otp_verify_update_email,
+    isLoading,
+  } = useAuth();
+  const user = useSelector(
+    (state) => state?.user?.userInfo || state?.user?.storeData
+  );
+
   // const { userInfo } = useSelector(({ user }) => user)
 
   const { getUserProfile } = useProfile();
 
-  const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO))||JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
-  const login_id = user?.userInfo?.user_id ? String(user?.userInfo?.user_id) : null || localSaved?.user_id ? String(localSaved?.user_id) : null;
+  const localSaved =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const login_id = user?.userInfo?.user_id
+    ? String(user?.userInfo?.user_id)
+    : null || localSaved?.user_id
+    ? String(localSaved?.user_id)
+    : null;
   //
   const [error, setError] = useState(null);
 
   const [otp, setOtp] = useState([]);
   const [canResend, setCanResend] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
-  const [openVerificationDoneModal, setOpenVerificationDoneModal] = useState(false);
+  const [openVerificationDoneModal, setOpenVerificationDoneModal] =
+    useState(false);
   const handleOTPSubmit = async (data) => {
-    const param = { temp_id: user?.user_id || login_id, otp: otp, };
+    const param = { temp_id: user?.user_id || login_id, otp: otp };
     if (!/^\d{4}$/.test(otp)) {
       setError("Please enter the 4-digit code.");
       return;
@@ -49,21 +77,22 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
     try {
       if (verificationBy === "verificationByEmail") {
         const responseMail = await verify_email_verification_otp({
-          user_id: user?.user_id || login_id, otp: otp,
+          user_id: user?.user_id || login_id,
+          otp: otp,
         });
         if (responseMail) {
-          await getUserProfile({ user_id: (user?.user_id || login_id) });
+          await getUserProfile({ user_id: user?.user_id || login_id });
           onHide();
           setOpenVerificationDoneModal(true);
         }
       }
       if (verificationBy === "verificationByPhone") {
         const emailResponse = await verify_phone_verification_otp({
-          user_id: (user?.user_id || login_id),
+          user_id: user?.user_id || login_id,
           otp: otp,
         });
         if (emailResponse) {
-          await getUserProfile({ user_id: (user?.user_id || login_id) });
+          await getUserProfile({ user_id: user?.user_id || login_id });
           onHide();
           setOpenVerificationDoneModal(true);
         }
@@ -104,7 +133,10 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
     setTimeLeft(60);
     setCanResend(false);
 
-    if (verificationBy === "Verify_otp_email" || verificationBy === "verificationByPhone") {
+    if (
+      verificationBy === "Verify_otp_email" ||
+      verificationBy === "verificationByPhone"
+    ) {
       handleResendEmail();
     } else {
       resendApi();
@@ -113,7 +145,10 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
 
   const handleResendEmail = async () => {
     if (verificationBy === "Verify_otp_email") {
-      const response = await update_email({ user_id: user?.user_id || login_id, email: passEmail });
+      const response = await update_email({
+        user_id: user?.user_id || login_id,
+        email: passEmail,
+      });
     } else if (verificationBy === "verificationByPhone") {
       const response = await registerUser({
         user_id: user?.user_id || login_id,
@@ -148,9 +183,12 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
     try {
       let user_num = user?.otp_send_to;
       const countryCodes = ["+91", "+1", "+44", "+61", "+971"];
-      let country_code = countryCodes.find((code) => user_num.startsWith(code)) || "";
+      let country_code =
+        countryCodes.find((code) => user_num.startsWith(code)) || "";
 
-      let clean_num = country_code ? user_num.replace(country_code, "") : user_num;
+      let clean_num = country_code
+        ? user_num.replace(country_code, "")
+        : user_num;
 
       if (regiserMail === "regiserMail") {
         const emailResponse = await signup_email({
@@ -179,25 +217,34 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(
+      2,
+      "0"
+    )}`;
   }
 
-  const [isMobileWidth, setIsMobileWidth] = useState(false)
+  const [isMobileWidth, setIsMobileWidth] = useState(false);
   useEffect(() => {
     const checkWindowWidth = () => {
       setIsMobileWidth(window.innerWidth <= 768);
     };
 
     checkWindowWidth();
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   return (
     <>
-      <Modal show={show} onHide={onHide} size="md" aria-labelledby="contained-modal-title-vcenter"
-        centered dialogClassName="custom-modal"  >
+      <Modal
+        show={show}
+        onHide={onHide}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        dialogClassName="custom-modal"
+      >
         <style>
           {`
           .custom-modal .modal-dialog {
@@ -216,8 +263,11 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
         `}
         </style>
         <Loader visible={isLoading} />
-        <Modal.Header closeButton className="profile-close-btn"
-          style={{ border: "none", paddingBottom: "0px" }}>
+        <Modal.Header
+          closeButton
+          className="profile-close-btn"
+          style={{ border: "none", paddingBottom: "0px" }}
+        >
           <style>
             {`
               .btn-close {
@@ -244,16 +294,20 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
           </style>
         </Modal.Header>
 
-        <Modal.Title className="w-100 text-center register-modal-header-title mt-3"> OTP Verification </Modal.Title>
+        <Modal.Title className="w-100 text-center register-modal-header-title mt-3">
+          {" "}
+          OTP Verification{" "}
+        </Modal.Title>
 
-        <hr style={{
-          width: "100%",
-          display: "block",
-          margin: "5px auto",
-          border: "2px",
-          borderTop: "1px solid #ddd",
-          opacity: "1",
-        }}
+        <hr
+          style={{
+            width: "100%",
+            display: "block",
+            margin: "5px auto",
+            border: "2px",
+            borderTop: "1px solid #ddd",
+            opacity: "1",
+          }}
         />
         <Modal.Body
           style={{
@@ -266,20 +320,24 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
           }}
         >
           {passPhone ? (
-            <p className="mb-3 mt-2 register-modal-body-p register-p-small" >
-              Please type the verification code sent  {!isMobileWidth && <br />} to{" "}
+            <p className="mb-3 mt-2 register-modal-body-p register-p-small">
+              Please type the verification code sent {!isMobileWidth && <br />}{" "}
+              to{" "}
               <b style={{ fontWeight: "600" }}>
                 {conutryCode} {passPhone}
               </b>
             </p>
           ) : (
             <p className="mb-3 mt-2 register-modal-body-p register-p-small">
-              Please type the verification code sent {!isMobileWidth && <br />} to{" "}
-              <b>{user?.otp_send_to || user?.email}</b>
+              Please type the verification code sent {!isMobileWidth && <br />}{" "}
+              to <b>{user?.otp_send_to || user?.email}</b>
             </p>
           )}
           <div className="otp-grp">
-            <OtpInput value={otp} inputType="number" numInputs={4}
+            <OtpInput
+              value={otp}
+              inputType="number"
+              numInputs={4}
               onChange={(data) => {
                 setOtp(data);
                 setError("");
@@ -288,17 +346,19 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
               renderInput={(props, index) => {
                 const isFilled = otp[index] && otp[index] !== "";
                 return (
-                  <input {...props} style={{
-                    width: "50px",
-                    height: "50px",
-                    textAlign: "center",
-                    fontSize: "20px",
-                    fontWeight: "600",
-                    borderRadius: "13px",
-                    border: isFilled ? "none" : "1px solid #C4C4C4",
-                    backgroundColor: isFilled ? "rgb(74, 234, 177)" : "white",
-                    transition: "background-color 0.2s ease-in-out",
-                  }}
+                  <input
+                    {...props}
+                    style={{
+                      width: "50px",
+                      height: "50px",
+                      textAlign: "center",
+                      fontSize: "20px",
+                      fontWeight: "600",
+                      borderRadius: "13px",
+                      border: isFilled ? "none" : "1px solid #C4C4C4",
+                      backgroundColor: isFilled ? "rgb(74, 234, 177)" : "white",
+                      transition: "background-color 0.2s ease-in-out",
+                    }}
                   />
                 );
               }}
@@ -307,7 +367,10 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
           {error && <p style={{ color: "red" }}>{error}</p>}
 
           <div className="custom-modal-label mt-3 mb-3">
-            <Button onClick={() => handleOTPSubmit(otp)} className="register-modal-body-submit-btn">
+            <Button
+              onClick={() => handleOTPSubmit(otp)}
+              className="register-modal-body-submit-btn"
+            >
               Submit
             </Button>
           </div>
@@ -339,18 +402,18 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
         onHide={() => setOpenVerificationDoneModal(false)}
         text={passPhone ? "Your phone number has been changed successfully" : "Your email has been changed successfully"}
       /> */}
-      <VerificationDone show={openVerificationDoneModal} isMobileWidth={isMobileWidth}
+      <VerificationDone
+        show={openVerificationDoneModal}
+        isMobileWidth={isMobileWidth}
         onHide={() => setOpenVerificationDoneModal(false)}
         text={
           passPhone
-            ? (verPhone
+            ? verPhone
               ? "Your Phone/Email has been verified!"
               : "Your phone number has been changed successfully"
-            )
-            : (verEmail
-              ? "Your Phone/Email has been verified!"
-              : "Your email has been changed successfully"
-            )
+            : verEmail
+            ? "Your Phone/Email has been verified!"
+            : "Your email has been changed successfully"
         }
         verPhone={verPhone}
         verEmail={verEmail}
@@ -360,9 +423,6 @@ function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, v
 }
 
 export default VerificationModal;
-
-
-
 
 // import React, { useState, useEffect } from "react";
 // import Button from "react-bootstrap/Button";
@@ -376,11 +436,11 @@ export default VerificationModal;
 // import OtpInput from "react-otp-input";
 // import { KEYS } from "../../../config/Constant";
 
-// function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, verificationBy, 
+// function VerificationModal({ show, onHide, veficationByEmailOpen, regiserMail, verificationBy,
 //   createPassword, passEmail, passPhone, conutryCode, }) {
 //   const { formState: { errors }, } = useForm();
 //   //
-//   const { registerUser, signup_email, forgot_password_email, verify_email_verification_otp, 
+//   const { registerUser, signup_email, forgot_password_email, verify_email_verification_otp,
 //     verify_phone_verification_otp, otp_verify_update_phone, update_email, otp_verify_update_email,
 //     isLoading, } = useAuth();
 
@@ -489,7 +549,7 @@ export default VerificationModal;
 //   useEffect(() => {
 //     if (show) {
 //       setTimeLeft(120);
-//       setCanResend(false); 
+//       setCanResend(false);
 //       setOtp([]);
 //       setError(""); }
 //   }, [show]);
@@ -507,8 +567,8 @@ export default VerificationModal;
 
 //   const resendApi = async () => {
 //     try {
-//       let user_num = user?.otp_send_to; 
-//       const countryCodes = ["+91", "+1", "+44", "+61", "+971"]; 
+//       let user_num = user?.otp_send_to;
+//       const countryCodes = ["+91", "+1", "+44", "+61", "+971"];
 //       let country_code = countryCodes.find((code) => user_num.startsWith(code)) || "";
 
 //       let clean_num = country_code ? user_num.replace(country_code, "") : user_num;
@@ -557,7 +617,7 @@ export default VerificationModal;
 
 //   return (
 //     <>
-//       <Modal show={show} onHide={onHide} size="md" aria-labelledby="contained-modal-title-vcenter" 
+//       <Modal show={show} onHide={onHide} size="md" aria-labelledby="contained-modal-title-vcenter"
 //         centered dialogClassName="custom-modal"  >
 //         <style>
 //           {`
@@ -649,7 +709,7 @@ export default VerificationModal;
 //             renderInput={(props, index) => {
 //               const isFilled = otp[index] && otp[index] !== "";
 //               return (
-//                 <input {...props} style={{ 
+//                 <input {...props} style={{
 //                     width: "50px",
 //                     height: "50px",
 //                     textAlign: "center",
@@ -705,5 +765,3 @@ export default VerificationModal;
 // }
 
 // export default VerificationModal;
-
-

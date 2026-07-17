@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect, useRef } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -11,10 +9,23 @@ import ResetPassword from "./ResetPassword";
 import Loader from "../../Loader";
 import { toast } from "react-toastify";
 
-function VerificationModal({ show, onHide, LoginVerification, veficationByEmailOpen, regiserMail, createPassword, resend, countryCodes}) {
-
+function VerificationModal({
+  show,
+  onHide,
+  LoginVerification,
+  veficationByEmailOpen,
+  regiserMail,
+  createPassword,
+  resend,
+  countryCodes,
+}) {
   const navigate = useNavigate();
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   // useEffect(() => {
   //   reset({otp0: "", otp1: "", otp2: "", otp3: "",});
@@ -26,16 +37,25 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
     if (show) {
       startTimer();
     }
-  
+
     return () => {
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
     };
   }, [show]);
-  
 
-  const { numOtpVerify, registerUser, otp_verify_login_phone, otp_verify_forgot_password, otp_verify_signup_email, signup_email, forgot_password_email, LoginWithPhone, isLoading, } = useAuth();
+  const {
+    numOtpVerify,
+    registerUser,
+    otp_verify_login_phone,
+    otp_verify_forgot_password,
+    otp_verify_signup_email,
+    signup_email,
+    forgot_password_email,
+    LoginWithPhone,
+    isLoading,
+  } = useAuth();
 
   const [error, setError] = useState(null);
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -47,9 +67,8 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
   const [hasResent, setHasResent] = useState(false);
 
   // const user = useSelector((state) => state?.user?.userInfo);
-  const user = useSelector((state)=> state.user.storeData)
+  const user = useSelector((state) => state.user.storeData);
   // console.log(user,"log user daa comes");
-  
 
   const handleOTPSubmit = async (data) => {
     const otp = `${data?.otp0}${data?.otp1}${data?.otp2}${data?.otp3}`;
@@ -67,7 +86,8 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
     try {
       if (regiserMail === "regiserMail") {
         const responseMail = await otp_verify_signup_email({
-          temp_id: user?.temp_id, otp: otp,
+          temp_id: user?.temp_id,
+          otp: otp,
         });
         if (responseMail) {
           onHide();
@@ -86,7 +106,7 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
         const response = LoginVerification
           ? await otp_verify_login_phone({
               // user_id: user?.user_id,
-              user_id: user?.temp_id,
+              user_id: user?.temp_id || localStorage.getItem("user_id"),
               otp: otp,
             })
           : await numOtpVerify({ temp_id: user?.temp_id, otp: otp });
@@ -94,7 +114,7 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
         if (response) {
           if (LoginVerification) {
             navigate("/");
-            setError(""); 
+            setError("");
             onHide();
           } else {
             navigate("/create-profile", { state: response });
@@ -107,14 +127,14 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
       setError("Failed to verify OTP. Please try again.");
     }
 
-    reset()
+    reset();
   };
-  
+
   const handleInput = (e, index) => {
     const value = e.target.value;
 
     if (!/^\d$/.test(value) && value !== "") {
-      e.target.value = ""; 
+      e.target.value = "";
       return;
     }
 
@@ -136,7 +156,7 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
 
     setTimeLeft(60);
     setCanResend(false);
-    setHasResent(true)
+    setHasResent(true);
     timerRef.current = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
@@ -152,7 +172,7 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
 
   useEffect(() => {
     startTimer();
-    return () => clearInterval(timerRef.current); 
+    return () => clearInterval(timerRef.current);
   }, []);
 
   const handleResend = (e) => {
@@ -201,25 +221,37 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
         });
 
         if (emailResponse) {
-          toast.success(emailResponse?.message || emailResponse?.data?.message || "OTP resent successfully.")
+          toast.success(
+            emailResponse?.message ||
+              emailResponse?.data?.message ||
+              "OTP resent successfully."
+          );
         }
-      } else { 
+      } else {
         if (resend) {
           const response = await registerUser({
-            phone_number: clean_num, 
+            phone_number: clean_num,
             country_code: countryCodes,
             fcm_token: "bfbfb498b4644",
             device_type: "web",
           });
           if (response.success) {
-            toast.success(response?.message || response?.data?.message || "OTP resent successfully.")
+            toast.success(
+              response?.message ||
+                response?.data?.message ||
+                "OTP resent successfully."
+            );
           }
         } else {
           const response = await LoginWithPhone({
             phone_number: clean_num,
             country_code: countryCodes,
           });
-          toast.success(response?.message || response?.data?.message || "OTP resent successfully.")
+          toast.success(
+            response?.message ||
+              response?.data?.message ||
+              "OTP resent successfully."
+          );
         }
       }
     } catch (error) {
@@ -251,17 +283,32 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
   function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(2,"0")}`;
+    return `${String(minutes).padStart(2, "0")}:${String(secs).padStart(
+      2,
+      "0"
+    )}`;
   }
 
   return (
     <>
-      <Modal show={show} onHide={onHide} size="md" aria-labelledby="contained-modal-title-vcenter"
-        centered dialogClassName="custom-modal" >
-        <style> {` .custom-modal .modal-content { border-radius: 15px !important;  padding: 0 20px !important;} `} </style>
+      <Modal
+        show={show}
+        onHide={onHide}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        dialogClassName="custom-modal"
+      >
+        <style>
+          {" "}
+          {` .custom-modal .modal-content { border-radius: 15px !important;  padding: 0 20px !important;} `}{" "}
+        </style>
 
         <Loader visible={isLoading} />
-        <Modal.Header closeButton style={{ border: "none", paddingBottom: "0px"}}>
+        <Modal.Header
+          closeButton
+          style={{ border: "none", paddingBottom: "0px" }}
+        >
           <style>
             {`
             .custom-modal .modal-content {
@@ -294,7 +341,8 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
           OTP Verification
         </Modal.Title>
 
-        <hr style={{
+        <hr
+          style={{
             width: "90%",
             display: "block",
             margin: "5px auto",
@@ -311,23 +359,29 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
             justifyContent: "center",
             textAlign: "center",
             paddingBottom: "30px",
-            color:"black"
+            color: "black",
           }}
         >
           <p className="mb-3 register-modal-body-p">
             {" "}
             Please type the verification code send <br /> to{" "}
-            <b style={{fontWeight: "500"}}>{formatPhoneNumber(user?.otp_send_to || user?.email)}</b>
+            <b style={{ fontWeight: "500" }}>
+              {formatPhoneNumber(user?.otp_send_to || user?.email)}
+            </b>
           </p>
 
-          <form className="mb-3" onSubmit={handleSubmit(handleOTPSubmit)}
+          <form
+            className="mb-3"
+            onSubmit={handleSubmit(handleOTPSubmit)}
             style={{
               width: "100%",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-            }} >
-            <div className="otp-verification-code register-modal-body-p"
+            }}
+          >
+            <div
+              className="otp-verification-code register-modal-body-p"
               style={{
                 display: "flex",
                 gap: "10px",
@@ -336,12 +390,20 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
               }}
             >
               {[0, 1, 2, 3]?.map((index) => (
-                <input key={index} id={`otp-${index}`} type="text" inputMode="numeric"
-                  pattern="[0-9]*" maxLength={1} className="otp-verification-code-in"
+                <input
+                  key={index}
+                  id={`otp-${index}`}
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  maxLength={1}
+                  className="otp-verification-code-in"
                   {...register(`otp${index}`)}
                   onInput={(e) => handleInput(e, index)}
                   onChange={(e) => {
-                    e.target.style.backgroundColor = e.target.value ? "#4AEAB1" : "white";
+                    e.target.style.backgroundColor = e.target.value
+                      ? "#4AEAB1"
+                      : "white";
                     e.target.style.color = e.target.value ? "#000" : "#C4C4C4";
                     e.target.style.border = e.target.value ? "none" : "";
                   }}
@@ -385,14 +447,14 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
             </p>
           )} */}
           {/* // ------------added by sunil--------- */}
-{timeLeft > 0 && !canResend && (
-  <p className="mb-0 register-modal-body-p">
-    Resend verification code in{" "}
-    <span style={{ color: "#4AEAB1" }}>{formatTime(timeLeft)} sec</span>
-  </p>
-)}
-
-
+          {timeLeft > 0 && !canResend && (
+            <p className="mb-0 register-modal-body-p">
+              Resend verification code in{" "}
+              <span style={{ color: "#4AEAB1" }}>
+                {formatTime(timeLeft)} sec
+              </span>
+            </p>
+          )}
         </Modal.Body>
       </Modal>
       <ResetPassword
@@ -406,8 +468,6 @@ function VerificationModal({ show, onHide, LoginVerification, veficationByEmailO
   );
 }
 export default VerificationModal;
-
-
 
 // import React, { useState, useEffect, useRef } from "react";
 // import Button from "react-bootstrap/Button";
@@ -467,8 +527,8 @@ export default VerificationModal;
 //     try {
 //       if (regiserMail === "regiserMail") {
 //         const responseMail = await otp_verify_signup_email({
-//           temp_id: user?.temp_id, 
-//           // temp_id: user?.user_id, 
+//           temp_id: user?.temp_id,
+//           // temp_id: user?.user_id,
 //           otp: otp,
 //           // otp: otpApi?.otp,
 //         });
@@ -496,7 +556,7 @@ export default VerificationModal;
 //         if (response) {
 //           if (LoginVerification) {
 //             navigate("/");
-//             setError(""); 
+//             setError("");
 //             onHide();
 //           } else {
 //             navigate("/create-profile", { state: response });
@@ -509,12 +569,12 @@ export default VerificationModal;
 //       setError("Failed to verify OTP. Please try again.");
 //     }
 //   };
-  
+
 //   const handleInput = (e, index) => {
 //     const value = e.target.value;
 
 //     if (!/^\d$/.test(value) && value !== "") {
-//       e.target.value = ""; 
+//       e.target.value = "";
 //       return;
 //     }
 
@@ -552,7 +612,7 @@ export default VerificationModal;
 
 //   useEffect(() => {
 //     startTimer();
-//     return () => clearInterval(timerRef.current); 
+//     return () => clearInterval(timerRef.current);
 //   }, []);
 
 //   const handleResend = (e) => {
@@ -603,10 +663,10 @@ export default VerificationModal;
 //         if (emailResponse) {
 //           toast.success(emailResponse?.message || emailResponse?.data?.message || "OTP resent successfully.")
 //         }
-//       } else { 
+//       } else {
 //         if (resend) {
 //           const response = await registerUser({
-//             phone_number: clean_num, 
+//             phone_number: clean_num,
 //             country_code: countryCodes,
 //             fcm_token: "bfbfb498b4644",
 //             device_type: "web",
