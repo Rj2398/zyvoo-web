@@ -409,8 +409,24 @@ function MyPlacesHost() {
                         .map(
                           (word) => word.charAt(0).toUpperCase() + word.slice(1)
                         )
-                        .join(" ")
-                        ?.slice(0, 15)}
+                        .join(" ").length > 15
+                        ? item?.title
+                            ?.toLowerCase()
+                            ?.split(" ")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ")
+                            ?.slice(0, 15) + "..."
+                        : item?.title
+                            ?.toLowerCase()
+                            ?.split(" ")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ")}
                     </h1>
                     <p>
                       <i className="fa-solid fa-clock"></i>{" "}
