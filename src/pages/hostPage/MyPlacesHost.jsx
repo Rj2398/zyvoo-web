@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import CustomCarousel from "../../components/host/CustomCarousel";
 import useHome from "../../hooks/host/useHome";
-import { Dropdown, OverlayTrigger, Card, Popover, } from "react-bootstrap";
+import { Dropdown, OverlayTrigger, Card, Popover } from "react-bootstrap";
 import { FaCirclePlus } from "react-icons/fa6";
 import { HiMiniInformationCircle } from "react-icons/hi2";
 import { SlidersHorizontal } from "lucide-react";
@@ -18,7 +18,7 @@ import { setLoginModal } from "../../store/slices/userSlice";
 
 function MyPlacesHost() {
   const locationState = useLocation();
-  const { userInfo } = useSelector(({ user }) => user)
+  const { userInfo } = useSelector(({ user }) => user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,7 +30,9 @@ function MyPlacesHost() {
   const [earningData, setEarningData] = useState(0);
   const itemsPerPage = 7;
   const [list, setList] = useState([]);
-  const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO)) || JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+  const userData =
+    JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+    JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userId = userInfo?.user_id || userData?.user_id;
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
@@ -41,8 +43,7 @@ function MyPlacesHost() {
       setAddPropertyShow(true);
       dispatch(setAddnewPropertyState(true));
     }
-
-  }, [locationState])
+  }, [locationState]);
 
   useEffect(() => {
     const checkWindowWidth = () => {
@@ -50,15 +51,13 @@ function MyPlacesHost() {
     };
 
     checkWindowWidth(); // run on mount
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
-
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
   const [location, setLocation] = useState({ lat: null, long: null });
   const { getHomeList, earnings, isLoading } = useHome();
-
 
   useEffect(() => {
     if (getList) {
@@ -68,10 +67,9 @@ function MyPlacesHost() {
 
   const totalPages = Math.ceil(list.length / itemsPerPage);
 
-  const paginatedData = isMobileWidth ? list : list.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-
-
-
+  const paginatedData = isMobileWidth
+    ? list
+    : list.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   // const getLocation = () => {
   //   if ("geolocation" in navigator) {
@@ -130,10 +128,6 @@ function MyPlacesHost() {
       }
     );
   };
-
-
-
-
 
   const getDataList = async () => {
     try {
@@ -225,9 +219,27 @@ function MyPlacesHost() {
 
   return (
     <div style={{ margin: "1rem" }}>
-      {isMobileWidth && <hr style={{ marginTop: '-24px', width: '114%', marginLeft: '-9%' }} />}
-      <div className="d-flex align-items-center justify-content-between px-lg-3 resFirstScreen3" style={{ paddingBottom: "40px", paddingTop: isMobileWidth ? "0px" : "40px", margin: isMobileWidth ? "30px -20px -22px -4px" : "" }}>
-        <h1 className="m-0 resFirstScreen2" style={{ fontSize: isMobileWidth ? "20px" : "30px", fontWeight: isMobileWidth ? "400" : "", color: isMobileWidth ? "black" : "" }}>My Places</h1>
+      {isMobileWidth && (
+        <hr style={{ marginTop: "-24px", width: "114%", marginLeft: "-9%" }} />
+      )}
+      <div
+        className="d-flex align-items-center justify-content-between px-lg-3 resFirstScreen3"
+        style={{
+          paddingBottom: "40px",
+          paddingTop: isMobileWidth ? "0px" : "40px",
+          margin: isMobileWidth ? "30px -20px -22px -4px" : "",
+        }}
+      >
+        <h1
+          className="m-0 resFirstScreen2"
+          style={{
+            fontSize: isMobileWidth ? "20px" : "30px",
+            fontWeight: isMobileWidth ? "400" : "",
+            color: isMobileWidth ? "black" : "",
+          }}
+        >
+          My Places
+        </h1>
 
         <div className="d-flex align-items-center">
           <OverlayTrigger placement="bottom" overlay={popover}>
@@ -248,7 +260,15 @@ function MyPlacesHost() {
                 position: "relative",
               }}
             >
-              <span style={isMobileWidth ? { fontSize: isMobileWidth ? "14px" : "16px" } : {}}>${earningData?.amount}</span>
+              <span
+                style={
+                  isMobileWidth
+                    ? { fontSize: isMobileWidth ? "14px" : "16px" }
+                    : {}
+                }
+              >
+                ${earningData?.amount}
+              </span>
               <HiMiniInformationCircle
                 size={isMobileWidth ? 18 : 22}
                 style={{
@@ -262,15 +282,18 @@ function MyPlacesHost() {
             </div>
           </OverlayTrigger>
 
-
           <Dropdown>
-            <Dropdown.Toggle className="border-0 bg-transparent p-0 shadow-none d-flex justify-content-center align-items-center" style={{ cursor: "pointer" }} >
-              <div className="d-flex align-items-center justify-content-center"
+            <Dropdown.Toggle
+              className="border-0 bg-transparent p-0 shadow-none d-flex justify-content-center align-items-center"
+              style={{ cursor: "pointer" }}
+            >
+              <div
+                className="d-flex align-items-center justify-content-center"
                 style={{
                   width: isMobileWidth ? "35px" : "42px",
                   height: isMobileWidth ? "35px" : "42px",
                   backgroundColor: "white",
-                  scale: '-1',
+                  scale: "-1",
                   borderRadius: "50%",
                   border: "1px solid #D3D3D3",
                   boxShadow: "0px 1px 3px rgba(0,0,0,0.1)",
@@ -320,7 +343,9 @@ function MyPlacesHost() {
         </div>
       </div>
 
-      {isMobileWidth && <hr style={{ marginTop: '-14px', width: '114%', marginLeft: '-9%' }} />}
+      {isMobileWidth && (
+        <hr style={{ marginTop: "-14px", width: "114%", marginLeft: "-9%" }} />
+      )}
       <div
         // style={{
         //   display: "flex",
@@ -332,10 +357,14 @@ function MyPlacesHost() {
         <div className={`row ${isMobileWidth ? "flex-column-reverse" : ""}`}>
           {paginatedData?.map((item, index) => {
             return (
-              <div className="col-xl-3 col-lg-4 col-md-6 col-sm-12"
-                key={index} style={{ marginBottom: "20px" }} >
-
-                <CustomCarousel data={item} images={item?.property_images}
+              <div
+                className="col-xl-3 col-lg-4 col-md-6 col-sm-12"
+                key={index}
+                style={{ marginBottom: "20px" }}
+              >
+                <CustomCarousel
+                  data={item}
+                  images={item?.property_images}
                   propertyId={item?.property_id}
                   onEdit={(bool) => {
                     setPropertyId(item?.property_id);
@@ -344,7 +373,8 @@ function MyPlacesHost() {
                   onDelete={() => getDataList()}
                 />
 
-                <div className="carousel-inner-content"
+                <div
+                  className="carousel-inner-content"
                   style={{
                     marginTop: "2px",
                     display: "flex",
@@ -353,35 +383,65 @@ function MyPlacesHost() {
                     cursor: " inherit",
                   }}
                 >
-                  <div className="carousel-inner-content-top" style={{ color: 'black' }} >
-                    <h1 onClick={() =>
-                      navigate(`/my-place-history`, {
-                        state: { routedData: item },
-                      })
-                    }
+                  <div
+                    className="carousel-inner-content-top"
+                    style={{ color: "black" }}
+                  >
+                    <h1
+                      onClick={() =>
+                        navigate(`/my-place-history`, {
+                          state: { routedData: item },
+                        })
+                      }
                       style={{ cursor: "pointer" }}
                     >
-                      {item?.title?.toLowerCase()?.split(" ").map((word) => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")}
+                      {/* {item?.title
+                        ?.toLowerCase()
+                        ?.split(" ")
+                        .map(
+                          (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join(" ")} */}
+                      {/* commented added 20-07-2026 */}
+                      {item?.title
+                        ?.toLowerCase()
+                        ?.split(" ")
+                        .map(
+                          (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join(" ")
+                        ?.slice(0, 15)}
                     </h1>
                     <p>
-                      <i className="fa-solid fa-clock"></i> <span style={{ whiteSpace: 'nowrap', padding: 0, margin: 0 }}>
-                        {'$' + parseFloat(item?.hourly_rate) + '/h'}
+                      <i className="fa-solid fa-clock"></i>{" "}
+                      <span
+                        style={{ whiteSpace: "nowrap", padding: 0, margin: 0 }}
+                      >
+                        {"$" + parseFloat(item?.hourly_rate) + "/h"}
                       </span>
                     </p>
                   </div>
                 </div>
 
-                <div style={{
-                  margin: "0px 0px 25px 10px", // Fixed margin to apply both bottom & left
-                  fontWeight: "300",
-                  fontSize: "14px",
-                  color: "gray", // Changed to "gray" instead of "GrayText" for better compatibility
-                }}
+                <div
+                  style={{
+                    margin: "0px 0px 25px 10px", // Fixed margin to apply both bottom & left
+                    fontWeight: "300",
+                    fontSize: "14px",
+                    color: "gray", // Changed to "gray" instead of "GrayText" for better compatibility
+                  }}
                 >
-                  <ul className="my-place-ul" style={{margin : isMobileWidth ? "8px 6px 0px -1px" : ""}} >
+                  <ul
+                    className="my-place-ul"
+                    style={{ margin: isMobileWidth ? "8px 6px 0px -1px" : "" }}
+                  >
                     <li className="my-place-li">
                       <div className="rating-container">
-                        <img src="/images/locations-grid/star-icon.svg" alt="Star" className="rating-star" />
+                        <img
+                          src="/images/locations-grid/star-icon.svg"
+                          alt="Star"
+                          className="rating-star"
+                        />
                         <span className="rating-text">
                           {formatReview(item?.property_rating)}
                           <span className="rating-count">
@@ -391,16 +451,18 @@ function MyPlacesHost() {
                       </div>
                     </li>
 
-                    <li className="my-place-li" style={{ color: 'gray' }}>
-                      <img src="/images/locations-grid/location-icon.svg"
-                        loading="lazy" alt="Location" style={{ width: "16px" }}
+                    <li className="my-place-li" style={{ color: "gray" }}>
+                      <img
+                        src="/images/locations-grid/location-icon.svg"
+                        loading="lazy"
+                        alt="Location"
+                        style={{ width: "16px" }}
                       />
                       {item?.distance_miles} miles away
                     </li>
                   </ul>
                 </div>
               </div>
-
             );
           })}
 
@@ -451,7 +513,10 @@ function MyPlacesHost() {
           </div>
         </div>
       </div>
-      <div className="home-pagination-wrap" style={{ alignContent: "center", marginTop: "5%" }}>
+      <div
+        className="home-pagination-wrap"
+        style={{ alignContent: "center", marginTop: "5%" }}
+      >
         {!isMobileWidth && (
           <div className="container-fluid">
             <div className="row">
@@ -479,7 +544,6 @@ function MyPlacesHost() {
 }
 
 export default MyPlacesHost;
-
 
 // import { useEffect, useState } from "react";
 // import CustomCarousel from "../../components/host/CustomCarousel";

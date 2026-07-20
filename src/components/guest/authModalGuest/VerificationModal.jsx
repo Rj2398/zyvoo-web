@@ -113,9 +113,14 @@ function VerificationModal({
 
         if (response) {
           if (LoginVerification) {
-            navigate("/");
-            setError("");
-            onHide();
+            if (response?.is_profile_complete == false) {
+              navigate("/create-profile", { state: response });
+              setError("");
+            } else {
+              navigate("/");
+              setError("");
+              onHide();
+            }
           } else {
             navigate("/create-profile", { state: response });
             setError("");

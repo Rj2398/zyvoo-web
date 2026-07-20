@@ -186,44 +186,80 @@ const MultipleMarkerMap = ({
 
     setMapReady(true);
   };
-
   const createMapOptions = (maps) => {
     return {
       styles: [
         {
           featureType: "administrative.country",
           elementType: "labels",
-          stylers: [{ visibility: "off" }],
+          stylers: [{ visibility: "on" }], // Turned ON
         },
         {
           featureType: "administrative.state",
           elementType: "labels",
-          stylers: [{ visibility: "off" }],
+          stylers: [{ visibility: "on" }], // Turned ON
         },
         {
           featureType: "administrative.city",
           elementType: "labels",
-          stylers: [{ visibility: "off" }],
+          stylers: [{ visibility: "on" }], // Turned ON
         },
         {
-          featureType: "administrative.street",
+          featureType: "road", // Restored street names
           elementType: "labels",
-          stylers: [{ visibility: "off" }],
+          stylers: [{ visibility: "on" }],
         },
         {
-          featureType: "transit",
+          featureType: "transit", // Restored subway/bus station landmarks
           elementType: "labels",
-          stylers: [{ visibility: "off" }],
+          stylers: [{ visibility: "on" }],
         },
         {
-          featureType: "poi",
+          featureType: "poi", // Restored Points of Interest (parks, businesses, landmarks)
           elementType: "labels",
-          stylers: [{ visibility: "off" }],
+          stylers: [{ visibility: "on" }],
         },
       ],
       disableDefaultUI: true,
     };
   };
+  // const createMapOptions = (maps) => {
+  //   return {
+  //     styles: [
+  //       {
+  //         featureType: "administrative.country",
+  //         elementType: "labels",
+  //         stylers: [{ visibility: "off" }],
+  //       },
+  //       {
+  //         featureType: "administrative.state",
+  //         elementType: "labels",
+  //         stylers: [{ visibility: "off" }],
+  //       },
+  //       {
+  //         featureType: "administrative.city",
+  //         elementType: "labels",
+  //         stylers: [{ visibility: "off" }],
+  //       },
+  //       {
+  //         featureType: "administrative.street",
+  //         elementType: "labels",
+  //         stylers: [{ visibility: "off" }],
+  //       },
+  //       {
+  //         featureType: "transit",
+  //         elementType: "labels",
+  //         stylers: [{ visibility: "off" }],
+  //       },
+  //       {
+  //         featureType: "poi",
+  //         elementType: "labels",
+  //         stylers: [{ visibility: "off" }],
+  //       },
+  //     ],
+  //     disableDefaultUI: true,
+  //   };
+  // };
 
   return (
     <div
