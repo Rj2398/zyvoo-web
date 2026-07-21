@@ -7,30 +7,33 @@ import React, { useEffect, useState } from "react";
 const CustomCarouselGuest = ({ images, propertyId, distance_miles }) => {
   const navigate = useNavigate();
   const [isMobileWidth, setIsMobileWidth] = useState(false);
-    
-      useEffect(() => {
-        const checkWindowWidth = () => {
-          const isMobileOrTablet = window.innerWidth <= 991; // includes tablets
-          setIsMobileWidth(isMobileOrTablet);
-        };
-    
-        checkWindowWidth(); // Check immediately on mount
-        window.addEventListener("resize", checkWindowWidth);
-        return () => {
-          window.removeEventListener("resize", checkWindowWidth);
-        };
-      }, []); // Don't put window.innerWidth in the deps
+
+  useEffect(() => {
+    const checkWindowWidth = () => {
+      const isMobileOrTablet = window.innerWidth <= 991; // includes tablets
+      setIsMobileWidth(isMobileOrTablet);
+    };
+
+    checkWindowWidth(); // Check immediately on mount
+    window.addEventListener("resize", checkWindowWidth);
+    return () => {
+      window.removeEventListener("resize", checkWindowWidth);
+    };
+  }, []); // Don't put window.innerWidth in the deps
 
   return (
     <Carousel
-      interval={images.length > 1 ? 3000 : null}
+      // interval={images.length > 1 ? 3000 : null}
+      interval={null}
       indicators={images.length > 1}
       controls={false}
       style={{ width: "120%" }}
     >
       {images.map((image, index) => (
         <Carousel.Item key={index}>
-          <div state={{ property_id: propertyId }} style={{ width: "120%" }}
+          <div
+            state={{ property_id: propertyId }}
+            style={{ width: "120%" }}
             onClick={() =>
               navigate(`/location/${propertyId}`, {
                 state: { distance: distance_miles },
@@ -38,7 +41,10 @@ const CustomCarouselGuest = ({ images, propertyId, distance_miles }) => {
             }
           >
             {/* <img src={`${imageBase}${image}`} loading="lazy" alt={`Slide ${index + 1}`}  */}
-            <img src={`${imageBase}${image}`} loading="lazy" alt={`Slide ${index + 1}`} 
+            <img
+              src={`${imageBase}${image}`}
+              loading="lazy"
+              alt={`Slide ${index + 1}`}
               style={{
                 width: "100%",
                 height: "380px",

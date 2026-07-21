@@ -4,13 +4,13 @@ import { ChevronLeft, ChevronRight } from "react-feather";
 import { Button } from "react-bootstrap";
 
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-  if (totalPages <= 1) return null; 
+  if (totalPages <= 1) return null;
 
   const pageNumbers = [...Array(totalPages)].map((_, index) => index + 1);
   const handlePageChange = (pageNumber) => {
-    onPageChange(pageNumber); 
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    onPageChange(pageNumber)
+    onPageChange(pageNumber);
+    // window.scrollTo({ top: 0, behavior: "smooth" }); //auto scrolling close
+    onPageChange(pageNumber);
   };
 
   return (
@@ -31,9 +31,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             border: "1px solid #3A4B4C",
             color: "#3A4B4C",
             background: "#fff",
-            padding: "0"
+            padding: "0",
           }}
-    
           onMouseOut={(e) => (e.target.style.background = "white")}
         >
           <ChevronLeft size={22} />
@@ -58,15 +57,21 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             background: currentPage === number ? "#3A4B4C" : "white",
             color: currentPage === number ? "white" : "#3A4B4C",
             border: "1px solid #3A4B4C",
-            gap:'10px'
+            gap: "10px",
           }}
-          onMouseOver={(e) =>
-            (e.target.style.background = "linear-gradient(135deg, #3A4B4C, #3A4B4C)", e.target.style.color = "white")
-          }
-          onMouseOut={(e) =>
-          (e.target.style.background = currentPage === number ? "linear-gradient(135deg, #3A4B4C, #3A4B4C)" : "white",
-            e.target.style.color = currentPage === number ? "white" : "#16A085")
-          }
+          onMouseOver={(e) => (
+            (e.target.style.background =
+              "linear-gradient(135deg, #3A4B4C, #3A4B4C)"),
+            (e.target.style.color = "white")
+          )}
+          onMouseOut={(e) => (
+            (e.target.style.background =
+              currentPage === number
+                ? "linear-gradient(135deg, #3A4B4C, #3A4B4C)"
+                : "white"),
+            (e.target.style.color =
+              currentPage === number ? "white" : "#16A085")
+          )}
         >
           {number}
         </Button>
@@ -88,9 +93,8 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             border: "1px solid #3A4B4C",
             color: "#3A4B4C",
             background: "#fff",
-            padding: "0"
+            padding: "0",
           }}
-       
           onMouseOut={(e) => (e.target.style.background = "white")}
         >
           <ChevronRight size={22} />

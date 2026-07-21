@@ -131,8 +131,8 @@ export default function Map({ lat, lng, locationImg, bookingData }) {
         />
 
         {/* Address Box - kept exactly as you had it */}
-
-        {!isMobileWidth && !bookingData && (
+        {/* code commented by Rajan Malakar 21-07-2026 */}
+        {/* {!isMobileWidth && !bookingData && (
           <div
             style={{
               position: "absolute",
@@ -146,9 +146,9 @@ export default function Map({ lat, lng, locationImg, bookingData }) {
           >
             <strong>Selected Location</strong> <br />
             {address} <br />
-            {/* <small style={{ color: "#777" }}>💡 Shake phone to reset map</small> */}
+           
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

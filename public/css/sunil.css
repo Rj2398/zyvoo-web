@@ -8,7 +8,11 @@
 .help-center-top {
   padding: 20px 0 !important;
 }
-
+.pac-container::after {
+  display: none !important;
+  background-image: none !important;
+  height: 0 !important;
+}
 /* .help-center-top h1 {
   font-size: 1.5rem !important;
   padding: 0 10px;

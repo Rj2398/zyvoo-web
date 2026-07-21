@@ -26,8 +26,6 @@ const ProductItem = ({
   award,
   currentLocation,
 }) => {
-  console.log("distance_miles", distance_miles);
-
   const { userInfo } = useSelector(({ user }) => user);
 
   const {
