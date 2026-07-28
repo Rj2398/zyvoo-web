@@ -22,7 +22,7 @@ const BookingDetails = () => {
   const navigate = useNavigate();
   const bookingData = location.state || {};
 
-  console.log(bookingData, "my data");
+  // console.log(bookingData, "my data");
 
   const formatTime = (dateTime) => {
     return new Date(dateTime).toLocaleTimeString("en-US", {
@@ -41,8 +41,8 @@ const BookingDetails = () => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-      ? String(userData?.user_id)
-      : null;
+    ? String(userData?.user_id)
+    : null;
 
   const bookingDetails = details ?? checkoutData;
 
@@ -84,7 +84,7 @@ const BookingDetails = () => {
   const startTime1 = booking?.booking_start.split(" ").slice(1).join(" ");
 
   const endTime1 = booking?.booking_end.split(" ").slice(1).join(" ");
-  console.log(startTime1);
+  // console.log(startTime1);
   // const startTime1 = formatTimeWithMeridian(booking?.booking_start); // → "02:00 AM"
   // const endTime1 = formatTimeWithMeridian(booking?.booking_end); // → "10:00 AM"
 
@@ -333,7 +333,13 @@ const BookingDetails = () => {
                     </span>
                     <img
                       className="chat-right-top-profile-image"
-                      src={bookingDetails?.host_profile_image && bookingDetails?.host_profile_image !== "undefined" && bookingDetails?.host_profile_image !== "null" ? imageBase + bookingDetails?.host_profile_image : defaultContact}
+                      src={
+                        bookingDetails?.host_profile_image &&
+                        bookingDetails?.host_profile_image !== "undefined" &&
+                        bookingDetails?.host_profile_image !== "null"
+                          ? imageBase + bookingDetails?.host_profile_image
+                          : defaultContact
+                      }
                       loading="lazy"
                       alt="Host"
                       onError={(e) => {
@@ -834,24 +840,24 @@ const BookingDetails = () => {
                   style={
                     isMobileWidth
                       ? {
-                        position: "fixed",
-                        top: 0,
-                        left: 0,
-                        width: "100vw",
-                        height: "100vh",
-                        backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
-                        zIndex: 9998,
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        borderRadius: "10px",
-                      }
+                          position: "fixed",
+                          top: 0,
+                          left: 0,
+                          width: "100vw",
+                          height: "100vh",
+                          backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
+                          zIndex: 9998,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: "10px",
+                        }
                       : {
-                        position: "absolute",
-                        zIndex: 9999,
-                        right: "31%",
-                        top: "55%",
-                      }
+                          position: "absolute",
+                          zIndex: 9999,
+                          right: "31%",
+                          top: "55%",
+                        }
                   }
                 >
                   <div style={{ position: "relative" }}>
@@ -911,8 +917,9 @@ const BookingDetails = () => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingOne">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"
-                            }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                            open === "collapseOne" ? "" : "collapsed"
+                          }`}
                           type="button"
                           onClick={() => toggleAccordion("collapseOne")}
                           style={{
@@ -974,8 +981,9 @@ const BookingDetails = () => {
                   <div className="accordion-item border rounded mb-2">
                     <h2 className="accordion-header" id="headingTwo">
                       <button
-                        className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
-                          }`}
+                        className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                          open === "collapseTwo" ? "" : "collapsed"
+                        }`}
                         type="button"
                         onClick={() => toggleAccordion2("collapseTwo")}
                         style={{
@@ -1304,7 +1312,13 @@ const BookingDetails = () => {
                     >
                       <img
                         className="chat-right-top-profile-image"
-                        src={bookingDetails?.host_profile_image && bookingDetails?.host_profile_image !== "undefined" && bookingDetails?.host_profile_image !== "null" ? imageBase + bookingDetails?.host_profile_image : defaultContact}
+                        src={
+                          bookingDetails?.host_profile_image &&
+                          bookingDetails?.host_profile_image !== "undefined" &&
+                          bookingDetails?.host_profile_image !== "null"
+                            ? imageBase + bookingDetails?.host_profile_image
+                            : defaultContact
+                        }
                         loading="lazy"
                         alt="Host"
                         onError={(e) => {

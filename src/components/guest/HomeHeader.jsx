@@ -826,7 +826,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   };
 
   const handleFilterData = async () => {
-    console.log("TFR**");
+    // console.log("TFR**");
     try {
       setShowModal(false);
       // if (!start_time || !end_time) {

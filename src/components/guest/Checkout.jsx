@@ -36,7 +36,7 @@ const Checkout = ({ setExtendedTime }) => {
   )?.access_token;
 
   const user_id = JSON.parse(sessionStorage.getItem(KEYS.USER_INFO))?.user_id;
-  console.log(user_id, "test *********");
+  // console.log(user_id, "test *********");
   const userType = localStorage.getItem(KEYS.USER_TYPE);
 
   const { userInfo } = useSelector(({ user }) => user);
@@ -49,15 +49,15 @@ const Checkout = ({ setExtendedTime }) => {
   const checkoutData = location.state?.objectTobeNavigated || {};
   const id = checkoutData?.property_id;
 
-  console.log(checkoutData, "checkout data********");
+  // console.log(checkoutData, "checkout data********");
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
     JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-      ? String(userData?.user_id)
-      : null;
+    ? String(userData?.user_id)
+    : null;
 
   useEffect(() => {
     if (!id) {
@@ -536,7 +536,7 @@ const Checkout = ({ setExtendedTime }) => {
     // 5. STEP B: Triggers when the user authorizes payment with FaceID / TouchID
     session.onpaymentauthorized = async (event) => {
       const paymentToken = event.payment.token;
-      console.log(paymentToken, "paymentTokenpaymentTokenpaymentToken");
+      // console.log(paymentToken, "paymentTokenpaymentTokenpaymentToken");
       const { start_time, end_time } = getFormattedBookingTimes({
         booking_date: bookingDate,
         booking_start: checkoutData?.startTime,
@@ -572,7 +572,7 @@ const Checkout = ({ setExtendedTime }) => {
         });
 
         const paymentResult = await response.json();
-        console.log(paymentResult?.booking_details, "paymetn resupt***");
+        // console.log(paymentResult?.booking_details, "paymetn resupt***");
         if (paymentResult && paymentResult.success) {
           // Tell Safari the payment went through perfectly!
           session.completePayment(window.ApplePaySession.STATUS_SUCCESS);
@@ -837,7 +837,7 @@ const Checkout = ({ setExtendedTime }) => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                // style={{ minWidth: "320px " }}
+                  // style={{ minWidth: "320px " }}
                 >
                   {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
                 <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
@@ -872,7 +872,13 @@ const Checkout = ({ setExtendedTime }) => {
                       </span>
                       <img
                         className="chat-right-top-profile-image"
-                        src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
+                        src={
+                          checkoutData?.host_profile_image &&
+                          checkoutData?.host_profile_image !== "undefined" &&
+                          checkoutData?.host_profile_image !== "null"
+                            ? imageBase + checkoutData?.host_profile_image
+                            : defaultContact
+                        }
                         loading="lazy"
                         alt="Host"
                         onError={(e) => {
@@ -1729,11 +1735,7 @@ const Checkout = ({ setExtendedTime }) => {
                     </div>
                     {/* Add New Card Button */}
                     {selected && (
-                      <div
-                                                className="text-center ajdestmobileView"
-
-                        
-                      >
+                      <div className="text-center ajdestmobileView">
                         <Button
                           variant="success"
                           className="rounded-pill px-4 py-2"
@@ -1838,7 +1840,7 @@ const Checkout = ({ setExtendedTime }) => {
                 </h5>
                 <p style={{ fontSize: "15px" }}>
                   {isExpanded ||
-                    (checkoutData?.property_description?.length || 0) <= 200
+                  (checkoutData?.property_description?.length || 0) <= 200
                     ? checkoutData?.property_description
                     : `${checkoutData?.property_description?.slice(0, 200)}...`}
                 </p>
@@ -1877,8 +1879,9 @@ const Checkout = ({ setExtendedTime }) => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
-                              }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                              open === "collapseOne" ? "" : " "
+                            }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -1941,8 +1944,9 @@ const Checkout = ({ setExtendedTime }) => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
-                            }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                            open === "collapseTwo" ? "" : "collapsed"
+                          }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
@@ -2163,7 +2167,6 @@ const Checkout = ({ setExtendedTime }) => {
                   </div>
                 </div>
 
-
                 {/* <div className="chat-right-top-profile d-flex align-items-center">
                   <img
                     className="chat-right-top-profile-image img-fluid"
@@ -2261,7 +2264,13 @@ const Checkout = ({ setExtendedTime }) => {
                         </span>
                         <img
                           className="chat-right-top-profile-image"
-                          src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
+                          src={
+                            checkoutData?.host_profile_image &&
+                            checkoutData?.host_profile_image !== "undefined" &&
+                            checkoutData?.host_profile_image !== "null"
+                              ? imageBase + checkoutData?.host_profile_image
+                              : defaultContact
+                          }
                           loading="lazy"
                           alt="Host"
                           onError={(e) => {
@@ -2345,9 +2354,6 @@ const Checkout = ({ setExtendedTime }) => {
                   </div>
                 )}
 
-
-
-
                 {!isMobileWidth && (
                   <div
                     style={{
@@ -2388,7 +2394,13 @@ const Checkout = ({ setExtendedTime }) => {
                       >
                         <img
                           className="chat-right-top-profile-image"
-                          src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
+                          src={
+                            checkoutData?.host_profile_image &&
+                            checkoutData?.host_profile_image !== "undefined" &&
+                            checkoutData?.host_profile_image !== "null"
+                              ? imageBase + checkoutData?.host_profile_image
+                              : defaultContact
+                          }
                           loading="lazy"
                           alt="Host"
                           onError={(e) => {
@@ -2485,7 +2497,6 @@ const Checkout = ({ setExtendedTime }) => {
                   </div>
                 )}
 
-
                 {/* 
                 <MessageHost
                   type={userType === "host" ? "guest" : "host"}
@@ -2500,8 +2511,6 @@ const Checkout = ({ setExtendedTime }) => {
                 /> */}
               </Col>
             )}
-
-
           </Row>
         </Container>
       </div>

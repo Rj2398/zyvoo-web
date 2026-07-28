@@ -131,7 +131,7 @@ function Profile() {
   const [showFileUploadModal, setShowFileUploadModal] = useState(false);
   const [preview, setPreview] = useState(null);
 
-  console.log(preview, "preview******");
+  // console.log(preview, "preview******");
 
   //  verified
   const [isEmailVerified, setIsEmailVerified] = useState(false);
@@ -1361,16 +1361,6 @@ function Profile() {
                           flex: "flex-start",
                         }}
                       >
-                        {console.log(
-                          streetAddress
-                            ?.split(/[^a-zA-Z0-9\s]/)[1]
-                            ?.trim()
-                            ?.split(/\s+/)
-                            ?.slice(0, 2)
-                            ?.join(" "),
-                          "streetAddress"
-                        )}
-
                         <div className="user-data-list-item input-field">
                           <Autocomplete
                             apiKey={GoogleApi}

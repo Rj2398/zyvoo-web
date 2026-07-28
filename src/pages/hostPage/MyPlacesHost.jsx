@@ -104,7 +104,7 @@ function MyPlacesHost() {
           long: longitude,
         });
 
-        console.log("Current Location:", latitude, longitude);
+        // console.log("Current Location:", latitude, longitude);
       },
       (error) => {
         switch (error.code) {

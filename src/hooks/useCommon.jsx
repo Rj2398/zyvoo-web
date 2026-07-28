@@ -269,7 +269,7 @@ export default function useCommon() {
           payload
         );
         const { data } = response;
-        console.log(data);
+        // console.log(data);
 
         if (data) {
           toast.success(data?.message);
@@ -503,7 +503,7 @@ export default function useCommon() {
           message: data?.message,
         };
       } catch (error) {
-        console.log(error, "error******");
+        // console.log(error, "error******");
         const errorMessage =
           error.response?.data?.message ||
           error.message ||

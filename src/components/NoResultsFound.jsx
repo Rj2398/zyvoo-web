@@ -3,7 +3,7 @@ import { Container, Row, Col, Image } from "react-bootstrap";
 
 const NoResultsFound = () => {
   const [hasNoLocation, setHasNoLocation] = useState(true);
-  console.log(hasNoLocation, "hasNoLocation***");
+  // console.log(hasNoLocation, "hasNoLocation***");
 
   useEffect(() => {
     if (navigator.permissions) {

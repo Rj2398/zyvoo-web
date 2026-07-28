@@ -37,7 +37,7 @@ const ProductItem = ({
 
   const [disable, setDisable] = useState(true);
 
-  console.log(disable, "isloading data ");
+  // console.log(disable, "isloading data ");
 
   const navigate = useNavigate();
   const userData =

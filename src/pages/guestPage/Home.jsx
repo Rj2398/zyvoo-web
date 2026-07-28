@@ -101,7 +101,7 @@ const Home = () => {
   // }, []);
 
   const fetchList = async () => {
-    console.log(locationClear, "locationClearlocationClear");
+    // console.log(locationClear, "locationClearlocationClear");
     try {
       const res = await guestHomeData({
         user_id: login_id || "",

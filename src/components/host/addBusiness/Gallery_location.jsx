@@ -995,7 +995,6 @@ const GalleryLocation = ({
           />
         </InputGroup>
       </div>
-      {console.log(formData)}
       {errors.street && <Alert variant="danger">{errors.street}</Alert>}
       {/* <div
         style={{

@@ -3483,16 +3483,12 @@ const HostChat = () => {
                           {booking.booking_date}{" "}
                         </Card.Subtitle>
 
-                        {/* {console.log(lastMessages[booking.group_name]?.timestamp,"@@@@@@@@@@@")} */}
-
                         {lastMessages[booking.group_name]?.timestamp ? (
                           <div style={{ fontSize: "12px", color: "#b9b9b9" }}>
                             {/* {formatTimeAgo(lastMessages[booking.group_name]?.timestamp) || ""} */}
                             {formatTimeAgo(
                               lastMessages[booking.group_name]?.lastMessageDate
                             ) || ""}
-                            {/* {console.log(lastMessages[booking.group_name], "lastMessages[booking.group_name]@@@@@")} */}
-                            {/* {console.log(lastMessages[booking.group_name]?.timestamp, "lastMessages[booking.group_name]?.timestamp#####")} */}
                           </div>
                         ) : (
                           <div style={{ fontSize: "12px", color: "#b9b9b9" }}>

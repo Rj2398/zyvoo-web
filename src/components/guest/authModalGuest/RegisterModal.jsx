@@ -179,7 +179,7 @@ function RegisterModal(props) {
 
   const handleGoogleSignIn = async () => {
     try {
-      console.log("Social login call started...");
+      // console.log("Social login call started...");
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
@@ -317,7 +317,7 @@ function RegisterModal(props) {
       const result = await signInWithPopup(auth, fbProvider);
       const user = result.user;
 
-      console.log("Firebase User:", user);
+      // console.log("Firebase User:", user);
 
       const { displayName = "", email, uid = "" } = user || {};
 
@@ -337,10 +337,10 @@ function RegisterModal(props) {
         social_id: uid,
       };
 
-      console.log("Sending Payload to Backend:", payload);
+      // console.log("Sending Payload to Backend:", payload);
 
       const response = await SocialLogin(payload);
-      console.log("Backend Response:", response);
+      // console.log("Backend Response:", response);
 
       if (response?.status || response?.success) {
         // Added response?.success check just in case
@@ -382,7 +382,7 @@ function RegisterModal(props) {
         responseMode: "fragment", // Keeps data in the URL hash fragment
       });
 
-      console.log("Apple Initialized");
+      // console.log("Apple Initialized");
     };
 
     document.body.appendChild(script);
@@ -494,8 +494,6 @@ function RegisterModal(props) {
         lname: lname,
         social_id: idToken,
       };
-
-      console.log("Sending clean payload to backend:", payload);
 
       const response = await SocialLogin(payload);
 
@@ -1079,7 +1077,6 @@ function RegisterModal(props) {
               </p>
             )}
 
-            {console.log(errors, "error for call**")}
             <div
               className="custom-modal-label mt-3"
               style={{ marginLeft: isMobileWidth ? "5px" : "" }}

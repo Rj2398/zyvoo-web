@@ -252,7 +252,7 @@ export default function useAuth() {
         setManualLoading(true);
         const response = await api.post("login_email", payload);
         const { data } = response;
-        console.log(rememberMe, "check remberme check up");
+        // console.log(rememberMe, "check remberme check up");
 
         if (data?.data) {
           if (rememberMe) {

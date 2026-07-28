@@ -24,7 +24,7 @@ const CardAddHost = ({ enablePayment, callBack, allowCard }) => {
 
   // Apple Pay / Google Pay
   const [paymentRequest, setPaymentRequest] = useState(null);
-  console.log(paymentRequest, "request*****");
+  // console.log(paymentRequest, "request*****");
   useEffect(() => {
     const checkWindowWidth = () => {
       setIsMobileWidth(window.innerWidth <= 768);
@@ -68,7 +68,7 @@ const CardAddHost = ({ enablePayment, callBack, allowCard }) => {
 
     pr.on("paymentmethod", async (ev) => {
       try {
-        console.log("PAYMENT METHOD => ", ev.paymentMethod);
+        // console.log("PAYMENT METHOD => ", ev.paymentMethod);
 
         toast.success("Wallet payment method received");
 
@@ -76,7 +76,7 @@ const CardAddHost = ({ enablePayment, callBack, allowCard }) => {
 
         ev.complete("success");
       } catch (err) {
-        console.log(err);
+        // console.log(err);
 
         ev.complete("fail");
 
@@ -117,7 +117,7 @@ const CardAddHost = ({ enablePayment, callBack, allowCard }) => {
 
       toast.success("Card added successfully");
 
-      console.log("TOKEN => ", token);
+      // console.log("TOKEN => ", token);
 
       callBack(token.id);
     } catch (error) {

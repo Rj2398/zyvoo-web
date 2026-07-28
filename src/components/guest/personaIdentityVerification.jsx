@@ -48,7 +48,7 @@ const InlineInquiry = () => {
           templateId="itmpl_yEu1QvFA5fJ1zZ9RbUo1yroGahx2"
           environment="sandbox"
           onLoad={() => {
-            console.log("Loaded inline");
+            // console.log("Loaded inline");
           }}
           onComplete={({ status }) => {
             dispatch(personaStatus(status));

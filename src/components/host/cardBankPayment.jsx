@@ -44,8 +44,8 @@ const CardBankPayment = ({
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-      ? String(userData?.user_id)
-      : null;
+    ? String(userData?.user_id)
+    : null;
 
   const {
     getCardorBankList,
@@ -174,7 +174,7 @@ const CardBankPayment = ({
 
   if (isNumberValid) {
     // The number is valid for the selected country
-    console.log("Valid phone number!");
+    // console.log("Valid phone number!");
   } else {
     // The number is NOT valid for the selected country
     console.error("Invalid phone number format!");
@@ -1101,7 +1101,7 @@ const CardBankPayment = ({
               {label === "Bank Proof :"
                 ? bankDetails.bank_proof_document?.name || "No file choosen"
                 : bankDetails.verification_document_front?.name ||
-                "No file choosen"}
+                  "No file choosen"}
             </div>
 
             {/* UPLOAD ICON */}
@@ -1368,8 +1368,9 @@ const CardBankPayment = ({
           marginLeft: isMobileWidth && "38px",
         }}
       >
-        <option value="">{`${label == "SelectBankProofType" ? "Select Bank Proof Type" : label
-          }`}</option>
+        <option value="">{`${
+          label == "SelectBankProofType" ? "Select Bank Proof Type" : label
+        }`}</option>
       </Form.Label>
 
       {imageSrc && isMobileWidth ? (
@@ -2180,11 +2181,11 @@ const CardBankPayment = ({
                   style={
                     isMobileWidth
                       ? {
-                        position: "absolute",
-                        right: "15px",
-                        top: "15px",
-                        zindex: 1,
-                      }
+                          position: "absolute",
+                          right: "15px",
+                          top: "15px",
+                          zindex: 1,
+                        }
                       : {}
                   }
                 />

@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { Container, Row, Col, Card, Button, InputGroup, Form, } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  Button,
+  InputGroup,
+  Form,
+} from "react-bootstrap";
 import { FaStar } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import { SlidersHorizontal } from "lucide-react";
@@ -31,21 +39,18 @@ const formatDateToDay = (dateStr) => {
   return `${month} ${day}`;
 };
 
-
 const capitalizeFirst = (str) =>
   str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
-
-
 
 const MyPlaceHistory = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { routedData } = location.state || {};
-    const [propertyDetails, setPropertyDetails] = useState(); // Stores full API response data
+  const [propertyDetails, setPropertyDetails] = useState(); // Stores full API response data
   const [bookings, setBookings] = useState([]);
-  console.log(bookings,propertyDetails)
+  // console.log(bookings,propertyDetails)
   const propertyData = routedData;
-  console.log(propertyData)
+  // console.log(propertyData)
 
   useEffect(() => {
     if (!propertyData) {
@@ -60,17 +65,16 @@ const MyPlaceHistory = () => {
   useEffect(() => {
     const checkWindowWidth = () => {
       setIsMobileWidth(window.innerWidth <= 768);
-    }
+    };
 
     checkWindowWidth();
-    window.addEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
 
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
 
-
   const [addProperyShow, setAddPropertyShow] = useState(false);
- // Stores just the bookings array from API
+  // Stores just the bookings array from API
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(() => {
@@ -210,15 +214,25 @@ const MyPlaceHistory = () => {
                 <Col xs={12}>
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="mob-search-filter-in">
-                      <div className="mob-search-bar-back" style={{padding:'10px !important'}}>
+                      <div
+                        className="mob-search-bar-back"
+                        style={{ padding: "10px !important" }}
+                      >
                         <Link to="/">
-                          <i className="fa-regular fa-arrow-left" style={{ textAlign: 'center', fontSize: '20px' }}></i>
+                          <i
+                            className="fa-regular fa-arrow-left"
+                            style={{ textAlign: "center", fontSize: "20px" }}
+                          ></i>
                         </Link>
                       </div>
                     </div>
 
                     <div
-                      style={{ position: "relative", display: "inline-block" ,left:isMobileWidth && '-31px' }}
+                      style={{
+                        position: "relative",
+                        display: "inline-block",
+                        left: isMobileWidth && "-31px",
+                      }}
                       ref={calendarRef}
                     >
                       <InputGroup
@@ -236,7 +250,8 @@ const MyPlaceHistory = () => {
                       >
                         <img
                           src="/images/Host/date-range-host.svg"
-                          loading="lazy" alt="Calendar icon"
+                          loading="lazy"
+                          alt="Calendar icon"
                           width={20}
                           style={{ marginRight: "10px" }}
                         />
@@ -248,7 +263,7 @@ const MyPlaceHistory = () => {
                             "MMM d yyyy"
                           )} (EST)`}
                           style={{
-                            fontSize:isMobileWidth ?"12px":'16px',
+                            fontSize: isMobileWidth ? "12px" : "16px",
                             fontWeight: "500",
                             color: "#252849",
                             background: "none",
@@ -266,9 +281,11 @@ const MyPlaceHistory = () => {
                         >
                           <img
                             src="/images/Host/date-down-icon.svg"
-                            loading="lazy" alt="down arrow"
+                            loading="lazy"
+                            alt="down arrow"
                             width={15}
-                            style={{ marginRight: "10px" }} />
+                            style={{ marginRight: "10px" }}
+                          />
                         </span>
                       </InputGroup>
 
@@ -277,8 +294,8 @@ const MyPlaceHistory = () => {
                           className="my-place-date-range"
                           style={{
                             position: "fixed", // Changed from absolute to fixed
-                            top:isMobileWidth?"54%":"44%", // Center vertically
-                            left:isMobileWidth?"1%":"50%", // Center horizontally
+                            top: isMobileWidth ? "54%" : "44%", // Center vertically
+                            left: isMobileWidth ? "1%" : "50%", // Center horizontally
                             transform: "translate(3%, -58%)", // Center the calendar
                             zIndex: "1000",
                             background: "#fff",
@@ -286,10 +303,10 @@ const MyPlaceHistory = () => {
                             borderRadius: "10px",
                             border: "3px solid #3A4B4C",
                             width: "90vw", // Use viewport width
-                            maxWidth:isMobileWidth?"355px":"365px", // Maximum width
+                            maxWidth: isMobileWidth ? "355px" : "365px", // Maximum width
                             maxHeight: "80vh", // Maximum height
                             overflow: "auto", // Enable scrolling if needed
-                            boxShadow: "0 4px 20px rgba(0,0,0,0.15)"
+                            boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
                           }}
                         >
                           <DatePicker
@@ -326,7 +343,8 @@ const MyPlaceHistory = () => {
                         <Card.Img
                           variant="top"
                           src={imageBase + propertyDetails?.property_image}
-                          loading="lazy" alt="Property Image"
+                          loading="lazy"
+                          alt="Property Image"
                           style={{
                             height: "100px",
                             width: "100%",
@@ -337,11 +355,13 @@ const MyPlaceHistory = () => {
                       </div>
                       <div style={{ flex: "1" }}>
                         <Card.Title
-                          style={{
-                            // fontSize: "16px",
-                            // fontWeight: "bold",
-                            // marginBottom: "5px",
-                          }}
+                          style={
+                            {
+                              // fontSize: "16px",
+                              // fontWeight: "bold",
+                              // marginBottom: "5px",
+                            }
+                          }
                         >
                           {propertyData?.title}
                         </Card.Title>
@@ -353,7 +373,9 @@ const MyPlaceHistory = () => {
                             marginBottom: "5px",
                           }}
                         >
-                          <FaStar style={{ color: "#FFD700", marginRight: "5px" }} />
+                          <FaStar
+                            style={{ color: "#FFD700", marginRight: "5px" }}
+                          />
                           <span style={{ fontWeight: "500", color: "#333" }}>
                             {formatReview(propertyData?.property_rating)}
                           </span>
@@ -363,16 +385,18 @@ const MyPlaceHistory = () => {
                           </span>
                         </Card.Text>
 
-                        {!isMobileWidth &&<Card.Text
-                          style={{
-                            fontSize: "14px",
-                            color: "#999",
-                            marginBottom: "5px",
-                          }}
-                        >
-                          <i className="fa-solid fa-clock"></i> $
-                          {parseFloat(propertyData?.hourly_rate)} / h
-                        </Card.Text>}
+                        {!isMobileWidth && (
+                          <Card.Text
+                            style={{
+                              fontSize: "14px",
+                              color: "#999",
+                              marginBottom: "5px",
+                            }}
+                          >
+                            <i className="fa-solid fa-clock"></i> $
+                            {parseFloat(propertyData?.hourly_rate)} / h
+                          </Card.Text>
+                        )}
 
                         <Card.Text
                           style={{
@@ -383,18 +407,15 @@ const MyPlaceHistory = () => {
                         >
                           <img
                             src="/images/locations-grid/location-icon.svg"
-                            loading="lazy" alt="Location"
+                            loading="lazy"
+                            alt="Location"
                             style={{ width: "14px", marginRight: "8px" }}
                           />
                           {propertyDetails?.distance_miles} miles away
                         </Card.Text>
-                      
-
                       </div>
-
-                    
                     </div>
-                       <hr/>
+                    <hr />
                     <div className="d-flex" style={{ gap: "10px" }}>
                       <Button
                         onClick={() => ToogleBooking()}
@@ -406,7 +427,7 @@ const MyPlaceHistory = () => {
                           backgroundColor: "#2E3A35",
                           border: "none",
                           padding: "6px 12px",
-                          fontSize: "14px"
+                          fontSize: "14px",
                         }}
                       >
                         {propertyDetails?.property_status == "active"
@@ -423,7 +444,7 @@ const MyPlaceHistory = () => {
                           fontWeight: "500",
                           border: "1px solid #333",
                           padding: "6px 12px",
-                          fontSize: "14px"
+                          fontSize: "14px",
                         }}
                       >
                         Edit
@@ -458,30 +479,29 @@ const MyPlaceHistory = () => {
                         {/* Table content remains the same */}
                         <thead>
                           <tr>
-                            <th style={{ width: 80, background: "transparent" }}></th>
+                            <th
+                              style={{ width: 80, background: "transparent" }}
+                            ></th>
                             {days.map((day, index) => (
                               <th
                                 key={index}
                                 style={{
                                   minWidth: 120,
                                   height: 50,
-                                  backgroundColor:isMobileWidth?"rgb(214 230 225)":"rgb(239, 242, 245)",
+                                  backgroundColor: isMobileWidth
+                                    ? "rgb(214 230 225)"
+                                    : "rgb(239, 242, 245)",
                                   fontSize: 14,
-                                  color:isMobileWidth?"black": "#333",
+                                  color: isMobileWidth ? "black" : "#333",
                                   textAlign: "center",
                                   fontWeight: "600",
                                   position: "sticky",
                                   top: 0,
                                   zIndex: 5,
-                                  borderRadius:isMobileWidth && '12px',
-                              
+                                  borderRadius: isMobileWidth && "12px",
                                 }}
                               >
-
-                                 { formatDayLabel(day) }
-                                    
-                                
-                           
+                                {formatDayLabel(day)}
 
                                 {/* <div
                                   style={{
@@ -523,7 +543,7 @@ const MyPlaceHistory = () => {
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    height:60,
+                                    height: 60,
                                     borderRadius: 12,
                                     backgroundColor: "rgb(214, 230, 225)",
                                     padding: "0 18px",
@@ -543,12 +563,16 @@ const MyPlaceHistory = () => {
                                 let [slotHourStr, slotMinuteStr] = timeSlotLabel
                                   .split(" ")[0]
                                   .split(":");
-                                  let slotHour = parseInt(slotHourStr);
-                                  const slotMeridian = timeSlotLabel.split(" ")[1];
+                                let slotHour = parseInt(slotHourStr);
+                                const slotMeridian =
+                                  timeSlotLabel.split(" ")[1];
 
                                 if (slotMeridian === "PM" && slotHour !== 12) {
                                   slotHour += 12;
-                                } else if (slotMeridian === "AM" && slotHour === 12) {
+                                } else if (
+                                  slotMeridian === "AM" &&
+                                  slotHour === 12
+                                ) {
                                   slotHour = 0; // 12 AM (midnight) corresponds to hour 0
                                 }
 
@@ -557,8 +581,12 @@ const MyPlaceHistory = () => {
                                     .toString()
                                     .padStart(2, "0")}:${slotMinuteStr}:00`
                                 );
-                                const currentSlotEnd = new Date(currentSlotStart);
-                                currentSlotEnd.setHours(currentSlotEnd.getHours() + 1);
+                                const currentSlotEnd = new Date(
+                                  currentSlotStart
+                                );
+                                currentSlotEnd.setHours(
+                                  currentSlotEnd.getHours() + 1
+                                );
 
                                 for (const booking of bookingsForDay) {
                                   const [bookingStart24, bookingEnd24] =
@@ -592,20 +620,25 @@ const MyPlaceHistory = () => {
                                       //   fontSize: "12px", // Smaller font for multiple lines
                                       //   lineHeight: "1.3", // Adjust line height for readability
                                       // }}
-                                         style={{
-                                      padding: 0,
-                                      borderRadius: 12,
-                                      border: "none",
-                                      fontSize: "12px", // Smaller font for multiple lines
-                                      lineHeight: "1.3", // Adjust line height for readability
-                                      borderLeftColor: bookingToDisplay.booking_status ===
-                                        "finished" ? "#4AEAB1"
-                                        : bookingToDisplay.booking_status === "confirmed" 
-                                          ? "#85D6FF" : bookingToDisplay.booking_status ===
-                                          "waiting_payment" ? "#F5A43D" : "#ccc",
-                                          // borderTopColor:'black'
-                                        
-                                    }}
+                                      style={{
+                                        padding: 0,
+                                        borderRadius: 12,
+                                        border: "none",
+                                        fontSize: "12px", // Smaller font for multiple lines
+                                        lineHeight: "1.3", // Adjust line height for readability
+                                        borderLeftColor:
+                                          bookingToDisplay.booking_status ===
+                                          "finished"
+                                            ? "#4AEAB1"
+                                            : bookingToDisplay.booking_status ===
+                                              "confirmed"
+                                            ? "#85D6FF"
+                                            : bookingToDisplay.booking_status ===
+                                              "waiting_payment"
+                                            ? "#F5A43D"
+                                            : "#ccc",
+                                        // borderTopColor:'black'
+                                      }}
                                     >
                                       {showName && (
                                         <>
@@ -624,52 +657,55 @@ const MyPlaceHistory = () => {
                                             //   boxShadow: "0 0 4px rgba(0,0,0,0.05)",
                                             // }}
 
-                                                   style={{
-                                           border: "1px solid #e0e0e0",
-                                            borderRadius: "16px",
-                                            padding: "12px",
-                                            margin: "0",
-                                            // margin: "8px 0",
-                                            display: "flex",
-                                            flexDirection: "column",
-                                            justifyContent: "flex-start",
-                                            fontFamily: "sans-serif",
-                                            position: "relative",
-                                            boxShadow: "0 0 4px rgba(0,0,0,0.05)",
-                                            borderLeft: bookingToDisplay.booking_status === "finished"
-                                             ? "2px solid #4AEAB1"
-                                             : bookingToDisplay.booking_status === "confirmed"
-                                             ? "2px solid #85D6FF"
-                                             : bookingToDisplay.booking_status === "waiting_payment"
-                                             ? "2px solid #F5A43D"
-                                             : "2px solid #ccc",
-
-                                            
-                                          }}
-
+                                            style={{
+                                              border: "1px solid #e0e0e0",
+                                              borderRadius: "16px",
+                                              padding: "12px",
+                                              margin: "0",
+                                              // margin: "8px 0",
+                                              display: "flex",
+                                              flexDirection: "column",
+                                              justifyContent: "flex-start",
+                                              fontFamily: "sans-serif",
+                                              position: "relative",
+                                              boxShadow:
+                                                "0 0 4px rgba(0,0,0,0.05)",
+                                              borderLeft:
+                                                bookingToDisplay.booking_status ===
+                                                "finished"
+                                                  ? "2px solid #4AEAB1"
+                                                  : bookingToDisplay.booking_status ===
+                                                    "confirmed"
+                                                  ? "2px solid #85D6FF"
+                                                  : bookingToDisplay.booking_status ===
+                                                    "waiting_payment"
+                                                  ? "2px solid #F5A43D"
+                                                  : "2px solid #ccc",
+                                            }}
                                           >
                                             <div
-                                              style={{
-                                                // position: "absolute",
-                                                // top: 0,
-                                                // bottom: 0,
-                                                // left: 0,
-                                                // width: "5px",
-                                                // backgroundColor:
-                                                //   bookingToDisplay.booking_status ===
-                                                //     "finished"
-                                                //     ? "#3EF2B1"
-                                                //     : bookingToDisplay.booking_status ===
-                                                //       "confirmed"
-                                                //       ? "#85D6FF"
-                                                //       : bookingToDisplay.booking_status ===
-                                                //         "waiting-payment"
-                                                //         ? "#F5A43D"
-                                                //         : "#ccc",
-                                                // borderTopLeftRadius: "20px",
-                                                // borderBottomLeftRadius: "20px",
-
-                                              }}
+                                              style={
+                                                {
+                                                  // position: "absolute",
+                                                  // top: 0,
+                                                  // bottom: 0,
+                                                  // left: 0,
+                                                  // width: "5px",
+                                                  // backgroundColor:
+                                                  //   bookingToDisplay.booking_status ===
+                                                  //     "finished"
+                                                  //     ? "#3EF2B1"
+                                                  //     : bookingToDisplay.booking_status ===
+                                                  //       "confirmed"
+                                                  //       ? "#85D6FF"
+                                                  //       : bookingToDisplay.booking_status ===
+                                                  //         "waiting-payment"
+                                                  //         ? "#F5A43D"
+                                                  //         : "#ccc",
+                                                  // borderTopLeftRadius: "20px",
+                                                  // borderBottomLeftRadius: "20px",
+                                                }
+                                              }
                                             />
 
                                             <div
@@ -711,25 +747,32 @@ const MyPlaceHistory = () => {
                                             </div> */}
 
                                             <div
-                                            style={{
-                                              color:
-                                                bookingToDisplay.booking_status ===
+                                              style={{
+                                                color:
+                                                  bookingToDisplay.booking_status ===
                                                   "finished"
-                                                  ? "#4AEAB1"
-                                                  : bookingToDisplay.booking_status ===
-                                                    "confirmed"
+                                                    ? "#4AEAB1"
+                                                    : bookingToDisplay.booking_status ===
+                                                      "confirmed"
                                                     ? "#85D6FF"
                                                     : bookingToDisplay.booking_status ===
                                                       "waiting_payment"
-                                                      ? "#F5A43D"
-                                                      : "#ccc",
-                                              fontSize: "14px",
-                                              fontWeight: "500",
-                                            }}
-                                          >
-                                            { bookingToDisplay?.booking_status=="waiting_payment"?"Waiting payment":
-                                               bookingToDisplay?.booking_status?.charAt(0)?.toUpperCase() + bookingToDisplay?.booking_status?.slice(1)}
-                                          </div>
+                                                    ? "#F5A43D"
+                                                    : "#ccc",
+                                                fontSize: "14px",
+                                                fontWeight: "500",
+                                              }}
+                                            >
+                                              {bookingToDisplay?.booking_status ==
+                                              "waiting_payment"
+                                                ? "Waiting payment"
+                                                : bookingToDisplay?.booking_status
+                                                    ?.charAt(0)
+                                                    ?.toUpperCase() +
+                                                  bookingToDisplay?.booking_status?.slice(
+                                                    1
+                                                  )}
+                                            </div>
 
                                             <div
                                               style={{
@@ -738,7 +781,9 @@ const MyPlaceHistory = () => {
                                                 marginTop: "4px",
                                               }}
                                             >
-                                              {bookingToDisplay.booking_start_end}
+                                              {
+                                                bookingToDisplay.booking_start_end
+                                              }
                                             </div>
                                           </div>
                                         </>
@@ -768,9 +813,10 @@ const MyPlaceHistory = () => {
                 </Col>
               </Row>
             </>
-
           ) : (
-            <Row className="my-place-mobile-reorder"> {/* Add this class */}
+            <Row className="my-place-mobile-reorder">
+              {" "}
+              {/* Add this class */}
               <Col
                 md={9}
                 style={{
@@ -782,7 +828,11 @@ const MyPlaceHistory = () => {
               >
                 <div className="d-flex justify-content-between align-items-center mb-3">
                   <div
-                    style={{ position: "relative", display: "inline-block",marginLeft:'22px' }}
+                    style={{
+                      position: "relative",
+                      display: "inline-block",
+                      marginLeft: "22px",
+                    }}
                     ref={calendarRef}
                   >
                     <InputGroup
@@ -800,7 +850,8 @@ const MyPlaceHistory = () => {
                     >
                       <img
                         src="/images/Host/date-range-host.svg" // Ensure this path is correct
-                        loading="lazy" alt="Calendar icon"
+                        loading="lazy"
+                        alt="Calendar icon"
                         width={20}
                         style={{ marginRight: "10px" }}
                       />
@@ -819,7 +870,7 @@ const MyPlaceHistory = () => {
                           border: "none",
                           boxShadow: "none",
                           cursor: "pointer",
-                          marginLeft:'-11px'
+                          marginLeft: "-11px",
                         }}
                       />
                       <span
@@ -832,14 +883,17 @@ const MyPlaceHistory = () => {
                         {/* ▼ */}
                         <img
                           src="/images/Host/date-down-icon.svg" // Ensure this path is correct
-                          loading="lazy" alt="down arrow"
+                          loading="lazy"
+                          alt="down arrow"
                           width={15}
-                          style={{ marginRight: "10px" }} />
+                          style={{ marginRight: "10px" }}
+                        />
                       </span>
                     </InputGroup>
 
                     {showCalendar && (
-                      <div className="my-place-date-range"
+                      <div
+                        className="my-place-date-range"
                         style={{
                           position: "absolute",
                           top: "110%",
@@ -913,14 +967,17 @@ const MyPlaceHistory = () => {
                         minWidth: "100%", // Ensures table takes at least 100% width
                         borderCollapse: "separate", // Removes double borders between cells
                         borderSpacing: "6px", // Adds space between borders for better readability
-                        padding:'0px 0px'
+                        padding: "0px 0px",
                       }}
                     >
                       <thead>
                         <tr>
-                          <th style={{ width: 80, background: "transparent" }} ></th>{" "}
+                          <th
+                            style={{ width: 80, background: "transparent" }}
+                          ></th>{" "}
                           {days.map((day, index) => (
-                            <th key={index}
+                            <th
+                              key={index}
                               style={{
                                 minWidth: 120,
                                 height: 50,
@@ -932,16 +989,14 @@ const MyPlaceHistory = () => {
                                 position: "sticky", // Sticky header for horizontal scroll
                                 top: 0,
                                 padding: 20,
-                                fontSize:"15px",
-                                fontWeight:'400',
-                                color:'black',
+                                fontSize: "15px",
+                                fontWeight: "400",
+                                color: "black",
                                 zIndex: 5,
-                                borderRadius:'12px'
-                               
+                                borderRadius: "12px",
                               }}
                             >
-
-                               {formatDayLabel(day)}
+                              {formatDayLabel(day)}
                               {/* <div
                                 style={{
                                   display: "flex",
@@ -976,7 +1031,6 @@ const MyPlaceHistory = () => {
                                 border: "1px solid #ddd",
                                 width: 80,
                                 borderRadius: 12,
-                                
                               }}
                             >
                               <div
@@ -988,10 +1042,9 @@ const MyPlaceHistory = () => {
                                   borderRadius: "20px",
                                   backgroundColor: "#EFF2F5",
                                   padding: "0 18px",
-                                  fontWeight:'400',
-                                  color:'black',
-                                  fontSize:'15px'
-
+                                  fontWeight: "400",
+                                  color: "black",
+                                  fontSize: "15px",
                                 }}
                               >
                                 {timeSlotLabel}
@@ -1061,13 +1114,18 @@ const MyPlaceHistory = () => {
                                       border: "none",
                                       fontSize: "12px", // Smaller font for multiple lines
                                       lineHeight: "1.3", // Adjust line height for readability
-                                      borderLeftColor: bookingToDisplay.booking_status ===
-                                        "finished" ? "#4AEAB1"
-                                        : bookingToDisplay.booking_status === "confirmed" 
-                                          ? "#85D6FF" : bookingToDisplay.booking_status ===
-                                          "waiting_payment" ? "#F5A43D" : "#ccc",
-                                          // borderTopColor:'black'
-                                        
+                                      borderLeftColor:
+                                        bookingToDisplay.booking_status ===
+                                        "finished"
+                                          ? "#4AEAB1"
+                                          : bookingToDisplay.booking_status ===
+                                            "confirmed"
+                                          ? "#85D6FF"
+                                          : bookingToDisplay.booking_status ===
+                                            "waiting_payment"
+                                          ? "#F5A43D"
+                                          : "#ccc",
+                                      // borderTopColor:'black'
                                     }}
                                     // style={{
                                     //   padding: 8,
@@ -1077,11 +1135,10 @@ const MyPlaceHistory = () => {
                                     //   lineHeight: "1.3", // Adjust line height for readability
                                     //   borderLeftColor: bookingToDisplay.booking_status ===
                                     //     "finished" ? "#4AEAB1"
-                                    //     : bookingToDisplay.booking_status === "confirmed" 
+                                    //     : bookingToDisplay.booking_status === "confirmed"
                                     //       ? "#85D6FF" : bookingToDisplay.booking_status ===
                                     //       "waiting_payment" ? "#F5A43D" : "#ccc",
                                     // }}
-                                    
                                   >
                                     {showName && (
                                       <>
@@ -1098,16 +1155,20 @@ const MyPlaceHistory = () => {
                                             justifyContent: "flex-start",
                                             fontFamily: "sans-serif",
                                             position: "relative",
-                                            boxShadow: "0 0 4px rgba(0,0,0,0.05)",
-                                            borderLeft: bookingToDisplay.booking_status === "finished"
-                                             ? "2px solid #4AEAB1"
-                                             : bookingToDisplay.booking_status === "confirmed"
-                                             ? "2px solid #85D6FF"
-                                             : bookingToDisplay.booking_status === "waiting_payment"
-                                             ? "2px solid #F5A43D"
-                                             : "2px solid #ccc",
+                                            boxShadow:
+                                              "0 0 4px rgba(0,0,0,0.05)",
+                                            borderLeft:
+                                              bookingToDisplay.booking_status ===
+                                              "finished"
+                                                ? "2px solid #4AEAB1"
+                                                : bookingToDisplay.booking_status ===
+                                                  "confirmed"
+                                                ? "2px solid #85D6FF"
+                                                : bookingToDisplay.booking_status ===
+                                                  "waiting_payment"
+                                                ? "2px solid #F5A43D"
+                                                : "2px solid #ccc",
                                           }}
-                                          
                                         >
                                           {/* <div
                                             style={{
@@ -1147,21 +1208,28 @@ const MyPlaceHistory = () => {
                                             style={{
                                               color:
                                                 bookingToDisplay.booking_status ===
-                                                  "finished"
+                                                "finished"
                                                   ? "#4AEAB1"
                                                   : bookingToDisplay.booking_status ===
                                                     "confirmed"
-                                                    ? "#85D6FF"
-                                                    : bookingToDisplay.booking_status ===
-                                                      "waiting_payment"
-                                                      ? "#F5A43D"
-                                                      : "#ccc",
+                                                  ? "#85D6FF"
+                                                  : bookingToDisplay.booking_status ===
+                                                    "waiting_payment"
+                                                  ? "#F5A43D"
+                                                  : "#ccc",
                                               fontSize: "14px",
                                               fontWeight: "500",
                                             }}
                                           >
-                                            { bookingToDisplay?.booking_status=="waiting_payment"?"Waiting payment":
-                                               bookingToDisplay?.booking_status?.charAt(0)?.toUpperCase() + bookingToDisplay?.booking_status?.slice(1)}
+                                            {bookingToDisplay?.booking_status ==
+                                            "waiting_payment"
+                                              ? "Waiting payment"
+                                              : bookingToDisplay?.booking_status
+                                                  ?.charAt(0)
+                                                  ?.toUpperCase() +
+                                                bookingToDisplay?.booking_status?.slice(
+                                                  1
+                                                )}
                                           </div>
 
                                           <div
@@ -1189,15 +1257,15 @@ const MyPlaceHistory = () => {
                                 //     textAlign: "center",
                                 //   }}
                                 // />
-                                <td 
-                                    style={{
-                                      padding: 0,
-                                      borderRadius: 12,
-                                      border: "1px solid #eee",
-                                      fontSize: "12px", // Smaller font for multiple lines
-                                      lineHeight: "1.3", // Adjust line height for readability
-                                    }}
-                                  ></td>
+                                <td
+                                  style={{
+                                    padding: 0,
+                                    borderRadius: 12,
+                                    border: "1px solid #eee",
+                                    fontSize: "12px", // Smaller font for multiple lines
+                                    lineHeight: "1.3", // Adjust line height for readability
+                                  }}
+                                ></td>
                               );
                             })}
                           </tr>
@@ -1207,7 +1275,6 @@ const MyPlaceHistory = () => {
                   </div>
                 </div>
               </Col>
-
               <Col md={3}>
                 <Card
                   className="my-place-mobile-card" // Add this class
@@ -1220,22 +1287,20 @@ const MyPlaceHistory = () => {
                     height: "100%", // Limits height for scrolling
                     display: "flex",
                     flexDirection: "column",
-                    justifyContent: "space-between"
+                    justifyContent: "space-between",
                   }}
                 >
-
-
                   <Card.Img
                     variant="top"
                     src={imageBase + propertyDetails?.property_image}
-                    loading="lazy" alt="Property Image"
+                    loading="lazy"
+                    alt="Property Image"
                     style={{
                       height: "350px",
                       objectFit: "cover",
                       borderRadius: "12px",
                     }}
                   />
-
 
                   <Card.Body style={{ padding: "0px" }}>
                     <Card.Title
@@ -1244,7 +1309,7 @@ const MyPlaceHistory = () => {
                         fontWeight: "400",
                         marginBottom: "5px",
                         marginTop: "10px",
-                        color:'black'
+                        color: "black",
                       }}
                     >
                       {propertyData?.title}
@@ -1255,14 +1320,32 @@ const MyPlaceHistory = () => {
                         fontSize: "16px",
                         color: "#666",
                         marginBottom: "5px",
-                        alignItems:'baseline'
+                        alignItems: "baseline",
                       }}
                     >
-                      <FaStar style={{ color: "#FCA800", marginRight: "5px",marginBottom:'5px' }} />
-                      <span style={{ fontWeight: "400", color: "#FCA800",fontSize:'14px' }}>
+                      <FaStar
+                        style={{
+                          color: "#FCA800",
+                          marginRight: "5px",
+                          marginBottom: "5px",
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontWeight: "400",
+                          color: "#FCA800",
+                          fontSize: "14px",
+                        }}
+                      >
                         {formatReview(propertyData?.property_rating)}
                       </span>
-                      <span style={{ color: "#A4A4A4", marginRight: "5px",fontSize:'14px' }}>
+                      <span
+                        style={{
+                          color: "#A4A4A4",
+                          marginRight: "5px",
+                          fontSize: "14px",
+                        }}
+                      >
                         {" "}
                         ({propertyData?.property_review_count})
                       </span>
@@ -1271,12 +1354,23 @@ const MyPlaceHistory = () => {
                         style={{
                           fontWeight: "400",
                           marginLeft: "10px",
-                          fontSize:'14px'
+                          fontSize: "14px",
                         }}
                       >
-                        <i className="fa-solid fa-clock" style={{ color: "#3A4B4C",}}></i> <span style={{ whiteSpace: 'nowrap', padding: 0, margin: 0,color:'black' }}>
-                         {'$'+ parseFloat(propertyData?.hourly_rate)+'/h'}
-                      </span>
+                        <i
+                          className="fa-solid fa-clock"
+                          style={{ color: "#3A4B4C" }}
+                        ></i>{" "}
+                        <span
+                          style={{
+                            whiteSpace: "nowrap",
+                            padding: 0,
+                            margin: 0,
+                            color: "black",
+                          }}
+                        >
+                          {"$" + parseFloat(propertyData?.hourly_rate) + "/h"}
+                        </span>
                       </span>
                     </Card.Text>
 
@@ -1285,13 +1379,17 @@ const MyPlaceHistory = () => {
                         fontSize: "14px",
                         color: "#999",
                         marginBottom: "5px",
-
                       }}
                     >
                       <img
                         src="/images/locations-grid/location-icon.svg"
-                        loading="lazy" alt="Location"
-                        style={{ width: "14px", marginRight: "5px",marginBottom:'4px' }}
+                        loading="lazy"
+                        alt="Location"
+                        style={{
+                          width: "14px",
+                          marginRight: "5px",
+                          marginBottom: "4px",
+                        }}
                       />
                       {propertyData?.distance_miles} miles away
                     </Card.Text>
@@ -1329,7 +1427,7 @@ const MyPlaceHistory = () => {
                           fontWeight: "400",
                           backgroundColor: "#2E3A35",
                           border: "none",
-                          padding: '10px'
+                          padding: "10px",
                         }}
                       >
                         {propertyDetails?.property_status == "active"
@@ -1355,7 +1453,6 @@ const MyPlaceHistory = () => {
               </Col>
             </Row>
           )}
-
         </Container>
       </main>
 
@@ -1367,13 +1464,11 @@ const MyPlaceHistory = () => {
         }}
         property_id={propertyData?.property_id} // Pass property ID if needed for editing
       />
-
     </>
   );
 };
 
 export default MyPlaceHistory;
-
 
 // import { useEffect, useRef, useState } from "react";
 // import { Container, Row, Col, Card, Button, InputGroup, Form, } from "react-bootstrap";
@@ -1408,11 +1503,8 @@ export default MyPlaceHistory;
 //   return `${month} ${day}`;
 // };
 
-
 // const capitalizeFirst = (str) =>
 //   str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
-
-
 
 // const MyPlaceHistory = () => {
 //   const location = useLocation();
@@ -1444,7 +1536,6 @@ export default MyPlaceHistory;
 
 //     return () => window.removeEventListener('resize', checkWindowWidth);
 //   }, []);
-
 
 //   const [addProperyShow, setAddPropertyShow] = useState(false);
 //  // Stores just the bookings array from API
@@ -1765,7 +1856,6 @@ export default MyPlaceHistory;
 //                           />
 //                           {propertyDetails?.distance_miles} miles away
 //                         </Card.Text>
-
 
 //                       </div>
 //                     </div>
@@ -2352,11 +2442,11 @@ export default MyPlaceHistory;
 //                                       lineHeight: "1.3", // Adjust line height for readability
 //                                       borderLeftColor: bookingToDisplay.booking_status ===
 //                                         "finished" ? "#4AEAB1"
-//                                         : bookingToDisplay.booking_status === "confirmed" 
+//                                         : bookingToDisplay.booking_status === "confirmed"
 //                                           ? "#85D6FF" : bookingToDisplay.booking_status ===
 //                                           "waiting_payment" ? "#F5A43D" : "#ccc",
 //                                           // borderTopColor:'black'
-                                        
+
 //                                     }}
 //                                     // style={{
 //                                     //   padding: 8,
@@ -2366,11 +2456,11 @@ export default MyPlaceHistory;
 //                                     //   lineHeight: "1.3", // Adjust line height for readability
 //                                     //   borderLeftColor: bookingToDisplay.booking_status ===
 //                                     //     "finished" ? "#4AEAB1"
-//                                     //     : bookingToDisplay.booking_status === "confirmed" 
+//                                     //     : bookingToDisplay.booking_status === "confirmed"
 //                                     //       ? "#85D6FF" : bookingToDisplay.booking_status ===
 //                                     //       "waiting_payment" ? "#F5A43D" : "#ccc",
 //                                     // }}
-                                    
+
 //                                   >
 //                                     {showName && (
 //                                       <>
@@ -2476,7 +2566,7 @@ export default MyPlaceHistory;
 //                                 //     textAlign: "center",
 //                                 //   }}
 //                                 // />
-//                                 <td 
+//                                 <td
 //                                     style={{
 //                                       padding: 0,
 //                                       borderRadius: 12,
@@ -2511,7 +2601,6 @@ export default MyPlaceHistory;
 //                   }}
 //                 >
 
-
 //                   <Card.Img
 //                     variant="top"
 //                     src={imageBase + propertyDetails?.property_image}
@@ -2522,7 +2611,6 @@ export default MyPlaceHistory;
 //                       borderRadius: "12px",
 //                     }}
 //                   />
-
 
 //                   <Card.Body style={{ padding: "0px" }}>
 //                     <Card.Title
@@ -2556,7 +2644,7 @@ export default MyPlaceHistory;
 //                       <span
 //                         style={{
 //                           fontWeight: "500",
-                         
+
 //                           marginLeft: "10px",
 //                         }}
 //                       >

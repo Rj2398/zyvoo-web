@@ -2,7 +2,7 @@ import React from "react";
 import { toast } from "react-toastify";
 
 const ShareModal = ({ onClose, property_id_Share }) => {
-  console.log(property_id_Share, "property share idddd***");
+  // console.log(property_id_Share, "property share idddd***");
   const backdropStyle = {
     position: "fixed",
     top: 0,

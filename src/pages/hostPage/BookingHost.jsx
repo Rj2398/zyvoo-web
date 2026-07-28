@@ -74,7 +74,7 @@ const BookingHost = () => {
 
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [viewDetails, setViewDetails] = useState();
-  console.log(viewDetails?.property_id, "discusss********");
+  // console.log(viewDetails?.property_id, "discusss********");
 
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||

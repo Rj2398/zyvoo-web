@@ -40,7 +40,7 @@ export const appleConfiguration = {
 let isLoggingOut = false;
 // Cleaned Session Eviction Utility Flow
 export const LogoutError = (errorMessage) => {
-  console.log(errorMessage, "error message123");
+  // console.log(errorMessage, "error message123");
   if (isLoggingOut) return;
 
   isLoggingOut = true;
