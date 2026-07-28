@@ -92,7 +92,7 @@ const Header = () => {
         !userId ||
         (typeof userId !== "string" && typeof userId !== "number")
       ) {
-        console.error("Invalid user_id:", userId);
+        // console.error("Invalid user_id:", userId);
         return;
       }
 
