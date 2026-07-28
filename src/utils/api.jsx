@@ -62,7 +62,7 @@ guestApi.interceptors.request.use(
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       } else {
-        console.warn("No token found, guestApi request might be unauthorized.");
+        // console.warn("No token found, guestApi request might be unauthorized.");
       }
       return config;
     } catch (error) {
@@ -70,7 +70,7 @@ guestApi.interceptors.request.use(
       return Promise.reject(error);
     }
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 formDataApi.interceptors.request.use(
@@ -86,7 +86,7 @@ formDataApi.interceptors.request.use(
       return Promise.reject(error);
     }
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 api.interceptors.request.use(
@@ -102,7 +102,7 @@ api.interceptors.request.use(
       return Promise.reject(error);
     }
   },
-  (error) => Promise.reject(error),
+  (error) => Promise.reject(error)
 );
 
 // --- 3. GLOBAL RESPONSE INTERCEPTORS ---
@@ -113,7 +113,7 @@ api.interceptors.request.use(
 const handleResponseSuccess = (response) => {
   if (!response) {
     return Promise.reject(
-      new Error("Server not responding. Please try again."),
+      new Error("Server not responding. Please try again.")
     );
   }
 
@@ -156,7 +156,7 @@ const handleResponseError = (err) => {
 [api, guestApi, formDataApi].forEach((instance) => {
   instance.interceptors.response.use(
     handleResponseSuccess,
-    handleResponseError,
+    handleResponseError
   );
 });
 

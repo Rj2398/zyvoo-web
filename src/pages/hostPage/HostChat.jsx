@@ -2616,7 +2616,7 @@ const HostChat = () => {
               attempts++;
               continue;
             }
-            console.warn(`Failed to add participant ${identity}:`, error);
+            // console.warn(`Failed to add participant ${identity}:`, error);
             return false;
           }
         }
@@ -2631,7 +2631,7 @@ const HostChat = () => {
           await chatChannel.join();
         }
       } catch (joinError) {
-        console.warn("Error joining channel:", joinError);
+        // console.warn("Error joining channel:", joinError);
       }
 
       // Notify backend about the channel
@@ -2646,7 +2646,7 @@ const HostChat = () => {
           });
         }
       } catch (error) {
-        console.warn("Error notifying backend about channel:", error);
+        // console.warn("Error notifying backend about channel:", error);
       }
 
       return chatChannel;
@@ -2722,7 +2722,7 @@ const HostChat = () => {
                     type: "media",
                   };
                 } catch (error) {
-                  console.warn("Error fetching media URL:", error);
+                  // console.warn("Error fetching media URL:", error);
                   return { ...baseMsg, type: "text" };
                 }
               }

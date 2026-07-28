@@ -350,7 +350,7 @@ const Home = () => {
 
           setBookingDetails(response.data);
         } else {
-          console.warn("No data found in timer response");
+          // console.warn("No data found in timer response");
         }
       } catch (error) {
         const errorMessage =

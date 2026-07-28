@@ -1600,9 +1600,9 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                                           setCoordinates({ lat, lng });
                                           // getSearchLocation({ lat, lng });
                                         } else {
-                                          console.warn(
-                                            "No valid address or location found in the selected place."
-                                          );
+                                          // console.warn(
+                                          //   "No valid address or location found in the selected place."
+                                          // );
 
                                           setSelectedPlace("");
                                           // getSearchLocation(null);

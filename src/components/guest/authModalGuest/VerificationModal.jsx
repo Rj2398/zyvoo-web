@@ -198,7 +198,7 @@ function VerificationModal({
     try {
       const email = user?.email;
       if (!email) {
-        console.warn("User email is missing.");
+        // console.warn("User email is missing.");
         return;
       }
       const emailResponse = await forgot_password_email({ email });
@@ -211,7 +211,7 @@ function VerificationModal({
     try {
       const user_num = user?.otp_send_to || "";
       if (!user_num) {
-        console.warn("User number (otp_send_to) is missing.");
+        // console.warn("User number (otp_send_to) is missing.");
         return;
       }
       const clean_num = countryCodes
