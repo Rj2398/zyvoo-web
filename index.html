@@ -23,7 +23,7 @@
     /> -->
 
     <link
-      href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
       rel="stylesheet"
     />
 
@@ -130,7 +130,9 @@
 
     <div id="root"></div>
     <script>
-      window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = { isDisabled: true };
+      if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = { isDisabled: true };
+      }
     </script>
     <script type="module" src="/src/main.jsx"></script>
     <script
@@ -145,12 +147,6 @@
     <script src="/js/guest.js" type="text/javascript" defer></script>
     <script src="/js/animation.js" type="text/javascript" defer></script> -->
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" defer></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"
-      defer
-    ></script>
-
     <script>
       window.addEventListener("load", () => {
         const scripts = [
@@ -158,6 +154,7 @@
           "https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js",
           "/js/bootstrap.bundle.min.js",
           "/js/roundslider.min.js",
+          "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js",
           "/js/countrycode-flag-jquery.min.js",
           "/js/guest.js",
           "/js/animation.js",
@@ -165,7 +162,7 @@
         scripts.forEach((src) => {
           const s = document.createElement("script");
           s.src = src;
-          s.defer = true;
+          s.async = false;
           document.body.appendChild(s);
         });
       });
