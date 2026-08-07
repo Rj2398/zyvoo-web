@@ -15,11 +15,13 @@ import { useNavigate } from "react-router-dom";
 import { setAddnewPropertyState } from "../../store/slices/hostuserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoginModal } from "../../store/slices/userSlice";
+import PaymentFlagModal from "../../components/host/PaymentFlagModal";
 
 function MyPlacesHost() {
   const locationState = useLocation();
   const { userInfo } = useSelector(({ user }) => user);
-
+  const [isModalOpen, setIsModalOpen] = useState(null);
+  const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [getList, setGetList] = useState([]);
@@ -88,6 +90,8 @@ function MyPlacesHost() {
   //     console.error("Geolocation is not supported by your browser.");
   //   }
   // };
+  const handleOpen = () => setIsPaymentModalVisible(true);
+  const handleClose = () => setIsPaymentModalVisible(false);
 
   const getLocation = () => {
     if (!("geolocation" in navigator)) {
@@ -137,6 +141,7 @@ function MyPlacesHost() {
         longitude: location?.long,
       });
       if (response) {
+        setIsModalOpen(response?.has_payment_method);
         setGetList(response?.data);
       }
     } catch (error) {
@@ -511,9 +516,23 @@ function MyPlacesHost() {
               <FaCirclePlus
                 style={{ fontSize: "50px", color: "#3A4B4C" }}
                 onClick={() => {
-                  setPropertyId(null);
-                  setAddPropertyShow(true);
-                  dispatch(setAddnewPropertyState(true));
+                  if (isModalOpen === false) {
+                    // 1. If payout setup is required, open the warning modal
+                    handleOpen();
+                  } else {
+                    // 2. Otherwise, proceed with adding a new property
+                    setPropertyId(null);
+                    setAddPropertyShow(true);
+                    dispatch(setAddnewPropertyState(true));
+                  }
+
+                  // if (isModalOpen) {
+                  //   handleOpen();
+                  // }
+
+                  // setPropertyId(null);
+                  // setAddPropertyShow(true);
+                  // dispatch(setAddnewPropertyState(true));
                 }}
               />
               <div
@@ -554,6 +573,12 @@ function MyPlacesHost() {
           getDataList();
         }}
         property_id={property_id}
+      />
+      <PaymentFlagModal
+        isOpen={isPaymentModalVisible}
+        onClose={handleClose}
+        title="Message"
+        message="Complete your payout setup in Profile before publishing your listing."
       />
     </div>
   );
