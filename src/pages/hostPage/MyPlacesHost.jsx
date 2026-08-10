@@ -142,7 +142,7 @@ function MyPlacesHost() {
         longitude: location?.long,
       });
       if (response) {
-        console.log(response, "respons of the (***");
+        console.log(response?.has_payment_method, "respons of the (***");
         setIsModalOpen(response?.has_payment_method);
         setGetList(response?.data);
       }
@@ -539,9 +539,18 @@ function MyPlacesHost() {
               />
               <div
                 onClick={() => {
-                  setPropertyId(null);
-                  setAddPropertyShow(true);
-                  dispatch(setAddnewPropertyState(true));
+                  if (isModalOpen === false) {
+                    // 1. If payout setup is required, open the warning modal
+                    handleOpen();
+                  } else {
+                    // 2. Otherwise, proceed with adding a new property
+                    setPropertyId(null);
+                    setAddPropertyShow(true);
+                    dispatch(setAddnewPropertyState(true));
+                  }
+                  // setPropertyId(null);
+                  // setAddPropertyShow(true);
+                  // dispatch(setAddnewPropertyState(true));
                 }}
               >
                 Add new Place
