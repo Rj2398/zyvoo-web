@@ -21,7 +21,7 @@ function MyPlacesHost() {
   const locationState = useLocation();
   const { userInfo } = useSelector(({ user }) => user);
   const [isModalOpen, setIsModalOpen] = useState(null);
-  console.log(isModalOpen, "test***");
+  // console.log(isModalOpen, "test***");
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -142,7 +142,7 @@ function MyPlacesHost() {
         longitude: location?.long,
       });
       if (response) {
-        console.log(response?.has_payment_method, "respons of the (***");
+        // console.log(response?.has_payment_method, "respons of the (***");
         setIsModalOpen(response?.has_payment_method);
         setGetList(response?.data);
       }
