@@ -31,7 +31,7 @@ const PaymentFlagModal = ({ isOpen, onClose, title, message }) => {
 
         {/* Action Button */}
         <button style={styles.actionButton} onClick={handleAction}>
-          Okay
+          Go to Profile
         </button>
       </div>
     </div>
@@ -105,11 +105,11 @@ const styles = {
     width: "100%",
     padding: "14px 0",
     backgroundColor: "#4AEAB1",
-    color: "#ffffff",
+    color: "#000000",
     border: "none",
     borderRadius: "24px",
     fontSize: "16px",
-    fontWeight: "600",
+    fontWeight: "500",
     cursor: "pointer",
   },
 };
