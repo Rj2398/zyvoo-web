@@ -217,6 +217,7 @@ function RegisterModal(props) {
         props?.CallBack(false);
         localStorage.setItem("SocialLogin", true);
         navigate("/");
+        window.location.href = "/";
       } else {
         // Backend se aane wala error message dikhayein
         toast.error(response?.data?.message || "Server error occurred.");
@@ -350,6 +351,7 @@ function RegisterModal(props) {
         props?.CallBack?.(false);
         localStorage.setItem("SocialLogin", true);
         navigate("/");
+        window.location.href = "/";
       } else {
         toast.error(
           response?.message || "Login successful, but backend error occurred."
@@ -504,6 +506,7 @@ function RegisterModal(props) {
         localStorage.setItem("SocialLogin", true);
         props?.CallBack?.(false);
         navigate("/");
+        window.location.href = "/";
       } else {
         toast.error(
           response?.data?.message || "Login verification failed on backend."

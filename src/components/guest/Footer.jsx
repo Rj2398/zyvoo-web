@@ -12,7 +12,7 @@ const Footer = () => {
   const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO));
   const useType = localStorage.getItem(KEYS.USER_TYPE);
   const [credentials, setCredentials] = useState(null);
-  console.log(credentials, "Credenatial *******");
+  // console.log(credentials, "Credenatial *******");
   const [isLoaded, setIsLoaded] = useState(false);
 
   const userId = userData?.user_id ? String(userData?.user_id) : null;
@@ -47,7 +47,7 @@ const Footer = () => {
         sessionStorage.getItem(KEYS.USER_INFO);
 
       const isSocial = localStorage.getItem("SocialLogin") === "true";
-
+      console.log(isSocial, "IS social******");
       // Agar user data mila toh parse karega, nahi toh SocialLogin true hone par auth set karega
       const data = rawUser
         ? JSON.parse(rawUser)
