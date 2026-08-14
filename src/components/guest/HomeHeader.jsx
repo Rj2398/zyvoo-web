@@ -238,15 +238,41 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownOpen]);
-
   const handleLogout = () => {
-    dispatch(clearUser()); // Clear Redux user state
-    toast.success("Logout Successfully."); // Then do UI cleanup
-    navigate("/");
-    setShowLogoutModal(false);
-    setDropdownOpen(false); // Close dropdown after selection
+    // 1. Redux user state clear
+    dispatch(clearUser());
+
+    // 2. Saare Auth & User Data storage se saaf
     localStorage.removeItem("SocialLogin");
+   
+
+    if (KEYS?.USER_INFO) {
+      localStorage.removeItem(KEYS.USER_INFO);
+      sessionStorage.removeItem(KEYS.USER_INFO);
+    }
+
+    if (KEYS?.USER_TYPE) {
+      localStorage.setItem(KEYS.USER_TYPE, "guest");
+    }
+
+    // 3. UI elements close
+    setShowLogoutModal(false);
+    setDropdownOpen(false);
+
+    // 4. Toast alert
+    toast.success("Logout Successfully.");
+
+    // 5. Hard refresh & redirect to Home (Sabse end me)
+    window.location.href = "/";
   };
+  // const handleLogout = () => {
+  //   dispatch(clearUser()); // Clear Redux user state
+  //   toast.success("Logout Successfully."); // Then do UI cleanup
+  //   navigate("/");
+  //   setShowLogoutModal(false);
+  //   setDropdownOpen(false); // Close dropdown after selection
+  //   localStorage.removeItem("SocialLogin");
+  // };
 
   const toggleDropdown = () => {
     if (userData) {

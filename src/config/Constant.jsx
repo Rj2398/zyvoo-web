@@ -53,6 +53,7 @@ export const LogoutError = (errorMessage) => {
   localStorage.removeItem("USER_INFO");
   sessionStorage.removeItem("USER_INFO");
   localStorage.removeItem("SocialLogin");
+  localStorage.removeItem("zyvoCredentials");
 
   // 4. Force state alignment after a micro-timeout
   setTimeout(() => {

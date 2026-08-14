@@ -98,6 +98,7 @@ const Header = () => {
     navigate("/");
     setShowLogoutModal(false);
     localStorage.removeItem("SocialLogin");
+
     setDropdownOpen(false);
   };
 

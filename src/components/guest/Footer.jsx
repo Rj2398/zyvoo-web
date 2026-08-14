@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import RegisterModal from "./authModalGuest/RegisterModal";
 import useCommon from "../../hooks/useCommon";
@@ -11,6 +11,10 @@ const Footer = () => {
 
   const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO));
   const useType = localStorage.getItem(KEYS.USER_TYPE);
+  const [credentials, setCredentials] = useState(null);
+  console.log(credentials, "Credenatial *******");
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const userId = userData?.user_id ? String(userData?.user_id) : null;
 
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false);
@@ -19,6 +23,47 @@ const Footer = () => {
   const [registerModal, setRegisterModal] = useState(true);
 
   const [isHovered, setIsHovered] = useState(null);
+
+  // useEffect(() => {
+  //   // Ye code tabhi chalega jab component client side load ho chuka hoga
+  //   try {
+  //     const data = JSON.parse(
+  //       localStorage.getItem(KEYS.USER_INFO) ||
+  //         sessionStorage.getItem(KEYS.USER_INFO) ||
+  //       "null"
+  //     );
+  //     setCredentials(data);
+  //   } catch (e) {
+  //     setCredentials(null);
+  //   } finally {
+  //     setIsLoaded(true);
+  //   }
+  // }, []);
+
+  useEffect(() => {
+    try {
+      const rawUser =
+        localStorage.getItem(KEYS.USER_INFO) ||
+        sessionStorage.getItem(KEYS.USER_INFO);
+
+      const isSocial = localStorage.getItem("SocialLogin") === "true";
+
+      // Agar user data mila toh parse karega, nahi toh SocialLogin true hone par auth set karega
+      const data = rawUser
+        ? JSON.parse(rawUser)
+        : isSocial
+        ? { isSocial: true }
+        : null;
+
+      setCredentials(data);
+    } catch (e) {
+      const isSocial = localStorage.getItem("SocialLogin") === "true";
+      setCredentials(isSocial ? { isSocial: true } : null);
+    } finally {
+      setIsLoaded(true);
+    }
+  }, []);
+
   const handleModalToggle = (modalType, state) => {
     if (modalType === "register") {
       setIsRegisterModalOpen(state);
@@ -69,7 +114,7 @@ const Footer = () => {
       url: "https://www.linkedin.com",
     },
   ];
-
+  if (!isLoaded) return null;
   return (
     <footer>
       <div className="footer-wrap">
@@ -118,26 +163,27 @@ const Footer = () => {
                     <Link to="/contactUs">Contact Us</Link>,
                   ]}
                 />
-
-                <FooterItem
-                  title="Account"
-                  links={[
-                    <Link
-                      to="#"
-                      onClick={() => handleModalToggle("register", true)}
-                    >
-                      {" "}
-                      Register{" "}
-                    </Link>,
-                    <Link
-                      to="#"
-                      onClick={() => handleModalToggle("login", true)}
-                    >
-                      {" "}
-                      Login{" "}
-                    </Link>,
-                  ]}
-                />
+                {credentials === null && (
+                  <FooterItem
+                    title="Account"
+                    links={[
+                      <Link
+                        key="register"
+                        to="#"
+                        onClick={() => handleModalToggle("register", true)}
+                      >
+                        Register
+                      </Link>,
+                      <Link
+                        key="login"
+                        to="#"
+                        onClick={() => handleModalToggle("login", true)}
+                      >
+                        Login
+                      </Link>,
+                    ]}
+                  />
+                )}
 
                 <FooterItem
                   title="Resources"

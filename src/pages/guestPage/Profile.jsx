@@ -441,6 +441,7 @@ function Profile() {
     navigate("/");
     setShowLogoutModal(false);
     localStorage.removeItem("SocialLogin");
+    localStorage.removeItem("zyvoCredentials");
   };
 
   useEffect(() => {
