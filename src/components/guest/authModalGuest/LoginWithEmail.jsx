@@ -142,6 +142,7 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
 
         if (toggleModel) {
           navigate("/");
+          window.location.href = "/";
         } else {
           setVerifyModl(true);
           setCreatePassword(data?.password);
