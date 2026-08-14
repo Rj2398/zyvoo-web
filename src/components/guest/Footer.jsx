@@ -47,7 +47,7 @@ const Footer = () => {
         sessionStorage.getItem(KEYS.USER_INFO);
 
       const isSocial = localStorage.getItem("SocialLogin") === "true";
-      console.log(isSocial, "IS social******");
+      // console.log(isSocial, "IS social******");
       // Agar user data mila toh parse karega, nahi toh SocialLogin true hone par auth set karega
       const data = rawUser
         ? JSON.parse(rawUser)
