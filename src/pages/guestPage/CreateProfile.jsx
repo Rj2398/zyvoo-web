@@ -242,6 +242,7 @@ const CreateProfile = () => {
       return;
     }
     navigate("/");
+    localStorage.setItem("setSkipuser", true);
   };
 
   const handleEdit = (type, index, value) => {

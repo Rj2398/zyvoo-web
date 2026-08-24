@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserType } from "../../store/slices/userSlice";
-import { clearUser } from "../../store/slices/userSlice";
+import { setUserType, clearUser, setLoginModal } from "../../store/slices/userSlice";
 import Constant, { imageBase, KEYS } from "../../config/Constant";
 import { toast } from "react-toastify";
 import useChat from "../../hooks/host/useChat";
@@ -14,11 +13,18 @@ import RegisterModal from "./authModalGuest/RegisterModal";
 import LanguageModal from "../../pages/LanguageModal";
 
 const Header = () => {
-  const { userInfo } = useSelector(({ user }) => user);
+  const { userInfo, loginModal } = useSelector(({ user }) => user);
 
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (loginModal) {
+      setIsLoginModalOpen(true);
+      setModalToggleValue(false);
+    }
+  }, [loginModal]);
   const { getTwilioToken } = useChat();
   const { guestUnReadBookings, guestMarkBookings, isLoading } = useCommon();
 
@@ -30,8 +36,8 @@ const Header = () => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
   const [unreadCountChat, setUnreadCountChat] = useState(0);
 
   const profileData = useSelector((state) => state.profile);
@@ -185,7 +191,12 @@ const Header = () => {
 
   const handleModalToggle = (modalType, state) => {
     if (modalType === "register") setIsRegisterModalOpen(state);
-    if (modalType === "login") setIsLoginModalOpen(state);
+    if (modalType === "login") {
+      setIsLoginModalOpen(state);
+      if (!state) {
+        dispatch(setLoginModal(false));
+      }
+    }
   };
 
   useEffect(() => {
@@ -264,7 +275,7 @@ const Header = () => {
           >
             <ul
               className="list-unstyled d-flex mb-0 gap-3"
-              // style={{ padding: "10px" }}
+            // style={{ padding: "10px" }}
             >
               {location.pathname === "/aboutUs" ? (
                 <li>
@@ -482,14 +493,12 @@ const Header = () => {
                     profileData?.profileData?.profile_image
                       ? typeof profileData?.profileData?.profile_image ===
                         "object"
-                        ? `${
-                            imageBase +
-                            profileData?.profileData?.profile_image
-                              ?.profile_image_url
-                          }`
-                        : `${
-                            imageBase + profileData?.profileData?.profile_image
-                          }`
+                        ? `${imageBase +
+                        profileData?.profileData?.profile_image
+                          ?.profile_image_url
+                        }`
+                        : `${imageBase + profileData?.profileData?.profile_image
+                        }`
                       : "/images/nav-section/user-profile1.png"
                   }
                   loading="lazy"
@@ -750,7 +759,10 @@ const Header = () => {
       <RegisterModal
         show={isLoginModalOpen}
         onHide={() => handleModalToggle("login", false)}
-        CallBack={(bool) => setIsLoginModalOpen(bool)}
+        CallBack={(bool) => {
+          setIsLoginModalOpen(bool);
+          if (!bool) dispatch(setLoginModal(false));
+        }}
         loginModal={modalToggleValue}
         ToggleVal={(bool) => setModalToggleValue(bool)}
       />

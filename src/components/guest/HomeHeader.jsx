@@ -6,7 +6,7 @@ import "react-day-picker/style.css";
 import Autocomplete from "react-google-autocomplete";
 import { Client as ConversationsClient } from "@twilio/conversations";
 import { GOOGLE_KEY, imageBase, KEYS } from "../../config/Constant";
-import { clearUser, setUserType } from "../../store/slices/userSlice";
+import { clearUser, setUserType, setLoginModal } from "../../store/slices/userSlice";
 import Constant from "../../config/Constant";
 import Home from "../../pages/guestPage/Home";
 import {
@@ -66,7 +66,14 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const sliderRef = useRef(null);
-  const { userInfo } = useSelector(({ user }) => user);
+  const { userInfo, loginModal } = useSelector(({ user }) => user);
+
+  useEffect(() => {
+    if (loginModal) {
+      setIsLoginModalOpen(true);
+      setModalToggleValue(false);
+    }
+  }, [loginModal]);
   // const [showCloseIcon, setShowCloseIcon] = useState(false);
   const [activeCloseIcons, setActiveCloseIcons] = useState({});
   // console.log(userInfo)
@@ -76,8 +83,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   const login_id = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || localSaved?.user_id
-    ? String(localSaved?.user_id)
-    : null;
+      ? String(localSaved?.user_id)
+      : null;
 
   // const access_token = localSaved?.access_token;
   const access_token = localSaved?.access_token;
@@ -157,7 +164,9 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
     if (modalType === "login") {
       setIsLoginModalOpen(state);
       if (state === true) {
-        setModalToggleValue(true); // or false depending on your login modal logic
+        setModalToggleValue(false); // false means Login modal mode
+      } else {
+        dispatch(setLoginModal(false));
       }
     }
   };
@@ -244,7 +253,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
 
     // 2. Saare Auth & User Data storage se saaf
     localStorage.removeItem("SocialLogin");
-   
+
 
     if (KEYS?.USER_INFO) {
       localStorage.removeItem(KEYS.USER_INFO);
@@ -419,7 +428,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   ];
 
   // Search Query
-  const handleSearchQuery = () => {};
+  const handleSearchQuery = () => { };
 
   const [showMore, setShowMore] = useState(false);
   const [isCleaned, setIsCleaned] = useState(false);
@@ -838,8 +847,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
 
     // Update display value
     setFlexibleDate(
-      `${formattedDate} | ${updatedFromTime || "Not Selected"} - ${
-        updatedToTime || "Not Selected"
+      `${formattedDate} | ${updatedFromTime || "Not Selected"} - ${updatedToTime || "Not Selected"
       }`
     );
 
@@ -991,8 +999,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       ...(selectedValue != "any_type" &&
         selectedValue != "" &&
         selectedValue != 1 && {
-          place_type: selectedValue == "any_type" ? "" : selectedValue,
-        }),
+        place_type: selectedValue == "any_type" ? "" : selectedValue,
+      }),
       minimum_price: values[0],
       ...(values[1] != RangeValue?.max && { maximum_price: values[1] }),
 
@@ -1620,7 +1628,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
 
                                           setSelectedPlace(
                                             place.formatted_address ||
-                                              place.name
+                                            place.name
                                           );
 
                                           setCoordinates({ lat, lng });
@@ -1685,7 +1693,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                                   fontWeight: "400",
                                 }}
                                 onClick={handleShow}
-                                // onClick={(e) => e.currentTarget.nextSibling.classList.toggle("show"),} // Open dropdown on click
+                              // onClick={(e) => e.currentTarget.nextSibling.classList.toggle("show"),} // Open dropdown on click
                               >
                                 {"Time"}
                               </Button>
@@ -1852,7 +1860,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                     >
                       <ul
                         className="list-unstyled d-flex mb-0"
-                        // style={{ padding: "10px" }}
+                      // style={{ padding: "10px" }}
                       >
                         <li className="me-3">
                           <Link
@@ -2307,16 +2315,14 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                               src={
                                 profileData?.profileData?.profile_image
                                   ? typeof profileData?.profileData
-                                      ?.profile_image === "object"
-                                    ? `${
-                                        imageBase +
-                                        profileData?.profileData?.profile_image
-                                          ?.profile_image_url
-                                      }`
-                                    : `${
-                                        imageBase +
-                                        profileData?.profileData?.profile_image
-                                      }`
+                                    ?.profile_image === "object"
+                                    ? `${imageBase +
+                                    profileData?.profileData?.profile_image
+                                      ?.profile_image_url
+                                    }`
+                                    : `${imageBase +
+                                    profileData?.profileData?.profile_image
+                                    }`
                                   : "/images/nav-section/user-profile1.png"
                               }
                               alt="User Profile"
@@ -2660,7 +2666,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
     <!-- MAP-BUTTON --> */}
         <div
           className="mob-show-map animate__animated animate__backInUp animate__delay-1s"
-          // onClick={handleShowMap}
+        // onClick={handleShowMap}
         ></div>
         {/* <!-- MAP-BUTTON --> */}
       </header>
@@ -2681,7 +2687,10 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       <RegisterModal
         show={isLoginModalOpen}
         onHide={() => handleModalToggle("login", false)}
-        CallBack={(bool) => setIsLoginModalOpen(bool)}
+        CallBack={(bool) => {
+          setIsLoginModalOpen(bool);
+          if (!bool) dispatch(setLoginModal(false));
+        }}
         loginModal={modalToggleValue}
         ToggleVal={(bool) => setModalToggleValue(bool)}
       />
@@ -3165,9 +3174,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                             transform: "translate3d(0, 0, 0)",
                             backfaceVisibility: "hidden",
                           }}
-                          className={`hide-slider-pulse ${
-                            !hasChanged || hour === 0 ? "range-ss" : ""
-                          }`}
+                          className={`hide-slider-pulse ${!hasChanged || hour === 0 ? "range-ss" : ""
+                            }`}
                           onClick={(e) => {
                             if (
                               e.target.tagName === "circle" &&
@@ -3636,12 +3644,11 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                   <div
                     className="position-absolute top-0 start-0 h-100"
                     style={{
-                      width: `${
-                        ((values[0] - (RangeValue?.min ?? 0)) /
+                      width: `${((values[0] - (RangeValue?.min ?? 0)) /
                           ((RangeValue?.max ?? 2000) -
                             (RangeValue?.min ?? 0))) *
                         100
-                      }%`,
+                        }%`,
                       background: "#fff",
                       opacity: 0.8,
                       pointerEvents: "none",
@@ -3652,13 +3659,12 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                   <div
                     className="position-absolute top-0 end-0 h-100"
                     style={{
-                      width: `${
-                        (1 -
+                      width: `${(1 -
                           (values[1] - (RangeValue?.min ?? 0)) /
-                            ((RangeValue?.max ?? 2000) -
-                              (RangeValue?.min ?? 0))) *
+                          ((RangeValue?.max ?? 2000) -
+                            (RangeValue?.min ?? 0))) *
                         100
-                      }%`,
+                        }%`,
                       background: "#fff",
                       opacity: 0.8,
                       pointerEvents: "none",
@@ -3688,29 +3694,25 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                           height: "6px",
                           borderRadius: "3px",
                           background: `linear-gradient(to right,
-                            #007bff ${
-                              ((values[0] - (RangeValue?.min ?? 0)) /
-                                ((RangeValue?.max ?? 2000) -
-                                  (RangeValue?.min ?? 0))) *
-                              100
+                            #007bff ${((values[0] - (RangeValue?.min ?? 0)) /
+                              ((RangeValue?.max ?? 2000) -
+                                (RangeValue?.min ?? 0))) *
+                            100
                             }%,
-                            #000 ${
-                              ((values[0] - (RangeValue?.min ?? 0)) /
-                                ((RangeValue?.max ?? 2000) -
-                                  (RangeValue?.min ?? 0))) *
-                              100
+                            #000 ${((values[0] - (RangeValue?.min ?? 0)) /
+                              ((RangeValue?.max ?? 2000) -
+                                (RangeValue?.min ?? 0))) *
+                            100
                             }%,
-                            #000 ${
-                              ((values[1] - (RangeValue?.min ?? 0)) /
-                                ((RangeValue?.max ?? 2000) -
-                                  (RangeValue?.min ?? 0))) *
-                              100
+                            #000 ${((values[1] - (RangeValue?.min ?? 0)) /
+                              ((RangeValue?.max ?? 2000) -
+                                (RangeValue?.min ?? 0))) *
+                            100
                             }%,
-                            #007bff ${
-                              ((values[1] - (RangeValue?.min ?? 0)) /
-                                ((RangeValue?.max ?? 2000) -
-                                  (RangeValue?.min ?? 0))) *
-                              100
+                            #007bff ${((values[1] - (RangeValue?.min ?? 0)) /
+                              ((RangeValue?.max ?? 2000) -
+                                (RangeValue?.min ?? 0))) *
+                            100
                             }%
                           )`,
                         }}
@@ -4145,7 +4147,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         className="d-flex flex-wrap filter-radio-custum-text"
                         // Add this - START
                         disabled={isDisabled}
-                        // Add this - END
+                      // Add this - END
                       >
                         {section.options.map((option, idx) => (
                           <ToggleButton
@@ -4167,7 +4169,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                             }}
                             // Add this - START
                             disabled={isDisabled}
-                            // Add this - END
+                          // Add this - END
                           >
                             {option}
                           </ToggleButton>
@@ -4410,7 +4412,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         : "white",
                       border:
                         selectedActivitiesFilter.includes(activity.name) &&
-                        isMobileWidth
+                          isMobileWidth
                           ? "1px solid blue"
                           : "1px solid #ccc",
                       borderRadius: "12px",
@@ -4502,7 +4504,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                           : "white",
                         border:
                           selectedActivitiesFilter.includes(activity.name) &&
-                          isMobileWidth
+                            isMobileWidth
                             ? "1px solid blue"
                             : "1px solid #ccc",
                         padding: isMobileWidth ? "10px" : "20px",

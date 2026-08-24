@@ -50,19 +50,20 @@ const Routers = () => {
       <Route path="/exploreArticles" element={ <Layout> <ExploreArticles /> </Layout> } />
       <Route path="/articles-detail/:id" element={ <Layout> <ArticalDetails /> </Layout> } />
       <Route path="/create-profile" element={ <Layout> <CreateProfile /> </Layout> } />
-      <Route path="/notifications" element={ <Layout> <Notifications /> </Layout> } />
+      <Route path="/notifications" element={ <PrivateRoute> <Layout> <Notifications /> </Layout> </PrivateRoute> } />
       <Route path="/helpCenter" element={ <Layout> <HelpCenter /> </Layout> } />
       <Route path="/explore-guides" element={ <Layout> <ExploreGuides /> </Layout> } />
       <Route path="/guide-detail/:id" element={ <Layout> <GuideDetails /> </Layout> } />
 
       <Route path="/exploreArticles" element={ <PrivateRoute> <Layout> <ExploreArticles /> </Layout> </PrivateRoute> } />
       <Route path="/profile" element={ <PrivateRoute> <Layout> <Profile /> </Layout> </PrivateRoute> } />
+      <Route path="/wishlist" element={ <PrivateRoute> <Layout> <WishList /> </Layout> </PrivateRoute> } />
       <Route path="/WishList" element={ <PrivateRoute> <Layout> <WishList /> </Layout> </PrivateRoute> } />
       <Route path="/wishlistDetails" element={ <PrivateRoute> <Layout> <WishListDetails /> </Layout> </PrivateRoute> } />
 
       <Route path="/host-listing" element={ <PrivateRoute> <Layout> <HostListing /> </Layout></PrivateRoute> } />
       <Route path="/location/:id" element={ <Layout> <Location /> </Layout> } />
-      <Route path="/myplaces" element={<MyPlaces />} />
+      <Route path="/myplaces" element={ <PrivateRoute> <Layout> <MyPlaces /> </Layout> </PrivateRoute> } />
 
       <Route path="/payment-host" element={ <PrivateRoute> <Layout> <PaymentHost /> </Layout> </PrivateRoute> } />
       {/* <Route path="/payment-host" element={  <Layout> <PaymentHost /> </Layout>  } /> */}
