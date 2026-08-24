@@ -19,7 +19,7 @@ const PrivateRoute = ({ children }) => {
       dispatch(setLoginModal(true));
     } else {
       const path = location.pathname.toLowerCase();
-      const hostRoutes = ["/host-listing", "/payment-host", "/myplaces", "/my-place-history"];
+      const hostRoutes = ["/host-listing", "/payment-host", "/myplaces",];
       if (hostRoutes.includes(path)) {
         localStorage.setItem(KEYS.USER_TYPE, "host");
         dispatch(setUserType("host"));
