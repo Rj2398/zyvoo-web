@@ -1,14 +1,17 @@
-import React, { memo, useMemo } from "react";
-import { KEYS } from "../config/Constant";
+import React, { memo, useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
+import Constant, { KEYS } from "../config/Constant";
 import HeaderGuest from "../components/guest/Header";
 import HeaderHost from "../components/host/Header";
 import Footer from "../components/guest/Footer";
-import HomeHeader from "../components/guest/HomeHeader";
 import Header from "../components/guest/Header";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserType } from "../store/slices/userSlice";
 
 const Layout = ({ children }) => {
-  const { userInfo } = useSelector(({ user }) => user);
+  const dispatch = useDispatch();
+  const location = useLocation();
+  const { userInfo, userType: reduxUserType } = useSelector(({ user }) => user);
 
   // const localSaved = JSON.parse(localStorage.getItem(KEYS.USER_INFO));
   const localSaved =
@@ -20,11 +23,26 @@ const Layout = ({ children }) => {
     : null || localSaved?.user_id
     ? String(localSaved?.user_id)
     : null;
-  // ✅ Read once and memoize for performance (avoids repeated localStorage access)
-  const userType = useMemo(() => localStorage.getItem(KEYS.USER_TYPE), []);
+
+  const userType = useMemo(() => {
+    const path = location.pathname.toLowerCase();
+    const hostRoutes = ["/host-listing", "/payment-host", "/myplaces", "/my-place-history"];
+    if (login_id && hostRoutes.includes(path)) {
+      localStorage.setItem(KEYS.USER_TYPE, "host");
+      Constant.selectedFlow = "host";
+      return "host";
+    }
+    return localStorage.getItem(KEYS.USER_TYPE) || reduxUserType || "guest";
+  }, [login_id, location.pathname, reduxUserType]);
+
+  useEffect(() => {
+    if (userType === "host") {
+      dispatch(setUserType("host"));
+    }
+  }, [userType, dispatch]);
 
   // ✅ Choose header based on user type
-  const HeaderComponent = userType === "guest" ? HeaderGuest : HeaderHost;
+  const HeaderComponent = userType === "host" ? HeaderHost : HeaderGuest;
 
   return (
     <>
