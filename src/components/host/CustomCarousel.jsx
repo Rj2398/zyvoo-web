@@ -57,57 +57,59 @@ const CustomCarousel = ({ images, onEdit, onDelete, propertyId, data }) => {
     // borderBottom: "1px solid #ddd",
     borderBottom: isMobileWidth ? "none" : "1px solid #ddd",
 
-     appearance: "none",         
-     WebkitAppearance: "none",    
-     color: "black", 
+    appearance: "none",
+    WebkitAppearance: "none",
+    color: "black",
   };
 
   return (
     <div style={{
-        position: "relative",
-        height: isMobileWidth ? "250px" : "350px",
-        borderRadius: "20px",
-        overflow: "hidden",
+      position: "relative",
+      height: isMobileWidth ? "250px" : "350px",
+      borderRadius: "20px",
+      overflow: "hidden",
+    }} >
+      <div className="carousel-inner-top" style={{
+        position: "absolute", top: "10px", left: "10px",
+        right: "10px", display: "flex", alignItems: "center", zIndex: 10,
       }} >
-      <div className="carousel-inner-top" style={{ position: "absolute", top: "10px", left: "10px",
-        right: "10px", display: "flex", alignItems: "center", zIndex: 10, }} >
-          {(data?.is_instant_book || data?.is_instant_book != 0) && (
-            <h3 style={{ color: "black", background: "white", padding: " 10px", borderRadius: "20px", margin: 0}}               >
-              <i className="fa-solid fa-bolt"></i> Instant book
-            </h3>
-          ) }
+        {(data?.is_instant_book || data?.is_instant_book != 0) && (
+          <h3 style={{ color: "black", background: "white", padding: " 10px", borderRadius: "20px", margin: 0 }}               >
+            <i className="fa-solid fa-bolt"></i> Instant book
+          </h3>
+        )}
       </div>
       {/* Three Dots Icon */}
       <div onClick={() => setShowDropdown(!showDropdown)} style={{
-          position: "absolute",
-          top: "10px",
-          right: "10px",
-          cursor: "pointer",
-          zIndex: 10,
-          padding: "5px",
-          // borderRadius: "50%",
-          // backgroundColor:'white'
-          // background: "rgba(0, 0, 0, 0.6)",
-        }}>
-        
-          {/* <BsThreeDots size={25} color="black" /> */}
-          <img src="/images/Host/edit.png" loading="lazy" alt="edit" style={{width: isMobileWidth ? "22px" :"30px"}}/>
+        position: "absolute",
+        top: "10px",
+        right: "10px",
+        cursor: "pointer",
+        zIndex: 10,
+        padding: "5px",
+        // borderRadius: "50%",
+        // backgroundColor:'white'
+        // background: "rgba(0, 0, 0, 0.6)",
+      }}>
+
+        {/* <BsThreeDots size={25} color="black" /> */}
+        <img src="/images/Host/edit.png" loading="lazy" alt="edit" style={{ width: isMobileWidth ? "22px" : "30px" }} />
       </div>
 
       {/* Dropdown Menu */}
       {showDropdown && (
         <div style={{
-            position: "absolute",
-            top: "50px",
-            right: "10px",
-            background: "#fff",
-            boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-            borderRadius: isMobileWidth ? "20px" : "5px",
-             padding: isMobileWidth ? "1px 0px 0px 8px" : "",
-            overflow: "hidden",
-            zIndex: 20,
-            width:"180px"
-          }} >
+          position: "absolute",
+          top: "50px",
+          right: "10px",
+          background: "#fff",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+          borderRadius: isMobileWidth ? "20px" : "5px",
+          padding: isMobileWidth ? "1px 0px 0px 8px" : "",
+          overflow: "hidden",
+          zIndex: 20,
+          width: "180px"
+        }} >
           <button style={dropdownItemStyle}
             onClick={() => {
               onEdit && onEdit(true);
@@ -116,7 +118,7 @@ const CustomCarousel = ({ images, onEdit, onDelete, propertyId, data }) => {
             }} >
             Edit
           </button>
-          <button style={dropdownItemStyle} 
+          <button style={dropdownItemStyle}
             onClick={() => {
               // onDelete && onDelete(true);
               setShowDropdown(false);
@@ -129,26 +131,26 @@ const CustomCarousel = ({ images, onEdit, onDelete, propertyId, data }) => {
 
       {showLogoutModal && (
         <div style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0,0,0,0.5)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            zIndex: 1050,
-            padding:isMobileWidth ? '20px': ""
-          }} >
-          <div style={{ 
-              width: "90%",
-              borderRadius: "13px",
-              backgroundColor: "white",
-              padding: "20px",
-              maxWidth: "400px",
-            }}>
-            <div style={{ display: "flex", justifyContent: "flex-end"}} >
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1050,
+          padding: isMobileWidth ? '20px' : ""
+        }} >
+          <div style={{
+            width: "90%",
+            borderRadius: "13px",
+            backgroundColor: "white",
+            padding: "20px",
+            maxWidth: "400px",
+          }}>
+            <div style={{ display: "flex", justifyContent: "flex-end" }} >
               <button onClick={() => setShowLogoutModal(false)}
                 style={{
                   background: "#3A4B4C",
@@ -169,39 +171,39 @@ const CustomCarousel = ({ images, onEdit, onDelete, propertyId, data }) => {
 
             <div style={{ textAlign: "center", padding: "0 20px" }}>
               <h3 style={{
-                  fontWeight: "600",
-                  fontSize: "28px",
-                  color: "#000000",
-                  marginBottom: "10px",
-                  fontFamily: "sans-serif poppins",
-                }}>
+                fontWeight: "600",
+                fontSize: "28px",
+                color: "#000000",
+                marginBottom: "10px",
+                fontFamily: "sans-serif poppins",
+              }}>
                 {!isMobileWidth && "Delete"}
               </h3>
 
-              <div style={{ margin: isMobileWidth ?"10px 0px" :"20px 0"  }}>
+              <div style={{ margin: isMobileWidth ? "10px 0px" : "20px 0" }}>
                 <img src={vector} loading="lazy" alt="Logout"
-                  style={{ width:isMobileWidth?"60px": "90px", height: isMobileWidth?"60px": "90px", marginBottom:isMobileWidth?"": "20px", }} />
+                  style={{ width: isMobileWidth ? "60px" : "90px", height: isMobileWidth ? "60px" : "90px", marginBottom: isMobileWidth ? "" : "20px", }} />
               </div>
 
-              <p style={{  fontWeight:isMobileWidth?'16px':"", marginBottom:isMobileWidth?"":"30px", fontWeight: isMobileWidth ? 600 : 500 }}>
+              <p style={{ fontWeight: isMobileWidth ? '16px' : "", marginBottom: isMobileWidth ? "" : "30px", fontWeight: isMobileWidth ? 600 : 500 }}>
                 Are you sure you want to delete this property ?
               </p>
 
               <div style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "15px",
-                  marginBottom: isMobileWidth?"10px":"20px",
-                }} >
+                display: "flex",
+                justifyContent: "center",
+                gap: "15px",
+                marginBottom: isMobileWidth ? "10px" : "20px",
+              }} >
                 <button onClick={() => removeProperty()}
                   style={{
-                    padding: isMobileWidth?"10px 40px":"10px 50px",
+                    padding: isMobileWidth ? "10px 40px" : "10px 50px",
                     borderRadius: "50px",
                     border: "none",
                     backgroundColor: "#4AEAB1",
                     color: "#000",
                     cursor: "pointer",
-                    fontWeight:isMobileWidth?"400": "500",
+                    fontWeight: isMobileWidth ? "400" : "500",
                     // fontSize: "20px"
                   }} >
                   {isMobileWidth ? "Confirm" : "Yes"}
@@ -227,7 +229,8 @@ const CustomCarousel = ({ images, onEdit, onDelete, propertyId, data }) => {
       {/* Carousel */}
       <Carousel data-bs-theme="dark" controls={false}
         style={{ width: "100%", height: "100%", cursor: "pointer" }}
-        interval={images.length > 1 ? 3000 : null}
+        // interval={images.length > 1 ? 3000 : null}
+        interval={null}
         indicators={images.length > 1}
       >
         {images.map((image, index) => (
