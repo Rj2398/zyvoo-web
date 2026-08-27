@@ -91,8 +91,8 @@ function MyPlacesHost() {
   //     console.error("Geolocation is not supported by your browser.");
   //   }
   // };
-  const handleOpen = () => setIsPaymentModalVisible(true);
-  const handleClose = () => setIsPaymentModalVisible(false);
+  // const handleOpen = () => setIsPaymentModalVisible(true);
+  // const handleClose = () => setIsPaymentModalVisible(false);
 
   const getLocation = () => {
     if (!("geolocation" in navigator)) {
@@ -143,7 +143,7 @@ function MyPlacesHost() {
       });
       if (response) {
         // console.log(response?.has_payment_method, "respons of the (***");
-        setIsModalOpen(response?.has_payment_method);
+        // setIsModalOpen(response?.has_payment_method);
         setGetList(response?.data);
       }
     } catch (error) {
@@ -418,22 +418,22 @@ function MyPlacesHost() {
                         )
                         .join(" ").length > 15
                         ? item?.title
-                            ?.toLowerCase()
-                            ?.split(" ")
-                            .map(
-                              (word) =>
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                            )
-                            .join(" ")
-                            ?.slice(0, 15) + "..."
+                          ?.toLowerCase()
+                          ?.split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ")
+                          ?.slice(0, 15) + "..."
                         : item?.title
-                            ?.toLowerCase()
-                            ?.split(" ")
-                            .map(
-                              (word) =>
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                            )
-                            .join(" ")}
+                          ?.toLowerCase()
+                          ?.split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ")}
                     </h1>
                     <p>
                       <i className="fa-solid fa-clock"></i>{" "}
@@ -518,10 +518,10 @@ function MyPlacesHost() {
               <FaCirclePlus
                 style={{ fontSize: "50px", color: "#3A4B4C" }}
                 onClick={() => {
-                  if (isModalOpen === false) {
+                  {
                     // 1. If payout setup is required, open the warning modal
-                    handleOpen();
-                  } else {
+                    // handleOpen();
+                    // } else {
                     // 2. Otherwise, proceed with adding a new property
                     setPropertyId(null);
                     setAddPropertyShow(true);
@@ -539,10 +539,10 @@ function MyPlacesHost() {
               />
               <div
                 onClick={() => {
-                  if (isModalOpen === false) {
+                  {
                     // 1. If payout setup is required, open the warning modal
-                    handleOpen();
-                  } else {
+                    // handleOpen();
+                    // } else {
                     // 2. Otherwise, proceed with adding a new property
                     setPropertyId(null);
                     setAddPropertyShow(true);
@@ -585,12 +585,12 @@ function MyPlacesHost() {
         }}
         property_id={property_id}
       />
-      <PaymentFlagModal
+      {/* <PaymentFlagModal
         isOpen={isPaymentModalVisible}
         onClose={handleClose}
         title="Message"
         message="Complete your payout setup in Profile before publishing your listing."
-      />
+      /> */}
     </div>
   );
 }
