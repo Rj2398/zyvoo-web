@@ -219,13 +219,21 @@ const Footer = () => {
                 <FooterItem
                   title="Resources"
                   links={[
-                    <Link
-                      to="/exploreArticles"
-                      state={{ useType, searchText: "Search blogs" }}
-                    >
-                      Blog Articles
+                    !userId ? (
+                      <Link onClick={() => handleModalToggle("register", true)}>
+                        Blog Articles
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/exploreArticles"
+                        state={{ useType, searchText: "Search blogs" }}
+                      >
+                        Blog Articles
+                      </Link>
+                    ),
+                    <Link to="/homeGuest">
+                      Explore Now
                     </Link>,
-                    <Link to="/homeGuest">Explore Now</Link>,
                   ]}
                 />
                 <FooterItem
