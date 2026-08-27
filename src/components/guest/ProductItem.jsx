@@ -500,7 +500,7 @@ const ProductItem = ({
                 <span style={{ fontSize: isMobileWidth ? "13px" : "14px" }}>
                   {/* {distance_miles} miles away */}
 
-                  {Number(distance_miles ?? 0).toFixed(1)} miles away
+                  {Math.round(distance_miles || 0)} miles away
                 </span>
               </li>
             </ul>
