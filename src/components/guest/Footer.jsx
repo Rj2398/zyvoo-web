@@ -52,8 +52,8 @@ const Footer = () => {
       const data = rawUser
         ? JSON.parse(rawUser)
         : isSocial
-        ? { isSocial: true }
-        : null;
+          ? { isSocial: true }
+          : null;
 
       setCredentials(data);
     } catch (e) {
@@ -146,10 +146,10 @@ const Footer = () => {
                     <button type="submit" className="news-btn-submit">
                       <i
                         className="fa-solid fa-paper-plane"
-                        // style={{
-                        //   transform: "rotate(25deg)",
-                        //   color: "#3A4B4C",
-                        // }}
+                      // style={{
+                      //   transform: "rotate(25deg)",
+                      //   color: "#3A4B4C",
+                      // }}
                       ></i>
                     </button>
                   </form>
@@ -185,7 +185,7 @@ const Footer = () => {
                   />
                 )}
 
-                <FooterItem
+                {/* <FooterItem
                   title="Resources"
                   links={
                     !userId
@@ -213,6 +213,20 @@ const Footer = () => {
                           <Link to="/homeGuest">Explore Now</Link>,
                         ]
                   }
+                /> */}
+
+
+                <FooterItem
+                  title="Resources"
+                  links={[
+                    <Link
+                      to="/exploreArticles"
+                      state={{ useType, searchText: "Search blogs" }}
+                    >
+                      Blog Articles
+                    </Link>,
+                    <Link to="/homeGuest">Explore Now</Link>,
+                  ]}
                 />
                 <FooterItem
                   title="Follow Us"
