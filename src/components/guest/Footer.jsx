@@ -231,7 +231,16 @@ const Footer = () => {
                         Blog Articles
                       </Link>
                     ),
-                    <Link to="/homeGuest">
+                    <Link
+                      to="/homeGuest"
+                      onClick={() => {
+                        window.scrollTo({
+                          top: 0,
+                          left: 0,
+                          behavior: "smooth", // ya "instant"
+                        });
+                      }}
+                    >
                       Explore Now
                     </Link>,
                   ]}
