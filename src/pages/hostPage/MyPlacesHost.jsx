@@ -518,15 +518,15 @@ function MyPlacesHost() {
               <FaCirclePlus
                 style={{ fontSize: "50px", color: "#3A4B4C" }}
                 onClick={() => {
-                  {
-                    // 1. If payout setup is required, open the warning modal
-                    // handleOpen();
-                    // } else {
-                    // 2. Otherwise, proceed with adding a new property
-                    setPropertyId(null);
-                    setAddPropertyShow(true);
-                    dispatch(setAddnewPropertyState(true));
-                  }
+                  // {
+                  // 1. If payout setup is required, open the warning modal
+                  // handleOpen();
+                  // } else {
+                  // 2. Otherwise, proceed with adding a new property
+                  setPropertyId(null);
+                  setAddPropertyShow(true);
+                  dispatch(setAddnewPropertyState(true));
+                  // }
 
                   // if (isModalOpen) {
                   //   handleOpen();
@@ -539,15 +539,15 @@ function MyPlacesHost() {
               />
               <div
                 onClick={() => {
-                  {
-                    // 1. If payout setup is required, open the warning modal
-                    // handleOpen();
-                    // } else {
-                    // 2. Otherwise, proceed with adding a new property
-                    setPropertyId(null);
-                    setAddPropertyShow(true);
-                    dispatch(setAddnewPropertyState(true));
-                  }
+                  // {
+                  // 1. If payout setup is required, open the warning modal
+                  // handleOpen();
+                  // } else {
+                  // 2. Otherwise, proceed with adding a new property
+                  setPropertyId(null);
+                  setAddPropertyShow(true);
+                  dispatch(setAddnewPropertyState(true));
+                  // }
                   // setPropertyId(null);
                   // setAddPropertyShow(true);
                   // dispatch(setAddnewPropertyState(true));
