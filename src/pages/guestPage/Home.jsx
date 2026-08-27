@@ -34,8 +34,8 @@ const Home = () => {
   const login_id = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || localSaved?.user_id
-    ? String(localSaved?.user_id)
-    : null;
+      ? String(localSaved?.user_id)
+      : null;
   const [useTypes, setUserTypes] = useState(
     localStorage.getItem(KEYS.USER_TYPE)
   );
@@ -133,39 +133,62 @@ const Home = () => {
   // };
 
   // FIX 2: Added locationClear to dependencies and wrapped fetchList to prevent clean-mount null execution
+  //27-08-2026
+  // useEffect(() => {
+  //   const handleStorageChange = () => {
+  //     setUserTypes(localStorage.getItem(KEYS.USER_TYPE));
+  //   };
+
+  //   if (currentLocation?.latitude || locationClear) {
+  //     fetchList();
+  //   }
+
+  //   window.addEventListener("storage", handleStorageChange);
+  //   return () => window.removeEventListener("storage", handleStorageChange);
+  // }, [currentLocation?.latitude, currentLocation?.longitude, locationClear]);
+
+  //27-08-2026
   useEffect(() => {
     const handleStorageChange = () => {
       setUserTypes(localStorage.getItem(KEYS.USER_TYPE));
     };
 
-    if (currentLocation?.latitude || locationClear) {
-      fetchList();
-    }
+    // Condition hata di - Location allow ho ya deny, API hamesha call hogi
+    fetchList();
 
     window.addEventListener("storage", handleStorageChange);
     return () => window.removeEventListener("storage", handleStorageChange);
   }, [currentLocation?.latitude, currentLocation?.longitude, locationClear]);
 
-  // FIX 3: Checked location validation safely against primitives to ensure smooth state clear transitions
+  //27-08-2026
   useEffect(() => {
-    const hasNoLocation =
-      !currentLocation?.latitude || !currentLocation?.longitude;
-
-    if (
-      (hasNoLocation && !locationClear) ||
-      !selectorData?.guestHomeData ||
-      selectorData.guestHomeData.length === 0
-    ) {
-      setLocalHomeList([]);
-    } else {
+    if (selectorData?.guestHomeData?.length > 0) {
       setLocalHomeList(selectorData.guestHomeData);
+    } else {
+      setLocalHomeList([]);
     }
-  }, [
-    selectorData?.guestHomeData,
-    currentLocation?.latitude,
-    currentLocation?.longitude,
-    locationClear,
-  ]);
+  }, [selectorData?.guestHomeData]);
+  ////27-08-2026
+  // FIX 3: Checked location validation safely against primitives to ensure smooth state clear transitions
+  // useEffect(() => {
+  //   const hasNoLocation =
+  //     !currentLocation?.latitude || !currentLocation?.longitude;
+
+  //   if (
+  //     (hasNoLocation && !locationClear) ||
+  //     !selectorData?.guestHomeData ||
+  //     selectorData.guestHomeData.length === 0
+  //   ) {
+  //     setLocalHomeList([]);
+  //   } else {
+  //     setLocalHomeList(selectorData.guestHomeData);
+  //   }
+  // }, [
+  //   selectorData?.guestHomeData,
+  //   currentLocation?.latitude,
+  //   currentLocation?.longitude,
+  //   locationClear,
+  // ]);
 
   //date26-06-2026
   // useEffect(() => {
@@ -306,9 +329,9 @@ const Home = () => {
   const paginatedData = isMobileWidth
     ? localHomeList
     : localHomeList?.slice(
-        (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
-      );
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
 
   useEffect(() => {
     const checkWindowWidth = () => {

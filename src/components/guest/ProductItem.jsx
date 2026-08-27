@@ -37,7 +37,7 @@ const ProductItem = ({
 
   const [disable, setDisable] = useState(true);
 
-  // console.log(disable, "isloading data ");
+  // console.log(distance_miles, "distance_miles");
 
   const navigate = useNavigate();
   const userData =
@@ -301,8 +301,8 @@ const ProductItem = ({
                     isWishlisted
                       ? "/images/locations-grid/profile/heart-fill.svg"
                       : isMobileWidth
-                      ? "/images/mobileBlankHeart.png"
-                      : "/images/locations-grid/profile/heart.svg"
+                        ? "/images/mobileBlankHeart.png"
+                        : "/images/locations-grid/profile/heart.svg"
                   }
                   alt="Wishlist"
                   style={{
@@ -498,7 +498,9 @@ const ProductItem = ({
                   style={{ width: "16px" }}
                 />
                 <span style={{ fontSize: isMobileWidth ? "13px" : "14px" }}>
-                  {distance_miles} miles away
+                  {/* {distance_miles} miles away */}
+
+                  {Number(distance_miles ?? 0).toFixed(1)} miles away
                 </span>
               </li>
             </ul>
