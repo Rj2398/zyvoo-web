@@ -36,6 +36,7 @@ ZYVO may deny or reverse a refund where there is evidence of fraud, fabricated c
 
 10. How to request help with a refund
 Open the affected booking and select the available help or support option. Include the booking details and a short explanation of what happened. For active or time-sensitive bookings, contact support as soon as possible so the issue can be reviewed while the booking details are still current.`;
+
 const AddMoreTime = () => {
   const [isCancellationExpanded, setIsCancellationExpanded] = useState(false);
   const charLimit = 250;
