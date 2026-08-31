@@ -556,7 +556,19 @@ function Location() {
     return Number.isInteger(num) ? num?.toString() : num?.toFixed(1);
   }
   if (loading) {
-    return <div>Loading...</div>; // Ya aapka custom Loader/Spinner
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "70vh",
+          width: "100%",
+        }}
+      >
+        Loading...
+      </div>
+    ); // Ya aapka custom Loader/Spinner
   }
 
   if (isInvalidProperty || !propertyDetails) {
