@@ -30,40 +30,52 @@ import { useSelector } from "react-redux";
 import MessageHost from "./bookingDetailsModal/MessageHost";
 import { PiClockCountdownFill } from "react-icons/pi";
 
-const REFUND_POLICY_TEXT = `1. How refunds are determined
-Every booking is subject to the cancellation and refund terms displayed during checkout and in the confirmed booking details. Those terms form part of the booking agreement between the guest and host. Before paying, guests should review the booking date and time, total price, fees, house rules, and the cancellation terms shown for that listing. Where a listing has a host-specific cancellation policy, that policy controls unless this Refund Policy provides a greater remedy because the host cancels, the space is materially unavailable, or applicable law requires otherwise.
-
-2. Guest cancellations
-If a guest cancels, the refundable amount is calculated using the cancellation terms that were presented before the booking was confirmed. The app will show the expected refund, when available, before the guest completes the cancellation.
+const REFUND_POLICY_DATA = [
+  {
+    title: "1. How refunds are determined",
+    desc: "Every booking is subject to the cancellation and refund terms displayed during checkout and in the confirmed booking details. Those terms form part of the booking agreement between the guest and host. Before paying, guests should review the booking date and time, total price, fees, house rules, and the cancellation terms shown for that listing. Where a listing has a host-specific cancellation policy, that policy controls unless this Refund Policy provides a greater remedy because the host cancels, the space is materially unavailable, or applicable law requires otherwise.",
+  },
+  {
+    title: "2. Guest cancellations",
+    desc: `If a guest cancels, the refundable amount is calculated using the cancellation terms that were presented before the booking was confirmed. The app will show the expected refund, when available, before the guest completes the cancellation.
 • A cancellation is effective only after it is submitted through ZYVO and the booking status changes to cancelled.
 • Not attending, arriving late, leaving early, or using less time than booked does not automatically create a right to a refund.
 • Any fee identified as non-refundable before payment will remain non-refundable unless required by law or ZYVO determines otherwise for a qualifying booking issue.
-• If a refund is approved, it is returned to the original payment method whenever possible.
-
-3. Host cancellations
-If a host cancels a confirmed booking, the guest will generally receive a refund of the amounts paid for that booking. ZYVO may also take account action when a host repeatedly cancels confirmed bookings, including limiting the host’s ability to accept future bookings or publish listings. A host should not ask a guest to cancel on the host’s behalf. If the host cannot honor a booking, the host should cancel it through ZYVO so the booking history and refund can be handled correctly.
-
-4. Space unavailable or materially different
-Guests should contact ZYVO promptly if they arrive and the booked space is unavailable, unsafe for the booked use, inaccessible despite following the host’s instructions, or materially different from the listing in a way that prevents the intended booking from reasonably taking place. Depending on the circumstances and the evidence available, ZYVO may issue a full refund, a partial refund, account credit where legally permitted, or another appropriate resolution. Guests may be asked to provide photos, video, messages, receipts, or other information that helps us review the issue.
-
-5. Booking interruptions and early termination
-If a booking begins but cannot reasonably continue because of a qualifying issue with the space or host access, ZYVO may consider a partial or full refund based on the portion of the booking affected. Refunds are not guaranteed for issues caused by the guest, members of the guest’s party, or a use that violates the listing rules or these Terms.
-
-6. Cleaning fees, platform fees and taxes
-Whether cleaning fees, platform fees, taxes, or other charges are refunded depends on the cancellation terms, the timing and reason for the cancellation, and applicable law. Any amount that will not be refunded should be shown in the cancellation summary before the cancellation is finalized whenever the product supports that calculation.
-
-7. Payment processing time
-ZYVO may approve or initiate a refund quickly, but the time it takes to appear in a guest’s account depends on the bank, card issuer, wallet provider, or payment processor. Processing times can vary and are outside ZYVO’s direct control.
-
-8. Chargebacks and payment disputes
-If there is a problem with a booking, guests should contact ZYVO first so we can review it. Filing a chargeback does not guarantee a refund and may pause ZYVO’s internal review while the payment provider investigates. Users must provide accurate information in any payment dispute.
-
-9. Fraud, abuse and policy violations
-ZYVO may deny or reverse a refund where there is evidence of fraud, fabricated claims, chargeback abuse, unauthorized payment activity, misuse of the platform, or a material violation of the booking rules or Terms & Conditions, subject to applicable law.
-
-10. How to request help with a refund
-Open the affected booking and select the available help or support option. Include the booking details and a short explanation of what happened. For active or time-sensitive bookings, contact support as soon as possible so the issue can be reviewed while the booking details are still current.`;
-
+• If a refund is approved, it is returned to the original payment method whenever possible.`,
+  },
+  {
+    title: "3. Host cancellations",
+    desc: "If a host cancels a confirmed booking, the guest will generally receive a refund of the amounts paid for that booking. ZYVO may also take account action when a host repeatedly cancels confirmed bookings, including limiting the host’s ability to accept future bookings or publish listings. A host should not ask a guest to cancel on the host’s behalf. If the host cannot honor a booking, the host should cancel it through ZYVO so the booking history and refund can be handled correctly.",
+  },
+  {
+    title: "4. Space unavailable or materially different",
+    desc: "Guests should contact ZYVO promptly if they arrive and the booked space is unavailable, unsafe for the booked use, inaccessible despite following the host’s instructions, or materially different from the listing in a way that prevents the intended booking from reasonably taking place. Depending on the circumstances and the evidence available, ZYVO may issue a full refund, a partial refund, account credit where legally permitted, or another appropriate resolution. Guests may be asked to provide photos, video, messages, receipts, or other information that helps us review the issue.",
+  },
+  {
+    title: "5. Booking interruptions and early termination",
+    desc: "If a booking begins but cannot reasonably continue because of a qualifying issue with the space or host access, ZYVO may consider a partial or full refund based on the portion of the booking affected. Refunds are not guaranteed for issues caused by the guest, members of the guest’s party, or a use that violates the listing rules or these Terms.",
+  },
+  {
+    title: "6. Cleaning fees, platform fees and taxes",
+    desc: "Whether cleaning fees, platform fees, taxes, or other charges are refunded depends on the cancellation terms, the timing and reason for the cancellation, and applicable law. Any amount that will not be refunded should be shown in the cancellation summary before the cancellation is finalized whenever the product supports that calculation.",
+  },
+  {
+    title: "7. Payment processing time",
+    desc: "ZYVO may approve or initiate a refund quickly, but the time it takes to appear in a guest’s account depends on the bank, card issuer, wallet provider, or payment processor. Processing times can vary and are outside ZYVO’s direct control.",
+  },
+  {
+    title: "8. Chargebacks and payment disputes",
+    desc: "If there is a problem with a booking, guests should contact ZYVO first so we can review it. Filing a chargeback does not guarantee a refund and may pause ZYVO’s internal review while the payment provider investigates. Users must provide accurate information in any payment dispute.",
+  },
+  {
+    title: "9. Fraud, abuse and policy violations",
+    desc: "ZYVO may deny or reverse a refund where there is evidence of fraud, fabricated claims, chargeback abuse, unauthorized payment activity, misuse of the platform, or a material violation of the booking rules or Terms & Conditions, subject to applicable law.",
+  },
+  {
+    title: "10. How to request help with a refund",
+    desc: "Open the affected booking and select the available help or support option. Include the booking details and a short explanation of what happened. For active or time-sensitive bookings, contact support as soon as possible so the issue can be reviewed while the booking details are still current.",
+  },
+];
 const Checkout = ({ setExtendedTime }) => {
   const token = JSON.parse(
     sessionStorage.getItem(KEYS.USER_INFO)
@@ -127,7 +139,9 @@ const Checkout = ({ setExtendedTime }) => {
   const [customer_id, setCustomerId] = useState("");
   const [card_id, setCardId] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
-
+  const visiblePoints = isExpanded
+    ? REFUND_POLICY_DATA
+    : REFUND_POLICY_DATA.slice(0, 1);
   const [startTime, setStartTime] = useState(
     checkoutData?.startTime?.split(":")[0] || "12"
   );
@@ -1891,33 +1905,62 @@ const Checkout = ({ setExtendedTime }) => {
               </div> */}
 
               <div className="mb-4">
-                <h5 style={{ color: "black", fontWeight: "400" }}>
+                <h5
+                  style={{
+                    color: "black",
+                    fontWeight: isMobileWidth ? "400" : "400",
+                    marginBottom: "12px",
+                  }}
+                >
                   Refund Policies
                 </h5>
 
-                <p
-                  style={{
-                    fontSize: "15px",
-                    lineHeight: "1.6",
-                    whiteSpace: "pre-line", // <- Yeh line breaks render karega
-                    color: "#333",
-                  }}
-                >
-                  {isExpanded || REFUND_POLICY_TEXT.length <= 250
-                    ? REFUND_POLICY_TEXT
-                    : `${REFUND_POLICY_TEXT.slice(0, 250)}...`}
-                </p>
+                <div>
+                  {visiblePoints.map((item, index) => (
+                    <div key={index} style={{ marginBottom: "14px" }}>
+                      <strong
+                        style={{
+                          display: "block",
+                          color: "#111",
+                          fontSize: "15px",
+                          fontWeight: "500",
+                          marginBottom: "4px",
+                        }}
+                      >
+                        {item.title}
+                      </strong>
 
-                {REFUND_POLICY_TEXT.length > 250 && (
+                      {/* Description with pre-line for bullets */}
+                      <p
+                        style={{
+                          fontSize: "14px",
+                          color: "#444",
+                          lineHeight: "1.6",
+                          whiteSpace: "pre-line",
+                          margin: 0,
+                        }}
+                      >
+                        {item.desc}
+                      </p>
+                    </div>
+                  ))}
+
+                  {/* Read More / Read Less Action Button */}
                   <Button
                     variant="link"
                     className="p-0 text-decoration-none"
-                    style={{ color: "#4AEAB1", boxShadow: "none" }}
+                    style={{
+                      color: "#4AEAB1",
+                      fontWeight: "600",
+                      fontSize: "14px",
+                      boxShadow: "none",
+                      marginTop: "4px",
+                    }}
                     onClick={() => setIsExpanded(!isExpanded)}
                   >
                     {isExpanded ? "Read Less" : "Read More"}
                   </Button>
-                )}
+                </div>
               </div>
 
               <hr />
