@@ -31,6 +31,40 @@ import MessageHost from "./bookingDetailsModal/MessageHost";
 import { FiArrowLeft } from "react-icons/fi";
 import { PiClockCountdownFill } from "react-icons/pi";
 
+const REFUND_POLICY_TEXT = `1. How refunds are determined
+Every booking is subject to the cancellation and refund terms displayed during checkout and in the confirmed booking details. Those terms form part of the booking agreement between the guest and host. Before paying, guests should review the booking date and time, total price, fees, house rules, and the cancellation terms shown for that listing. Where a listing has a host-specific cancellation policy, that policy controls unless this Refund Policy provides a greater remedy because the host cancels, the space is materially unavailable, or applicable law requires otherwise.
+
+2. Guest cancellations
+If a guest cancels, the refundable amount is calculated using the cancellation terms that were presented before the booking was confirmed. The app will show the expected refund, when available, before the guest completes the cancellation.
+• A cancellation is effective only after it is submitted through ZYVO and the booking status changes to cancelled.
+• Not attending, arriving late, leaving early, or using less time than booked does not automatically create a right to a refund.
+• Any fee identified as non-refundable before payment will remain non-refundable unless required by law or ZYVO determines otherwise for a qualifying booking issue.
+• If a refund is approved, it is returned to the original payment method whenever possible.
+
+3. Host cancellations
+If a host cancels a confirmed booking, the guest will generally receive a refund of the amounts paid for that booking. ZYVO may also take account action when a host repeatedly cancels confirmed bookings, including limiting the host’s ability to accept future bookings or publish listings. A host should not ask a guest to cancel on the host’s behalf. If the host cannot honor a booking, the host should cancel it through ZYVO so the booking history and refund can be handled correctly.
+
+4. Space unavailable or materially different
+Guests should contact ZYVO promptly if they arrive and the booked space is unavailable, unsafe for the booked use, inaccessible despite following the host’s instructions, or materially different from the listing in a way that prevents the intended booking from reasonably taking place. Depending on the circumstances and the evidence available, ZYVO may issue a full refund, a partial refund, account credit where legally permitted, or another appropriate resolution. Guests may be asked to provide photos, video, messages, receipts, or other information that helps us review the issue.
+
+5. Booking interruptions and early termination
+If a booking begins but cannot reasonably continue because of a qualifying issue with the space or host access, ZYVO may consider a partial or full refund based on the portion of the booking affected. Refunds are not guaranteed for issues caused by the guest, members of the guest’s party, or a use that violates the listing rules or these Terms.
+
+6. Cleaning fees, platform fees and taxes
+Whether cleaning fees, platform fees, taxes, or other charges are refunded depends on the cancellation terms, the timing and reason for the cancellation, and applicable law. Any amount that will not be refunded should be shown in the cancellation summary before the cancellation is finalized whenever the product supports that calculation.
+
+7. Payment processing time
+ZYVO may approve or initiate a refund quickly, but the time it takes to appear in a guest’s account depends on the bank, card issuer, wallet provider, or payment processor. Processing times can vary and are outside ZYVO’s direct control.
+
+8. Chargebacks and payment disputes
+If there is a problem with a booking, guests should contact ZYVO first so we can review it. Filing a chargeback does not guarantee a refund and may pause ZYVO’s internal review while the payment provider investigates. Users must provide accurate information in any payment dispute.
+
+9. Fraud, abuse and policy violations
+ZYVO may deny or reverse a refund where there is evidence of fraud, fabricated claims, chargeback abuse, unauthorized payment activity, misuse of the platform, or a material violation of the booking rules or Terms & Conditions, subject to applicable law.
+
+10. How to request help with a refund
+Open the affected booking and select the available help or support option. Include the booking details and a short explanation of what happened. For active or time-sensitive bookings, contact support as soon as possible so the issue can be reviewed while the booking details are still current.`;
+
 const BookingExtendedTime = () => {
   const stripePromise = loadStripe(
     "pk_test_51QnHZl2Nd862ZJtETiUKw9fMnacKnSy3u27rwJzDsDzGoKV7yFcHWW7Zy68KXflyGZqc5Cjm2ChdpWlaE72R0fp200DSuioFyd"
@@ -84,17 +118,17 @@ const BookingExtendedTime = () => {
 
   const [startTime, setStartTime] = useState(
     checkoutData?.startTime ||
-    formatTo12Hour(checkoutData?.booking_start?.split(" ")[1])
+      formatTo12Hour(checkoutData?.booking_start?.split(" ")[1])
   );
   const [endTime, setEndTime] = useState(
     checkoutData?.endTime ||
-    formatTo12Hour(checkoutData?.booking_end?.split(" ")[1])
+      formatTo12Hour(checkoutData?.booking_end?.split(" ")[1])
   );
   const [bookingDate, setBookingDate] = useState(
     checkoutData?.dateSelected || checkoutData?.booking_date
       ? moment(checkoutData?.dateSelected || checkoutData?.booking_date).format(
-        "MMMM DD, YYYY"
-      )
+          "MMMM DD, YYYY"
+        )
       : ""
   );
 
@@ -370,7 +404,7 @@ const BookingExtendedTime = () => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                // style={{ minWidth: "320px " }}
+                  // style={{ minWidth: "320px " }}
                 >
                   {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
                              <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
@@ -405,7 +439,13 @@ const BookingExtendedTime = () => {
                       </span>
                       <img
                         className="chat-right-top-profile-image"
-                        src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
+                        src={
+                          checkoutData?.host_profile_image &&
+                          checkoutData?.host_profile_image !== "undefined" &&
+                          checkoutData?.host_profile_image !== "null"
+                            ? imageBase + checkoutData?.host_profile_image
+                            : defaultContact
+                        }
                         loading="lazy"
                         alt="Host"
                         onError={(e) => {
@@ -531,10 +571,12 @@ const BookingExtendedTime = () => {
                             {hour} hours
                             <span>${formatCurrency(booking_amount)}</span>
                           </li>
-                          {cleaningFee> 0 && <li>
-                            Cleaning Fee{" "}
-                            <span>${formatCurrency(cleaningFee)}</span>
-                          </li>}
+                          {cleaningFee > 0 && (
+                            <li>
+                              Cleaning Fee{" "}
+                              <span>${formatCurrency(cleaningFee)}</span>
+                            </li>
+                          )}
                           <li>
                             Zyvo Service Fee{" "}
                             <span>${formatCurrency(service_fee)}</span>
@@ -831,8 +873,8 @@ const BookingExtendedTime = () => {
                               ? "80%"
                               : "0%"
                             : showDropdown2
-                              ? "25%"
-                              : "0%",
+                            ? "25%"
+                            : "0%",
                         }}
                       >
                         <Button
@@ -867,7 +909,7 @@ const BookingExtendedTime = () => {
 
               <hr />
 
-              <div className="mb-4">
+              {/* <div className="mb-4">
                 <h5 style={{ fontWeight: "400", color: "black" }}>
                   {isMobileWidth ? "Refund Policies" : "About the Space"}
                 </h5>
@@ -883,6 +925,36 @@ const BookingExtendedTime = () => {
                     variant="link"
                     className="p-0 text-decoration"
                     style={{ color: "#4AEAB1" }}
+                    onClick={() => setIsExpanded(!isExpanded)}
+                  >
+                    {isExpanded ? "Read Less" : "Read More"}
+                  </Button>
+                )}
+              </div> */}
+
+              <div className="mb-4">
+                <h5 style={{ color: "black", fontWeight: "400" }}>
+                  Refund Policies
+                </h5>
+
+                <p
+                  style={{
+                    fontSize: "15px",
+                    lineHeight: "1.6",
+                    whiteSpace: "pre-line", // <- Yeh line breaks render karega
+                    color: "#333",
+                  }}
+                >
+                  {isExpanded || REFUND_POLICY_TEXT.length <= 250
+                    ? REFUND_POLICY_TEXT
+                    : `${REFUND_POLICY_TEXT.slice(0, 250)}...`}
+                </p>
+
+                {REFUND_POLICY_TEXT.length > 250 && (
+                  <Button
+                    variant="link"
+                    className="p-0 text-decoration-none"
+                    style={{ color: "#4AEAB1", boxShadow: "none" }}
                     onClick={() => setIsExpanded(!isExpanded)}
                   >
                     {isExpanded ? "Read Less" : "Read More"}
@@ -913,8 +985,9 @@ const BookingExtendedTime = () => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
-                              }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                              open === "collapseOne" ? "" : " "
+                            }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -973,8 +1046,9 @@ const BookingExtendedTime = () => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
-                            }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                            open === "collapseTwo" ? "" : "collapsed"
+                          }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
@@ -1286,7 +1360,6 @@ const BookingExtendedTime = () => {
                   </div>
                 </div> */}
 
-
                 <div
                   style={{
                     background: "#FFFFFF",
@@ -1326,7 +1399,13 @@ const BookingExtendedTime = () => {
                     >
                       <img
                         className="chat-right-top-profile-image"
-                        src={checkoutData?.host_profile_image && checkoutData?.host_profile_image !== "undefined" && checkoutData?.host_profile_image !== "null" ? imageBase + checkoutData?.host_profile_image : defaultContact}
+                        src={
+                          checkoutData?.host_profile_image &&
+                          checkoutData?.host_profile_image !== "undefined" &&
+                          checkoutData?.host_profile_image !== "null"
+                            ? imageBase + checkoutData?.host_profile_image
+                            : defaultContact
+                        }
                         loading="lazy"
                         alt="Host"
                         onError={(e) => {
@@ -1421,7 +1500,6 @@ const BookingExtendedTime = () => {
                     </div>
                   </div>
                 </div>
-
               </Col>
             )}
           </Row>
