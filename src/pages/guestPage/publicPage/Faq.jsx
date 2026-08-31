@@ -19,10 +19,9 @@ const Faq = () => {
       setIsMobileWidth(window.innerWidth <= 768);
     };
     checkWindowWidth(); // run on mount
-    window.addEventListener('resize', checkWindowWidth);
-    return () => window.removeEventListener('resize', checkWindowWidth);
+    window.addEventListener("resize", checkWindowWidth);
+    return () => window.removeEventListener("resize", checkWindowWidth);
   }, []);
-  
 
   return (
     <>
@@ -43,12 +42,15 @@ const Faq = () => {
       </div>
       <main>
         <Loader visible={isLoading} />
-        <div className="faq-wrap mt-2 pt-lg-3"
+        <div
+          className="faq-wrap mt-2 pt-lg-3"
           style={{
             backgroundColor: "transparent", // Transparent background for FAQ
-            backgroundImage: "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)",
+            backgroundImage:
+              "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)",
             backgroundSize: "20px 20px",
-          }} >
+          }}
+        >
           <div className="container-fluid">
             <div className="row justify-content-center">
               <div className="col-lg-12">
@@ -59,15 +61,24 @@ const Faq = () => {
 
               <div className="col-lg-11 col-md-11">
                 <div className="faq-in">
-                  {!isMobileWidth && <div className="faq-top mb-4">
-                    <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                  </div>}
+                  {!isMobileWidth && (
+                    <div className="faq-top mb-4">
+                      {/* <p> Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> */}
+                    </div>
+                  )}
 
                   <Accordion flush>
                     {FaqData?.map((question, index) => (
-                      <Accordion.Item eventKey={index.toString()} key={index}
-                        className={`mb-2 ${!isMobileWidth && "border-bottom"}`} style={{ border: isMobileWidth ? "1px solid black" : "none", backgroundColor: "transparent", borderRadius: isMobileWidth ? "10px" : "" }} >
-
+                      <Accordion.Item
+                        eventKey={index.toString()}
+                        key={index}
+                        className={`mb-2 ${!isMobileWidth && "border-bottom"}`}
+                        style={{
+                          border: isMobileWidth ? "1px solid black" : "none",
+                          backgroundColor: "transparent",
+                          borderRadius: isMobileWidth ? "10px" : "",
+                        }}
+                      >
                         <Accordion.Header
                           onClick={() => toggleAccordion(index)}
                           style={{
@@ -79,20 +90,32 @@ const Faq = () => {
                             backgroundColor: "transparent",
                             color: "#333",
                             fontWeight: "bold",
-                          }} >
-                          <span style={{ fontSize: isMobileWidth ? "14px" : "16px", fontWeight : isMobileWidth ? "500" : "600" }}>
-                           {!isMobileWidth &&( <> {index + 1.} </>)} {question?.question}
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: isMobileWidth ? "14px" : "16px",
+                              fontWeight: isMobileWidth ? "500" : "600",
+                            }}
+                          >
+                            {!isMobileWidth && <> {index + 1} </>}{" "}
+                            {question?.question}
                           </span>
-                          <span className="faq-plus-icon" > {activeIndex === index ? "-" : "+"} </span>
+                          <span className="faq-plus-icon">
+                            {" "}
+                            {activeIndex === index ? "-" : "+"}{" "}
+                          </span>
                         </Accordion.Header>
 
-                        <Accordion.Body className="faq-answer"
+                        <Accordion.Body
+                          className="faq-answer"
                           style={{
                             color: "#777",
                             padding: "10px 20px",
                             fontSize: "14px",
-                            backgroundColor: "transparent", 
-                          }}>
+                            backgroundColor: "transparent",
+                          }}
+                        >
                           {question?.answer}
                         </Accordion.Body>
                       </Accordion.Item>
@@ -101,12 +124,14 @@ const Faq = () => {
                 </div>
               </div>
 
-              {!isMobileWidth && <div className="col-lg-12">
-                <div className="faq-contact-touch">
-                  <p>Have more questions?</p>
-                  <Link to="/contactUs">Contact Us</Link>
+              {!isMobileWidth && (
+                <div className="col-lg-12">
+                  <div className="faq-contact-touch">
+                    <p>Have more questions?</p>
+                    <Link to="/contactUs">Contact Us</Link>
+                  </div>
                 </div>
-              </div>}
+              )}
             </div>
           </div>
         </div>

@@ -32,7 +32,7 @@ function Location() {
   const { userInfo } = useSelector(({ user }) => user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const isFetchedRef = useRef(false);
   const { id } = useParams();
   const propertyId = id;
   const location = useLocation();
@@ -252,8 +252,9 @@ function Location() {
   }, [propertyDetails?.hourly_rate, hoursValue]);
 
   useEffect(() => {
-    // Guard check: agar propertyId hi nahi hai toh run mat karo
-    if (!propertyId) return;
+    if (!propertyId || isFetchedRef.current) return;
+
+    isFetchedRef.current = true; // Ek baar execute hote hi flag lock ho jayega
 
     fetchPropertyDetails();
     fetchPropertyReviews(1);
