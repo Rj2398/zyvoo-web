@@ -8,6 +8,7 @@ import LocationReviewStars from "../../components/guest/LocationReviewStars";
 import CircularSlider from "@fseehawer/react-circular-slider";
 import { DayPicker } from "react-day-picker";
 import main from "../.././assets/gallery/Group (2).png";
+import Sorry from "../../components/NoResultsFound";
 import dotted from "../.././assets/gallery/vector_10.png";
 import { Tab } from "bootstrap";
 import { toast } from "react-toastify";
@@ -143,17 +144,54 @@ function Location() {
   const [addOnprice, setAddOnPrice] = useState(0);
   const [buttonText, setButtonText] = useState("Start Booking");
   const [showPropertyAddOns, setShowPropertyAddOns] = useState(false);
-
+  const [loading, setLoading] = useState(true);
+  const [isInvalidProperty, setIsInvalidProperty] = useState(false);
   const maxLines = 3;
 
+  // const fetchPropertyDetails = async () => {
+  //   const result = await getPropertyDetails({
+  //     user_id: userId,
+  //     property_id: propertyId,
+  //     longitude: currentLocation.longitude,
+  //     latitude: currentLocation.latitude,
+  //   });
+  //   setPropertyDetails(result.data);
+  // };
+
   const fetchPropertyDetails = async () => {
-    const result = await getPropertyDetails({
-      user_id: userId,
-      property_id: propertyId,
-      longitude: currentLocation.longitude,
-      latitude: currentLocation.latitude,
-    });
-    setPropertyDetails(result.data);
+    if (!propertyId) {
+      setIsInvalidProperty(true);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const payload = {
+        user_id: userId || "",
+        property_id: propertyId,
+        longitude: currentLocation?.longitude ?? null,
+        latitude: currentLocation?.latitude ?? null,
+      };
+
+      const result = await getPropertyDetails(payload);
+
+      // Agar backend success: false ya errors de
+      if (!result?.success || result?.errors?.property_id) {
+        setIsInvalidProperty(true);
+        setPropertyDetails(null);
+      } else {
+        setPropertyDetails(result.data);
+        setIsInvalidProperty(false);
+      }
+    } catch (error) {
+      // Backend 400/404/422 status code par
+      console.error("Property error:", error);
+      setIsInvalidProperty(true);
+      setPropertyDetails(null);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleWishlistClick = async () => {
@@ -212,13 +250,25 @@ function Location() {
       calculateTotalPrice(hoursValue, parseFloat(propertyDetails.hourly_rate));
     }
   }, [propertyDetails?.hourly_rate, hoursValue]);
+
   useEffect(() => {
+    // Guard check: agar propertyId hi nahi hai toh run mat karo
+    if (!propertyId) return;
+
     fetchPropertyDetails();
     fetchPropertyReviews(1);
+
     if (userId) {
       getWishlist();
     }
-  }, [currentLocation.latitude]);
+  }, [propertyId]);
+  // useEffect(() => {
+  //   fetchPropertyDetails();
+  //   fetchPropertyReviews(1);
+  //   if (userId) {
+  //     getWishlist();
+  //   }
+  // }, [currentLocation.latitude]);
 
   useEffect(() => {
     if (currentPage != 1) {
@@ -504,7 +554,13 @@ function Location() {
     if (isNaN(num)) return ""; // handle invalid inputs
     return Number.isInteger(num) ? num?.toString() : num?.toFixed(1);
   }
+  if (loading) {
+    return <div>Loading...</div>; // Ya aapka custom Loader/Spinner
+  }
 
+  if (isInvalidProperty || !propertyDetails) {
+    return <Sorry />;
+  }
   return (
     <>
       <main className="mb-0">

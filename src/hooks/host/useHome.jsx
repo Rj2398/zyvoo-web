@@ -64,7 +64,6 @@ export default function useHome() {
       }
     },
   });
-
   const { mutateAsync: getPropertyDetails } = useMutation({
     mutationKey: ["get_property_details", "user"],
     mutationFn: async (payload) => {
@@ -80,18 +79,52 @@ export default function useHome() {
       } catch (error) {
         const errorMessage =
           error.response?.data?.message ||
+          error.response?.data?.errors?.property_id?.[0] ||
           error.message ||
           "An unknown error occurred";
+
         if (error?.response?.data?.message === "Unauthenticated.") {
           LogoutError();
         }
-        toast.error(errorMessage);
+
+        // ✅ toastId add karne se duplicate popups nahi aayenge
+        toast.error(errorMessage, {
+          toastId: "property_details_error",
+        });
+
+        throw error; // taaki caller function catch block mein handle kar sake
       } finally {
         setManualLoading(false);
       }
     },
   });
-  //
+  // const { mutateAsync: getPropertyDetails } = useMutation({
+  //   mutationKey: ["get_property_details", "user"],
+  //   mutationFn: async (payload) => {
+  //     try {
+  //       setManualLoading(true);
+  //       const response = await guestApi.post("get_property_details", payload);
+  //       const { data } = response;
+
+  //       return {
+  //         ...data,
+  //         message: data?.message,
+  //       };
+  //     } catch (error) {
+  //       const errorMessage =
+  //         error.response?.data?.message ||
+  //         error.message ||
+  //         "An unknown error occurred";
+  //       if (error?.response?.data?.message === "Unauthenticated.") {
+  //         LogoutError();
+  //       }
+  //       toast.error(errorMessage);
+  //     } finally {
+  //       setManualLoading(false);
+  //     }
+  //   },
+  // });
+  // //
 
   const { mutateAsync: updateProperyDetails } = useMutation({
     mutationKey: ["update_property_details", "user"],
