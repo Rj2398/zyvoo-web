@@ -12,10 +12,11 @@ import { useSelector } from "react-redux";
 import ReportBookingModal from "../../components/host/ReportBookingModal";
 import { toast } from "react-toastify";
 import CancelPopup from "../../components/guest/bookingDetailsModal/CancelPopup";
-import { Image } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 import { FiArrowLeft } from "react-icons/fi";
 import { PiClockCountdownFill } from "react-icons/pi";
 
+// Component ke bahar ya top par 10 points define karein:
 const REFUND_POLICY_DATA = [
   {
     title: "1. How refunds are determined",
@@ -62,6 +63,7 @@ const REFUND_POLICY_DATA = [
     desc: "Open the affected booking and select the available help or support option. Include the booking details and a short explanation of what happened. For active or time-sensitive bookings, contact support as soon as possible so the issue can be reviewed while the booking details are still current.",
   },
 ];
+
 const BookingDetails = () => {
   const { userInfo } = useSelector(({ user }) => user);
   const location = useLocation();
@@ -154,15 +156,17 @@ const BookingDetails = () => {
       ? moment(bookingData?.booking?.booking_date).format("MMMM DD, YYYY")
       : ""
   );
-  const visiblePoints = isExpanded
-    ? REFUND_POLICY_DATA
-    : REFUND_POLICY_DATA.slice(0, 1);
+
   useEffect(() => {
     if (!bookingData) {
       toast.error("Please book a property first");
       navigate("/");
     }
   }, [bookingData]);
+
+  const visiblePoints = isExpanded
+    ? REFUND_POLICY_DATA
+    : REFUND_POLICY_DATA.slice(0, 1);
 
   const handleOpenModal = () => setShowModal(true);
   const handleCancel = () => setShowModal(false);
@@ -846,53 +850,148 @@ const BookingDetails = () => {
               Cancellation Policies
             </h5>
 
-            <div>
-              {visiblePoints.map((item, index) => (
-                <div key={index} style={{ marginBottom: "14px" }}>
-                  <strong
-                    style={{
-                      display: "block",
-                      color: "#111",
-                      fontSize: "15px",
-                      fontWeight: "500",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    {item.title}
-                  </strong>
+            <div
+              style={{
+                marginTop: "10px",
+                marginBottom: "10px",
+                // padding: "10px",
+                borderRadius: "5px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "20px",
+              }}
+            >
+              <div>
+                {visiblePoints.map((item, index) => (
+                  <div key={index} style={{ marginBottom: "14px" }}>
+                    <strong
+                      style={{
+                        display: "block",
+                        color: "#111",
+                        fontSize: "15px",
+                        fontWeight: "500",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      {item.title}
+                    </strong>
 
-                  {/* Description with pre-line for bullets */}
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      color: "#444",
-                      lineHeight: "1.6",
-                      whiteSpace: "pre-line",
-                      margin: 0,
-                    }}
-                  >
-                    {item.desc}
-                  </p>
+                    {/* Description with pre-line for bullets */}
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        color: "#444",
+                        lineHeight: "1.6",
+                        whiteSpace: "pre-line",
+                        margin: 0,
+                      }}
+                    >
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
+
+                {/* Read More / Read Less Action Button */}
+                <Button
+                  variant="link"
+                  className="p-0 text-decoration-none"
+                  style={{
+                    color: "#4AEAB1",
+                    fontWeight: "600",
+                    fontSize: "14px",
+                    boxShadow: "none",
+                    marginTop: "4px",
+                  }}
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  {isExpanded ? "Read Less" : "Read More"}
+                </Button>
+              </div>
+              {/* <div>
+                <p style={{ fontSize: "14px", color: "black" }}>
+                  {`Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                  Incidunt expedita, quam voluptatibus rerum iste, quidem
+                  quibusdam delectus impedit mollitia totam placeat. Tenetur
+                  corporis laudantium dolorum nihil quae, adipisci et
+                  exercitationem.`}
+                  ,
+                  {isExpanded &&
+                    `Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, voluptate sunt dolor aperiam similique sit harum iste odio dicta. Accusamus cumque perferendis illum vitae tempore harum doloremque obcaecati suscipit quidem.
+                  Eum, voluptas! Similique impedit harum amet tenetur ea autem quisquam facilis labore corporis nam! Modi optio hic dolores dolorem pariatur ea eligendi, corrupti blanditiis nam nostrum assumenda illo voluptas vitae.`}
+                </p>
+                <button 
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  style={{
+                    color: "#4AEAB1",
+                    border: "none",
+                    cursor: "pointer",
+                    background: "none",
+                    fontSize: "clamp(14px, 1.5vw, 15px)",
+                    textDecoration: "underline",
+                  }}
+                >
+                  {isExpanded ? "Read Less" : "Read More"}
+                </button>
+              </div> */}
+              {rangeVisible && (
+                <div
+                  style={
+                    isMobileWidth
+                      ? {
+                          position: "fixed",
+                          top: 0,
+                          left: 0,
+                          width: "100vw",
+                          height: "100vh",
+                          backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
+                          zIndex: 9998,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          borderRadius: "10px",
+                        }
+                      : {
+                          position: "absolute",
+                          zIndex: 9999,
+                          right: "31%",
+                          top: "55%",
+                        }
+                  }
+                >
+                  <div style={{ position: "relative" }}>
+                    {/* Close Button */}
+
+                    {isMobileWidth && (
+                      <button
+                        onClick={() => setRangeVisible(false)}
+                        style={{
+                          position: "absolute",
+                          top: 5,
+                          right: 5,
+                          cursor: "pointer",
+                          borderRadius: "50%",
+                          width: "25px",
+                          height: "25px",
+                          fontSize: "16px",
+                          backgroundColor: " rgb(55, 75, 72)",
+                          color: "white",
+                        }}
+                      >
+                        &times;
+                      </button>
+                    )}
+
+                    {/* Your Range component */}
+                    <Range
+                      perHourRate={bookingDetails?.hourly_rate}
+                      callbackTotalPrice={(val) => setTotalPrice(val)}
+                      callbacTotalHrs={(val) => setTotalHrs(val)}
+                      propertyIDD={bookingData?.booking?.id}
+                    />
+                  </div>
                 </div>
-              ))}
-
-              {/* Read More / Read Less Action Button */}
-              <Button
-                variant="link"
-                className="p-0 text-decoration-none"
-                style={{
-                  color: "#4AEAB1",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  boxShadow: "none",
-                  marginTop: "4px",
-                }}
-                onClick={() => setIsExpanded(!isExpanded)}
-              >
-                {isExpanded ? "Read Less" : "Read More"}
-              </Button>
+              )}
             </div>
-
             <hr style={{ border: isMobileWidth ? "0.5px solid #ccc" : "" }} />
             <div
               className="accordion"

@@ -962,7 +962,6 @@ const BookingExtendedTime = () => {
                 <div>
                   {visiblePoints.map((item, index) => (
                     <div key={index} style={{ marginBottom: "14px" }}>
-                      {/* Bold Title / Question */}
                       <strong
                         style={{
                           display: "block",
