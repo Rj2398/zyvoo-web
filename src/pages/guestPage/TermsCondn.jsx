@@ -55,30 +55,41 @@ const TermsCondn = () => {
           <div className="container-fluid">
             <div className="row">
               <div className="col-lg-12">
-                <div className="privacy-terms-heading" style={{marginTop:'10px !important'}}>
-                  <h1> {isMobileWidth ?"Terms and Condition": "Terms of Services"}</h1>
+                <div className="privacy-terms-heading" style={{ marginTop: '10px' }}>
+                  <h1>{isMobileWidth ? "Terms and Condition" : "Terms of Services"}</h1>
                   <p>
                     Last Updated {formatDate(TermConditionData?.last_update_at)}
                   </p>
                 </div>
               </div>
-              <div className="col-lg-8 col-md-6">
+              <div className="col-lg-10 col-md-12">
                 <div className="privacy-terms-in">
-                  <div className="privacy-terms-top" style={{marginBottom:'10px !important'}}>
-                    
-               
+                  <div className="privacy-terms-top" style={{ marginBottom: '10px' }}>
                     <h2 className="intro">1.Introduction</h2>
-               
-                      <div className="dangerous para" 
-                        dangerouslySetInnerHTML={{ __html: TermConditionData?.text, }}
-                      />
 
-                      <style>
-                        {`.dangerous p{
-                             color:grey !important;
-                          }
-                        `}
-                      </style>
+                    <div
+                      className="dangerous para"
+                      dangerouslySetInnerHTML={{ __html: TermConditionData?.text }}
+                    />
+
+                    <style>{`
+                      .dangerous p {
+                        color: #4e4e4e !important;
+                        margin-top: 0 !important;
+                        margin-bottom: 14px !important;
+                        line-height: 1.6 !important;
+                      }
+                      .dangerous ul, .dangerous ol {
+                        margin-top: 8px !important;
+                        margin-bottom: 16px !important;
+                        padding-left: 24px !important;
+                      }
+                      .dangerous li {
+                        margin-bottom: 6px !important;
+                        line-height: 1.5 !important;
+                        color: #4e4e4e !important;
+                      }
+                    `}</style>
                   </div>
                 </div>
               </div>

@@ -5903,10 +5903,30 @@ button.add-on-item-btn {
   font-family: inherit !important;
   font-size: 15px !important;
   font-weight: 400 !important;
-  line-height: normal !important;
+  line-height: 1.6 !important;
   color: #4e4e4e !important;
-  margin-bottom: 0px !important;
-  margin-top: -21px !important;
+  margin-top: 0px !important;
+  margin-bottom: 14px !important;
+}
+
+.privacy-terms-top .para p {
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+  line-height: 1.6 !important;
+  color: #4e4e4e !important;
+}
+
+.privacy-terms-top .para ul,
+.privacy-terms-top .para ol {
+  margin-top: 8px !important;
+  margin-bottom: 16px !important;
+  padding-left: 24px !important;
+}
+
+.privacy-terms-top .para li {
+  margin-bottom: 6px !important;
+  line-height: 1.5 !important;
+  color: #4e4e4e !important;
 }
 
 table.my-place-history-table tr td {

@@ -58,11 +58,11 @@ const PrivacyPolicy = () => {
                   <p>Last Updated {formatDate(PrivacyData?.last_update_at)}</p>
                 </div>
               </div>
-              <div className="col-lg-8 col-md-6">
+              <div className="col-lg-10 col-md-12">
                 <div className="privacy-terms-in">
                   <div className="privacy-terms-top">
-                    <h2  className="intro">1.Introduction</h2>
-                    <div className="para" style={{marginTop:isMobileWidth && "-21px"}} dangerouslySetInnerHTML={{ __html: PrivacyData?.text }} />
+                    <h2 className="intro">1.Introduction</h2>
+                    <div className="para" dangerouslySetInnerHTML={{ __html: PrivacyData?.text }} />
                   </div>
                 </div>
               </div>
