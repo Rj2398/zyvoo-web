@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Form, Button, Card, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Form,
+  Button,
+  Card,
+  OverlayTrigger,
+  Tooltip,
+  Modal,
+} from "react-bootstrap";
 
 import { Link } from "react-router-dom";
 import { KEYS } from "../config/Constant";
@@ -27,6 +34,9 @@ const Feedback = () => {
   const [error, setError] = useState("");
   const [isMobileWidth, setIsMobileWidth] = useState(false);
 
+  // ✅ Only added state for modal
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
   useEffect(() => {
     const checkWindowWidth = () => {
       setIsMobileWidth(window.innerWidth <= 768);
@@ -52,20 +62,15 @@ const Feedback = () => {
       return;
     }
 
-    if (!option && !isMobileWidth) {
-      toast.error("Please select the option");
-      return;
-    }
-
     try {
       const res = await setFeedBack({
         user_id: userId,
         type: useTypes,
         details: detailsText,
       });
-      // toast.success(res?.message || "Feedback submitted successfully");
-      toast.success("Thank you for your feedback." || res?.message);
 
+      // ✅ Open Modal on Success
+      setShowSuccessModal(true);
       setDetailText("");
     } catch (error) {
       toast.error("Error in submitting feedback:" || error?.res?.message);
@@ -179,7 +184,6 @@ const Feedback = () => {
                 What's your feedback about?
               </Form.Label>
               <Form.Select
-                // style={{ height: "50px", borderRadius: "10px", width: "65%" }}
                 value={useTypes}
                 onChange={(e) => setUserTypes(e.target.value)}
                 style={{ fontSize: "13px", padding: isMobileWidth && "10px" }}
@@ -214,7 +218,7 @@ const Feedback = () => {
               <div className="d-flex align-items-center gap-2 mb-2">
                 <Form.Label
                   style={{
-                    fontWeight: !isMobileWidth ? "600" : "600", // Fixed typo: 'noraml' -> 'normal'
+                    fontWeight: !isMobileWidth ? "600" : "600",
                     color: "black",
                     fontSize: !isMobileWidth ? "14px" : "18px",
                     margin: 0,
@@ -251,7 +255,6 @@ const Feedback = () => {
                   >
                     i
                   </span>
-                  {/* Agar react-icons use kar rahe hain toh: <BsInfoCircle size={15} color="#6c757d" style={{ cursor: "pointer" }} /> */}
                 </OverlayTrigger>
               </div>
               <Form.Control
@@ -272,7 +275,7 @@ const Feedback = () => {
                 </Form.Text>
               )}
             </Form.Group>
-            {/* 31-08-2026 */}
+
             <div style={{ marginTop: !isMobileWidth && "40px" }}>
               <h5
                 style={{
@@ -290,21 +293,6 @@ const Feedback = () => {
                 right place. Feedback submissions are reviewed for product
                 improvement and may not receive an immediate response.
               </p>
-              {/* {!isMobileWidth && (
-                <>
-                  <Form.Select
-                    style={{ color: "#8E8E8E", fontSize: "13px" }}
-                    //  className="form-select-chutiya"
-                    // style={{ height: "50px", borderRadius: "5px", width: "65%" }}
-                    value={option}
-                    onChange={(e) => setOption(e.target.value)}
-                  >
-                    <option value="">Please select</option>
-                    <option value="Contact Support">Contact Support</option>
-                    <option value="Report a Bug">Report a Bug</option>
-                  </Form.Select>
-                </>
-              )} */}
             </div>
             <div className="d-flex mt-4">
               <Link
@@ -374,6 +362,60 @@ const Feedback = () => {
           </Form>
         </Card>
       </div>
+
+      {/* ✅ Thanks Modal */}
+      <Modal
+        show={showSuccessModal}
+        onHide={() => setShowSuccessModal(false)}
+        centered
+        style={{ zIndex: 99999 }}
+      >
+        <div
+          style={{
+            backgroundColor: "#fff",
+            borderRadius: "20px",
+            padding: "24px 20px 20px 20px",
+          }}
+        >
+          <h5
+            style={{
+              fontWeight: "700",
+              fontSize: "17px",
+              color: "#111",
+              marginBottom: "10px",
+            }}
+          >
+            Thanks — we got it.
+          </h5>
+          <p
+            style={{
+              fontSize: "14px",
+              color: "#4A4A4A",
+              lineHeight: "1.45",
+              marginBottom: "20px",
+            }}
+          >
+            We appreciate you taking the time to help us improve ZYVO. If you
+            asked us to follow up, we’ll use the contact information on your
+            account.
+          </p>
+          <Button
+            onClick={() => setShowSuccessModal(false)}
+            style={{
+              width: "100%",
+              backgroundColor: "#EBEBEB",
+              border: "none",
+              color: "#111",
+              fontWeight: "600",
+              fontSize: "15px",
+              padding: "10px",
+              borderRadius: "14px",
+            }}
+          >
+            OK
+          </Button>
+        </div>
+      </Modal>
     </>
   );
 };
@@ -381,22 +423,29 @@ const Feedback = () => {
 export default Feedback;
 
 // import { useEffect, useState } from "react";
-// import { Form, Button, Card } from "react-bootstrap";
+// import { Form, Button, Card, OverlayTrigger, Tooltip } from "react-bootstrap";
+
 // import { Link } from "react-router-dom";
 // import { KEYS } from "../config/Constant";
-// import { useDispatch } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 // import { setUserType } from "../store/slices/userSlice";
 // import useAddDetails from "../hooks/host/useAddDetails";
 // import { toast } from "react-toastify";
 
 // const Feedback = () => {
-//   const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO));
-//   const userId = userData?.user_id;
+//   const { userInfo } = useSelector(({ user }) => user);
+
+//   const userData =
+//     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
+//     JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
+//   const userId = userInfo?.user_id || userData?.user_id;
 
 //   const dispatch = useDispatch();
 //   const { setFeedBack } = useAddDetails();
 
-//   const [useTypes, setUserTypes] = useState(localStorage.getItem(KEYS.USER_TYPE) || "guest");
+//   const [useTypes, setUserTypes] = useState(
+//     localStorage.getItem(KEYS.USER_TYPE) || "guest"
+//   );
 //   const [option, setOption] = useState("");
 //   const [detailsText, setDetailText] = useState("");
 //   const [error, setError] = useState("");
@@ -408,10 +457,10 @@ export default Feedback;
 //     };
 
 //     checkWindowWidth();
-//     window.addEventListener('resize', checkWindowWidth);
+//     window.addEventListener("resize", checkWindowWidth);
 
-//     return () => window.removeEventListener('resize', checkWindowWidth);
-//   }, [])
+//     return () => window.removeEventListener("resize", checkWindowWidth);
+//   }, []);
 
 //   dispatch(setUserType(useTypes));
 
@@ -427,10 +476,10 @@ export default Feedback;
 //       return;
 //     }
 
-//     if (!option && !isMobileWidth) {
-//       toast.error("Please select the option");
-//       return;
-//     }
+//     // if (!option && !isMobileWidth) {
+//     //   toast.error("Please select the option");
+//     //   return;
+//     // }
 
 //     try {
 //       const res = await setFeedBack({
@@ -438,7 +487,8 @@ export default Feedback;
 //         type: useTypes,
 //         details: detailsText,
 //       });
-//       toast.success(res?.message || "Feedback submitted successfully");
+//       // toast.success(res?.message || "Feedback submitted successfully");
+//       toast.success("Thank you for your feedback." || res?.message);
 
 //       setDetailText("");
 //     } catch (error) {
@@ -459,29 +509,26 @@ export default Feedback;
 //                   <Link to="/profile">
 //                     <i className="fa-regular fa-arrow-left"></i>
 //                   </Link>
-//                   <h3 className="feedback-title-mob"  >Share Feedback</h3>
+//                   <h3 className="feedback-title-mob">Share Feedback</h3>
 //                 </div>
-
 //               </div>
 //             </div>
 //           </div>
 //         </div>
 //       </div>
 
-//       <div style={{}} className="feedback-main" >
+//       <div style={{}} className="feedback-main">
 //         <div>
-//           <h3 className="feedback-title" >Share Feedback</h3>
+//           <h3 className="feedback-title">Share Feedback</h3>
 
 //           {!isMobileWidth && (
 //             <p style={{ fontSize: "12px", color: "gray" }}>
 //               Last Updated 07/04/2024
 //             </p>
 //           )}
-
 //         </div>
 
 //         {!isMobileWidth && (
-
 //           <div
 //             style={{
 //               fontWeight: "400",
@@ -495,59 +542,71 @@ export default Feedback;
 //           ></div>
 //         )}
 //         <div>
-//           <div style={{ margin: "auto" }}>
-//             <p style={{ lineHeight: "1.6", color: "#555" }}>
-//               Lorem Ipsum is simply dummy text of the printing and typesetting
-//               industry. Lorem Ipsum has been the industry's standard dummy text
-//               ever since the 1500s, when an unknown printer took a galley of
-//               type and scrambled it to make a type specimen book.
-//             </p>
-//           </div>
-//           <div style={{ margin: "auto" }}>
-//             <p style={{ lineHeight: "1.6", color: "#555" }}>
-//               Lorem Ipsum is simply dummy text of the printing and typesetting
-//               industry. Lorem Ipsum has been the industry's standard dummy text
-//               ever since the 1500s, when an unknown printer took a galley of
-//               type and scrambled it to make a type specimen book. Lorem Ipsum is
-//               simply dummy text of the printing and typesetting industry. Lorem
-//               Ipsum has been the industry's standard dummy text ever since the
-//               1500s, when an unknown printer took a galley of type and scrambled
-//               it to make a type specimen book. Lorem Ipsum is simply dummy text
-//               of the printing and typesetting industry. Lorem Ipsum has been the
-//               industry's standard dummy text ever since the 1500s, when an
-//               unknown printer took a galley of type and scrambled it to make a
-//               type specimen book. Lorem Ipsum is simply dummy text of the
-//               printing and typesetting industry. Lorem Ipsum has been the
-//               industry's standard dummy text ever since the 1500s, when an
-//               unknown printer took a galley of type and scrambled it to make a
-//               type specimen book. Lorem Ipsum is simply dummy text of the
-//               printing and typesetting industry. Lorem Ipsum has been the
-//               industry's standard dummy text ever since the 1500s, when an
-//               unknown printer took a galley of type and scrambled it to make a
-//               type specimen book. Lorem Ipsum is simply dummy text of the
-//               printing and typestting industry.
-//             </p>
-//           </div>
+//           {isMobileWidth && (
+//             <div style={{ margin: "auto" }}>
+//               <p
+//                 style={{
+//                   lineHeight: "1.6",
+//                   color: isMobileWidth ? "black" : "#555",
+//                   fontSize: isMobileWidth && "13px",
+//                 }}
+//               >
+//                 Lorem Ipsum is simply dummy text of the printing and typesetting
+//                 industry. Lorem Ipsum has been the industry's standard dummy
+//                 text ever since the 1500s, when an unknown printer took a galley
+//                 of type and scrambled it to make a type specimen book.
+//               </p>
+//             </div>
+//           )}
+
+//           {!isMobileWidth && (
+//             <div style={{ margin: "auto" }}>
+//               <p
+//                 style={{
+//                   lineHeight: "1.6",
+//                   color: isMobileWidth ? "black" : "#555",
+//                   fontSize: isMobileWidth && "13px",
+//                 }}
+//               >
+//                 Found something confusing, broken, or harder than it should be?
+//                 Tell us what happened. Your feedback goes directly toward
+//                 improving the ZYVO experience for guests and hosts.
+//               </p>
+//             </div>
+//           )}
 //         </div>
-//         <div style={{ margin: "auto" }}>
-//           <p style={{ lineHeight: "1.6", color: "#555" }}>
-//             Lorem Ipsum is simply dummy text of the printing and typesetting
-//             industry. Lorem Ipsum has been the industry's standard dummy text
-//             ever since the 1500s, when an unknown printer took a galley of type
-//             and scrambled it to make a type specimen book.
-//           </p>
-//         </div>
-//         <Card style={{ marginTop: "20px", border: "none" }} className="form-select-chutiya">
-//           <Form onSubmit={handleFeedBack}      >
+
+//         {!isMobileWidth && (
+//           <div style={{ margin: "auto" }}>
+//             <p
+//               style={{
+//                 lineHeight: "1.6",
+//                 color: isMobileWidth ? "black" : "#555",
+//                 fontSize: isMobileWidth && "13px",
+//               }}
+//             ></p>
+//           </div>
+//         )}
+//         <Card
+//           style={{ marginTop: "20px", border: "none" }}
+//           className="form-select-chutiya"
+//         >
+//           <Form onSubmit={handleFeedBack}>
 //             <Form.Group controlId="feedbackCategory">
-//               <Form.Label style={{ fontWeight: "500" }}>
+//               <Form.Label
+//                 style={{
+//                   fontWeight: isMobileWidth ? "noraml" : "500",
+//                   color: "black",
+//                   fontSize: isMobileWidth ? "14px" : "18px",
+//                 }}
+//               >
 //                 What's your feedback about?
 //               </Form.Label>
 //               <Form.Select
-
 //                 // style={{ height: "50px", borderRadius: "10px", width: "65%" }}
 //                 value={useTypes}
 //                 onChange={(e) => setUserTypes(e.target.value)}
+//                 style={{ fontSize: "13px", padding: isMobileWidth && "10px" }}
 //               >
 //                 <option
 //                   value={useTypes === "guest"}
@@ -564,6 +623,61 @@ export default Feedback;
 //               </Form.Select>
 //             </Form.Group>
 //             <Form.Group controlId="feedbackDetails" className="mt-3">
+//               {isMobileWidth && (
+//                 <Form.Label
+//                   style={{
+//                     fontWeight: "400",
+//                     color: "black",
+//                     fontSize: "18px",
+//                   }}
+//                 >
+//                   Add Details
+//                 </Form.Label>
+//               )}
+
+//               <div className="d-flex align-items-center gap-2 mb-2">
+//                 <Form.Label
+//                   style={{
+//                     fontWeight: !isMobileWidth ? "600" : "600", // Fixed typo: 'noraml' -> 'normal'
+//                     color: "black",
+//                     fontSize: !isMobileWidth ? "14px" : "18px",
+//                     margin: 0,
+//                   }}
+//                 >
+//                   Add Details
+//                 </Form.Label>
+
+//                 {/* Info Icon with Tooltip */}
+//                 <OverlayTrigger
+//                   placement="top"
+//                   overlay={
+//                     <Tooltip id="details-info-tooltip">
+//                       Please do not include full card numbers, bank account
+//                       numbers, passwords, government ID numbers, or other highly
+//                       sensitive information in your message.
+//                     </Tooltip>
+//                   }
+//                 >
+//                   <span
+//                     style={{
+//                       cursor: "pointer",
+//                       display: "inline-flex",
+//                       alignItems: "center",
+//                       justifyContent: "center",
+//                       width: "16px",
+//                       height: "16px",
+//                       borderRadius: "50%",
+//                       backgroundColor: "#e0e0e0",
+//                       color: "#555",
+//                       fontSize: "11px",
+//                       fontWeight: "bold",
+//                     }}
+//                   >
+//                     i
+//                   </span>
+//                   {/* Agar react-icons use kar rahe hain toh: <BsInfoCircle size={15} color="#6c757d" style={{ cursor: "pointer" }} /> */}
+//                 </OverlayTrigger>
+//               </div>
 //               <Form.Control
 //                 value={detailsText}
 //                 onChange={(e) => {
@@ -572,10 +686,8 @@ export default Feedback;
 //                 }}
 //                 as="textarea"
 //                 rows={4}
-//                 placeholder="Add details"
-//                 style={{color:'#8E8E8E'}}
-//               // className="form-select-chutiya"
-//               // style={{ borderRadius: "5px", width: "65%" }}
+//                 placeholder={!isMobileWidth && "Add Details"}
+//                 style={{ color: "#8E8E8E", fontSize: "13px" }}
 //               />
 //               {error && (
 //                 <Form.Text style={{ color: "red" }}>
@@ -584,29 +696,39 @@ export default Feedback;
 //                 </Form.Text>
 //               )}
 //             </Form.Group>
-//             <div style={{ marginTop:!isMobileWidth && "40px" }}>
-//               <h5 style={{ fontWeight: "500" ,fontSize:'18px'}}>Need to get in touch?</h5>
+//             {/* 31-08-2026 */}
+//             <div style={{ marginTop: !isMobileWidth && "40px" }}>
+//               <h5
+//                 style={{
+//                   fontWeight: "600",
+//                   fontSize: "18px",
+//                   color: "black",
+//                   marginTop: isMobileWidth && "10px",
+//                 }}
+//               >
+//                 Need to get in touch?
+//               </h5>
 //               <p style={{ fontSize: "14px", color: "#080707" }}>
-//                 We'll start with some questions and guide you to the right
-//                 place.
+//                 Need help with an active booking, payment, refund, or payout?
+//                 Use Help & Support instead so the issue can be routed to the
+//                 right place. Feedback submissions are reviewed for product
+//                 improvement and may not receive an immediate response.
 //               </p>
-//               {
-//                 !isMobileWidth && (
-//                   <>
-//                     <Form.Select   style={{color:'#8E8E8E'}}
-//                       //  className="form-select-chutiya"
-//                       // style={{ height: "50px", borderRadius: "5px", width: "65%" }}
-//                       value={option}
-//                       onChange={(e) => setOption(e.target.value)}
-//                     >
-//                       <option value="">Please select</option>
-//                       <option value="Contact Support">Contact Support</option>
-//                       <option value="Report a Bug">Report a Bug</option>
-//                     </Form.Select>
-//                   </>
-//                 )
-//               }
-
+//               {/* {!isMobileWidth && (
+//                 <>
+//                   <Form.Select
+//                     style={{ color: "#8E8E8E", fontSize: "13px" }}
+//                     //  className="form-select-chutiya"
+//                     // style={{ height: "50px", borderRadius: "5px", width: "65%" }}
+//                     value={option}
+//                     onChange={(e) => setOption(e.target.value)}
+//                   >
+//                     <option value="">Please select</option>
+//                     <option value="Contact Support">Contact Support</option>
+//                     <option value="Report a Bug">Report a Bug</option>
+//                   </Form.Select>
+//                 </>
+//               )} */}
 //             </div>
 //             <div className="d-flex mt-4">
 //               <Link
@@ -616,10 +738,12 @@ export default Feedback;
 //                 <Button
 //                   variant="light"
 //                   style={{
-//                     border: "1px solid #4AEAB1",
+//                     border: isMobileWidth
+//                       ? "1px solid black"
+//                       : "1px solid #4AEAB1",
 //                     marginRight: "10px",
 //                     padding: "10px 20px",
-//                     borderRadius: isMobileWidth? "2px" : "35px",
+//                     borderRadius: isMobileWidth ? "8px" : "35px",
 //                   }}
 //                 >
 //                   Contact us
@@ -627,7 +751,6 @@ export default Feedback;
 //               </Link>
 
 //               {!isMobileWidth && (
-
 //                 <Button
 //                   type="submit"
 //                   style={{
@@ -641,7 +764,6 @@ export default Feedback;
 //                   Submit
 //                 </Button>
 //               )}
-
 //             </div>
 
 //             {isMobileWidth && (
@@ -660,7 +782,6 @@ export default Feedback;
 //             )}
 
 //             {isMobileWidth && (
-
 //               <Button
 //                 type="submit"
 //                 style={{
@@ -674,7 +795,6 @@ export default Feedback;
 //                 Submit
 //               </Button>
 //             )}
-
 //           </Form>
 //         </Card>
 //       </div>
