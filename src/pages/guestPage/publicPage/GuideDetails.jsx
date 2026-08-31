@@ -12,6 +12,7 @@ import AuthModal from "../../../components/guest/authModal";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import { useLocation } from "react-router-dom";
+import Sorry from "../../../components/NoResultsFound";
 import useCommon from "../../../hooks/useCommon";
 import { imageBase, KEYS } from "../../../config/Constant";
 import ShareModal from "../../../components/guest/bookingDetailsModal/ShareModal";
@@ -22,6 +23,11 @@ function GuideDetails() {
   const { getGuideDetail, getGuideList } = useCommon();
   const navigate = useNavigate();
   const { id } = useParams();
+
+  //
+  const [loading, setLoading] = useState(true);
+  const [isInvalidGuide, setIsInvalidGuide] = useState(false);
+  //
 
   const currentGuideId = guideId || id;
   const [guideDetails, setGuideDetails] = useState();
@@ -42,22 +48,37 @@ function GuideDetails() {
   }, []);
 
   const fetchGuideDetails = async () => {
+    if (!currentGuideId) {
+      setIsInvalidGuide(true);
+      setLoading(false);
+      return;
+    }
+
     try {
+      setLoading(true);
       const response = await getGuideDetail({ guide_id: currentGuideId });
       const guideData = response?.data;
+
+      // Agar response fail ho ya data na mile
+      if (!response?.success && !guideData) {
+        setIsInvalidGuide(true);
+        setGuideDetails(null);
+        setRawVideoUrl(null);
+        return;
+      }
+
       setGuideDetails(guideData);
+      setIsInvalidGuide(false);
 
       // --- EXTRACT RAW YOUTUBE LINK START ---
       if (guideData?.description) {
-        // Matches the url string inside the <oembed> tag perfectly
         const match = guideData.description.match(
           /<oembed\s+url=["']([^"']+)["']/
         );
 
         if (match && match[1]) {
-          // Removes any escaped backslashes coming from JSON formatting
           const cleanedUrl = match[1].replace(/\\/g, "");
-          setRawVideoUrl(cleanedUrl); // Saves: "https://www.youtube.com/watch?v=BPCEzBezS2Y"
+          setRawVideoUrl(cleanedUrl);
         } else {
           setRawVideoUrl(null);
         }
@@ -67,8 +88,42 @@ function GuideDetails() {
       // --- EXTRACT RAW YOUTUBE LINK END ---
     } catch (error) {
       console.error("Error fetching guide details:", error);
+      setIsInvalidGuide(true);
+      setGuideDetails(null);
+      setRawVideoUrl(null);
+    } finally {
+      setLoading(false);
     }
   };
+  //31-08-2026
+  // const fetchGuideDetails = async () => {
+  //   try {
+  //     const response = await getGuideDetail({ guide_id: currentGuideId });
+  //     const guideData = response?.data;
+  //     setGuideDetails(guideData);
+
+  //     // --- EXTRACT RAW YOUTUBE LINK START ---
+  //     if (guideData?.description) {
+  //       // Matches the url string inside the <oembed> tag perfectly
+  //       const match = guideData.description.match(
+  //         /<oembed\s+url=["']([^"']+)["']/
+  //       );
+
+  //       if (match && match[1]) {
+  //         // Removes any escaped backslashes coming from JSON formatting
+  //         const cleanedUrl = match[1].replace(/\\/g, "");
+  //         setRawVideoUrl(cleanedUrl); // Saves: "https://www.youtube.com/watch?v=BPCEzBezS2Y"
+  //       } else {
+  //         setRawVideoUrl(null);
+  //       }
+  //     } else {
+  //       setRawVideoUrl(null);
+  //     }
+  //     // --- EXTRACT RAW YOUTUBE LINK END ---
+  //   } catch (error) {
+  //     console.error("Error fetching guide details:", error);
+  //   }
+  // };
 
   // const fetchGuideDetails = async () => {
   //   try {
@@ -123,6 +178,28 @@ function GuideDetails() {
     if (!title) return title;
     return title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();
   };
+
+  // Loading state
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "70vh",
+          width: "100%",
+        }}
+      >
+        Loading...
+      </div>
+    ); // Ya aapka custom Loader/Spinner
+  }
+
+  // Agar guide invalid ho ya data na mile
+  if (isInvalidGuide || !guideDetails) {
+    return <Sorry />;
+  }
 
   return (
     <div>

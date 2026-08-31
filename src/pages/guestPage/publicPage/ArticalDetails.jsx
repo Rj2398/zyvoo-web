@@ -14,12 +14,14 @@ import { FaArrowLeft } from "react-icons/fa";
 import useCommon from "../../../hooks/useCommon";
 import { imageBase, KEYS } from "../../../config/Constant";
 import ShareModal from "../../../components/guest/bookingDetailsModal/ShareModal";
+import Sorry from "../../../components/NoResultsFound";
 
 function GuideDetails() {
   const location = useLocation();
   const { articleId } = location.state || {};
   const userType = localStorage.getItem(KEYS.USER_TYPE);
-
+  const [loading, setLoading] = useState(true);
+  const [isInvalidArticle, setIsInvalidArticle] = useState(false);
   const { id } = useParams();
 
   const currentArticleId = articleId || id;
@@ -38,27 +40,75 @@ function GuideDetails() {
   //     console.error(error);
   //   }
   // };
+  //31-08-2026
+  // const fetchArticleDetails = async () => {
+  //   try {
+  //     const response = await getArticleDetails({
+  //       article_id: currentArticleId,
+  //     });
+
+  //     const articleData = response?.data;
+  //     setArticleDetails(articleData);
+
+  //     // --- EXTRACT RAW YOUTUBE LINK START ---
+  //     if (articleData?.description) {
+  //       // 1. Matches the exact url parameter within the <oembed> tag, accounting for escaped backslashes from JSON
+  //       const match = articleData.description.match(
+  //         /<oembed\s+url=["']([^"']+)["']/
+  //       );
+
+  //       if (match && match[1]) {
+  //         // 2. Clean up any escaped backslashes coming from the raw JSON description layout
+  //         const cleanedUrl = match[1].replace(/\\/g, "");
+  //         setRawVideoUrl(cleanedUrl); // Saves: "https://youtu.be/QoQBzR1NIqI?si=-z7W0YPkI6LR_e1T"
+  //       } else {
+  //         setRawVideoUrl(null);
+  //       }
+  //     } else {
+  //       setRawVideoUrl(null);
+  //     }
+  //     // --- EXTRACT RAW YOUTUBE LINK END ---
+  //   } catch (error) {
+  //     console.error("Error fetching article details:", error);
+  //   }
+  // };
 
   const fetchArticleDetails = async () => {
+    // 1. Guard check
+    if (!currentArticleId) {
+      setIsInvalidArticle(true);
+      setLoading(false);
+      return;
+    }
+
     try {
+      setLoading(true);
       const response = await getArticleDetails({
         article_id: currentArticleId,
       });
 
       const articleData = response?.data;
+
+      // 2. Agar API success false ho ya data na mile
+      if (!response?.success && !articleData) {
+        setIsInvalidArticle(true);
+        setArticleDetails(null);
+        setRawVideoUrl(null);
+        return;
+      }
+
       setArticleDetails(articleData);
+      setIsInvalidArticle(false);
 
       // --- EXTRACT RAW YOUTUBE LINK START ---
       if (articleData?.description) {
-        // 1. Matches the exact url parameter within the <oembed> tag, accounting for escaped backslashes from JSON
         const match = articleData.description.match(
           /<oembed\s+url=["']([^"']+)["']/
         );
 
         if (match && match[1]) {
-          // 2. Clean up any escaped backslashes coming from the raw JSON description layout
           const cleanedUrl = match[1].replace(/\\/g, "");
-          setRawVideoUrl(cleanedUrl); // Saves: "https://youtu.be/QoQBzR1NIqI?si=-z7W0YPkI6LR_e1T"
+          setRawVideoUrl(cleanedUrl);
         } else {
           setRawVideoUrl(null);
         }
@@ -68,9 +118,13 @@ function GuideDetails() {
       // --- EXTRACT RAW YOUTUBE LINK END ---
     } catch (error) {
       console.error("Error fetching article details:", error);
+      setIsInvalidArticle(true);
+      setArticleDetails(null);
+      setRawVideoUrl(null);
+    } finally {
+      setLoading(false);
     }
   };
-
   useEffect(() => {
     if (currentArticleId) {
       fetchArticleDetails();
@@ -130,6 +184,26 @@ function GuideDetails() {
     return title.charAt(0).toUpperCase() + title.slice(1).toLowerCase();
   };
 
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "70vh",
+          width: "100%",
+        }}
+      >
+        Loading...
+      </div>
+    ); // Ya Custom Loader
+  }
+
+  // Invalid Article / Not Found State
+  if (isInvalidArticle || !articleDetails) {
+    return <Sorry />;
+  }
   return (
     <div>
       <main>

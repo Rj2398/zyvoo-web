@@ -43,42 +43,341 @@ const Routers = () => {
       <Route path="/homeGuest" element={<Home />} />
       <Route path="/multi-marker" element={<MultipleMarkerMap />} />
       <Route path="/homeHost" element={<HomeHost />} />
-      <Route path="/aboutUs" element={ <Layout> <AboutUs /> </Layout> } />
-      <Route path="/faq" element={ <Layout> <Faq /> </Layout> } />
-      <Route path="/whyus" element={ <Layout> <WhyUs /> </Layout> } />
-      <Route path="/contactUs" element={ <Layout> <ContactUs /> </Layout> } />
-      <Route path="/exploreArticles" element={ <Layout> <ExploreArticles /> </Layout> } />
-      <Route path="/articles-detail/:id" element={ <Layout> <ArticalDetails /> </Layout> } />
-      <Route path="/create-profile" element={ <Layout> <CreateProfile /> </Layout> } />
-      <Route path="/notifications" element={ <PrivateRoute> <Layout> <Notifications /> </Layout> </PrivateRoute> } />
-      <Route path="/helpCenter" element={ <Layout> <HelpCenter /> </Layout> } />
-      <Route path="/explore-guides" element={ <Layout> <ExploreGuides /> </Layout> } />
-      <Route path="/guide-detail/:id" element={ <Layout> <GuideDetails /> </Layout> } />
+      <Route
+        path="/aboutUs"
+        element={
+          <Layout>
+            {" "}
+            <AboutUs />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/faq"
+        element={
+          <Layout>
+            {" "}
+            <Faq />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/whyus"
+        element={
+          <Layout>
+            {" "}
+            <WhyUs />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/contactUs"
+        element={
+          <Layout>
+            {" "}
+            <ContactUs />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/exploreArticles"
+        element={
+          <Layout>
+            {" "}
+            <ExploreArticles />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/articles-detail/:id"
+        element={
+          <Layout>
+            {" "}
+            <ArticalDetails />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/create-profile"
+        element={
+          <Layout>
+            {" "}
+            <CreateProfile />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/notifications"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <Notifications />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/helpCenter"
+        element={
+          <Layout>
+            {" "}
+            <HelpCenter />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/explore-guides"
+        element={
+          <Layout>
+            {" "}
+            <ExploreGuides />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/guide-detail/:id"
+        element={
+          <Layout>
+            {" "}
+            <GuideDetails />{" "}
+          </Layout>
+        }
+      />
 
-      <Route path="/exploreArticles" element={ <PrivateRoute> <Layout> <ExploreArticles /> </Layout> </PrivateRoute> } />
-      <Route path="/profile" element={ <PrivateRoute> <Layout> <Profile /> </Layout> </PrivateRoute> } />
-      <Route path="/wishlist" element={ <PrivateRoute> <Layout> <WishList /> </Layout> </PrivateRoute> } />
-      <Route path="/WishList" element={ <PrivateRoute> <Layout> <WishList /> </Layout> </PrivateRoute> } />
-      <Route path="/wishlistDetails" element={ <PrivateRoute> <Layout> <WishListDetails /> </Layout> </PrivateRoute> } />
+      <Route
+        path="/exploreArticles"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <ExploreArticles />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <Profile />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/wishlist"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <WishList />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/WishList"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <WishList />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/wishlistDetails"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <WishListDetails />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/host-listing" element={ <PrivateRoute> <Layout> <HostListing /> </Layout></PrivateRoute> } />
-      <Route path="/location/:id" element={ <Layout> <Location /> </Layout> } />
-      <Route path="/myplaces" element={ <PrivateRoute> <Layout> <MyPlaces /> </Layout> </PrivateRoute> } />
+      <Route
+        path="/host-listing"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <HostListing />{" "}
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/location/:id"
+        element={
+          <Layout>
+            {" "}
+            <Location />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/myplaces"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <MyPlaces />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
 
-      <Route path="/payment-host" element={ <PrivateRoute> <Layout> <PaymentHost /> </Layout> </PrivateRoute> } />
+      <Route
+        path="/payment-host"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <PaymentHost />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
       {/* <Route path="/payment-host" element={  <Layout> <PaymentHost /> </Layout>  } /> */}
-      <Route path="/booking" element={ <PrivateRoute> <Layout> <BookingHost /> </Layout> </PrivateRoute> } />
-      <Route path="/chat" element={ <PrivateRoute> <Layout> <HostChat /> </Layout> </PrivateRoute> } />
-      <Route path="/privacy-policy" element={ <Layout> <PrivacyPolicy /> </Layout> } /> 
-      <Route path="/terms-condition" element={ <Layout> <TermsCondn /> </Layout> } /> 
-      <Route path="/checkoutPage" element={ <PrivateRoute> <Layout> <CheckoutPage /> </Layout> </PrivateRoute> } />
-      <Route path="/checkout" element={ <PrivateRoute> <Layout> <Checkout /> </Layout> </PrivateRoute> } />
-      <Route path="/booking-details" element={ <PrivateRoute> <Layout> <BookingDetails /> </Layout> </PrivateRoute> } />
-      <Route path="/booking-extended-time" element={ <PrivateRoute> <Layout> <BookingExtendedTime /> </Layout> </PrivateRoute> } />
-      <Route path="/feedback" element={ <PrivateRoute> <Layout> <Feedback /> </Layout> </PrivateRoute> } />
-      <Route path="/my-place-history" element={ <PrivateRoute> <Layout> <MyPlaceHistory /> </Layout> </PrivateRoute> } />
+      <Route
+        path="/booking"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <BookingHost />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/chat"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <HostChat />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/privacy-policy"
+        element={
+          <Layout>
+            {" "}
+            <PrivacyPolicy />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/terms-condition"
+        element={
+          <Layout>
+            {" "}
+            <TermsCondn />{" "}
+          </Layout>
+        }
+      />
+      <Route
+        path="/checkoutPage"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <CheckoutPage />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/checkout"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <Checkout />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/booking-details"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <BookingDetails />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/booking-extended-time"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <BookingExtendedTime />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/feedback"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <Feedback />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-place-history"
+        element={
+          <PrivateRoute>
+            {" "}
+            <Layout>
+              {" "}
+              <MyPlaceHistory />{" "}
+            </Layout>{" "}
+          </PrivateRoute>
+        }
+      />
       {/* <Route path="/my-place-history" element={  <Layout> <MyPlaceHistory /> </Layout>  } /> */}
-      <Route path="*" element={ <Layout> <Sorry /> </Layout>  } />
+      <Route
+        path="*"
+        element={
+          <Layout>
+            {" "}
+            <Sorry />{" "}
+          </Layout>
+        }
+      />
     </Routes>
   );
 };
