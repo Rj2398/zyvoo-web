@@ -3,8 +3,42 @@ import React from "react";
 import Footer from "../../components/guest/Footer";
 import AuthModal from "../../components/guest/authModal";
 import { Link, useNavigate } from "react-router-dom";
+const CANCELLATION_POLICY_TEXT = `1. How refunds are determined
+Every booking is subject to the cancellation and refund terms displayed during checkout and in the confirmed booking details. Those terms form part of the booking agreement between the guest and host. Before paying, guests should review the booking date and time, total price, fees, house rules, and the cancellation terms shown for that listing. Where a listing has a host-specific cancellation policy, that policy controls unless this Refund Policy provides a greater remedy because the host cancels, the space is materially unavailable, or applicable law requires otherwise.
 
+2. Guest cancellations
+If a guest cancels, the refundable amount is calculated using the cancellation terms that were presented before the booking was confirmed. The app will show the expected refund, when available, before the guest completes the cancellation.
+• A cancellation is effective only after it is submitted through ZYVO and the booking status changes to cancelled.
+• Not attending, arriving late, leaving early, or using less time than booked does not automatically create a right to a refund.
+• Any fee identified as non-refundable before payment will remain non-refundable unless required by law or ZYVO determines otherwise for a qualifying booking issue.
+• If a refund is approved, it is returned to the original payment method whenever possible.
+
+3. Host cancellations
+If a host cancels a confirmed booking, the guest will generally receive a refund of the amounts paid for that booking. ZYVO may also take account action when a host repeatedly cancels confirmed bookings, including limiting the host’s ability to accept future bookings or publish listings. A host should not ask a guest to cancel on the host’s behalf. If the host cannot honor a booking, the host should cancel it through ZYVO so the booking history and refund can be handled correctly.
+
+4. Space unavailable or materially different
+Guests should contact ZYVO promptly if they arrive and the booked space is unavailable, unsafe for the booked use, inaccessible despite following the host’s instructions, or materially different from the listing in a way that prevents the intended booking from reasonably taking place. Depending on the circumstances and the evidence available, ZYVO may issue a full refund, a partial refund, account credit where legally permitted, or another appropriate resolution. Guests may be asked to provide photos, video, messages, receipts, or other information that helps us review the issue.
+
+5. Booking interruptions and early termination
+If a booking begins but cannot reasonably continue because of a qualifying issue with the space or host access, ZYVO may consider a partial or full refund based on the portion of the booking affected. Refunds are not guaranteed for issues caused by the guest, members of the guest’s party, or a use that violates the listing rules or these Terms.
+
+6. Cleaning fees, platform fees and taxes
+Whether cleaning fees, platform fees, taxes, or other charges are refunded depends on the cancellation terms, the timing and reason for the cancellation, and applicable law. Any amount that will not be refunded should be shown in the cancellation summary before the cancellation is finalized whenever the product supports that calculation.
+
+7. Payment processing time
+ZYVO may approve or initiate a refund quickly, but the time it takes to appear in a guest’s account depends on the bank, card issuer, wallet provider, or payment processor. Processing times can vary and are outside ZYVO’s direct control.
+
+8. Chargebacks and payment disputes
+If there is a problem with a booking, guests should contact ZYVO first so we can review it. Filing a chargeback does not guarantee a refund and may pause ZYVO’s internal review while the payment provider investigates. Users must provide accurate information in any payment dispute.
+
+9. Fraud, abuse and policy violations
+ZYVO may deny or reverse a refund where there is evidence of fraud, fabricated claims, chargeback abuse, unauthorized payment activity, misuse of the platform, or a material violation of the booking rules or Terms & Conditions, subject to applicable law.
+
+10. How to request help with a refund
+Open the affected booking and select the available help or support option. Include the booking details and a short explanation of what happened. For active or time-sensitive bookings, contact support as soon as possible so the issue can be reviewed while the booking details are still current.`;
 const AddMoreTime = () => {
+  const [isCancellationExpanded, setIsCancellationExpanded] = useState(false);
+  const charLimit = 250;
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +62,11 @@ const AddMoreTime = () => {
                   </div>
                   <div className="mob-filter-in">
                     <a href="mob-filter.html">
-                      <img src="/images/mobile/filters/filter.svg" loading="lazy" alt="" />
+                      <img
+                        src="/images/mobile/filters/filter.svg"
+                        loading="lazy"
+                        alt=""
+                      />
                     </a>
                   </div>
                 </div>
@@ -50,21 +88,27 @@ const AddMoreTime = () => {
                   <div className="chat-right-bottom bg-white">
                     <div className="chat-right-bottom-in">
                       <div className="chat-right-bottom-in-image ">
-                        <img src="/images/locations-grid/1.svg" loading="lazy" alt="" />
+                        <img
+                          src="/images/locations-grid/1.svg"
+                          loading="lazy"
+                          alt=""
+                        />
                       </div>
                       <div className="chat-right-bottom-in-text">
                         <h1>Cabin in Peshastin</h1>
                         <p>
                           <img
                             src="/images/locations-grid/star-icon.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           <span>5.0</span>(1k+)
                         </p>
                         <p>
                           <img
                             src="/images/locations-grid/location-icon.svg"
-                            loading="lazy" alt=""
+                            loading="lazy"
+                            alt=""
                           />{" "}
                           37 miles away
                         </p>
@@ -94,7 +138,11 @@ const AddMoreTime = () => {
                   </div>
                   <div className="location-right-shield">
                     <span className="info-wrap">
-                      <img src="/images/create-profile/info.svg" loading="lazy" alt="" />
+                      <img
+                        src="/images/create-profile/info.svg"
+                        loading="lazy"
+                        alt=""
+                      />
                       <span className="info-in">
                         Your safety and peace of mind are our top priorities.
                         ZYVO is proud to provide comprehensive liability
@@ -102,7 +150,11 @@ const AddMoreTime = () => {
                       </span>
                     </span>
                     <h2>
-                      <img src="/images/location/zyvo-shield.svg" loading="lazy" alt="" />
+                      <img
+                        src="/images/location/zyvo-shield.svg"
+                        loading="lazy"
+                        alt=""
+                      />
                       ZYVO Shield
                     </h2>
                     <p>
@@ -117,13 +169,15 @@ const AddMoreTime = () => {
                         <img
                           className="chat-right-top-profile-image"
                           src="/images/chat/profile/1.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                         <h2>Mia J.</h2>
                         <img
                           className="chat-right-top-batch-image"
                           src="/images/locations-grid/profile/batch.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                         />
                       </div>
                     </div>
@@ -131,7 +185,11 @@ const AddMoreTime = () => {
                     <div className="chat-right-top-mob-right">
                       <Link to="/chat">Message the host</Link>
                       <p>
-                        <img src="/images/guides-articles/time.svg" loading="lazy" alt="" />
+                        <img
+                          src="/images/guides-articles/time.svg"
+                          loading="lazy"
+                          alt=""
+                        />
                         Typically respond within 1 hr
                       </p>
                       <a
@@ -185,15 +243,28 @@ const AddMoreTime = () => {
                   <div className="booking-details">
                     <ul>
                       <li>
-                        <img src="/images/filters/time.svg" loading="lazy" alt="" /> 2 hours
+                        <img
+                          src="/images/filters/time.svg"
+                          loading="lazy"
+                          alt=""
+                        />{" "}
+                        2 hours
                       </li>
                       <li>
-                        <img src="/images/filters/calendar-icon.svg" loading="lazy" alt="" />{" "}
+                        <img
+                          src="/images/filters/calendar-icon.svg"
+                          loading="lazy"
+                          alt=""
+                        />{" "}
                         October 22, 2023
                       </li>
                       <li>
-                        <img src="/images/filters/time.svg" loading="lazy" alt="" /> From 01pm
-                        to 03pm
+                        <img
+                          src="/images/filters/time.svg"
+                          loading="lazy"
+                          alt=""
+                        />{" "}
+                        From 01pm to 03pm
                       </li>
                       <li className="addmore-time-btn">
                         <button
@@ -205,7 +276,8 @@ const AddMoreTime = () => {
                         Add more time
                         <img
                           src="/images/filters/time.svg"
-                          loading="lazy" alt=""
+                          loading="lazy"
+                          alt=""
                           className="ms-1"
                         />
                         <div
@@ -238,22 +310,45 @@ const AddMoreTime = () => {
                     </ul>
                   </div>
                   <hr />
-                  <h2>Cancelation Policies</h2>
-                  <div className="location-about">
-                    <p className="active">
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only. Lorem Ipsum
-                      is simply dummy text of the printing and typesetting
-                      industry. Lorem Ipsum has been the industry's standard
-                      dummy text ever since the 1500s, when an unknown printer
-                      took a galley of type and scrambled it to make a type
-                      specimen book. It has survived not only.Lorem Ipsum has
-                      been the industry's standard dummy text....
+                  <div className="location-about mb-4">
+                    <h2>Cancellation Policies</h2>
+
+                    <p
+                      className="active"
+                      style={{
+                        fontSize: "15px",
+                        lineHeight: "1.6",
+                        whiteSpace: "pre-line", // Newline aur numbered steps preserve karne ke liye
+                        color: "#333",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      {isCancellationExpanded ||
+                      CANCELLATION_POLICY_TEXT.length <= charLimit
+                        ? CANCELLATION_POLICY_TEXT
+                        : `${CANCELLATION_POLICY_TEXT.slice(0, charLimit)}...`}
                     </p>
-                    <a href>Read more</a>
+
+                    {CANCELLATION_POLICY_TEXT.length > charLimit && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setIsCancellationExpanded(!isCancellationExpanded)
+                        }
+                        style={{
+                          background: "none",
+                          border: "none",
+                          padding: 0,
+                          color: "#4AEAB1",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          outline: "none",
+                          textDecoration: "underline",
+                        }}
+                      >
+                        {isCancellationExpanded ? "Read less" : "Read more"}
+                      </button>
+                    )}
                   </div>
                   <hr />
                   <h2>Rules</h2>
@@ -269,7 +364,11 @@ const AddMoreTime = () => {
                             aria-expanded="true"
                             aria-controls="collapseOne"
                           >
-                            <img src="/images/location/included/1.svg" loading="lazy" alt="" />{" "}
+                            <img
+                              src="/images/location/included/1.svg"
+                              loading="lazy"
+                              alt=""
+                            />{" "}
                             Parking
                           </button>
                         </h3>
@@ -303,7 +402,11 @@ const AddMoreTime = () => {
                             aria-expanded="false"
                             aria-controls="collapseTwo"
                           >
-                            <img src="/images/location/included/7.svg" loading="lazy" alt="" />{" "}
+                            <img
+                              src="/images/location/included/7.svg"
+                              loading="lazy"
+                              alt=""
+                            />{" "}
                             Host rules
                           </button>
                         </h3>
@@ -374,7 +477,11 @@ const AddMoreTime = () => {
                     aria-expanded="false"
                   >
                     Select
-                    <img src="/images/dropdown.svg" loading="lazy" alt="dropdown icon" />
+                    <img
+                      src="/images/dropdown.svg"
+                      loading="lazy"
+                      alt="dropdown icon"
+                    />
                   </span>
                   <div className="chat-left-top-dropdown-list dropdown-menu">
                     <ul>
@@ -440,7 +547,9 @@ const AddMoreTime = () => {
               <div className="password-changed-successfully-icon">
                 <img src="/images/popups/cancel.svg" loading="lazy" alt="" />
               </div>
-              <p className="mb-3">Are you sure you want to cancel this booking?</p>
+              <p className="mb-3">
+                Are you sure you want to cancel this booking?
+              </p>
               <form onSubmit={handleSubmit} method="post">
                 <div className="custom-modal-label d-flex gap-3">
                   <input type="submit" value="Yes" data-bs-dismiss="modal" />

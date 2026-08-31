@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import useCommon from "../hooks/useCommon";
 import { imageBase } from "../config/Constant";
-import { Container, Row, Col, Image,Button } from "react-bootstrap";
+import { Container, Row, Col, Image, Button } from "react-bootstrap";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoSearchSharp } from "react-icons/io5";
-
 
 const ExploreGuides = () => {
   const location = useLocation();
@@ -15,7 +14,9 @@ const ExploreGuides = () => {
 
   const { user_fname, user_lname } = location.state || {};
 
-  const [type, setType] = useState(location.state?.type || localStorage.getItem("type") || "guest");
+  const [type, setType] = useState(
+    location.state?.type || localStorage.getItem("type") || "guest"
+  );
   const [guideArr, setGuideArr] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -64,18 +65,27 @@ const ExploreGuides = () => {
 
   return (
     <>
-      <main style={{
+      <main
+        style={{
           backgroundColor: "white",
-          backgroundImage: " radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px",
+          backgroundImage:
+            " radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px",
           backgroundSize: "20px 20px",
         }}
       >
-        <div className="explore-guides-articles-wrap explore-guides-mobile"
-          style={{ padding: isMobileWidth ? "0 10px" : "0px 22px 15px"}}>
+        <div
+          className="explore-guides-articles-wrap explore-guides-mobile"
+          style={{ padding: isMobileWidth ? "0 10px" : "0px 22px 15px" }}
+        >
           <Container fluid>
             <Row className="align-items-center">
-              <Col xs={12} className="d-flex flex-column align-items-center position-relative" >
-                <div className="mobile-back-button" onClick={() => navigate("/helpCenter")}
+              <Col
+                xs={12}
+                className="d-flex flex-column align-items-center position-relative"
+              >
+                <div
+                  className="mobile-back-button"
+                  onClick={() => navigate("/helpCenter")}
                   // onClick={() => navigate(-1)}
                   style={{
                     position: "absolute",
@@ -88,18 +98,23 @@ const ExploreGuides = () => {
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
-                    color:isMobileWidth? "#333":"white",
-                    border:"1px solid #333",
-                    backgroundColor :!isMobileWidth && "black"
-                  }}>
+                    color: isMobileWidth ? "#333" : "white",
+                    border: "1px solid #333",
+                    backgroundColor: !isMobileWidth && "black",
+                  }}
+                >
                   {/* <FaArrowLeft style={{ color: "white" }} /> */}
-                  <i className="fa-regular fa-arrow-left" style={{textAlign:'center'}}></i>
+                  <i
+                    className="fa-regular fa-arrow-left"
+                    style={{ textAlign: "center" }}
+                  ></i>
                 </div>
 
                 {isMobileWidth ? (
                   <>
                     <Col className="d-flex justify-content-center">
-                      <div className="search-container mt-2"
+                      <div
+                        className="search-container mt-2"
                         style={{
                           maxWidth: "400px",
                           width: "80%",
@@ -151,113 +166,122 @@ const ExploreGuides = () => {
                             }}
                           />
                         </div>
-                      </div>               
+                      </div>
                     </Col>
-               
                   </>
                 ) : (
-                  
                   <h1 className="text-center mb-3 text-black explore-title">
                     Explore Guides
                   </h1>
-
-                  
                 )}
               </Col>
 
-
               {isMobileWidth && (
-
                 <>
-                   <div
-                className="title-divider"
-                style={{
-                  margin: "30px 0px",
-                  top: "50%",
-                  left: "0",
-                  fontWeight: "400",
-                  width: "100%",
-                  height: "0.1px",
-                  background: "#000000",
-                  opacity: 0.3, // Decreases opacity to 30%
-                  zIndex: 10, // Ensures the line is behind the buttons
-                  transform: "translateY(-50%)", // Centers the line exactly in the middle
-                }}
-              ></div>
-                         
-                  <div className="help-center-top" style={{ textAlign: "center", padding: "30px 0" }}>
+                  <div
+                    className="title-divider"
+                    style={{
+                      margin: "30px 0px",
+                      top: "50%",
+                      left: "0",
+                      fontWeight: "400",
+                      width: "100%",
+                      height: "0.1px",
+                      background: "#000000",
+                      opacity: 0.3, // Decreases opacity to 30%
+                      zIndex: 10, // Ensures the line is behind the buttons
+                      transform: "translateY(-50%)", // Centers the line exactly in the middle
+                    }}
+                  ></div>
 
-                     <h6> Hi&nbsp; {user_fname && user_lname ? user_fname + " " + user_lname : type || "Guest"}, how can we help?
-                  </h6>                   
-                                          <Button disabled={type === "host"} onClick={() => setType("guest")}
-                                            style={{
-                                              borderRadius: "20px",
-                                              backgroundColor: type === "guest" ? "#3A4B4C" : "transparent",
-                                              color: type === "guest" ? "white" : "#3A4B4C",
-                                              border: type === "guest" ? "none" : "1px solid #3A4B4C",
-                                               padding: type === "host" ? "13px 15px" : "11px 15px",
-                                              fontSize: "14px",
-                                              fontWeight: "500",
-                                              cursor: type === "host" ? "not-allowed" : "pointer",
-                                              marginRight:'10px',
-                                              marginTop:'10px'
-                                            }} >
-                                            Guest
-                                          </Button>
-                       
-                                          <Button disabled={type === "guest"} onClick={() => setType("host")}
-                                            style={{
-                                              borderRadius: "20px",
-                                              backgroundColor: type === "host" ? "#3A4B4C" : "transparent",
-                                              color: type === "host" ? "white" : "#3A4B4C",
-                                              border: type === "host" ? "none" : "1px solid #3A4B4C",
-                                              padding: type === "host" ? "12px 15px" : "11px 15px",
-                                              fontSize: "14px",
-                                              fontWeight: "500",
-                                              marginTop:'10px',
-                                              cursor: type === "guest" ? "not-allowed" : "pointer",
-                                            }} >
-                                            Host
-                                          </Button>
-                       
-                                        { !isMobileWidth && (
-                                             <span style={{
-                                              top: "50%",
-                                              left: "0",
-                                              fontWeight: "400",
-                                              width: "100%",
-                                              height: "0.1px",
-                                              background: "#000000",
-                                              opacity: 0.3,
-                                              zIndex: 10,
-                                              transform: "translateY(-50%)",
-                                            }} ></span>
-                                        ) 
-                                       }                                                       
-                </div>
+                  <div
+                    className="help-center-top"
+                    style={{ textAlign: "center", padding: "30px 0" }}
+                  >
+                    <h6>
+                      {" "}
+                      Hi&nbsp;{" "}
+                      {user_fname && user_lname
+                        ? user_fname + " " + user_lname
+                        : type || "Guest"}
+                      , how can we help?
+                    </h6>
+                    <Button
+                      disabled={type === "host"}
+                      onClick={() => setType("guest")}
+                      style={{
+                        borderRadius: "20px",
+                        backgroundColor:
+                          type === "guest" ? "#3A4B4C" : "transparent",
+                        color: type === "guest" ? "white" : "#3A4B4C",
+                        border: type === "guest" ? "none" : "1px solid #3A4B4C",
+                        padding: type === "host" ? "13px 15px" : "11px 15px",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        cursor: type === "host" ? "not-allowed" : "pointer",
+                        marginRight: "10px",
+                        marginTop: "10px",
+                      }}
+                    >
+                      Guest
+                    </Button>
 
-                
-                
+                    <Button
+                      disabled={type === "guest"}
+                      onClick={() => setType("host")}
+                      style={{
+                        borderRadius: "20px",
+                        backgroundColor:
+                          type === "host" ? "#3A4B4C" : "transparent",
+                        color: type === "host" ? "white" : "#3A4B4C",
+                        border: type === "host" ? "none" : "1px solid #3A4B4C",
+                        padding: type === "host" ? "12px 15px" : "11px 15px",
+                        fontSize: "14px",
+                        fontWeight: "500",
+                        marginTop: "10px",
+                        cursor: type === "guest" ? "not-allowed" : "pointer",
+                      }}
+                    >
+                      Host
+                    </Button>
+
+                    {!isMobileWidth && (
+                      <span
+                        style={{
+                          top: "50%",
+                          left: "0",
+                          fontWeight: "400",
+                          width: "100%",
+                          height: "0.1px",
+                          background: "#000000",
+                          opacity: 0.3,
+                          zIndex: 10,
+                          transform: "translateY(-50%)",
+                        }}
+                      ></span>
+                    )}
+                  </div>
                 </>
-              
               )}
 
-            { !isMobileWidth && <div
-                className="title-divider"
-                style={{
-                  margin: "30px 0px",
-                  top: "50%",
-                  left: "0",
-                  fontWeight: "400",
-                  width: "100%",
-                  height: "0.1px",
-                  background: "#000000",
-                  opacity: 0.3, // Decreases opacity to 30%
-                  zIndex: 10, // Ensures the line is behind the buttons
-                  transform: "translateY(-50%)", // Centers the line exactly in the middle
-                }}
-              ></div>}
-              {(type === "guest" && !isMobileWidth) && (
+              {!isMobileWidth && (
+                <div
+                  className="title-divider"
+                  style={{
+                    margin: "30px 0px",
+                    top: "50%",
+                    left: "0",
+                    fontWeight: "400",
+                    width: "100%",
+                    height: "0.1px",
+                    background: "#000000",
+                    opacity: 0.3, // Decreases opacity to 30%
+                    zIndex: 10, // Ensures the line is behind the buttons
+                    transform: "translateY(-50%)", // Centers the line exactly in the middle
+                  }}
+                ></div>
+              )}
+              {type === "guest" && !isMobileWidth && (
                 <Col className="d-flex justify-content-center">
                   <div
                     className="search-container"
@@ -318,7 +342,15 @@ const ExploreGuides = () => {
             </Row>
             <Row className="mt-lg-4 mb-4">
               <Col xs={12} md={6} lg={4} className="d-flex">
-                <h3 className="section-title" style={{color:"black",marginTop:isMobileWidth?"-8px":'50px'}}>Our new guides</h3>
+                <h3
+                  className="section-title"
+                  style={{
+                    color: "black",
+                    marginTop: isMobileWidth ? "-8px" : "50px",
+                  }}
+                >
+                  Our new guides
+                </h3>
               </Col>
             </Row>
             <Row className="explore-guides-articles-inner mt-4 guides-container">
@@ -333,26 +365,38 @@ const ExploreGuides = () => {
                       key={index}
                       className="mb-4 guide-column"
                     >
-                      <div className="explore-guides-articles-in text-center guide-item" style={{padding:isMobileWidth && '0px 10px'}}>
-                        <Link to={`/guide-detail/${guide.id}`}
+                      <div
+                        className="explore-guides-articles-in text-center guide-item"
+                        style={{ padding: isMobileWidth && "0px 10px" }}
+                      >
+                        <Link
+                          to={`/guide-detail/${guide.id}`}
                           state={{ guideId: guide?.id }}
                           style={{ textDecoration: "none", color: "inherit" }}
                         >
-                          <div className="explore-guides-articles-image guide-image-container" style={{height:isMobileWidth && "260px "}}>
-                            <Image src={`${imageBase}${guide.cover_image}`}
+                          <div
+                            className="explore-guides-articles-image guide-image-container"
+                            style={{ height: isMobileWidth && "260px " }}
+                          >
+                            <Image
+                              src={`${imageBase}${guide.cover_image}`}
                               alt={`Cover image of ${guide.title}`}
-                              fluid />
+                              fluid
+                            />
                           </div>
                           <h3 className="mt-2 text-start guide-title">
                             {guide.title}
                           </h3>
-                          <p
+                          {/* <p
                             className=" text-start guide-description"
-                            style={{ fontSize: "14px", color: "black" ,opacity:'50%'}}
+                            style={{
+                              fontSize: "14px",
+                              color: "black",
+                              opacity: "50%",
+                            }}
                           >
-                            Lorem Ipsum is simply dummy text of the printing and
-                            typesetting industry.
-                          </p>
+                            {guide.description}
+                          </p> */}
                         </Link>
                       </div>
                     </Col>
@@ -376,7 +420,12 @@ const ExploreGuides = () => {
             </Row>
 
             <Col lg={12} className="text-center">
-              <div className={isMobileWidth ? "mob-show-map animate__animated animate__backInUp animate__delay-1s":  "help-center-touch contact-section"}
+              <div
+                className={
+                  isMobileWidth
+                    ? "mob-show-map animate__animated animate__backInUp animate__delay-1s"
+                    : "help-center-touch contact-section"
+                }
                 style={{
                   padding: "40px 0px  0px 0px",
                   borderRadius: "50px",
@@ -392,9 +441,9 @@ const ExploreGuides = () => {
                     backgroundColor: "#4AEAB1",
                     color: "#000",
                     padding: "10px 20px",
-                    fontSize: isMobileWidth ? "14px": "16px",
+                    fontSize: isMobileWidth ? "14px" : "16px",
                     textDecoration: "none",
-                    fontWeight: isMobileWidth ? "400": "500",
+                    fontWeight: isMobileWidth ? "400" : "500",
                     borderRadius: "30px",
                   }}
                 >

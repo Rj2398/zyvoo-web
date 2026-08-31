@@ -52,8 +52,8 @@ const Footer = () => {
       const data = rawUser
         ? JSON.parse(rawUser)
         : isSocial
-          ? { isSocial: true }
-          : null;
+        ? { isSocial: true }
+        : null;
 
       setCredentials(data);
     } catch (e) {
@@ -96,12 +96,12 @@ const Footer = () => {
     {
       className: "fa-facebook-f",
       color: "#1877f2",
-      url: "https://www.facebook.com",
+      url: "https://www.facebook.com/profile.php?id=100094649903542",
     },
     {
       className: "fa-x-twitter",
       color: "#1da1f2",
-      url: "https://www.twitter.com",
+      url: "https://x.com/zyvoapp",
     },
     {
       className: "fa-instagram",
@@ -146,10 +146,10 @@ const Footer = () => {
                     <button type="submit" className="news-btn-submit">
                       <i
                         className="fa-solid fa-paper-plane"
-                      // style={{
-                      //   transform: "rotate(25deg)",
-                      //   color: "#3A4B4C",
-                      // }}
+                        // style={{
+                        //   transform: "rotate(25deg)",
+                        //   color: "#3A4B4C",
+                        // }}
                       ></i>
                     </button>
                   </form>
@@ -214,7 +214,6 @@ const Footer = () => {
                         ]
                   }
                 /> */}
-
 
                 <FooterItem
                   title="Resources"

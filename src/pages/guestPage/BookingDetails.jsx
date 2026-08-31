@@ -16,6 +16,37 @@ import { Image } from "react-bootstrap";
 import { FiArrowLeft } from "react-icons/fi";
 import { PiClockCountdownFill } from "react-icons/pi";
 
+// Component ke bahar ya top par 10 points define karein:
+const POLICY_POINTS_TEXT = `1. How refunds are determined
+Every booking is subject to the cancellation and refund terms displayed during checkout and in the confirmed booking details. Those terms form part of the booking agreement between the guest and host.
+
+2. Guest cancellations
+If a guest cancels, the refundable amount is calculated using the cancellation terms presented before confirmation. The app shows the expected refund before finalizing.
+
+3. Host cancellations
+If a host cancels a confirmed booking, the guest will generally receive a full refund of the amounts paid. Repeated host cancellations may result in account penalties.
+
+4. Space unavailable or materially different
+Guests should contact support promptly if the booked space is unavailable, unsafe, inaccessible, or materially different from the listing description.
+
+5. Booking interruptions and early termination
+If a booking begins but cannot reasonably continue due to a qualifying issue with the space or host access, partial or full refund options may be reviewed.
+
+6. Cleaning fees, platform fees and taxes
+Whether cleaning fees, platform fees, or taxes are refunded depends on the cancellation tier, timing, and applicable regulations.
+
+7. Payment processing time
+Refund processing times depend on the bank, card issuer, or payment gateway, typically reflecting within 5–7 business days.
+
+8. Chargebacks and payment disputes
+Guests should contact support directly to resolve issues before initiating chargebacks to prevent processing holds.
+
+9. Fraud, abuse and policy violations
+Refunds may be denied or reversed in cases of fraudulent activity, fabricated claims, or platform terms violations.
+
+10. How to request help with a refund
+Open the affected booking from your bookings tab, select the support option, and provide relevant details or evidence.`;
+
 const BookingDetails = () => {
   const { userInfo } = useSelector(({ user }) => user);
   const location = useLocation();
@@ -810,6 +841,39 @@ const BookingDetails = () => {
               }}
             >
               <div>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "black",
+                    lineHeight: "1.6",
+                    whiteSpace: "pre-line", // Har point ko nayi line par dikhane ke liye
+                    marginBottom: "8px",
+                  }}
+                >
+                  {isExpanded || POLICY_POINTS_TEXT.length <= 250
+                    ? POLICY_POINTS_TEXT
+                    : `${POLICY_POINTS_TEXT.slice(0, 250)}...`}
+                </p>
+
+                {POLICY_POINTS_TEXT.length > 250 && (
+                  <button
+                    type="button"
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    style={{
+                      color: "#4AEAB1",
+                      border: "none",
+                      cursor: "pointer",
+                      background: "none",
+                      fontSize: "clamp(14px, 1.5vw, 15px)",
+                      textDecoration: "underline",
+                      padding: 0,
+                    }}
+                  >
+                    {isExpanded ? "Read Less" : "Read More"}
+                  </button>
+                )}
+              </div>
+              {/* <div>
                 <p style={{ fontSize: "14px", color: "black" }}>
                   {`Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                   Incidunt expedita, quam voluptatibus rerum iste, quidem
@@ -834,7 +898,7 @@ const BookingDetails = () => {
                 >
                   {isExpanded ? "Read Less" : "Read More"}
                 </button>
-              </div>
+              </div> */}
               {rangeVisible && (
                 <div
                   style={
