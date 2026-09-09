@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import { KEYS } from "../../../config/Constant";
 import { forEach } from "rsuite/esm/internals/utils/ReactChildren";
 
-const MessageHost = ({ type, data,handleMsgClick }) => {
+const MessageHost = ({ type, data, handleMsgClick }) => {
+  // console.log("******redirected data", data);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -47,7 +48,7 @@ const MessageHost = ({ type, data,handleMsgClick }) => {
       style={{
         textAlign: "center",
         width: isMobileWidth ? "57%" : "100%",
-        fontSize:isMobileWidth?'14px':''
+        fontSize: isMobileWidth ? "14px" : "",
       }}
     >
       <button
@@ -55,7 +56,7 @@ const MessageHost = ({ type, data,handleMsgClick }) => {
           userType === "host"
             ? navigate("/chat", { state: data })
             : setIsOpen(!isOpen);
-          isMobileWidth && handleMsgClick()
+          isMobileWidth && handleMsgClick();
         }}
         style={{
           padding: "10px 15px",
@@ -66,18 +67,18 @@ const MessageHost = ({ type, data,handleMsgClick }) => {
           cursor: "pointer",
           marginBottom: "10px",
           width: isMobileWidth && userType ? "90%" : "100%",
-          position:'relative'
+          position: "relative",
         }}
       >
         Message the {`${type?.charAt(0)?.toUpperCase() + type?.slice(1)}`}
       </button>
 
-      {isOpen && <MessageForm data={data}  isMobileWidth={isMobileWidth}/>}
+      {isOpen && <MessageForm data={data} isMobileWidth={isMobileWidth} />}
     </div>
   );
 };
 
-const MessageForm = ({ data,isMobileWidth }) => {
+const MessageForm = ({ data, isMobileWidth }) => {
   const navigate = useNavigate();
   const [selectedReason, setSelectedReason] = useState("");
   const [message, setMessage] = useState("");
@@ -106,8 +107,6 @@ const MessageForm = ({ data,isMobileWidth }) => {
     setSelectedReason(reason);
   };
 
-
-
   return (
     <div
       // style={{
@@ -119,22 +118,20 @@ const MessageForm = ({ data,isMobileWidth }) => {
       //   boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
       // }}
 
+      style={{
+        border: "1px solid #ddd",
+        borderRadius: "10px",
+        padding: "15px",
+        margin: "0 auto",
+        backgroundColor: "#fff",
+        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+        width: "100%",
+        maxWidth: "600px", // or whatever you want for desktop
+        boxSizing: "border-box",
 
-
-    style={{
-    border: "1px solid #ddd",
-    borderRadius: "10px",
-    padding: "15px",
-    margin: "0 auto",
-    backgroundColor: "#fff",
-    boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-    width: "100%",
-    maxWidth: "600px", // or whatever you want for desktop
-    boxSizing: "border-box",
-
-    position:isMobileWidth && "absolute",
-    left:'0'
-  }}
+        position: isMobileWidth && "absolute",
+        left: "0",
+      }}
     >
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {["I have a doubt", "Available days", "Other reason"].map((reason) => (
@@ -142,8 +139,8 @@ const MessageForm = ({ data,isMobileWidth }) => {
             key={reason}
             style={{
               ...optionStyle,
-              backgroundColor:selectedReason === reason ? "white" : "white",
-              border:selectedReason === reason ? "1px solid #3a4b4c" : "none",
+              backgroundColor: selectedReason === reason ? "white" : "white",
+              border: selectedReason === reason ? "1px solid #3a4b4c" : "none",
             }}
             onClick={() => handleReasonClick(reason)}
           >
@@ -164,9 +161,9 @@ const MessageForm = ({ data,isMobileWidth }) => {
               borderRadius: "5px",
               boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)",
               backgroundColor: "white",
-              outline:'none',
-              border:'none',
-              resize: "none",   
+              outline: "none",
+              border: "none",
+              resize: "none",
             }}
           />
         )}
@@ -178,8 +175,8 @@ const MessageForm = ({ data,isMobileWidth }) => {
             padding: "10px",
             borderRadius: "5px",
             cursor: "pointer",
-            backgroundColor:'#3A4B4C',
-            border:'none'
+            backgroundColor: "#3A4B4C",
+            border: "none",
           }}
         >
           Message Host
@@ -197,12 +194,10 @@ const optionStyle = {
   cursor: "pointer",
   color: "black",
   boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)",
-  backgroundColor: "white"
+  backgroundColor: "white",
 };
 
-
 export default React.memo(MessageHost);
-
 
 // import React, { useState, useRef, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";

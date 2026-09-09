@@ -3,13 +3,18 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserType, clearUser } from "../../store/slices/userSlice";
 import Constant, { imageBase, KEYS } from "../../config/Constant";
-import { Client as ConversationsClient } from "@twilio/conversations";
-import useChat from "../../hooks/host/useChat";
 import useProfile from "../../hooks/useProfile";
 import useCommon from "../../hooks/useCommon";
 import MobFooter from "../MobFooter";
 import LanguageModal from "../../pages/LanguageModal";
 import { toast } from "react-toastify";
+import { db } from "../../config/firebase";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+} from "firebase/firestore";
 
 const Header = () => {
   const { userInfo } = useSelector(({ user }) => user);
@@ -17,7 +22,7 @@ const Header = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { hostUnReadBookings, hostMarkBookings, isLoading } = useCommon();
-  const { getTwilioToken } = useChat();
+  // const { getTwilioToken } = useChat();
   const { getUserProfile } = useProfile();
   const profileData = useSelector((state) => state.profile);
   const [switchToGuest, setSwitchToGuest] = useState(false);
@@ -84,41 +89,86 @@ const Header = () => {
     }
   };
 
+  // useEffect(() => {
+  //   const fetchTwilioInfo = async () => {
+  //     const userId = userInfo?.user_id || localSaved?.user_id;
+
+  //     if (
+  //       !userId ||
+  //       (typeof userId !== "string" && typeof userId !== "number")
+  //     ) {
+  //       // console.error("Invalid user_id:", userId);
+  //       return;
+  //     }
+
+  //     const response = await getTwilioToken({
+  //       user_id: String(userId),
+  //       role: "host",
+  //     });
+
+  //     if (!response?.data?.token) {
+  //       console.error("Twilio token not received");
+  //       return;
+  //     }
+
+  //     const client = await ConversationsClient.create(response.data.token);
+  //     const paginator = await client.getSubscribedConversations();
+
+  //     let totalUnread = 0;
+  //     for (const convo of paginator.items) {
+  //       const count = await convo.getUnreadMessagesCount();
+  //       totalUnread += count || 0;
+  //     }
+  //     setUnreadCountChat(totalUnread);
+  //   };
+
+  //   fetchTwilioInfo();
+  // }, []);
+
   useEffect(() => {
-    const fetchTwilioInfo = async () => {
-      const userId = userInfo?.user_id || localSaved?.user_id;
+  if (!userInfo?.user_id && !localSaved?.user_id) return;
 
-      if (
-        !userId ||
-        (typeof userId !== "string" && typeof userId !== "number")
-      ) {
-        // console.error("Invalid user_id:", userId);
-        return;
-      }
+  const currentUserId = String(
+    userInfo?.user_id || localSaved?.user_id
+  );
 
-      const response = await getTwilioToken({
-        user_id: String(userId),
-        role: "host",
+  // Current user ke chats
+  const chatsRef = collection(db, "chats");
+
+  const chatsQuery = query(
+    chatsRef,
+    where("participants", "array-contains", currentUserId)
+  );
+
+  const unsubscribe = onSnapshot(
+    chatsQuery,
+    (snapshot) => {
+      let totalUnread = 0;
+
+      snapshot.docs.forEach((chatDoc) => {
+        const chatData = chatDoc.data();
+        const unreadCount =
+          chatData?.unreadCount?.[currentUserId] || 0;
+
+        totalUnread += unreadCount;
       });
 
-      if (!response?.data?.token) {
-        console.error("Twilio token not received");
-        return;
-      }
-
-      const client = await ConversationsClient.create(response.data.token);
-      const paginator = await client.getSubscribedConversations();
-
-      let totalUnread = 0;
-      for (const convo of paginator.items) {
-        const count = await convo.getUnreadMessagesCount();
-        totalUnread += count || 0;
-      }
       setUnreadCountChat(totalUnread);
-    };
+    },
+    (error) => {
+      console.error(
+        "Error fetching Firebase unread chats:",
+        error
+      );
+    }
+  );
 
-    fetchTwilioInfo();
-  }, []);
+  return () => unsubscribe();
+
+}, [
+  userInfo?.user_id,
+  localSaved?.user_id,
+]);
 
   const navItems = [
     {

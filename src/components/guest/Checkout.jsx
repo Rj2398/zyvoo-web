@@ -94,15 +94,17 @@ const Checkout = ({ setExtendedTime }) => {
   const checkoutData = location.state?.objectTobeNavigated || {};
   const id = checkoutData?.property_id;
 
-  // console.log(checkoutData, "checkout data********");
+  console.log(checkoutData, "checkout data********");
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
     JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
+  console.log(userId, "user id *********");
+
 
   useEffect(() => {
     if (!id) {
@@ -884,13 +886,9 @@ const Checkout = ({ setExtendedTime }) => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                  // style={{ minWidth: "320px " }}
+                // style={{ minWidth: "320px " }}
                 >
-                  {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
-                <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
-                  Hosted by
-                </span>
-              </div> */}
+
 
                   <div
                     style={{
@@ -921,8 +919,8 @@ const Checkout = ({ setExtendedTime }) => {
                         className="chat-right-top-profile-image"
                         src={
                           checkoutData?.host_profile_image &&
-                          checkoutData?.host_profile_image !== "undefined" &&
-                          checkoutData?.host_profile_image !== "null"
+                            checkoutData?.host_profile_image !== "undefined" &&
+                            checkoutData?.host_profile_image !== "null"
                             ? imageBase + checkoutData?.host_profile_image
                             : defaultContact
                         }
@@ -1985,9 +1983,8 @@ const Checkout = ({ setExtendedTime }) => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                              open === "collapseOne" ? "" : " "
-                            }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
+                              }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -2050,9 +2047,8 @@ const Checkout = ({ setExtendedTime }) => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseTwo" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
@@ -2372,8 +2368,8 @@ const Checkout = ({ setExtendedTime }) => {
                           className="chat-right-top-profile-image"
                           src={
                             checkoutData?.host_profile_image &&
-                            checkoutData?.host_profile_image !== "undefined" &&
-                            checkoutData?.host_profile_image !== "null"
+                              checkoutData?.host_profile_image !== "undefined" &&
+                              checkoutData?.host_profile_image !== "null"
                               ? imageBase + checkoutData?.host_profile_image
                               : defaultContact
                           }
@@ -2452,8 +2448,12 @@ const Checkout = ({ setExtendedTime }) => {
                         type={"Host"}
                         style={{ width: "100%", marginBottom: "10px" }}
                         data={{
-                          sender_detail: checkoutData,
-                          property_id: checkoutData?.property_id,
+                          sender_detail: {
+                            access_token: userInfo?.access_token || userData?.access_token,
+                            user_id: Number(userInfo?.user_id ?? userData?.user_id),
+                            host_id: Number(checkoutData?.host_id),
+                          },
+                          property_id: Number(checkoutData?.property_id),
                         }}
                       />
                     </div>
@@ -2502,8 +2502,8 @@ const Checkout = ({ setExtendedTime }) => {
                           className="chat-right-top-profile-image"
                           src={
                             checkoutData?.host_profile_image &&
-                            checkoutData?.host_profile_image !== "undefined" &&
-                            checkoutData?.host_profile_image !== "null"
+                              checkoutData?.host_profile_image !== "undefined" &&
+                              checkoutData?.host_profile_image !== "null"
                               ? imageBase + checkoutData?.host_profile_image
                               : defaultContact
                           }
@@ -2561,37 +2561,41 @@ const Checkout = ({ setExtendedTime }) => {
                           marginBottom: "15px",
                         }}
                       ></div>
-                      {/* <MessageHost
+                      <MessageHost
                         type={"Host"}
                         style={{ width: "100%", marginBottom: "10px" }}
                         data={{
-                          sender_detail: checkoutData,
-                          property_id: checkoutData?.property_id,
+                          sender_detail: {
+                            access_token: userInfo?.access_token || userData?.access_token,
+                            user_id: Number(userInfo?.user_id ?? userData?.user_id),
+                            host_id: Number(checkoutData?.host_id),
+                          },
+                          property_id: Number(checkoutData?.property_id),
                         }}
-                      /> */}
+                      />
 
                       {/* <div
-                                      className="chat-right-top-mob-right"
-                                      style={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        marginBottom: "15px",
-                                        fontSize: "clamp(12px, 1.5vw, 14px)",
-                                      }}
-                                    >
-                                      <img
-                                        src="/images/guides-articles/time.svg"
-                                        loading="lazy" alt="Response time"
-                                        style={{
-                                          width: "clamp(14px, 2vw, 16px)",
-                                          height: "clamp(14px, 2vw, 16px)",
-                                          marginRight: "5px",
-                                          backgroundColor:'#e2dadaff'
-                                        }}
-                                      />
-                                      <p style={{ marginTop: "5px"}}>Typically respond within 1 hr</p>
-                                    </div> */}
+                        className="chat-right-top-mob-right"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          marginBottom: "15px",
+                          fontSize: "clamp(12px, 1.5vw, 14px)",
+                        }}
+                      >
+                        <img
+                          src="/images/guides-articles/time.svg"
+                          loading="lazy" alt="Response time"
+                          style={{
+                            width: "clamp(14px, 2vw, 16px)",
+                            height: "clamp(14px, 2vw, 16px)",
+                            marginRight: "5px",
+                            backgroundColor: '#e2dadaff'
+                          }}
+                        />
+                        <p style={{ marginTop: "5px" }}>Typically respond within 1 hr</p>
+                      </div> */}
 
                       <div className="d-flex justify-content-center mb-3">
                         <PiClockCountdownFill size={24} color="#979797" />

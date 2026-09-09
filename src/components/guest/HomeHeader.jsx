@@ -4,7 +4,8 @@ import { DayPicker } from "react-day-picker";
 import { Nav } from "react-bootstrap";
 import "react-day-picker/style.css";
 import Autocomplete from "react-google-autocomplete";
-import { Client as ConversationsClient } from "@twilio/conversations";
+import { db } from "../../config/firebase";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { GOOGLE_KEY, imageBase, KEYS } from "../../config/Constant";
 import { clearUser, setUserType, setLoginModal } from "../../store/slices/userSlice";
 import Constant from "../../config/Constant";
@@ -38,7 +39,6 @@ import main from "../../assets/gallery/Group (2).png";
 import dotted from "../../assets/gallery/vector_10.png";
 import { toast } from "react-toastify";
 import moment from "moment";
-import useChat from "../../hooks/host/useChat";
 import useProfile from "../../hooks/useProfile";
 import LanguageModal from "../../pages/LanguageModal";
 import { useForm } from "react-hook-form";
@@ -132,7 +132,6 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   //guest header
-  const { getTwilioToken } = useChat();
   const { guestUnReadBookings, guestMarkBookings, getPropertyPriceRange } =
     useCommon();
 
@@ -347,39 +346,55 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   };
 
   useEffect(() => {
-    const fetchTwilioInfo = async () => {
-      const userId = userData?.user_id;
-      if (
-        !userId ||
-        (typeof userId !== "string" && typeof userId !== "number")
-      ) {
-        // console.error("Invalid user_id:", userId);
-        return;
+    const currentUserId = userData?.user_id ? String(userData.user_id) : null;
+    if (!currentUserId) return;
+
+    const channelsQuery = query(
+      collection(db, "chat_channels"),
+      where("participants", "array-contains", currentUserId)
+    );
+
+    const unsubscribe = onSnapshot(
+      channelsQuery,
+      (snapshot) => {
+        let totalUnread = 0;
+
+        snapshot.docs.forEach((docSnap) => {
+          const channelData = docSnap.data();
+          const lastMsgSender = String(channelData.lastMessageSenderId || "");
+
+          if (lastMsgSender && lastMsgSender !== currentUserId) {
+            const readBy = channelData.readBy || {};
+            const myLastRead = readBy[currentUserId];
+
+            const lastMessageDate = channelData.lastMessageAt?.toDate
+              ? channelData.lastMessageAt.toDate()
+              : channelData.lastMessageAt
+                ? new Date(channelData.lastMessageAt)
+                : null;
+
+            if (!myLastRead) {
+              totalUnread++;
+            } else {
+              const readDate = myLastRead?.toDate
+                ? myLastRead.toDate()
+                : new Date(myLastRead);
+              if (lastMessageDate && lastMessageDate > readDate) {
+                totalUnread++;
+              }
+            }
+          }
+        });
+
+        setUnreadCountChat(totalUnread);
+      },
+      (error) => {
+        console.error("Error fetching unread chat count from Firebase:", error);
       }
+    );
 
-      const response = await getTwilioToken({
-        user_id: String(userId),
-        role: "guest",
-      });
-
-      if (!response?.data?.token) {
-        console.error("Twilio token not received");
-        return;
-      }
-
-      const client = await ConversationsClient.create(response.data.token);
-      const paginator = await client.getSubscribedConversations();
-
-      let totalUnread = 0;
-      for (const convo of paginator.items) {
-        const count = await convo.getUnreadMessagesCount();
-        totalUnread += count || 0;
-      }
-      setUnreadCountChat(totalUnread);
-    };
-
-    fetchTwilioInfo();
-  }, []);
+    return () => unsubscribe();
+  }, [userData?.user_id]);
 
   useEffect(() => {
     const getLocation = () => {
@@ -3645,8 +3660,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                     className="position-absolute top-0 start-0 h-100"
                     style={{
                       width: `${((values[0] - (RangeValue?.min ?? 0)) /
-                          ((RangeValue?.max ?? 2000) -
-                            (RangeValue?.min ?? 0))) *
+                        ((RangeValue?.max ?? 2000) -
+                          (RangeValue?.min ?? 0))) *
                         100
                         }%`,
                       background: "#fff",
@@ -3660,9 +3675,9 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                     className="position-absolute top-0 end-0 h-100"
                     style={{
                       width: `${(1 -
-                          (values[1] - (RangeValue?.min ?? 0)) /
-                          ((RangeValue?.max ?? 2000) -
-                            (RangeValue?.min ?? 0))) *
+                        (values[1] - (RangeValue?.min ?? 0)) /
+                        ((RangeValue?.max ?? 2000) -
+                          (RangeValue?.min ?? 0))) *
                         100
                         }%`,
                       background: "#fff",

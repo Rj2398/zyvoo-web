@@ -26,6 +26,7 @@ import ShareModal from "../../components/guest/bookingDetailsModal/ShareModal";
 import RegisterModal from "../../components/guest/authModalGuest/RegisterModal";
 import loactionImg from "../../assets/locationImg.png";
 import defaultContact from "../../assets/defaultContact.jpg";
+import MessageHost from "../../components/guest/bookingDetailsModal/MessageHost";
 // import { now } from "moment";
 
 function Location() {
@@ -45,8 +46,10 @@ function Location() {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
+  console.log("userData", userData);
+
   const [currentLocation, setCurrentLocation] = useState({
     latitude: null,
     longitude: null,
@@ -157,7 +160,7 @@ function Location() {
   //   });
   //   setPropertyDetails(result.data);
   // };
-
+  console.log("propertyDetails?.property_id", propertyDetails?.property_id);
   const fetchPropertyDetails = async () => {
     if (!propertyId) {
       setIsInvalidProperty(true);
@@ -288,9 +291,8 @@ function Location() {
     } else {
       const days = Math.floor(cancellationTime / 24);
       const hours = cancellationTime % 24;
-      return `Cancel for free within ${days} days${
-        hours > 0 ? ` and ${hours} hour(s)` : ""
-      }`;
+      return `Cancel for free within ${days} days${hours > 0 ? ` and ${hours} hour(s)` : ""
+        }`;
     }
   }
 
@@ -661,11 +663,11 @@ function Location() {
 
                     {(propertyDetails?.is_instant_book ||
                       propertyDetails?.is_instant_book != 0) && (
-                      <li>
-                        {" "}
-                        <i className="fa-solid fa-bolt"></i> Instant book{" "}
-                      </li>
-                    )}
+                        <li>
+                          {" "}
+                          <i className="fa-solid fa-bolt"></i> Instant book{" "}
+                        </li>
+                      )}
 
                     <li className="location-top-share">
                       <a
@@ -703,11 +705,10 @@ function Location() {
                 </div>
 
                 <div
-                  className={`top-grid-images-${
-                    propertyDetails?.images?.length > 5
+                  className={`top-grid-images-${propertyDetails?.images?.length > 5
                       ? 5
                       : propertyDetails?.images?.length
-                  }`}
+                    }`}
                   onClick={() => setShowPropertyImages(true)}
                   style={{ height: isMobileWidth ? "200px" : "450px" }}
                 >
@@ -836,7 +837,7 @@ function Location() {
                         id="pills-hourly"
                         role="tabpanel"
                         aria-labelledby="pills-hourly-tab"
-                        // style={{ height: isMobileWidth ? "510px" : "auto" }}
+                      // style={{ height: isMobileWidth ? "510px" : "auto" }}
                       >
                         <div
                           className="hour-slider-wrap"
@@ -1128,7 +1129,7 @@ function Location() {
 
                               handleValidation();
                             }}
-                            // disabled
+                          // disabled
                           >
                             {buttonText}
                           </button>
@@ -1205,6 +1206,143 @@ function Location() {
                       Zyvo.
                     </p>
                   </div>
+                  {propertyDetails?.host_id != userId && (
+                    <div>
+                      <div
+                        className="chat-right-bottom bg-white"
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          marginBottom: "15px",
+                        }}
+                      >
+                        <div
+                          style={{ textAlign: "center", marginBottom: "15px" }}
+                        >
+                          <span
+                            style={{
+                              fontWeight: "500",
+                              fontSize: "clamp(18px, 2.5vw, 22px)",
+                              display: "block",
+                            }}
+                          >
+                            Hosted by
+                          </span>
+                        </div>
+
+                        <div
+                          className="chat-right-top-profile"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "10px",
+                            marginBottom: "20px",
+                          }}
+                        >
+                          <img
+                            className="chat-right-top-profile-image"
+                            src="https://zyvo.tgastaging.com/uploads/host_profile_images/1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820.png"
+                            loading="lazy"
+                            alt="Host"
+                            onError={(e) => {
+                              e.target.src = defaultContact;
+                            }}
+                            style={{
+                              width: "clamp(45px, 6vw, 55px)",
+                              height: "clamp(45px, 6vw, 55px)",
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                              border: "2px solid #E5E7EB",
+                              padding: "2px",
+                            }}
+                          />
+                          <h2
+                            style={{
+                              fontSize: "clamp(16px, 2vw, 20px)",
+                              fontWeight: "600",
+                              margin: 0,
+                              color: "#000000",
+                            }}
+                          >
+                            {propertyDetails?.hosted_by}
+                          </h2>
+                          <img
+                            className="chat-right-top-batch-image"
+                            src="/images/bookings/verify-star.svg"
+                            loading="lazy"
+                            alt="Verified"
+                            style={{
+                              width: "clamp(20px, 2.5vw, 24px)",
+                              height: "clamp(20px, 2.5vw, 24px)",
+                            }}
+                          />
+                          {propertyDetails?.is_star_host && (
+                            <Image
+                              src="/images/locations-grid/profile/batch.svg"
+                              loading="lazy"
+                              alt="Batch"
+                              style={{
+                                position: "absolute",
+                                top: "20px",
+                                left: "20px",
+                                bottom: "0",
+                                width: "25px",
+                              }}
+                            />
+                          )}
+                        </div>
+                        <div
+                          style={{
+                            width: "100%",
+                            height: "1px",
+                            backgroundColor: "#e4e4e4",
+                            border: "none",
+                            marginTop: "3px",
+                            marginBottom: "25px",
+                          }}
+                        />
+                        <MessageHost
+                          type={"Host"}
+                          style={{ width: "100%", marginBottom: "10px" }}
+                          data={{
+                            sender_detail: {
+                              ...(userInfo || userData),
+                              host_id: propertyDetails?.host_id,
+                            },
+                            property_id: propertyDetails?.property_id,
+                          }}
+                        />
+
+                        <div
+                          className=""
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginBottom: "10px",
+                            fontSize: "clamp(12px, 1.5vw, 14px)",
+                          }}
+                        >
+                          <img
+                            src="/images/guides-articles/time.svg"
+                            loading="lazy"
+                            alt="Response time"
+                            style={{
+                              width: "clamp(14px, 2vw, 16px)",
+                              height: "clamp(14px, 2vw, 16px)",
+                              marginRight: "5px",
+                              backgroundColor: "black",
+                            }}
+                          />
+                          <p style={{ margin: 0 }}>
+                            Typically respond within 1 hr
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="col-lg-8 col-md-6 order-md-first order-lg-first">
@@ -1232,20 +1370,20 @@ function Location() {
 
                     {propertyDetails?.property_description?.split(/\s+/)
                       .length > 100 && (
-                      <button
-                        onClick={() => setIsExpanded(!isExpanded)}
-                        style={{
-                          background: "none",
-                          color: "#5EE6A0",
-                          border: "none",
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                          marginTop: "12px",
-                        }}
-                      >
-                        {isExpanded ? "Read Less" : "Read More"}
-                      </button>
-                    )}
+                        <button
+                          onClick={() => setIsExpanded(!isExpanded)}
+                          style={{
+                            background: "none",
+                            color: "#5EE6A0",
+                            border: "none",
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                            marginTop: "12px",
+                          }}
+                        >
+                          {isExpanded ? "Read Less" : "Read More"}
+                        </button>
+                      )}
                   </div>
 
                   <hr />
@@ -1282,9 +1420,8 @@ function Location() {
                           <div className="accordion-item border rounded mb-2">
                             <h2 className="accordion-header" id="headingOne">
                               <button
-                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                                  open === "collapseOne" ? "" : "collapsed"
-                                }`}
+                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"
+                                  }`}
                                 type="button"
                                 onClick={() => toggleAccordion("collapseOne")}
                                 style={{ padding: "12px" }}
@@ -1337,9 +1474,8 @@ function Location() {
                         <div className="accordion-item border rounded mb-2">
                           <h2 className="accordion-header" id="headingTwo">
                             <button
-                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                                open === "collapseTwo" ? "" : "collapsed"
-                              }`}
+                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                                }`}
                               type="button"
                               onClick={() => toggleAccordion("collapseTwo")}
                               style={{ padding: "12px" }}
@@ -1585,8 +1721,8 @@ function Location() {
                             <img
                               src={
                                 item?.profile_image &&
-                                item?.profile_image !== "undefined" &&
-                                item?.profile_image !== "null"
+                                  item?.profile_image !== "undefined" &&
+                                  item?.profile_image !== "null"
                                   ? `${imageBase}${item?.profile_image}`
                                   : defaultContact
                               }
@@ -1720,8 +1856,8 @@ function Location() {
                             <img
                               src={
                                 item?.profile_image &&
-                                item?.profile_image !== "undefined" &&
-                                item?.profile_image !== "null"
+                                  item?.profile_image !== "undefined" &&
+                                  item?.profile_image !== "null"
                                   ? `${imageBase}${item?.profile_image}`
                                   : defaultContact
                               }

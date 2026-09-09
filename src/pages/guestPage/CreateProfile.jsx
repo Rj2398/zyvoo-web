@@ -105,6 +105,9 @@ const CreateProfile = () => {
   const [showNameEditModal, setShowNameEditModal] = useState(false);
 
   const [newLoginUserDetails, setNewLoginUserDetails] = useState({});
+  const [isVarified, setIsVarified] = useState(false);
+
+  // console.log(isVarified, "is Verified**");
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
 
@@ -126,6 +129,19 @@ const CreateProfile = () => {
           user_id: routedData?.user_id || userId,
         });
         setNewLoginUserDetails(res?.data);
+        // console.log(res?.data, "res?.datares?.data");
+        const isIdentityVerified =
+          res?.data?.identity_verified == "1" ||
+          res?.data?.personaStatus == "approved" ||
+          res?.data?.personaStatus == "completed";
+
+        // console.log(isIdentityVerified, "isIdentityVerifiedisIdentityVerified");
+        const isVerifiedCondition =
+          isIdentityVerified &&
+          res?.data?.email_verified == "1" &&
+          res?.data?.phone_verified == "1";
+
+        setIsVarified(isVerifiedCondition);
       } catch (error) {
         console.error("Error fetching user profile:", error);
       }
@@ -160,6 +176,12 @@ const CreateProfile = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
+    if (isVarified === false) {
+      toast.error(
+        "Please verify your email, phone number, and identity before proceeding."
+      );
+      return;
+    }
 
     if (!firstName?.trim()) {
       toast.error("First name is required");
@@ -233,6 +255,13 @@ const CreateProfile = () => {
 
   const handleSkip = async (event) => {
     event.preventDefault();
+    if (isVarified === false) {
+      toast.error(
+        "Please verify your email, phone number, and identity before proceeding."
+      );
+      return;
+    }
+
     if (!firstName?.trim()) {
       toast.error("First name is required");
       return;
@@ -583,9 +612,9 @@ const CreateProfile = () => {
                       </div>
                       <div className="complete-your-profile-right-bottom-data">
                         <h1>Verify identity</h1>
-                        {newLoginUserDetails?.identity_verified === "1" ||
-                        profileData?.personaStatus === "approved" ||
-                        profileData?.personaStatus === "completed" ? (
+                        {newLoginUserDetails?.identity_verified == "1" ||
+                        profileData?.personaStatus == "approved" ||
+                        profileData?.personaStatus == "completed" ? (
                           <p>
                             {" "}
                             Verified <i className="fa-solid fa-badge-check"></i>{" "}

@@ -1,199 +1,220 @@
+import React from "react";
 import AuthModal from "../../../components/guest/authModal";
-import { Container } from "react-bootstrap";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
 import useContent from "../../../hooks/useContent";
 import { imageBase } from "../../../config/Constant";
 
 function AboutUs() {
-  const { AboutUsData } = useContent();
+  const { AboutUsData, isAboutUsLoading } = useContent();
+
+  const getImageUrl = (path) => {
+    if (!path) return "";
+    if (path.startsWith("http") || path.startsWith("data:")) return path;
+    if (path.startsWith("/images/")) return path;
+    return `${imageBase}${path}`;
+  };
+
+  const renderImageSection = (images) => {
+    if (!images || images.length === 0) return null;
+
+    if (images.length === 1) {
+      return (
+        <div className="d-flex justify-content-center align-items-center w-100 h-100">
+          <img
+            src={images[0]}
+            alt="About us"
+            loading="lazy"
+            style={{
+              width: "100%",
+              maxHeight: "420px",
+              objectFit: "cover",
+              borderRadius: "28px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+            }}
+          />
+        </div>
+      );
+    }
+
+    if (images.length === 2) {
+      return (
+        <div className="d-flex gap-3 align-items-center w-100">
+          <div style={{ flex: 1 }}>
+            <img
+              src={images[0]}
+              alt="About us 1"
+              loading="lazy"
+              style={{
+                width: "100%",
+                height: "360px",
+                objectFit: "cover",
+                borderRadius: "28px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+              }}
+            />
+          </div>
+          <div style={{ flex: 1 }}>
+            <img
+              src={images[1]}
+              alt="About us 2"
+              loading="lazy"
+              style={{
+                width: "100%",
+                height: "360px",
+                objectFit: "cover",
+                borderRadius: "28px",
+                boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+
+    // 3 or more images: collage layout matching screenshot
+    const displayImages = images.slice(0, 3);
+    return (
+      <div className="d-flex gap-3 align-items-center w-100 justify-content-end">
+        {/* Left tall image */}
+        <div style={{ flex: 1, maxWidth: "50%" }}>
+          <img
+            src={displayImages[0]}
+            alt="About us 1"
+            loading="lazy"
+            style={{
+              width: "100%",
+              height: "360px",
+              objectFit: "cover",
+              borderRadius: "28px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+            }}
+          />
+        </div>
+        {/* Right stacked 2 images */}
+        <div
+          className="d-flex flex-column gap-3"
+          style={{ flex: 1, maxWidth: "50%" }}
+        >
+          <img
+            src={displayImages[1]}
+            alt="About us 2"
+            loading="lazy"
+            style={{
+              width: "100%",
+              height: "172px",
+              objectFit: "cover",
+              borderRadius: "28px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+            }}
+          />
+          <img
+            src={displayImages[2]}
+            alt="About us 3"
+            loading="lazy"
+            style={{
+              width: "100%",
+              height: "172px",
+              objectFit: "cover",
+              borderRadius: "28px",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.06)",
+            }}
+          />
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div>
       <main>
-        <Container fluid style={{ backgroundColor: "white" }}>
-          {AboutUsData?.map((item, index) => (
-            <>
-              <div key={index} 
-                style={{
-                  padding: "40px",
-                  textAlign: "center",
-                  backgroundColor: "white",
-                  backgroundImage: "radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0px)",
-                  backgroundSize: "20px 20px",
-                }} >
-                <h2>{item?.main_title}</h2>
-                <p style={{ color: "#555", marginBottom: "40px" }}>
-                  The Leading Platform for hourly rentals
-                </p>
+        <Container fluid style={{ backgroundColor: "#ffffff", padding: 0 }}>
+          {isAboutUsLoading ? (
+            <div
+              className="d-flex justify-content-center align-items-center"
+              style={{ minHeight: "400px" }}
+            >
+              <Spinner animation="border" variant="primary" />
+            </div>
+          ) : (
+            AboutUsData?.map((item, index) => {
+              let itemImages = [];
+              if (Array.isArray(item?.images) && item.images.length > 0) {
+                itemImages = item.images.map(getImageUrl);
+              } else if (
+                Array.isArray(item?.cover_images) &&
+                item.cover_images.length > 0
+              ) {
+                itemImages = item.cover_images.map(getImageUrl);
+              } else if (item?.cover_image) {
+                if (
+                  typeof item.cover_image === "string" &&
+                  item.cover_image.includes(",")
+                ) {
+                  itemImages = item.cover_image
+                    .split(",")
+                    .map((s) => getImageUrl(s.trim()));
+                } else {
+                  itemImages = [getImageUrl(item.cover_image)];
+                }
+              }
 
-                <div className="row">
-                  <div className="col-md-5 text-start py-4" style={{ marginTop: "140px" }} >
-                    <h3>{item?.title}</h3>
-                    <p style={{ color: "#555" }}>
-                      <div dangerouslySetInnerHTML={{ __html: item?.description }} />
-                    </p>
-                  </div>
-
-                  <div className="col-md-7 d-flex flex-wrap">
-                    <img src="/images/about-page/welcome.svg" loading="lazy" alt="Studio shoot" 
+              return (
+                <div
+                  key={index}
+                  style={{
+                    padding: "60px 40px",
+                    backgroundColor: index % 2 === 0 ? "#ffffff" : "#f9f9f9",
+                    backgroundImage:
+                      "radial-gradient(rgba(0, 0, 0, 0.12) 1.2px, transparent 0px)",
+                    backgroundSize: "24px 24px",
+                    borderBottom: "1px solid #eeeeee",
+                  }}
+                >
+                  {item?.main_title && (
+                    <h2
                       style={{
-                        borderRadius: "15px",
-                        width: "90%",
-                        height: "auto",
-                        margin: "10px 0",
-                        padding: "10px",
-                        marginLeft: "50px",
-                      }} />
-                  </div>
-                </div>
-              </div>
-
-              <div style={{ padding: "40px", backgroundColor: "#f5f5f5" }}>
-                <div className="row align-items-center">
-                  <div className="col-md-5" style={{
-                      backgroundColor: "#ffffff",
-                      borderRadius: "20px",
-                      padding: "90px 40px",
-                      marginRight: "110px",
-                    }} >
-                    <h3 style={{ fontWeight: "bold" }}>Our Mission</h3>
-                    <p style={{ color: "#555" }}>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged. It was popularised in the
-                      1960s with the release of Letraset sheets containing Lorem
-                      Ipsum passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </p>
-                  </div>
-
-                  <div className="col-md-5 position-relative">
-                    <div style={{
-                        position: "absolute",
-                        top: "60px",
-                        left: "-10px",
-                        right: "-10px",
-                        bottom: "-90px",
-                        backgroundColor: "#ffffff",
-                        borderTopRightRadius: "15px",
-                        borderTopLeftRadius: "15px",
-                        zIndex: 0,
+                        textAlign: "center",
+                        fontWeight: "700",
+                        marginBottom: "40px",
+                        color: "#111111",
                       }}
-                    ></div>
-                    <img src="/images/about-page/mission.svg" loading="lazy" alt="Team meeting"
-                      style={{
-                        width: "100%",
-                        borderRadius: "15px",
-                        position: "relative",
-                        zIndex: 1,
-                      }} />
-                  </div>
+                    >
+                      {item.main_title}
+                    </h2>
+                  )}
+
+                  <Row className="align-items-center justify-content-between">
+                    <Col lg={5} md={6} className="text-start py-3">
+                      {item?.title && (
+                        <h3
+                          style={{
+                            fontWeight: "700",
+                            fontSize: "2rem",
+                            marginBottom: "1.2rem",
+                            color: "#1a1a1a",
+                          }}
+                        >
+                          {item.title}
+                        </h3>
+                      )}
+                      {item?.description && (
+                        <div
+                          style={{ color: "#444444", lineHeight: "1.7" }}
+                          dangerouslySetInnerHTML={{
+                            __html: item.description,
+                          }}
+                        />
+                      )}
+                    </Col>
+
+                    <Col lg={7} md={6} className="py-3">
+                      {renderImageSection(itemImages)}
+                    </Col>
+                  </Row>
                 </div>
-              </div>
-
-              <div className="bg-white pt-3 pb-3 row justify-content-center">
-                <div className="col-md-10">
-                  <div className="about-vision"
-                    style={{
-                      backgroundImage: `url(${imageBase}${item?.cover_image})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                    }} >
-                    <h2>Vision</h2>
-                    <hr />
-                    <p>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged. It was popularised in the
-                      1960s with the release of Letraset sheets containing Lorem
-                      Ipsum passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="container py-5">
-                <div className="row align-items-center">
-                  <div className="col-md-5 me-5">
-                    <h3 style={{ fontWeight: "bold" }}>
-                      A World of Possibilities
-                    </h3>
-                    <p style={{ color: "#555" }}>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged. It was popularised in the
-                      1960s with the release of Letraset sheets containing Lorem
-                      Ipsum passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </p>
-                  </div>
-
-                  <div className="col-md-6 position-relative ms-4">
-                    <img src="/images/about-page/possibilities.svg" loading="lazy" alt="Workplace desk" style={{ width: "96%", position: "relative", zIndex: 2 }} />
-
-                    <div style={{
-                        position: "absolute",
-                        bottom: "-30px",
-                        left: "-20px",
-                        width: "70%",
-                        height: "70%",
-                        backgroundColor: "#36D7B7",
-                        zIndex: 1,
-                      }} ></div>
-
-                    <div style={{ 
-                        position: "absolute",
-                        top: "-30px",
-                        right: "0",
-                        width: "50%",
-                        height: "50%",
-                        backgroundColor: "#2C3E50",
-                        zIndex: 1,
-                      }} ></div>
-                  </div>
-                </div>
-              </div>
-              <div className="container py-5">
-                <div className="row align-items-center">
-                  <div className="col-md-6 me-4">
-                    <img src="/images/about-page/flexibility.svg" loading="lazy" alt="Concert Scene" style={{ width: "100%", borderRadius: "15px" }} />
-                  </div>
-
-                  <div className="col-md-5 ms-5">
-                    <h3 style={{ fontWeight: "bold" }}>Flexibility Your Way</h3>
-                    <p style={{ color: "#555" }}>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged. It was popularised in the
-                      1960s with the release of Letraset sheets containing Lorem
-                      Ipsum passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem
-                      Ipsum.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </>
-          ))}
+              );
+            })
+          )}
         </Container>
       </main>
 

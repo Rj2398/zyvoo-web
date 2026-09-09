@@ -76,7 +76,7 @@ const PriceAvailblity = ({
     propertyData?.bulk_discount_rate != null &&
       propertyData?.bulk_discount_rate !== undefined
       ? String(parseInt(propertyData?.bulk_discount_rate))
-      : "5",
+      : "0",
   );
   const [cleaningFee, setCleaningFee] = useState(
     propertyData?.cleaning_fee != null &&
@@ -763,6 +763,7 @@ const PriceAvailblity = ({
               {` .custom-input { color: black; border-radius:20px; } `}
             </style>
 
+            <option value="0">0% Discount</option>
             <option value="5">5% Discount</option>
             <option value="10">10% Discount</option>
             <option value="15">15% Discount</option>

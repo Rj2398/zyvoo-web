@@ -1,20 +1,26 @@
+import { db } from "../../config/firebase";
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserType, clearUser, setLoginModal } from "../../store/slices/userSlice";
 import Constant, { imageBase, KEYS } from "../../config/Constant";
 import { toast } from "react-toastify";
-import useChat from "../../hooks/host/useChat";
-import { Client as ConversationsClient } from "@twilio/conversations";
 import useCommon from "../../hooks/useCommon";
 import useProfile from "../../hooks/useProfile";
 import MobFooter from "../MobFooter";
 import RegisterModal from "./authModalGuest/RegisterModal";
 import LanguageModal from "../../pages/LanguageModal";
+import {
+  collection,
+  query,
+  where,
+  onSnapshot,
+  getDocs,
+} from "firebase/firestore";
 
 const Header = () => {
   const { userInfo, loginModal } = useSelector(({ user }) => user);
-
+  
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -25,7 +31,7 @@ const Header = () => {
       setModalToggleValue(false);
     }
   }, [loginModal]);
-  const { getTwilioToken } = useChat();
+
   const { guestUnReadBookings, guestMarkBookings, isLoading } = useCommon();
 
   const { getUserProfile } = useProfile();
@@ -199,41 +205,91 @@ const Header = () => {
     }
   };
 
+  // useEffect(() => {
+  //   const fetchTwilioInfo = async () => {
+  //     const userId = userData?.user_id;
+
+  //     if (
+  //       !userId ||
+  //       (typeof userId !== "string" && typeof userId !== "number")
+  //     ) {
+  //       // console.error("Invalid user_id:", userId);
+  //       return;
+  //     }
+
+  //     const response = await getTwilioToken({
+  //       user_id: String(userId),
+  //       role: "guest",
+  //     });
+
+  //     if (!response?.data?.token) {
+  //       console.error("Twilio token not received");
+  //       return;
+  //     }
+
+  //     const client = await ConversationsClient.create(response.data.token);
+  //     const paginator = await client.getSubscribedConversations();
+
+  //     let totalUnread = 0;
+  //     for (const convo of paginator.items) {
+  //       const count = await convo.getUnreadMessagesCount();
+  //       totalUnread += count || 0;
+  //     }
+  //     setUnreadCountChat(totalUnread);
+  //   };
+
+  //   fetchTwilioInfo();
+  // }, []);
+
+
   useEffect(() => {
-    const fetchTwilioInfo = async () => {
-      const userId = userData?.user_id;
+    if (!userInfo?.user_id) return;
 
-      if (
-        !userId ||
-        (typeof userId !== "string" && typeof userId !== "number")
-      ) {
-        // console.error("Invalid user_id:", userId);
-        return;
-      }
+    const currentUserId = String(
+      userInfo?.user_id
+    );
 
-      const response = await getTwilioToken({
-        user_id: String(userId),
-        role: "guest",
-      });
+    const chatsRef = collection(db, "chats");
 
-      if (!response?.data?.token) {
-        console.error("Twilio token not received");
-        return;
-      }
+    const q = query(
+      chatsRef,
+      where("participants", "array-contains", currentUserId)
+    );
 
-      const client = await ConversationsClient.create(response.data.token);
-      const paginator = await client.getSubscribedConversations();
-
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
       let totalUnread = 0;
-      for (const convo of paginator.items) {
-        const count = await convo.getUnreadMessagesCount();
-        totalUnread += count || 0;
-      }
-      setUnreadCountChat(totalUnread);
-    };
 
-    fetchTwilioInfo();
+      for (const chatDoc of snapshot.docs) {
+        const chatId = chatDoc.id;
+
+        const messagesRef = collection(
+          db,
+          "chats",
+          chatId,
+          "messages"
+        );
+
+        const messagesSnapshot = await getDocs(messagesRef);
+
+        messagesSnapshot.docs.forEach((messageDoc) => {
+          const messageData = messageDoc.data();
+
+          // Apne messages count nahi karne
+          if (
+            String(messageData.senderId) !== currentUserId
+          ) {
+            totalUnread++;
+          }
+        });
+      }
+
+      setUnreadCountChat(totalUnread);
+    });
+
+    return () => unsubscribe();
+
   }, []);
+
 
   return (
     <header>
