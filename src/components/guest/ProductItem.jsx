@@ -388,7 +388,7 @@ const ProductItem = ({
               {userId ? (
                 <span style={{ fontSize: isMobileWidth ? "13px" : "15px" }}>
                   {" "}
-                  Hosted by {truncateText(hosted_by, 16)} <br />{" "}
+                  Hosted by {truncateText(hosted_by, 7)} <br />{" "}
                 </span>
               ) : (
                 <span style={{ fontSize: isMobileWidth ? "13px" : "15px" }}>
@@ -399,7 +399,7 @@ const ProductItem = ({
 
               {/* Hosted by {hosted_by} <br /> */}
               <span style={{ fontSize: "13px" }}>
-                {address || "Address not available"}
+                {truncateText(address, 20) || "Address not available"}
               </span>
             </h2>
           </div>
