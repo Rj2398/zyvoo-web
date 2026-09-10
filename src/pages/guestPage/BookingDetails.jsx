@@ -93,7 +93,7 @@ const BookingDetails = () => {
       : null;
 
   const bookingDetails = details ?? checkoutData;
-  console.log(bookingDetails, "my data***")
+  // console.log(bookingDetails, "my data***")
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
 

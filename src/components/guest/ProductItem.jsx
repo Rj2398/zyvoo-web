@@ -392,14 +392,14 @@ const ProductItem = ({
                 </span>
               ) : (
                 <span style={{ fontSize: isMobileWidth ? "13px" : "15px" }}>
-                  {truncateText(hosted_by, 16)}
+                  {truncateText(hosted_by, 7)}
                   <br />
                 </span>
               )}
 
               {/* Hosted by {hosted_by} <br /> */}
               <span style={{ fontSize: "13px" }}>
-                {truncateText(address, 20) || "Address not available"}
+                {truncateText(address, 15) || "Address not available"}
               </span>
             </h2>
           </div>

@@ -93,6 +93,8 @@ const BookingExtendedTime = () => {
   const id = propertyID;
 
   const checkoutData = details ?? location?.state?.bookingData;
+  // console.log(checkoutData, "checkhjlskdfhkashd");
+
 
   useEffect(() => {
     if (!propertyID || !checkoutData) {
@@ -130,17 +132,17 @@ const BookingExtendedTime = () => {
 
   const [startTime, setStartTime] = useState(
     checkoutData?.startTime ||
-      formatTo12Hour(checkoutData?.booking_start?.split(" ")[1])
+    formatTo12Hour(checkoutData?.booking_start?.split(" ")[1])
   );
   const [endTime, setEndTime] = useState(
     checkoutData?.endTime ||
-      formatTo12Hour(checkoutData?.booking_end?.split(" ")[1])
+    formatTo12Hour(checkoutData?.booking_end?.split(" ")[1])
   );
   const [bookingDate, setBookingDate] = useState(
     checkoutData?.dateSelected || checkoutData?.booking_date
       ? moment(checkoutData?.dateSelected || checkoutData?.booking_date).format(
-          "MMMM DD, YYYY"
-        )
+        "MMMM DD, YYYY"
+      )
       : ""
   );
 
@@ -420,7 +422,7 @@ const BookingExtendedTime = () => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                  // style={{ minWidth: "320px " }}
+                // style={{ minWidth: "320px " }}
                 >
                   {/* <div style={{ textAlign: "center", marginBottom: "15px" }}>
                              <span style={{ fontWeight: "600", fontSize: "clamp(14px, 2vw, 16px)" }} >
@@ -457,8 +459,8 @@ const BookingExtendedTime = () => {
                         className="chat-right-top-profile-image"
                         src={
                           checkoutData?.host_profile_image &&
-                          checkoutData?.host_profile_image !== "undefined" &&
-                          checkoutData?.host_profile_image !== "null"
+                            checkoutData?.host_profile_image !== "undefined" &&
+                            checkoutData?.host_profile_image !== "null"
                             ? imageBase + checkoutData?.host_profile_image
                             : defaultContact
                         }
@@ -482,16 +484,19 @@ const BookingExtendedTime = () => {
                       >
                         {checkoutData.hosted_by}
                       </h2>
-                      <img
-                        className="chat-right-top-batch-image"
-                        src="/images/bookings/verify-star.svg"
-                        loading="lazy"
-                        alt="Verified"
-                        style={{
-                          width: "clamp(14px, 2vw, 16px)",
-                          height: "clamp(14px, 2vw, 16px)",
-                        }}
-                      />
+                      {Number(checkoutData?.reviews_total_rating) > 4 && (
+                        <img
+                          className="chat-right-top-batch-image"
+                          src="/images/bookings/verify-star.svg"
+                          loading="lazy"
+                          alt="Verified"
+                          style={{
+                            width: "clamp(14px, 2vw, 24px)",
+                            height: "clamp(14px, 2vw, 24px)",
+                            objectFit: "contain",
+                          }}
+                        />
+                      )}
 
                       {checkoutData?.is_star_host && (
                         <Image
@@ -889,8 +894,8 @@ const BookingExtendedTime = () => {
                               ? "80%"
                               : "0%"
                             : showDropdown2
-                            ? "25%"
-                            : "0%",
+                              ? "25%"
+                              : "0%",
                         }}
                       >
                         <Button
@@ -1030,9 +1035,8 @@ const BookingExtendedTime = () => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                              open === "collapseOne" ? "" : " "
-                            }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
+                              }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -1091,9 +1095,8 @@ const BookingExtendedTime = () => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseTwo" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
@@ -1446,8 +1449,8 @@ const BookingExtendedTime = () => {
                         className="chat-right-top-profile-image"
                         src={
                           checkoutData?.host_profile_image &&
-                          checkoutData?.host_profile_image !== "undefined" &&
-                          checkoutData?.host_profile_image !== "null"
+                            checkoutData?.host_profile_image !== "undefined" &&
+                            checkoutData?.host_profile_image !== "null"
                             ? imageBase + checkoutData?.host_profile_image
                             : defaultContact
                         }
@@ -1471,16 +1474,19 @@ const BookingExtendedTime = () => {
                       >
                         {checkoutData?.hosted_by}
                       </h2>
-                      <img
-                        className="chat-right-top-batch-image"
-                        src="/images/bookings/verify-star.svg"
-                        loading="lazy"
-                        alt="Verified"
-                        style={{
-                          width: "clamp(14px, 2vw, 16px)",
-                          height: "clamp(14px, 2vw, 16px)",
-                        }}
-                      />
+                      {Number(checkoutData?.reviews_total_rating) > 4 && (
+                        <img
+                          className="chat-right-top-batch-image"
+                          src="/images/bookings/verify-star.svg"
+                          loading="lazy"
+                          alt="Verified"
+                          style={{
+                            width: "clamp(14px, 2vw, 24px)",
+                            height: "clamp(14px, 2vw, 24px)",
+                            objectFit: "contain",
+                          }}
+                        />
+                      )}
 
                       {checkoutData?.is_star_host && (
                         <Image
@@ -1509,8 +1515,12 @@ const BookingExtendedTime = () => {
                       type={"Host"}
                       style={{ width: "100%", marginBottom: "10px" }}
                       data={{
-                        sender_detail: checkoutData,
-                        property_id: checkoutData?.property_id,
+                        sender_detail: {
+                          access_token: userData?.access_token,
+                          user_id: userId,
+                          host_id: Number(checkoutData?.host_id),
+                        },
+                        property_id: Number(checkoutData?.property_id),
                       }}
                     />
 
