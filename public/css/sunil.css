@@ -8,11 +8,13 @@
 .help-center-top {
   padding: 20px 0 !important;
 }
+
 .pac-container::after {
   display: none !important;
   background-image: none !important;
   height: 0 !important;
 }
+
 /* .help-center-top h1 {
   font-size: 1.5rem !important;
   padding: 0 10px;
@@ -130,6 +132,7 @@
 
 /* Mobile styles for ArticleDetails */
 @media (max-width: 991px) {
+
   /* Header section */
   .explore-title {
     font-size: 24px !important;
@@ -335,8 +338,8 @@
   }
 
   /* Create a horizontal container for author and share sections */
-  .row > .author-section,
-  .row > .share-section {
+  .row>.author-section,
+  .row>.share-section {
     inline-size: 50% !important;
     max-inline-size: 50% !important;
     flex: 0 0 50% !important;
@@ -827,7 +830,7 @@
   }
 
   /* Fix navigation buttons position */
-  .mob-payment-host .col-lg-3.col-md-6 > div {
+  .mob-payment-host .col-lg-3.col-md-6>div {
     margin-inline-start: 0 !important;
     margin-inline-end: 0 !important;
   }
@@ -1113,7 +1116,8 @@
     border-radius: 15px;
     position: relative;
     z-index: 1;
-    margin-top: 20px; /* Added and fixed syntax */
+    margin-top: 20px;
+    /* Added and fixed syntax */
   }
 }
 
@@ -1122,6 +1126,7 @@
     margin-top: 45%;
   }
 }
+
 @media screen and (max-width: 500px) {
   .ajdestmobileView {
     margin-top: 50%;
@@ -1142,7 +1147,7 @@
 
 @media screen and (min-width: 1100px) {
   .CircleView {
-    width: 60px;
+    width: 80px;
     height: 60px;
     border-radius: 50%;
     border: 2px solid #ccc;

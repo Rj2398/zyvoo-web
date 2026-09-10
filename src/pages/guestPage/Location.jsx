@@ -1285,20 +1285,18 @@ function Location() {
                           >
                             {propertyDetails?.hosted_by}
                           </h2>
-                          <img
-                            className="chat-right-top-batch-image"
-                            src={
-                              Number(propertyDetails?.reviews_total_rating) > 4
-                                ? "/images/bookings/verify-star.svg"
-                                : "/images/bookings/verify-star1.svg"
-                            }
-                            loading="lazy"
-                            alt="Verified"
-                            style={{
-                              width: "clamp(20px, 2.5vw, 24px)",
-                              height: "clamp(20px, 2.5vw, 24px)",
-                            }}
-                          />
+                          {Number(propertyDetails?.reviews_total_rating) > 4 && (
+                            <img
+                              className="chat-right-top-batch-image"
+                              src="/images/bookings/verify-star.svg"
+                              loading="lazy"
+                              alt="Verified"
+                              style={{
+                                width: "clamp(20px, 2.5vw, 24px)",
+                                height: "clamp(20px, 2.5vw, 24px)",
+                              }}
+                            />
+                          )}
                           {propertyDetails?.is_star_host && (
                             <Image
                               src="/images/locations-grid/profile/batch.svg"

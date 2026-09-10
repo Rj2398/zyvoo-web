@@ -944,16 +944,19 @@ const Checkout = ({ setExtendedTime }) => {
                       >
                         {checkoutData.hosted_by}
                       </h2>
-                      <img
-                        className="chat-right-top-batch-image"
-                        src="/images/bookings/verify-star.svg"
-                        loading="lazy"
-                        alt="Verified"
-                        style={{
-                          width: "clamp(14px, 2vw, 16px)",
-                          height: "clamp(14px, 2vw, 16px)",
-                        }}
-                      />
+                      {Number(checkoutData?.reviews_total_rating) > 4 && (
+                        <img
+                          className="chat-right-top-batch-image"
+                          src="/images/bookings/verify-star.svg"
+                          loading="lazy"
+                          alt="Verified"
+                          style={{
+                            width: "28px",
+                            height: "28px",
+                            objectFit: "contain",
+                          }}
+                        />
+                      )}
 
                       {checkoutData?.is_star_host && (
                         <Image
@@ -2393,20 +2396,19 @@ const Checkout = ({ setExtendedTime }) => {
                         >
                           {checkoutData?.hosted_by}
                         </h2>
-                        <img
-                          className="chat-right-top-batch-image"
-                          src={
-                            Number(checkoutData?.reviews_total_rating) > 4
-                              ? "/images/bookings/verify-star1.svg"
-                              : "/images/bookings/verify-star.svg"
-                          }
-                          loading="lazy"
-                          alt="Verified"
-                          style={{
-                            width: "clamp(20px, 2.5vw, 24px)",
-                            height: "clamp(20px, 2.5vw, 24px)",
-                          }}
-                        />
+                        {Number(checkoutData?.reviews_total_rating) > 4 && (
+                          <img
+                            className="chat-right-top-batch-image"
+                            src="/images/bookings/verify-star.svg"
+                            loading="lazy"
+                            alt="Verified"
+                            style={{
+                              width: "28px",
+                              height: "28px",
+                              objectFit: "contain",
+                            }}
+                          />
+                        )}
 
                         {checkoutData?.is_star_host && (
                           <Image
@@ -2531,21 +2533,19 @@ const Checkout = ({ setExtendedTime }) => {
                         >
                           {checkoutData?.hosted_by}
                         </h2>
-                        <img
-                          className="chat-right-top-batch-image"
-                          src={
-                            Number(checkoutData?.reviews_total_rating) > 4
-                              ? "/images/bookings/verify-star.svg"
-                              : "/images/bookings/verify-star1.svg"
-                          }
-                          loading="lazy"
-                          alt="Verified"
-                          style={{
-                            width: "24px",
-                            height: "24px",
-                            objectFit: "contain",
-                          }}
-                        />
+                        {Number(checkoutData?.reviews_total_rating) > 4 && (
+                          <img
+                            className="chat-right-top-batch-image"
+                            src="/images/bookings/verify-star.svg"
+                            loading="lazy"
+                            alt="Verified"
+                            style={{
+                              width: "28px",
+                              height: "28px",
+                              objectFit: "contain",
+                            }}
+                          />
+                        )}
 
                         {checkoutData?.is_star_host && (
                           <Image
