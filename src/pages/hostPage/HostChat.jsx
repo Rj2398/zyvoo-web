@@ -97,6 +97,7 @@ const HostChat = () => {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [sendingMessage, setSendingMessage] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
@@ -2556,6 +2557,10 @@ const HostChat = () => {
                                             alt="Sent media"
                                             width="200"
                                             className="rounded"
+                                            style={{ cursor: "pointer" }}
+                                            onClick={() =>
+                                              setPreviewImage(msg.mediaUrl || msg.media_url)
+                                            }
                                           />
                                         )}
                                       </div>
@@ -3286,6 +3291,51 @@ const HostChat = () => {
         booking_id={selectedBooking?.booking_id}
         property_id={selectedBooking?.property_id}
       />
+      {previewImage && (
+        <Modal
+          show={Boolean(previewImage)}
+          onHide={() => setPreviewImage(null)}
+          centered
+          size="lg"
+          contentClassName="bg-transparent border-0"
+        >
+          <Modal.Body className="p-0 position-relative text-center d-flex align-items-center justify-content-center">
+            <button
+              onClick={() => setPreviewImage(null)}
+              style={{
+                position: "absolute",
+                top: "-15px",
+                right: "-15px",
+                background: "rgba(0,0,0,0.75)",
+                color: "#fff",
+                border: "2px solid #fff",
+                borderRadius: "50%",
+                width: "36px",
+                height: "36px",
+                fontSize: "18px",
+                cursor: "pointer",
+                zIndex: 1056,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              ✕
+            </button>
+            <img
+              src={previewImage}
+              alt="Full screen preview"
+              style={{
+                maxWidth: "90vw",
+                maxHeight: "85vh",
+                objectFit: "contain",
+                borderRadius: "8px",
+                boxShadow: "0 8px 32px rgba(0,0,0,0.6)",
+              }}
+            />
+          </Modal.Body>
+        </Modal>
+      )}
     </>
   );
 };
