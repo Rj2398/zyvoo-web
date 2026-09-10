@@ -184,7 +184,11 @@ function AboutUs() {
                   )}
 
                   <Row className="align-items-center justify-content-between">
-                    <Col lg={5} md={6} className="text-start py-3">
+                    <Col lg={6} md={6} className="py-3">
+                      {renderImageSection(itemImages)}
+                    </Col>
+
+                    <Col lg={6} md={6} className="text-start py-3 ps-lg-4">
                       {item?.title && (
                         <h3
                           style={{
@@ -205,10 +209,6 @@ function AboutUs() {
                           }}
                         />
                       )}
-                    </Col>
-
-                    <Col lg={7} md={6} className="py-3">
-                      {renderImageSection(itemImages)}
                     </Col>
                   </Row>
                 </div>
