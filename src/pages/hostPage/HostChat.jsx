@@ -268,7 +268,7 @@ const HostChat = () => {
             const b64Unpadded = b64Padded.replace(/=/g, "");
             if (presenceMap[b64Padded]) return presenceMap[b64Padded];
             if (presenceMap[b64Unpadded]) return presenceMap[b64Unpadded];
-          } catch (e) {}
+          } catch (e) { }
 
           // 3. Base64 decode candidate if input is member ID (e.g. "Njc" -> "67")
           try {
@@ -278,7 +278,7 @@ const HostChat = () => {
             if (decoded && decoded.trim() && presenceMap[decoded.trim()]) {
               return presenceMap[decoded.trim()];
             }
-          } catch (e) {}
+          } catch (e) { }
 
           return "Offline";
         };
@@ -1999,8 +1999,8 @@ const HostChat = () => {
                         <div
                           style={{
                             position: "absolute",
-                            bottom: "2px",
-                            right: "2px",
+                            bottom: "9px",
+                            right: "5px",
                             width: "14px",
                             height: "14px",
                             borderRadius: "50%",
@@ -2245,7 +2245,7 @@ const HostChat = () => {
                             }}
                           />
 
-                          <div
+                          {/* <div
                             style={{
                               position: "absolute",
                               bottom: "6px",
@@ -2261,7 +2261,7 @@ const HostChat = () => {
                               zIndex: 2,
                               marginRight: "5px",
                             }}
-                          />
+                          /> */}
                         </div>
                         <div>
                           <h5 className="mb-0">
