@@ -388,11 +388,11 @@ const ProductItem = ({
               {userId ? (
                 <span style={{ fontSize: isMobileWidth ? "13px" : "15px" }}>
                   {" "}
-                  Hosted by {truncateText(hosted_by, 7)} <br />{" "}
+                  Hosted by {truncateText(hosted_by, 20)} <br />{" "}
                 </span>
               ) : (
                 <span style={{ fontSize: isMobileWidth ? "13px" : "15px" }}>
-                  {truncateText(hosted_by, 7)}
+                  {truncateText(hosted_by, 20)}
                   <br />
                 </span>
               )}
