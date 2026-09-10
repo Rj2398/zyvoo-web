@@ -125,23 +125,26 @@ const HostChat = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Update current user's presence in Firebase chat_presence collection
+  // Update current user's presence in Firebase chat_presence collection (matches iOS safeDocumentID)
   useEffect(() => {
     if (!userId) return;
 
     const updatePresence = async () => {
       try {
-        const docId = btoa(String(userId));
+        const docId = btoa(String(userId))
+          .replace(/\//g, "_")
+          .replace(/\+/g, "-")
+          .replace(/=/g, "");
         const presenceRef = doc(db, "chat_presence", docId);
         const now = new Date();
-        const activeUntil = new Date(now.getTime() + 2 * 60 * 1000);
+        const activeUntil = new Date(now.getTime() + 60 * 1000); // 60s matching iOS
 
         await setDoc(
           presenceRef,
           {
             user_id: String(userId),
-            last_seen_at: serverTimestamp(),
             active_until: activeUntil,
+            last_seen_at: serverTimestamp(),
           },
           { merge: true }
         );
@@ -151,7 +154,7 @@ const HostChat = () => {
     };
 
     updatePresence();
-    const interval = setInterval(updatePresence, 30000);
+    const interval = setInterval(updatePresence, 25000); // 25s heartbeat matching iOS
 
     return () => clearInterval(interval);
   }, [userId]);
@@ -170,25 +173,69 @@ const HostChat = () => {
 
         snapshot.docs.forEach((docSnap) => {
           const data = docSnap.data();
-          if (data.user_id) {
+          let docUserId = data.user_id || data.userId;
+          if (!docUserId && docSnap.id) {
+            try {
+              let b64 = docSnap.id.replace(/_/g, "/").replace(/-/g, "+");
+              while (b64.length % 4 !== 0) {
+                b64 += "=";
+              }
+              const decoded = atob(b64);
+              if (decoded && !isNaN(decoded)) docUserId = decoded;
+            } catch (e) {
+              docUserId = docSnap.id;
+            }
+          }
+
+          if (docUserId) {
             let activeUntil = null;
             if (data.active_until?.toDate) {
               activeUntil = data.active_until.toDate();
+            } else if (data.active_until?.seconds) {
+              activeUntil = new Date(data.active_until.seconds * 1000);
             } else if (data.active_until) {
               activeUntil = new Date(data.active_until);
             }
 
+            let lastSeenAt = null;
+            if (data.last_seen_at?.toDate) {
+              lastSeenAt = data.last_seen_at.toDate();
+            } else if (data.last_seen_at?.seconds) {
+              lastSeenAt = new Date(data.last_seen_at.seconds * 1000);
+            } else if (data.last_seen_at) {
+              lastSeenAt = new Date(data.last_seen_at);
+            }
+
             const isOnline =
-              activeUntil && activeUntil.getTime() > now.getTime();
-            presenceMap[String(data.user_id)] = isOnline ? "Online" : "Offline";
+              (activeUntil && activeUntil.getTime() > now.getTime() - 10000) ||
+              (lastSeenAt && now.getTime() - lastSeenAt.getTime() < 90 * 1000);
+
+            presenceMap[String(docUserId)] = isOnline ? "Online" : "Offline";
           }
         });
 
+        const getOtherId = (item) => {
+          if (!item) return null;
+          const candidateIds = [
+            item.sender_id,
+            item.sender_user_id,
+            item.user_id,
+            item.guest_id,
+            item.receiver_id,
+            item.host_id,
+          ]
+            .filter(Boolean)
+            .map(String);
+          const other = candidateIds.find((id) => id !== String(userId));
+          if (other) return other;
+          return userTypes === "host"
+            ? String(item.sender_id || item.guest_id || "")
+            : String(item.receiver_id || item.host_id || "");
+        };
+
         // Determine status for selected target user
         const currentTargetId = selectedBooking
-          ? userTypes === "host"
-            ? selectedBooking.sender_id
-            : selectedBooking.receiver_id
+          ? getOtherId(selectedBooking)
           : senderDetail?.user_id || senderDetail?.host_id;
 
         if (currentTargetId) {
@@ -202,8 +249,7 @@ const HostChat = () => {
         if (getList?.length > 0) {
           const mapGroupStatuses = {};
           getList.forEach((b) => {
-            const otherUserId =
-              userTypes === "host" ? b.sender_id : b.receiver_id;
+            const otherUserId = getOtherId(b);
             if (otherUserId) {
               mapGroupStatuses[b.group_name] =
                 presenceMap[String(otherUserId)] || "Offline";
@@ -603,12 +649,17 @@ const HostChat = () => {
             const channelData = channelSnap.data();
             let lastMsg = null;
 
-            if (channelData.lastMessage) {
+            const lastMsgText = channelData.last_message || channelData.lastMessage;
+            const lastMsgType = channelData.last_media_type || channelData.lastMessageType || "text";
+            const lastMsgAt = channelData.last_message_at || channelData.lastMessageAt;
+            const lastMsgSender = channelData.last_sender_id || channelData.lastMessageSenderId || null;
+
+            if (lastMsgText || lastMsgAt) {
               lastMsg = {
-                body: channelData.lastMessage,
-                type: channelData.lastMessageType || "text",
-                createdAt: channelData.lastMessageAt,
-                senderId: channelData.lastMessageSenderId || null,
+                body: lastMsgText,
+                type: lastMsgType,
+                createdAt: lastMsgAt,
+                senderId: lastMsgSender,
               };
             }
 
@@ -621,14 +672,21 @@ const HostChat = () => {
               );
               const messagesQuery = query(
                 messagesRef,
-                orderBy("createdAt", "desc"),
+                orderBy("created_at", "desc"),
                 limit(1)
               );
               const messageSnapshot = await getDocs(messagesQuery);
 
               if (!messageSnapshot.empty) {
                 const lastDoc = messageSnapshot.docs[0];
-                lastMsg = { id: lastDoc.id, ...lastDoc.data() };
+                const data = lastDoc.data();
+                lastMsg = {
+                  id: lastDoc.id,
+                  body: data.text || data.body || data.message,
+                  type: data.type || "text",
+                  createdAt: data.created_at || data.createdAt,
+                  senderId: data.sender_id || data.senderId || data.author,
+                };
               }
             }
 
@@ -637,14 +695,14 @@ const HostChat = () => {
 
             const lastMessageDate = lastMsg?.createdAt?.toDate
               ? lastMsg.createdAt.toDate()
-              : channelData.lastMessageAt?.toDate
-                ? channelData.lastMessageAt.toDate()
+              : lastMsgAt?.toDate
+                ? lastMsgAt.toDate()
                 : booking.booking_date
                   ? new Date(booking.booking_date)
                   : new Date(0);
 
             const lastMessageSender = String(
-              lastMsg?.senderId || channelData.lastMessageSenderId || ""
+              lastMsg?.senderId || lastMsgSender || ""
             );
             const isMyLastMessage = lastMessageSender === String(userId);
 
@@ -663,7 +721,7 @@ const HostChat = () => {
 
             messagesData[channelName] = {
               body:
-                lastMsg?.body || channelData.lastMessage || "No messages yet",
+                lastMsg?.body || lastMsgText || "No messages yet",
               timestamp:
                 lastMessageDate && lastMessageDate.getTime() > 0
                   ? lastMessageDate.toLocaleString()
@@ -723,7 +781,7 @@ const HostChat = () => {
       channelName,
       "messages"
     );
-    const messagesQuery = query(messagesRef, orderBy("createdAt", "asc"));
+    const messagesQuery = query(messagesRef, orderBy("created_at", "asc"));
 
     // Listen to member document for deletion boundary (deleted_before)
     const memberDocId = safeMemberDocId(userId);
@@ -751,23 +809,29 @@ const HostChat = () => {
         const processedMessages = snapshot.docs
           .map((messageDoc) => {
             const data = messageDoc.data();
-            const author = String(data.senderId || data.author || "");
+            const author = String(data.sender_id || data.senderId || data.author || "");
 
             let messageDate = new Date();
-            if (data.createdAt?.toDate) {
-              messageDate = data.createdAt.toDate();
-            } else if (data.createdAt) {
-              messageDate = new Date(data.createdAt);
+            const ts = data.created_at || data.createdAt;
+            if (ts?.toDate) {
+              messageDate = ts.toDate();
+            } else if (ts?.seconds) {
+              messageDate = new Date(ts.seconds * 1000);
+            } else if (ts) {
+              messageDate = new Date(ts);
             }
 
             return {
               id: messageDoc.id,
               ...data,
               author,
-              body: data.body || data.message || data.text || "",
+              senderId: author,
+              body: data.text || data.body || data.message || "",
               type: data.type || "text",
-              mediaUrl: data.mediaUrl || data.media_url || null,
-              isMyMessage: author === String(userId),
+              mediaUrl: data.media_url || data.mediaUrl || null,
+              mediaType: data.media_type || data.mediaType || null,
+              fileName: data.file_name || data.fileName || null,
+              isMyMessage: String(author) === String(userId),
               dateCreated: messageDate,
             };
           })
@@ -865,20 +929,21 @@ const HostChat = () => {
 
         const data = snapshot.data();
         const channelName = booking.group_name || firebaseChatId;
+        const msgText = data.last_message || data.lastMessage || "";
+        const msgDate = data.last_message_at?.toDate?.() || data.lastMessageAt?.toDate?.() || null;
 
         setLastMessages((prev) => ({
           ...prev,
           [channelName]: {
-            body: data.lastMessage || "",
-            timestamp: data.lastMessageAt?.toDate?.() || null,
-            lastMessageDate: data.lastMessageAt?.toDate?.() || null,
+            body: msgText,
+            timestamp: msgDate,
+            lastMessageDate: msgDate,
           },
         }));
 
         setConversationTimestamps((prev) => ({
           ...prev,
-          [channelName]:
-            data.lastMessageAt?.toDate?.() || booking.booking_date || null,
+          [channelName]: msgDate || booking.booking_date || null,
         }));
       });
 
@@ -930,21 +995,25 @@ const HostChat = () => {
         isNewChannel = true;
 
         await setDoc(channelRef, {
-          channelName,
-          friendlyName: `Chat for Property ${propertyId}`,
-          propertyId: String(propertyId),
-          guestId: String(guestId),
-          hostId: String(hostId),
+          channel_name: channelName,
+          property_id: String(propertyId),
+          guest_id: String(guestId),
+          host_id: String(hostId),
+          participant_ids: [String(guestId), String(hostId)],
           participants: [String(guestId), String(hostId)],
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-          lastMessage: null,
+          created_at: serverTimestamp(),
+          updated_at: serverTimestamp(),
+          last_message: null,
+          last_media_url: null,
+          last_file_name: null,
+          last_media_type: null,
         });
       } else {
         // Room ALREADY exists: Update existing document (Prevents Duplicate Channel Creation in Firebase)
         await updateDoc(channelRef, {
+          participant_ids: arrayUnion(String(guestId), String(hostId)),
           participants: arrayUnion(String(guestId), String(hostId)),
-          updatedAt: serverTimestamp(),
+          updated_at: serverTimestamp(),
         });
       }
 
@@ -1031,7 +1100,7 @@ const HostChat = () => {
       let tempMessage = null;
 
       try {
-        setChatLoading(true);
+        setSendingMessage(true);
         const localMediaUrl = URL.createObjectURL(file);
         const tempId = `temp_${Date.now()}`;
 
@@ -1070,24 +1139,32 @@ const HostChat = () => {
           "messages"
         );
 
-        await addDoc(messagesRef, {
-          senderId: String(userId),
-          author: String(userId),
-          body: "Media message",
+        const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+        const mediaType = file.type || (isPdf ? "application/pdf" : "image/jpeg");
+        const displayMsgText = isPdf ? file.name : "Media message";
+
+        const newMsgDoc = await addDoc(messagesRef, {
+          sender_id: String(userId),
+          text: displayMsgText,
+          body: displayMsgText,
           type: "media",
-          mediaUrl,
-          fileName: file.name,
-          fileType: file.type || "application/octet-stream",
-          createdAt: serverTimestamp(),
+          media_type: mediaType,
+          media_url: mediaUrl,
+          file_name: file.name,
+          created_at: serverTimestamp(),
         });
 
         const channelRef = doc(db, "chat_channels", channelName);
         await updateDoc(channelRef, {
-          lastMessage: "Media message",
-          lastMessageType: "media",
-          lastMessageAt: serverTimestamp(),
-          lastMessageSenderId: String(userId),
-          updatedAt: serverTimestamp(),
+          channel_name: channelName,
+          last_file_name: file.name,
+          last_media_type: mediaType,
+          last_media_url: mediaUrl,
+          last_message: displayMsgText,
+          last_message_at: serverTimestamp(),
+          last_message_id: newMsgDoc.id,
+          last_sender_id: String(userId),
+          updated_at: serverTimestamp(),
         });
 
         setMessages((prev) => prev.filter((msg) => msg.id !== tempId));
@@ -1103,13 +1180,14 @@ const HostChat = () => {
         URL.revokeObjectURL(localMediaUrl);
       } catch (error) {
         console.error("Error sending Firebase file:", error);
+        toast.error("Failed to upload file: " + (error.message || "Upload error"));
         if (tempMessage) {
           setMessages((prev) =>
             prev.filter((msg) => msg.id !== tempMessage.id)
           );
         }
       } finally {
-        setChatLoading(false);
+        setSendingMessage(false);
         const fileInput = document.getElementById("fileUpload");
         if (fileInput) fileInput.value = "";
         const screenFileInput = document.getElementById("chat-screen-file");
@@ -1135,22 +1213,27 @@ const HostChat = () => {
         "messages"
       );
 
-      await addDoc(messagesRef, {
-        senderId: String(userId),
-        author: String(userId),
+      const newMsgDoc = await addDoc(messagesRef, {
+        sender_id: String(userId),
+        text: messageToSend,
         body: messageToSend,
         type: "text",
-        isAutoMessage,
-        createdAt: serverTimestamp(),
+        media_type: "text",
+        is_auto_message: isAutoMessage,
+        created_at: serverTimestamp(),
       });
 
       const channelRef = doc(db, "chat_channels", channelName);
       await updateDoc(channelRef, {
-        lastMessage: messageToSend,
-        lastMessageType: "text",
-        lastMessageAt: serverTimestamp(),
-        lastMessageSenderId: String(userId),
-        updatedAt: serverTimestamp(),
+        channel_name: channelName,
+        last_message: messageToSend,
+        last_message_id: newMsgDoc.id,
+        last_media_type: "text",
+        last_media_url: null,
+        last_file_name: null,
+        last_message_at: serverTimestamp(),
+        last_sender_id: String(userId),
+        updated_at: serverTimestamp(),
       });
 
       // Reset is_deleted to false in members subcollection for participants so chat re-appears on new message
@@ -1273,7 +1356,7 @@ const HostChat = () => {
               newMuteStatus === 1
                 ? arrayUnion(String(userId))
                 : arrayRemove(String(userId)),
-            updatedAt: serverTimestamp(),
+            updated_at: serverTimestamp(),
           },
           { merge: true }
         );
@@ -1328,7 +1411,7 @@ const HostChat = () => {
                 ? arrayUnion(String(userId))
                 : arrayRemove(String(userId)),
             [`blockedUsers.${String(userId)}`]: newBlockStatus === 1,
-            updatedAt: serverTimestamp(),
+            updated_at: serverTimestamp(),
           },
           { merge: true }
         );
@@ -2269,22 +2352,60 @@ const HostChat = () => {
                                       <span> {formattedDate} </span>
                                     </div>
 
-                                    {msg.type === "media" ? (
+                                    {msg.type === "media" || msg.mediaUrl || msg.media_url ? (
                                       <div className="chat-body">
-                                        <Image
-                                          src={msg.mediaUrl}
-                                          loading="lazy"
-                                          alt="Sent media"
-                                          width="200"
-                                          className="rounded"
-                                        />
+                                        {(msg.mediaType === "application/pdf" ||
+                                          msg.media_type === "application/pdf" ||
+                                          (msg.fileName && msg.fileName.toLowerCase().endsWith(".pdf")) ||
+                                          (msg.file_name && msg.file_name.toLowerCase().endsWith(".pdf")) ||
+                                          (msg.mediaUrl && msg.mediaUrl.toLowerCase().includes(".pdf")) ||
+                                          (msg.media_url && msg.media_url.toLowerCase().includes(".pdf"))) ? (
+                                          <a
+                                            href={msg.mediaUrl || msg.media_url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="d-flex align-items-center gap-2 p-2 rounded text-decoration-none"
+                                            style={{
+                                              backgroundColor: "#f5f5f5",
+                                              border: "1px solid #ddd",
+                                              color: "#333",
+                                              maxWidth: "280px",
+                                            }}
+                                          >
+                                            <span style={{ fontSize: "28px" }}>📄</span>
+                                            <div style={{ overflow: "hidden" }}>
+                                              <div
+                                                style={{
+                                                  fontWeight: "600",
+                                                  fontSize: "13px",
+                                                  whiteSpace: "nowrap",
+                                                  overflow: "hidden",
+                                                  textOverflow: "ellipsis",
+                                                }}
+                                              >
+                                                {msg.fileName || msg.file_name || "Document.pdf"}
+                                              </div>
+                                              <small style={{ color: "#007bff", fontSize: "11px" }}>
+                                                Click to view PDF
+                                              </small>
+                                            </div>
+                                          </a>
+                                        ) : (
+                                          <Image
+                                            src={msg.mediaUrl || msg.media_url}
+                                            loading="lazy"
+                                            alt="Sent media"
+                                            width="200"
+                                            className="rounded"
+                                          />
+                                        )}
                                       </div>
                                     ) : (
                                       <div
                                         className="chat-body"
                                         style={{ fontSize: "14px" }}
                                       >
-                                        {msg.body}
+                                        {msg.body || msg.text}
                                       </div>
                                     )}
                                   </div>
@@ -2329,24 +2450,24 @@ const HostChat = () => {
                               <input
                                 type="file"
                                 id="fileUpload"
+                                accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,application/pdf,.pdf"
                                 className="d-none"
                                 onChange={(e) => {
                                   const file = e.target.files[0];
                                   if (!file) return;
 
-                                  const allowedTypes = [
-                                    "image/jpeg",
-                                    "image/png",
-                                    "image/jpg",
-                                    "image/webp",
-                                    "image/gif",
-                                  ];
+                                  const isImage =
+                                    (file.type && file.type.startsWith("image/")) ||
+                                    /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name);
+                                  const isPdf =
+                                    file.type === "application/pdf" ||
+                                    /\.pdf$/i.test(file.name);
 
                                   const maxSizeMB = 5;
 
-                                  if (!allowedTypes.includes(file.type)) {
+                                  if (!isImage && !isPdf) {
                                     toast.error(
-                                      "Only image files are allowed"
+                                      "Only image and PDF files are allowed"
                                     );
                                     e.target.value = "";
                                     return;
@@ -2354,7 +2475,7 @@ const HostChat = () => {
 
                                   if (file.size > maxSizeMB * 1024 * 1024) {
                                     toast.error(
-                                      "Image size must be less than 5MB"
+                                      "File size must be less than 5MB"
                                     );
                                     e.target.value = "";
                                     return;
@@ -2830,19 +2951,57 @@ const HostChat = () => {
                                     </span>
                                   </div>
 
-                                  {msg.type === "media" ? (
+                                  {msg.type === "media" || msg.mediaUrl || msg.media_url ? (
                                     <div className="chat-screen-message-body">
-                                      <Image
-                                        src={msg.mediaUrl}
-                                        loading="lazy"
-                                        alt="media"
-                                        width="200"
-                                        className="rounded"
-                                      />
+                                      {(msg.mediaType === "application/pdf" ||
+                                        msg.media_type === "application/pdf" ||
+                                        (msg.fileName && msg.fileName.toLowerCase().endsWith(".pdf")) ||
+                                        (msg.file_name && msg.file_name.toLowerCase().endsWith(".pdf")) ||
+                                        (msg.mediaUrl && msg.mediaUrl.toLowerCase().includes(".pdf")) ||
+                                        (msg.media_url && msg.media_url.toLowerCase().includes(".pdf"))) ? (
+                                        <a
+                                          href={msg.mediaUrl || msg.media_url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="d-flex align-items-center gap-2 p-2 rounded text-decoration-none"
+                                          style={{
+                                            backgroundColor: "#f5f5f5",
+                                            border: "1px solid #ddd",
+                                            color: "#333",
+                                            maxWidth: "240px",
+                                          }}
+                                        >
+                                          <span style={{ fontSize: "24px" }}>📄</span>
+                                          <div style={{ overflow: "hidden" }}>
+                                            <div
+                                              style={{
+                                                fontWeight: "600",
+                                                fontSize: "12px",
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                              }}
+                                            >
+                                              {msg.fileName || msg.file_name || "Document.pdf"}
+                                            </div>
+                                            <small style={{ color: "#007bff", fontSize: "10px" }}>
+                                              Click to view PDF
+                                            </small>
+                                          </div>
+                                        </a>
+                                      ) : (
+                                        <Image
+                                          src={msg.mediaUrl || msg.media_url}
+                                          loading="lazy"
+                                          alt="media"
+                                          width="200"
+                                          className="rounded"
+                                        />
+                                      )}
                                     </div>
                                   ) : (
                                     <div className="chat-screen-message-body">
-                                      {msg.body}
+                                      {msg.body || msg.text}
                                     </div>
                                   )}
                                 </div>
@@ -2866,24 +3025,24 @@ const HostChat = () => {
                               <input
                                 type="file"
                                 id="chat-screen-file"
+                                accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,application/pdf,.pdf"
                                 className="d-none"
                                 onChange={(e) => {
                                   const file = e.target.files[0];
                                   if (!file) return;
 
-                                  const allowedTypes = [
-                                    "image/jpeg",
-                                    "image/png",
-                                    "image/jpg",
-                                    "image/webp",
-                                    "image/gif",
-                                  ];
+                                  const isImage =
+                                    (file.type && file.type.startsWith("image/")) ||
+                                    /\.(jpg|jpeg|png|webp|gif)$/i.test(file.name);
+                                  const isPdf =
+                                    file.type === "application/pdf" ||
+                                    /\.pdf$/i.test(file.name);
 
                                   const maxSizeMB = 5;
 
-                                  if (!allowedTypes.includes(file.type)) {
+                                  if (!isImage && !isPdf) {
                                     toast.error(
-                                      "Only image files are allowed"
+                                      "Only image and PDF files are allowed"
                                     );
                                     e.target.value = "";
                                     return;
@@ -2891,7 +3050,7 @@ const HostChat = () => {
 
                                   if (file.size > maxSizeMB * 1024 * 1024) {
                                     toast.error(
-                                      "Image size must be less than 5MB"
+                                      "File size must be less than 5MB"
                                     );
                                     e.target.value = "";
                                     return;

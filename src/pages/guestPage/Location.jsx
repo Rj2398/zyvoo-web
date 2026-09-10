@@ -120,6 +120,8 @@ function Location() {
 
   const [showPropertyImages, setShowPropertyImages] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState({});
+
+  // console.log("propertyDetails4333434567", propertyDetails?.host_profile_image);
   const [showShareModal, setShowShareModal] = useState();
   const [showAddWishlistModal, setShowAddWishlistModal] = useState(false);
   const [wishlistArr, setWishlistArr] = useState([]);
@@ -720,8 +722,8 @@ function Location() {
 
                 <div
                   className={`top-grid-images-${propertyDetails?.images?.length > 5
-                      ? 5
-                      : propertyDetails?.images?.length
+                    ? 5
+                    : propertyDetails?.images?.length
                     }`}
                   onClick={() => setShowPropertyImages(true)}
                   style={{ height: isMobileWidth ? "200px" : "450px" }}
@@ -1236,7 +1238,7 @@ function Location() {
                         >
                           <span
                             style={{
-                              fontWeight: "500",
+                              fontWeight: "400",
                               fontSize: "clamp(18px, 2.5vw, 22px)",
                               display: "block",
                             }}
@@ -1253,11 +1255,12 @@ function Location() {
                             justifyContent: "center",
                             gap: "10px",
                             marginBottom: "20px",
+                            marginTop: "-10px"
                           }}
                         >
                           <img
                             className="chat-right-top-profile-image"
-                            src="https://zyvo.tgastaging.com/uploads/host_profile_images/1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820_1689148820.png"
+                            src={`${imageBase}${propertyDetails?.host_profile_image}`}
                             loading="lazy"
                             alt="Host"
                             onError={(e) => {
@@ -1275,7 +1278,7 @@ function Location() {
                           <h2
                             style={{
                               fontSize: "clamp(16px, 2vw, 20px)",
-                              fontWeight: "600",
+                              fontWeight: "500",
                               margin: 0,
                               color: "#000000",
                             }}
