@@ -121,7 +121,7 @@ function Location() {
   const [showPropertyImages, setShowPropertyImages] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState({});
 
-  // console.log("propertyDetails4333434567", propertyDetails?.host_profile_image);
+  // console.log("propertyDetails4333434567", propertyDetails?.reviews_total_rating);
   const [showShareModal, setShowShareModal] = useState();
   const [showAddWishlistModal, setShowAddWishlistModal] = useState(false);
   const [wishlistArr, setWishlistArr] = useState([]);
@@ -1287,7 +1287,11 @@ function Location() {
                           </h2>
                           <img
                             className="chat-right-top-batch-image"
-                            src="/images/bookings/verify-star.svg"
+                            src={
+                              Number(propertyDetails?.reviews_total_rating) > 4
+                                ? "/images/bookings/verify-star.svg"
+                                : "/images/bookings/verify-star1.svg"
+                            }
                             loading="lazy"
                             alt="Verified"
                             style={{

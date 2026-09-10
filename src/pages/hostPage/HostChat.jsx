@@ -103,11 +103,15 @@ const HostChat = () => {
     JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
   const userTypes = localStorage.getItem(KEYS.USER_TYPE);
 
-  const userId = userInfo?.user_id
-    ? String(userInfo.user_id)
-    : userData?.user_id
-      ? String(userData.user_id)
-      : null;
+  const currentUserIdVal =
+    userInfo?.user_id ||
+    userInfo?.id ||
+    userData?.user_id ||
+    userData?.id ||
+    userData?.user?.id ||
+    userData?.user?.user_id;
+
+  const userId = currentUserIdVal ? String(currentUserIdVal) : null;
 
   const messagesContainerRef = useRef(null);
 
@@ -127,7 +131,7 @@ const HostChat = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Update current user's presence in Firebase chat_presence collection (matches iOS safeDocumentID)
+  // Update current user's presence in Firebase chat_presence collection (supports base64 docId & raw userId)
   useEffect(() => {
     if (!userId) return;
 
@@ -138,25 +142,37 @@ const HostChat = () => {
           .replace(/\+/g, "-")
           .replace(/=/g, "");
         const presenceRef = doc(db, "chat_presence", docId);
+        const rawPresenceRef = doc(db, "chat_presence", String(userId));
         const now = new Date();
-        const activeUntil = new Date(now.getTime() + 60 * 1000); // 60s matching iOS
+        const activeUntil = new Date(now.getTime() + 3 * 60 * 1000); // 3 minutes window
 
-        await setDoc(
-          presenceRef,
-          {
-            user_id: String(userId),
-            active_until: activeUntil,
-            last_seen_at: serverTimestamp(),
-          },
-          { merge: true }
-        );
+        const payload = {
+          user_id: String(userId),
+          userId: String(userId),
+          id: String(userId),
+          is_online: true,
+          isOnline: true,
+          status: "online",
+          state: "online",
+          active_until: activeUntil,
+          activeUntil: activeUntil,
+          last_seen_at: serverTimestamp(),
+          lastSeenAt: serverTimestamp(),
+          updated_at: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        };
+
+        await Promise.all([
+          setDoc(presenceRef, payload, { merge: true }),
+          setDoc(rawPresenceRef, payload, { merge: true }),
+        ]);
       } catch (err) {
         console.error("Error updating chat_presence:", err);
       }
     };
 
     updatePresence();
-    const interval = setInterval(updatePresence, 25000); // 25s heartbeat matching iOS
+    const interval = setInterval(updatePresence, 10000); // 10s heartbeat
 
     return () => clearInterval(interval);
   }, [userId]);
@@ -167,6 +183,20 @@ const HostChat = () => {
 
     const presenceRef = collection(db, "chat_presence");
 
+    const parseDate = (val) => {
+      if (!val) return null;
+      if (typeof val.toDate === "function") return val.toDate();
+      if (typeof val.seconds === "number") return new Date(val.seconds * 1000);
+      if (typeof val._seconds === "number") return new Date(val._seconds * 1000);
+      if (typeof val === "number") return new Date(val);
+      if (typeof val === "string") {
+        const d = new Date(val);
+        return isNaN(d.getTime()) ? null : d;
+      }
+      if (val instanceof Date) return val;
+      return null;
+    };
+
     const unsubscribe = onSnapshot(
       presenceRef,
       (snapshot) => {
@@ -175,49 +205,92 @@ const HostChat = () => {
 
         snapshot.docs.forEach((docSnap) => {
           const data = docSnap.data();
-          let docUserId = data.user_id || data.userId;
-          if (!docUserId && docSnap.id) {
+
+          const activeUntil = parseDate(data.active_until || data.activeUntil);
+          const lastSeenAt = parseDate(
+            data.last_seen_at || data.lastSeenAt || data.last_seen || data.lastSeen
+          );
+          const updatedAt = parseDate(data.updated_at || data.updatedAt);
+
+          const maxTime = Math.max(
+            activeUntil ? activeUntil.getTime() : 0,
+            lastSeenAt ? lastSeenAt.getTime() + 180000 : 0,
+            updatedAt ? updatedAt.getTime() + 180000 : 0
+          );
+
+          const isExplicitOnline =
+            data.is_online === true ||
+            data.isOnline === true ||
+            data.online === true ||
+            String(data.status).toLowerCase() === "online" ||
+            String(data.state).toLowerCase() === "online";
+
+          const isExplicitOffline =
+            data.is_online === false ||
+            data.isOnline === false ||
+            data.online === false ||
+            String(data.status).toLowerCase() === "offline" ||
+            String(data.state).toLowerCase() === "offline";
+
+          let isOnline = false;
+          if (isExplicitOffline) {
+            isOnline = false;
+          } else if (isExplicitOnline) {
+            isOnline = true;
+          } else if (maxTime > 0) {
+            isOnline = maxTime > now.getTime() - 300000;
+          }
+
+          const ids = new Set();
+          if (data.user_id) ids.add(String(data.user_id));
+          if (data.userId) ids.add(String(data.userId));
+          if (data.id) ids.add(String(data.id));
+
+          if (docSnap.id) {
+            const docIdStr = String(docSnap.id);
+            ids.add(docIdStr);
+
+            const digitsMatch = docIdStr.match(/\d+/);
+            if (digitsMatch) ids.add(digitsMatch[0]);
+
             try {
-              let b64 = docSnap.id.replace(/_/g, "/").replace(/-/g, "+");
-              while (b64.length % 4 !== 0) {
-                b64 += "=";
-              }
+              let b64 = docIdStr.replace(/_/g, "/").replace(/-/g, "+");
+              while (b64.length % 4 !== 0) b64 += "=";
               const decoded = atob(b64);
-              if (decoded && !isNaN(decoded)) docUserId = decoded;
-            } catch (e) {
-              docUserId = docSnap.id;
-            }
+              if (decoded && decoded.trim().length > 0) {
+                const decDigits = decoded.trim().match(/\d+/);
+                if (decDigits) ids.add(decDigits[0]);
+              }
+            } catch (e) { }
           }
 
-          if (docUserId) {
-            let activeUntil = null;
-            if (data.active_until?.toDate) {
-              activeUntil = data.active_until.toDate();
-            } else if (data.active_until?.seconds) {
-              activeUntil = new Date(data.active_until.seconds * 1000);
-            } else if (data.active_until) {
-              activeUntil = new Date(data.active_until);
-            }
-
-            let lastSeenAt = null;
-            if (data.last_seen_at?.toDate) {
-              lastSeenAt = data.last_seen_at.toDate();
-            } else if (data.last_seen_at?.seconds) {
-              lastSeenAt = new Date(data.last_seen_at.seconds * 1000);
-            } else if (data.last_seen_at) {
-              lastSeenAt = new Date(data.last_seen_at);
-            }
-
-            const isOnline =
-              (activeUntil && activeUntil.getTime() > now.getTime() - 10000) ||
-              (lastSeenAt && now.getTime() - lastSeenAt.getTime() < 90 * 1000);
-
-            presenceMap[String(docUserId)] = isOnline ? "Online" : "Offline";
-          }
+          ids.forEach((id) => {
+            presenceMap[String(id)] = isOnline ? "Online" : "Offline";
+          });
         });
 
         const getOtherId = (item) => {
           if (!item) return null;
+
+          // 1. Parse guest ID & host ID directly from channel name (e.g. Zyvoo_guest_4_host_65)
+          const groupName =
+            item.group_name || item.channel_name || item.channelName || item.id;
+          if (
+            groupName &&
+            typeof groupName === "string" &&
+            groupName.toLowerCase().includes("guest_")
+          ) {
+            const match = groupName.match(/guest_(\d+)_host_(\d+)/i);
+            if (match) {
+              const guestId = String(match[1]);
+              const hostId = String(match[2]);
+              if (guestId === String(userId)) return hostId;
+              if (hostId === String(userId)) return guestId;
+              return userTypes === "host" ? guestId : hostId;
+            }
+          }
+
+          // 2. Fallback to candidate object properties
           const candidateIds = [
             item.sender_id,
             item.sender_user_id,
@@ -230,15 +303,38 @@ const HostChat = () => {
             .map(String);
           const other = candidateIds.find((id) => id !== String(userId));
           if (other) return other;
+
           return userTypes === "host"
             ? String(item.sender_id || item.guest_id || "")
             : String(item.receiver_id || item.host_id || "");
         };
 
         // Determine status for selected target user
-        const currentTargetId = selectedBooking
-          ? getOtherId(selectedBooking)
-          : senderDetail?.user_id || senderDetail?.host_id;
+        let currentTargetId = null;
+        if (selectedBooking) {
+          currentTargetId = getOtherId(selectedBooking);
+        } else if (senderDetail) {
+          const candidateIds = [
+            senderDetail.user_id,
+            senderDetail.sender_id,
+            senderDetail.sender_user_id,
+            senderDetail.guest_id,
+            senderDetail.receiver_id,
+            senderDetail.host_id,
+          ]
+            .filter(Boolean)
+            .map(String);
+
+          const otherId = candidateIds.find((id) => id !== String(userId));
+          if (otherId) {
+            currentTargetId = otherId;
+          } else {
+            currentTargetId =
+              userTypes === "host"
+                ? String(senderDetail.user_id || senderDetail.guest_id || "")
+                : String(senderDetail.host_id || senderDetail.receiver_id || "");
+          }
+        }
 
         if (currentTargetId) {
           const status = presenceMap[String(currentTargetId)] || "Offline";
