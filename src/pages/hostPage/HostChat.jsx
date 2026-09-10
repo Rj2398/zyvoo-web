@@ -131,41 +131,34 @@ const HostChat = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Update current user's presence in Firebase chat_presence collection (supports base64 docId & raw userId)
+  // Update current user's presence in Firebase chat_presence collection matching iOS Swift implementation
   useEffect(() => {
     if (!userId) return;
 
     const updatePresence = async () => {
       try {
-        const docId = btoa(String(userId))
-          .replace(/\//g, "_")
-          .replace(/\+/g, "-")
-          .replace(/=/g, "");
-        const presenceRef = doc(db, "chat_presence", docId);
-        const rawPresenceRef = doc(db, "chat_presence", String(userId));
+        const paddedDocId = btoa(String(userId)); // e.g. "MTc="
+        const unpaddedDocId = paddedDocId.replace(/=/g, ""); // e.g. "MTc"
+        const rawDocId = String(userId); // e.g. "17"
+
         const now = new Date();
-        const activeUntil = new Date(now.getTime() + 3 * 60 * 1000); // 3 minutes window
+        const activeUntil = new Date(now.getTime() + 2 * 60 * 1000); // 2 minutes window matching iOS
 
         const payload = {
           user_id: String(userId),
-          userId: String(userId),
-          id: String(userId),
-          is_online: true,
-          isOnline: true,
-          status: "online",
-          state: "online",
-          active_until: activeUntil,
-          activeUntil: activeUntil,
           last_seen_at: serverTimestamp(),
-          lastSeenAt: serverTimestamp(),
-          updated_at: serverTimestamp(),
-          updatedAt: serverTimestamp(),
+          active_until: activeUntil,
         };
 
-        await Promise.all([
-          setDoc(presenceRef, payload, { merge: true }),
-          setDoc(rawPresenceRef, payload, { merge: true }),
-        ]);
+        const docRefs = [
+          doc(db, "chat_presence", paddedDocId),
+          doc(db, "chat_presence", unpaddedDocId),
+          doc(db, "chat_presence", rawDocId),
+        ];
+
+        await Promise.all(
+          docRefs.map((refDoc) => setDoc(refDoc, payload, { merge: true }))
+        );
       } catch (err) {
         console.error("Error updating chat_presence:", err);
       }
@@ -177,7 +170,7 @@ const HostChat = () => {
     return () => clearInterval(interval);
   }, [userId]);
 
-  // Real-time listener on chat_presence collection for Online/Offline status
+  // Real-time listener on chat_presence collection matching iOS online/offline rule (active_until > now)
   useEffect(() => {
     if (!userId) return;
 
@@ -210,58 +203,35 @@ const HostChat = () => {
           const lastSeenAt = parseDate(
             data.last_seen_at || data.lastSeenAt || data.last_seen || data.lastSeen
           );
-          const updatedAt = parseDate(data.updated_at || data.updatedAt);
 
-          const maxTime = Math.max(
-            activeUntil ? activeUntil.getTime() : 0,
-            lastSeenAt ? lastSeenAt.getTime() + 180000 : 0,
-            updatedAt ? updatedAt.getTime() + 180000 : 0
-          );
-
-          const isExplicitOnline =
-            data.is_online === true ||
-            data.isOnline === true ||
-            data.online === true ||
-            String(data.status).toLowerCase() === "online" ||
-            String(data.state).toLowerCase() === "online";
-
-          const isExplicitOffline =
-            data.is_online === false ||
-            data.isOnline === false ||
-            data.online === false ||
-            String(data.status).toLowerCase() === "offline" ||
-            String(data.state).toLowerCase() === "offline";
-
+          // iOS rule: User is online if active_until is in the future (activeUntil > now)
           let isOnline = false;
-          if (isExplicitOffline) {
-            isOnline = false;
-          } else if (isExplicitOnline) {
-            isOnline = true;
-          } else if (maxTime > 0) {
-            isOnline = maxTime > now.getTime() - 300000;
+          if (activeUntil) {
+            isOnline = activeUntil.getTime() > now.getTime();
+          } else if (lastSeenAt) {
+            isOnline = now.getTime() - lastSeenAt.getTime() < 120000;
           }
 
           const ids = new Set();
           if (data.user_id) ids.add(String(data.user_id));
           if (data.userId) ids.add(String(data.userId));
-          if (data.id) ids.add(String(data.id));
 
           if (docSnap.id) {
             const docIdStr = String(docSnap.id);
             ids.add(docIdStr);
 
-            const digitsMatch = docIdStr.match(/\d+/);
-            if (digitsMatch) ids.add(digitsMatch[0]);
-
+            // Attempt base64 decode (e.g. "MTc=" -> "17")
             try {
               let b64 = docIdStr.replace(/_/g, "/").replace(/-/g, "+");
               while (b64.length % 4 !== 0) b64 += "=";
               const decoded = atob(b64);
               if (decoded && decoded.trim().length > 0) {
-                const decDigits = decoded.trim().match(/\d+/);
-                if (decDigits) ids.add(decDigits[0]);
+                ids.add(String(decoded.trim()));
               }
             } catch (e) { }
+
+            const digitsMatch = docIdStr.match(/\d+/);
+            if (digitsMatch) ids.add(digitsMatch[0]);
           }
 
           ids.forEach((id) => {
