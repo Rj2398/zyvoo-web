@@ -833,6 +833,43 @@ const HostChat = () => {
       .replace(/=/g, "");
   };
 
+  const ensureMemberDocs = async (channelName, participantIds) => {
+    if (!channelName || !Array.isArray(participantIds)) return;
+    try {
+      for (const pId of participantIds) {
+        if (!pId) continue;
+        const strId = String(pId);
+        const unpadded = btoa(strId)
+          .replace(/\//g, "_")
+          .replace(/\+/g, "-")
+          .replace(/=/g, "");
+        const padded = btoa(strId).replace(/\//g, "_").replace(/\+/g, "-");
+        const raw = strId;
+
+        const docIds = Array.from(new Set([unpadded, padded, raw]));
+        const payload = {
+          user_id: strId,
+          userId: strId,
+          is_deleted: false,
+          created_at: serverTimestamp(),
+          updated_at: serverTimestamp(),
+        };
+
+        await Promise.all(
+          docIds.map((dId) =>
+            setDoc(
+              doc(db, "chat_channels", channelName, "members", dId),
+              payload,
+              { merge: true }
+            )
+          )
+        );
+      }
+    } catch (err) {
+      console.error("Error ensuring member docs:", err);
+    }
+  };
+
   // Realtime Firestore listeners for current active channel
   useEffect(() => {
     if (!channel?.channelName || !userId) {
@@ -1085,6 +1122,9 @@ const HostChat = () => {
         });
       }
 
+      // Populate members subcollection for both participants under all doc ID formats (base64 unpadded, base64 padded, raw ID)
+      await ensureMemberDocs(channelName, [guestId, hostId]);
+
       if (isNewChannel && !createdChannelsRef.current.has(channelName)) {
         createdChannelsRef.current.add(channelName);
         const sId = userTypes === "host" ? userId : guestId;
@@ -1336,22 +1376,7 @@ const HostChat = () => {
         String(selectedBooking?.sender_id || selectedBooking?.receiver_id || "")
       ].filter(Boolean);
 
-      participantIds.forEach(async (pId) => {
-        try {
-          const mDocId = safeMemberDocId(pId);
-          const mRef = doc(db, "chat_channels", channelName, "members", mDocId);
-          await setDoc(
-            mRef,
-            {
-              user_id: String(pId),
-              is_deleted: false,
-            },
-            { merge: true }
-          );
-        } catch (e) {
-          console.error("Error updating member is_deleted status:", e);
-        }
-      });
+      await ensureMemberDocs(channelName, participantIds);
 
       setConversationTimestamps((prev) => ({
         ...prev,
