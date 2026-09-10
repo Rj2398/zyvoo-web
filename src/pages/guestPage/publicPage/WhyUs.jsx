@@ -56,7 +56,7 @@ const WhyUs = () => {
         {/* HERO SECTION */}
         <section
           style={{
-            padding: "80px 20px 60px",
+            padding: "48px 20px 36px",
             backgroundColor: "#ffffff",
             backgroundImage:
               "radial-gradient(rgba(0, 0, 0, 0.08) 1.2px, transparent 0px)",
@@ -64,14 +64,14 @@ const WhyUs = () => {
             borderBottom: "1px solid #eaeaea",
           }}
         >
-          <Container style={{ maxWidth: "920px" }} className="text-center">
+          <Container style={{ maxWidth: "860px" }} className="text-center">
             <h1
               style={{
-                fontSize: "clamp(2.4rem, 5vw, 3.6rem)",
-                fontWeight: "800",
+                fontSize: "clamp(1.6rem, 3.5vw, 2.2rem)",
+                fontWeight: "700",
                 color: "#111111",
-                marginBottom: "24px",
-                letterSpacing: "-0.02em",
+                marginBottom: "16px",
+                letterSpacing: "-0.01em",
               }}
             >
               Why ZYVO?
@@ -79,11 +79,11 @@ const WhyUs = () => {
 
             <p
               style={{
-                fontSize: "clamp(1.15rem, 2.5vw, 1.4rem)",
+                fontSize: "clamp(1rem, 2vw, 1.15rem)",
                 lineHeight: "1.6",
                 color: "#333333",
                 fontWeight: "500",
-                marginBottom: "28px",
+                marginBottom: "20px",
               }}
             >
               Space should work around your schedule — not the other way around. ZYVO
@@ -92,18 +92,18 @@ const WhyUs = () => {
               otherwise go unused.
             </p>
 
-            <div className="d-inline-block mb-4">
+            <div className="d-inline-block mb-3">
               <span
                 style={{
                   backgroundColor: "#E8F8F5",
                   color: "#00A884",
-                  fontWeight: "700",
-                  fontSize: "1.05rem",
-                  padding: "10px 24px",
+                  fontWeight: "600",
+                  fontSize: "0.95rem",
+                  padding: "8px 20px",
                   borderRadius: "50px",
                   border: "1px solid #B2EBF2",
                   display: "inline-block",
-                  letterSpacing: "0.02em",
+                  letterSpacing: "0.01em",
                 }}
               >
                 Your time. Your space. Your way.
@@ -112,10 +112,10 @@ const WhyUs = () => {
 
             <p
               style={{
-                fontSize: "1.05rem",
-                lineHeight: "1.7",
+                fontSize: "0.98rem",
+                lineHeight: "1.65",
                 color: "#555555",
-                maxWidth: "800px",
+                maxWidth: "760px",
                 margin: "0 auto",
               }}
             >
@@ -127,24 +127,24 @@ const WhyUs = () => {
         </section>
 
         {/* WHAT SETS US APART SECTION */}
-        <section style={{ padding: "80px 20px" }}>
+        <section style={{ padding: "50px 20px" }}>
           <Container style={{ maxWidth: "1140px" }}>
-            <div className="text-center mb-5">
+            <div className="text-center mb-4">
               <h2
                 style={{
-                  fontSize: "clamp(1.8rem, 4vw, 2.5rem)",
-                  fontWeight: "800",
+                  fontSize: "clamp(1.2rem, 2.5vw, 1.5rem)",
+                  fontWeight: "700",
                   color: "#111111",
-                  letterSpacing: "-0.01em",
-                  marginBottom: "12px",
+                  letterSpacing: "0.02em",
+                  marginBottom: "8px",
                 }}
               >
                 WHAT SETS US APART
               </h2>
               <div
                 style={{
-                  width: "60px",
-                  height: "4px",
+                  width: "48px",
+                  height: "3px",
                   backgroundColor: "#00C49F",
                   borderRadius: "2px",
                   margin: "0 auto",
