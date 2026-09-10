@@ -28,7 +28,21 @@ import loactionImg from "../../assets/locationImg.png";
 import defaultContact from "../../assets/defaultContact.jpg";
 import MessageHost from "../../components/guest/bookingDetailsModal/MessageHost";
 // import { now } from "moment";
+const formatAddress = (fullAddress) => {
+  if (!fullAddress) return "";
 
+  const parts = fullAddress.split(",").map((part) => part.trim());
+
+  // Assuming format ends with: ..., City, State, Zip, Country
+  if (parts.length >= 4) {
+    const city = parts[parts.length - 4];
+    const state = parts[parts.length - 3];
+    const zip = parts[parts.length - 2];
+    return `${city}, ${state} ${zip}`;
+  }
+
+  return fullAddress;
+};
 function Location() {
   const { userInfo } = useSelector(({ user }) => user);
   const navigate = useNavigate();
@@ -1593,7 +1607,7 @@ function Location() {
                     {!isMobileWidth && (
                       <p>
                         {" "}
-                        <u>{propertyDetails?.address}</u>{" "}
+                        <u>{formatAddress(propertyDetails?.address)}</u>{" "}
                       </p>
                     )}
                   </div>
