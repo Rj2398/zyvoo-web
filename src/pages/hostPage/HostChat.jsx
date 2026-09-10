@@ -146,6 +146,7 @@ const HostChat = () => {
 
         const payload = {
           user_id: String(userId),
+          member_id: safeMemberDocId(userId),
           last_seen_at: serverTimestamp(),
           active_until: activeUntil,
         };
@@ -170,7 +171,7 @@ const HostChat = () => {
     return () => clearInterval(interval);
   }, [userId]);
 
-  // Real-time listener on chat_presence collection matching iOS online/offline rule (active_until > now)
+  // Real-time listener on chat_presence collection matching Android & iOS mobile clients
   useEffect(() => {
     if (!userId) return;
 
@@ -181,8 +182,14 @@ const HostChat = () => {
       if (typeof val.toDate === "function") return val.toDate();
       if (typeof val.seconds === "number") return new Date(val.seconds * 1000);
       if (typeof val._seconds === "number") return new Date(val._seconds * 1000);
-      if (typeof val === "number") return new Date(val);
+      if (typeof val === "number") {
+        return val < 10000000000 ? new Date(val * 1000) : new Date(val);
+      }
       if (typeof val === "string") {
+        if (!isNaN(Number(val)) && val.trim() !== "") {
+          const num = Number(val);
+          return num < 10000000000 ? new Date(num * 1000) : new Date(num);
+        }
         const d = new Date(val);
         return isNaN(d.getTime()) ? null : d;
       }
@@ -199,34 +206,45 @@ const HostChat = () => {
         snapshot.docs.forEach((docSnap) => {
           const data = docSnap.data();
 
-          const activeUntil = parseDate(data.active_until || data.activeUntil);
+          const activeUntil = parseDate(
+            data.active_until || data.activeUntil || data.active_time
+          );
           const lastSeenAt = parseDate(
-            data.last_seen_at || data.lastSeenAt || data.last_seen || data.lastSeen
+            data.last_seen_at ||
+            data.lastSeenAt ||
+            data.last_seen ||
+            data.lastSeen ||
+            data.timestamp ||
+            data.updated_at ||
+            data.updatedAt
           );
 
-          // iOS rule: User is online if active_until is in the future (activeUntil > now)
           let isOnline = false;
           if (activeUntil) {
             isOnline = activeUntil.getTime() > now.getTime();
           } else if (lastSeenAt) {
-            isOnline = now.getTime() - lastSeenAt.getTime() < 120000;
+            isOnline = now.getTime() - lastSeenAt.getTime() < 180000;
           }
 
           const ids = new Set();
           if (data.user_id) ids.add(String(data.user_id));
           if (data.userId) ids.add(String(data.userId));
+          if (data.member_id) ids.add(String(data.member_id));
+          if (data.memberId) ids.add(String(data.memberId));
+          if (data.id) ids.add(String(data.id));
 
           if (docSnap.id) {
             const docIdStr = String(docSnap.id);
             ids.add(docIdStr);
 
-            // Attempt base64 decode (e.g. "MTc=" -> "17")
             try {
               let b64 = docIdStr.replace(/_/g, "/").replace(/-/g, "+");
               while (b64.length % 4 !== 0) b64 += "=";
               const decoded = atob(b64);
               if (decoded && decoded.trim().length > 0) {
                 ids.add(String(decoded.trim()));
+                const decDigits = decoded.trim().match(/\d+/);
+                if (decDigits) ids.add(decDigits[0]);
               }
             } catch (e) { }
 
@@ -239,10 +257,37 @@ const HostChat = () => {
           });
         });
 
+        const checkPresence = (targetId) => {
+          if (!targetId) return "Offline";
+          const strId = String(targetId).trim();
+
+          // 1. Direct match (numeric ID "67" or member ID "Njc")
+          if (presenceMap[strId]) return presenceMap[strId];
+
+          // 2. Base64 encode candidate if input is numeric ID (e.g. "67" -> "Njc" / "Njc=")
+          try {
+            const b64Padded = btoa(strId).replace(/\//g, "_").replace(/\+/g, "-");
+            const b64Unpadded = b64Padded.replace(/=/g, "");
+            if (presenceMap[b64Padded]) return presenceMap[b64Padded];
+            if (presenceMap[b64Unpadded]) return presenceMap[b64Unpadded];
+          } catch (e) {}
+
+          // 3. Base64 decode candidate if input is member ID (e.g. "Njc" -> "67")
+          try {
+            let b64 = strId.replace(/_/g, "/").replace(/-/g, "+");
+            while (b64.length % 4 !== 0) b64 += "=";
+            const decoded = atob(b64);
+            if (decoded && decoded.trim() && presenceMap[decoded.trim()]) {
+              return presenceMap[decoded.trim()];
+            }
+          } catch (e) {}
+
+          return "Offline";
+        };
+
         const getOtherId = (item) => {
           if (!item) return null;
 
-          // 1. Parse guest ID & host ID directly from channel name (e.g. Zyvoo_guest_4_host_65)
           const groupName =
             item.group_name || item.channel_name || item.channelName || item.id;
           if (
@@ -260,7 +305,6 @@ const HostChat = () => {
             }
           }
 
-          // 2. Fallback to candidate object properties
           const candidateIds = [
             item.sender_id,
             item.sender_user_id,
@@ -307,7 +351,7 @@ const HostChat = () => {
         }
 
         if (currentTargetId) {
-          const status = presenceMap[String(currentTargetId)] || "Offline";
+          const status = checkPresence(currentTargetId);
           setTargetUserStatus(status);
         } else {
           setTargetUserStatus("Offline");
@@ -319,8 +363,7 @@ const HostChat = () => {
           getList.forEach((b) => {
             const otherUserId = getOtherId(b);
             if (otherUserId) {
-              mapGroupStatuses[b.group_name] =
-                presenceMap[String(otherUserId)] || "Offline";
+              mapGroupStatuses[b.group_name] = checkPresence(otherUserId);
             }
           });
           setUserStatuses(mapGroupStatuses);
