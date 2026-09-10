@@ -36,8 +36,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import useBook from "../../hooks/host/useBook";
-import { KEYS, imageBase } from "../../config/Constant";
+import axios from "axios";
+import { KEYS, baseURL, imageBase } from "../../config/Constant";
+import { formDataApi } from "../../utils/api";
 import useChat from "../../hooks/host/useChat";
 import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
 import ReportBookingModal from "../../components/host/ReportBookingModal";
@@ -46,6 +47,7 @@ import { toast } from "react-toastify";
 import { IoSearch } from "react-icons/io5";
 import { containsInappropriateWord } from "../../config/ReusableFn";
 import defaultContact from "../../assets/defaultContact.jpg";
+import useBook from "../../hooks/host/useBook";
 
 const HostChat = () => {
   const {
@@ -1104,33 +1106,63 @@ const HostChat = () => {
         const localMediaUrl = URL.createObjectURL(file);
         const tempId = `temp_${Date.now()}`;
 
+        const isPdf =
+          file.type === "application/pdf" ||
+          file.name.toLowerCase().endsWith(".pdf");
+        const mediaType =
+          file.type || (isPdf ? "application/pdf" : "image/jpeg");
+        const previewText = isPdf ? "Document" : "Photo";
+        const displayMsgText = isPdf ? file.name : "Photo";
+
         tempMessage = {
           id: tempId,
           type: "media",
           isMyMessage: true,
           author: String(userId),
           senderId: String(userId),
-          body: "Media message",
+          body: displayMsgText,
           dateCreated: new Date(),
           mediaUrl: localMediaUrl,
           uploading: true,
           fileName: file.name,
-          fileType: file.type,
+          fileType: mediaType,
+          mediaType: mediaType,
         };
 
         setMessages((prev) => [...prev, tempMessage]);
 
-        const fileName = `${Date.now()}_${file.name}`;
-        const storageRef = ref(
-          storage,
-          `chat_chanals/${channelName}/${fileName}`
+        // Upload media file to API using baseURL & localStorage authorization token
+        const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO));
+        const token = userData?.access_token || "";
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const uploadRes = await axios.post(
+          `${baseURL}upload_chat_media`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: token ? `Bearer ${token}` : "",
+              Timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            },
+          }
         );
 
-        await uploadBytes(storageRef, file, {
-          contentType: file.type || "application/octet-stream",
-        });
+        const uploadData = uploadRes?.data;
+        const mediaPath =
+          uploadData?.data?.media_path || uploadData?.media_path;
 
-        const mediaUrl = await getDownloadURL(storageRef);
+        if (!mediaPath) {
+          throw new Error(
+            uploadData?.message || "Failed to upload chat media to server"
+          );
+        }
+
+        const fullMediaUrl = mediaPath.startsWith("http")
+          ? mediaPath
+          : `${imageBase}${mediaPath.replace(/^\/+/, "")}`;
 
         const messagesRef = collection(
           db,
@@ -1139,17 +1171,13 @@ const HostChat = () => {
           "messages"
         );
 
-        const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
-        const mediaType = file.type || (isPdf ? "application/pdf" : "image/jpeg");
-        const displayMsgText = isPdf ? file.name : "Media message";
-
         const newMsgDoc = await addDoc(messagesRef, {
           sender_id: String(userId),
           text: displayMsgText,
           body: displayMsgText,
           type: "media",
           media_type: mediaType,
-          media_url: mediaUrl,
+          media_url: fullMediaUrl,
           file_name: file.name,
           created_at: serverTimestamp(),
         });
@@ -1159,8 +1187,8 @@ const HostChat = () => {
           channel_name: channelName,
           last_file_name: file.name,
           last_media_type: mediaType,
-          last_media_url: mediaUrl,
-          last_message: displayMsgText,
+          last_media_url: fullMediaUrl,
+          last_message: previewText,
           last_message_at: serverTimestamp(),
           last_message_id: newMsgDoc.id,
           last_sender_id: String(userId),
@@ -1431,9 +1459,9 @@ const HostChat = () => {
       prev.map((item) =>
         item.group_name === channelName
           ? {
-              ...item,
-              is_blocked: newBlockStatus,
-            }
+            ...item,
+            is_blocked: newBlockStatus,
+          }
           : item
       )
     );
