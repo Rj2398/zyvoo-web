@@ -137,24 +137,22 @@ const HostChat = () => {
 
     const updatePresence = async () => {
       try {
-        const paddedDocId = btoa(String(userId)); // e.g. "MTc="
-        const unpaddedDocId = paddedDocId.replace(/=/g, ""); // e.g. "MTc"
-        const rawDocId = String(userId); // e.g. "17"
+        const paddedDocId = btoa(String(userId)); // e.g. "NjU="
+        const unpaddedDocId = paddedDocId.replace(/=/g, ""); // e.g. "NjU"
 
         const now = new Date();
         const activeUntil = new Date(now.getTime() + 2 * 60 * 1000); // 2 minutes window matching iOS
 
         const payload = {
           user_id: String(userId),
-          member_id: safeMemberDocId(userId),
+          member_id: unpaddedDocId,
           last_seen_at: serverTimestamp(),
           active_until: activeUntil,
         };
 
         const docRefs = [
-          doc(db, "chat_presence", paddedDocId),
           doc(db, "chat_presence", unpaddedDocId),
-          doc(db, "chat_presence", rawDocId),
+          doc(db, "chat_presence", paddedDocId),
         ];
 
         await Promise.all(
@@ -270,7 +268,7 @@ const HostChat = () => {
             const b64Unpadded = b64Padded.replace(/=/g, "");
             if (presenceMap[b64Padded]) return presenceMap[b64Padded];
             if (presenceMap[b64Unpadded]) return presenceMap[b64Unpadded];
-          } catch (e) { }
+          } catch (e) {}
 
           // 3. Base64 decode candidate if input is member ID (e.g. "Njc" -> "67")
           try {
@@ -280,7 +278,7 @@ const HostChat = () => {
             if (decoded && decoded.trim() && presenceMap[decoded.trim()]) {
               return presenceMap[decoded.trim()];
             }
-          } catch (e) { }
+          } catch (e) {}
 
           return "Offline";
         };
@@ -887,9 +885,8 @@ const HostChat = () => {
           .replace(/\+/g, "-")
           .replace(/=/g, "");
         const padded = btoa(strId).replace(/\//g, "_").replace(/\+/g, "-");
-        const raw = strId;
 
-        const docIds = Array.from(new Set([unpadded, padded, raw]));
+        const docIds = Array.from(new Set([unpadded, padded]));
         const payload = {
           user_id: strId,
           userId: strId,
@@ -1968,7 +1965,7 @@ const HostChat = () => {
                     <div className="d-flex align-items-center">
                       <div
                         className="CircleView"
-                        style={{ position: "relative", }}
+                        style={{ position: "relative" }}
                         onClick={(e) => {
                           e.stopPropagation();
 
@@ -2002,8 +1999,8 @@ const HostChat = () => {
                         <div
                           style={{
                             position: "absolute",
-                            bottom: "9px",
-                            right: "4px",
+                            bottom: "2px",
+                            right: "2px",
                             width: "14px",
                             height: "14px",
                             borderRadius: "50%",
@@ -2247,7 +2244,7 @@ const HostChat = () => {
                               e.target.src = defaultContact;
                             }}
                           />
-                          {/* 
+
                           <div
                             style={{
                               position: "absolute",
@@ -2264,7 +2261,7 @@ const HostChat = () => {
                               zIndex: 2,
                               marginRight: "5px",
                             }}
-                          /> */}
+                          />
                         </div>
                         <div>
                           <h5 className="mb-0">
@@ -2866,8 +2863,8 @@ const HostChat = () => {
                   <Container className="border rounded-3 w-100 p-3 mt-3 d-flex flex-column gap-4">
                     <Row>
                       <Col>From</Col>
-                      <Col className="text-end fw-normal">
-                        {selectedBooking?.receiver_address || "N/A"}
+                      <Col className="text-end fw-bold">
+                        {selectedBooking?.receiver_address || "Not Available"}
                       </Col>
                     </Row>
                     <Row>
