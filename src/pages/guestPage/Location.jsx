@@ -1347,15 +1347,11 @@ function Location() {
                           }}
                         >
                           <img
-                            src="/images/guides-articles/time.svg"
+                            src="/images/guides-articles/clock.svg"
                             loading="lazy"
                             alt="Response time"
-                            style={{
-                              width: "clamp(14px, 2vw, 16px)",
-                              height: "clamp(14px, 2vw, 16px)",
-                              marginRight: "5px",
-                              backgroundColor: "black",
-                            }}
+                            style={{ marginRight: '10px' }}
+
                           />
                           <p style={{ margin: 0 }}>
                             Typically respond within 1 hr
