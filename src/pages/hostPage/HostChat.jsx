@@ -2866,8 +2866,8 @@ const HostChat = () => {
                   <Container className="border rounded-3 w-100 p-3 mt-3 d-flex flex-column gap-4">
                     <Row>
                       <Col>From</Col>
-                      <Col className="text-end fw-bold">
-                        {selectedBooking?.receiver_address || "Not Available"}
+                      <Col className="text-end fw-normal">
+                        {selectedBooking?.receiver_address || "N/A"}
                       </Col>
                     </Row>
                     <Row>

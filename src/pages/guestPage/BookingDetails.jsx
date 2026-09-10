@@ -89,10 +89,11 @@ const BookingDetails = () => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
 
   const bookingDetails = details ?? checkoutData;
+  console.log(bookingDetails, "my data***")
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
 
@@ -387,8 +388,8 @@ const BookingDetails = () => {
                       className="chat-right-top-profile-image"
                       src={
                         bookingDetails?.host_profile_image &&
-                        bookingDetails?.host_profile_image !== "undefined" &&
-                        bookingDetails?.host_profile_image !== "null"
+                          bookingDetails?.host_profile_image !== "undefined" &&
+                          bookingDetails?.host_profile_image !== "null"
                           ? imageBase + bookingDetails?.host_profile_image
                           : defaultContact
                       }
@@ -412,16 +413,19 @@ const BookingDetails = () => {
                     >
                       {bookingDetails?.hosted_by}
                     </h2>
-                    <img
-                      className="chat-right-top-batch-image"
-                      src="/images/bookings/verify-star.svg"
-                      loading="lazy"
-                      alt="Verified"
-                      style={{
-                        width: "clamp(14px, 2vw, 16px)",
-                        height: "clamp(14px, 2vw, 16px)",
-                      }}
-                    />
+                    {Number(bookingDetails?.reviews_total_rating) > 4 && (
+                      <img
+                        className="chat-right-top-batch-image"
+                        src="/images/bookings/verify-star.svg"
+                        loading="lazy"
+                        alt="Verified"
+                        style={{
+                          width: "clamp(14px, 2vw, 24px)",
+                          height: "clamp(14px, 2vw, 24px)",
+                          objectFit: "contain",
+                        }}
+                      />
+                    )}
 
                     {bookingDetails?.is_star_host && (
                       <Image
@@ -467,8 +471,12 @@ const BookingDetails = () => {
                     type={"Host"}
                     style={{ width: "100%", marginBottom: "10px" }}
                     data={{
-                      sender_detail: bookingDetails,
-                      property_id: booking?.id,
+                      sender_detail: {
+                        access_token: userInfo?.access_token || userData?.access_token,
+                        user_id: Number(userInfo?.user_id ?? userData?.user_id),
+                        host_id: Number(bookingDetails?.host_id),
+                      },
+                      property_id: Number(booking?.id || bookingDetails?.property_id),
                     }}
                   />
                 </div>
@@ -938,24 +946,24 @@ const BookingDetails = () => {
                   style={
                     isMobileWidth
                       ? {
-                          position: "fixed",
-                          top: 0,
-                          left: 0,
-                          width: "100vw",
-                          height: "100vh",
-                          backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
-                          zIndex: 9998,
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: "10px",
-                        }
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100vw",
+                        height: "100vh",
+                        backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
+                        zIndex: 9998,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "10px",
+                      }
                       : {
-                          position: "absolute",
-                          zIndex: 9999,
-                          right: "31%",
-                          top: "55%",
-                        }
+                        position: "absolute",
+                        zIndex: 9999,
+                        right: "31%",
+                        top: "55%",
+                      }
                   }
                 >
                   <div style={{ position: "relative" }}>
@@ -1015,9 +1023,8 @@ const BookingDetails = () => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingOne">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseOne" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion("collapseOne")}
                           style={{
@@ -1079,9 +1086,8 @@ const BookingDetails = () => {
                   <div className="accordion-item border rounded mb-2">
                     <h2 className="accordion-header" id="headingTwo">
                       <button
-                        className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                          open === "collapseTwo" ? "" : "collapsed"
-                        }`}
+                        className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                          }`}
                         type="button"
                         onClick={() => toggleAccordion2("collapseTwo")}
                         style={{
@@ -1412,8 +1418,8 @@ const BookingDetails = () => {
                         className="chat-right-top-profile-image"
                         src={
                           bookingDetails?.host_profile_image &&
-                          bookingDetails?.host_profile_image !== "undefined" &&
-                          bookingDetails?.host_profile_image !== "null"
+                            bookingDetails?.host_profile_image !== "undefined" &&
+                            bookingDetails?.host_profile_image !== "null"
                             ? imageBase + bookingDetails?.host_profile_image
                             : defaultContact
                         }
@@ -1437,16 +1443,19 @@ const BookingDetails = () => {
                       >
                         {bookingDetails?.hosted_by}
                       </h2>
-                      <img
-                        className="chat-right-top-batch-image"
-                        src="/images/bookings/verify-star.svg"
-                        loading="lazy"
-                        alt="Verified"
-                        style={{
-                          width: "clamp(14px, 2vw, 16px)",
-                          height: "clamp(14px, 2vw, 16px)",
-                        }}
-                      />
+                      {Number(bookingDetails?.reviews_total_rating) > 4 && (
+                        <img
+                          className="chat-right-top-batch-image"
+                          src="/images/bookings/verify-star.svg"
+                          loading="lazy"
+                          alt="Verified"
+                          style={{
+                            width: "clamp(14px, 2vw, 24px)",
+                            height: "clamp(14px, 2vw, 24px)",
+                            objectFit: "contain",
+                          }}
+                        />
+                      )}
 
                       {bookingDetails?.is_star_host && (
                         <Image
@@ -1475,8 +1484,12 @@ const BookingDetails = () => {
                       type={"Host"}
                       style={{ width: "100%", marginBottom: "10px" }}
                       data={{
-                        sender_detail: bookingDetails,
-                        property_id: booking?.id,
+                        sender_detail: {
+                          access_token: userInfo?.access_token || userData?.access_token,
+                          user_id: Number(userInfo?.user_id ?? userData?.user_id),
+                          host_id: Number(bookingDetails?.host_id),
+                        },
+                        property_id: Number(booking?.id || bookingDetails?.property_id),
                       }}
                     />
 
