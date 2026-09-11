@@ -5,7 +5,14 @@ import useCommon from "../hooks/useCommon";
 import { imageBase } from "../config/Constant";
 import { FaArrowLeft } from "react-icons/fa";
 import { IoSearchSharp } from "react-icons/io5";
+const truncateWords = (text = '', limit = 100) => {
+  // Strip HTML tags
+  const plainText = text.replace(/<[^>]*>/g, '').trim();
+  const words = plainText.split(/\s+/);
 
+  if (words.length <= limit) return plainText;
+  return words.slice(0, limit).join(' ') + '...';
+};
 const ExploreArticles = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -509,7 +516,7 @@ const ExploreArticles = () => {
                           {(
                             <p
                               dangerouslySetInnerHTML={{
-                                __html: article?.description,
+                                __html: truncateWords(article?.description, 30),
                               }}
                             />
                           ) || "No Data Found."}
