@@ -2028,7 +2028,7 @@ const HostChat = () => {
                           {userTypes === "host"
                             ? booking?.sender_name
                             : booking?.receiver_name}
-                          {isMobileWidth && <br />}({booking?.property_title})
+                          {isMobileWidth && <br />}
                         </Card.Title>
 
                         <Card.Subtitle className="mb-2 text-muted">
