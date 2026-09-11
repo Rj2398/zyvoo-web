@@ -176,6 +176,7 @@ const HostChat = () => {
 
     const presenceRef = collection(db, "chat_presence");
 
+
     const parseDate = (val) => {
       if (!val) return null;
       if (typeof val.toDate === "function") return val.toDate();
@@ -208,6 +209,8 @@ const HostChat = () => {
           const activeUntil = parseDate(
             data.active_until || data.activeUntil || data.active_time
           );
+          // console.log(activeUntil, "activeUntil***"); 
+
           const lastSeenAt = parseDate(
             data.last_seen_at ||
             data.lastSeenAt ||
@@ -2024,7 +2027,7 @@ const HostChat = () => {
                         >
                           {userTypes === "host"
                             ? booking?.sender_name
-                            : booking?.receiver_name}{" "}
+                            : booking?.receiver_name}
                           {isMobileWidth && <br />}({booking?.property_title})
                         </Card.Title>
 
