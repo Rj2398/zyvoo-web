@@ -6,8 +6,9 @@ import { useForm } from "react-hook-form";
 import { KEYS } from "../../../config/Constant";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Card, OverlayTrigger, Popover, Tooltip } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { IoCallOutline, IoMailOutline, IoLocationOutline } from "react-icons/io5";
 
 const ContactUs = () => {
   const { userInfo } = useSelector(({ user }) => user);
@@ -19,8 +20,8 @@ const ContactUs = () => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
 
   const [isRobotChecked, setIsRobotChecked] = useState(false);
   const [isRobotError, setIsRobotError] = useState(false);
@@ -127,19 +128,150 @@ const ContactUs = () => {
                   </div>
                 )}
                 <div className="faq-in">
-                  <div className="faq-top mb-4">
-                    <p>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the <br />{" "}
-                      industry's standard dummy text ever since the 1500s, when
-                      an unknown printer took a galley.
+                  <div
+                    className="faq-top mb-4"
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "stretch",
+                    }}
+                  >
+                    <p
+                      style={{
+                        color: "#000000",
+                        fontSize: "15px",
+                        lineHeight: "1.6",
+                        marginBottom: "24px",
+                        textAlign: "center",
+                        width: "100%",
+                      }}
+                    >
+                      Need help with a booking, listing, payment, payout or account?<br />
+                      Our support team is here to help. Send us a message with a brief description of the issue and, when applicable,<br />
+                      include the email on your ZYVO account and your booking or listing reference so we can assist you faster.
                     </p>
+
+                    <div
+                      className="suggested-categories-section mt-2 mb-3"
+                      style={{ textAlign: "left", width: "100%" }}
+                    >
+                      <h3
+                        style={{
+                          fontSize: "18px",
+                          fontWeight: "700",
+                          color: "#000000",
+                          marginBottom: "14px",
+                          textAlign: "left",
+                        }}
+                      >
+                        Suggested Help &amp; Support categories
+                      </h3>
+                      <ul
+                        style={{
+                          listStyle: "none",
+                          paddingLeft: "0",
+                          margin: "0",
+                          display: "flex",
+                          flexDirection: "column",
+                          gap: "10px",
+                          textAlign: "left",
+                        }}
+                      >
+                        {[
+                          "Bookings & reservations",
+                          "Payments, refunds & charges",
+                          "Host payouts",
+                          "Listings & publishing",
+                          "Account & verification",
+                          "Cancellations",
+                          "Messaging & notifications",
+                          "Safety, trust & reporting an issue",
+                        ].map((cat, idx) => (
+                          <li
+                            key={idx}
+                            style={{
+                              fontSize: "15px",
+                              color: "#000000",
+                              fontWeight: "400",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "10px",
+                              textAlign: "left",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontSize: "14px",
+                                fontWeight: "bold",
+                                color: "#000000",
+                              }}
+                            >
+                              •
+                            </span>
+                            {cat}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
               <div className={isMobileWidth ? "col-lg-6 col-md-6" : "col-5"}>
                 <div className="contact-help">
-                  <h2>Help & Contact</h2>
+                  <div className="d-flex align-items-center gap-2 mb-3">
+                    <h2 className="mb-0" style={{ fontSize: "24px", fontWeight: "500", color: "#3a4b4c" }}>
+                      Help & Contact
+                    </h2>
+                    <OverlayTrigger
+                      trigger={["hover", "focus", "click"]}
+                      placement="bottom-start"
+                      overlay={
+                        <Popover
+                          id="contact-info-popover"
+                          style={{
+                            maxWidth: "320px",
+                            borderRadius: "12px",
+                            boxShadow: "0 4px 18px rgba(0,0,0,0.12)",
+                            border: "1px solid #c7c7c7",
+                            padding: "12px 14px",
+                            backgroundColor: "#ffffff",
+                            zIndex: 9999,
+                          }}
+                        >
+                          <Popover.Body
+                            style={{
+                              fontSize: "13px",
+                              color: "#4A4A4A",
+                              lineHeight: "1.5",
+                              padding: 0,
+                            }}
+                          >
+                            Tell us what happened and include any relevant booking, listing or payment details. Please do not include full card numbers, passwords or other sensitive credentials.
+                          </Popover.Body>
+                        </Popover>
+                      }
+                    >
+                      <span
+                        style={{
+                          cursor: "pointer",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: "20px",
+                          height: "20px",
+                          borderRadius: "50%",
+                          backgroundColor: "#D9D9D9",
+                          color: "#555555",
+                          fontSize: "12px",
+                          fontWeight: "600",
+                          fontFamily: "sans-serif",
+                          userSelect: "none",
+                        }}
+                      >
+                        i
+                      </span>
+                    </OverlayTrigger>
+                  </div>
                   <div className="contact-help-in">
                     <h3>Contact Us</h3>
 
@@ -336,179 +468,186 @@ const ContactUs = () => {
                 </div>
               </div>
 
-              <div className={isMobileWidth ? "col-lg-6 col-md-6" : "col-3"}>
-                {/* <div className="contact-help">
-                              <h2>Help & Contact</h2>
-                              <div className="contact-help-in">
-                                  <h3>Contact Us</h3>
-                                  
-                                  <Form onSubmit={handleSubmit(onSubmit)}>
-                                  <Form.Control type="text" placeholder="Your Name" className="mb-4"
-                                    style={{
-                                      borderRadius : "0px",
-                                      border: "none",
-                                      borderBottom: "1px solid #000",
-                                      outline: "none",
-                                      boxShadow: "none",
-                                    }} {...register("name", { required: "Name is required" })} />
-                                  {errors.name && (
-                                    <p className="text-danger w-100">{errors.name.message}</p>
-                                  )}
+              <div className={isMobileWidth ? "col-lg-6 col-md-6" : "col-5"}>
+                <div
+                  className="customer-support-card p-4"
+                  style={{
+                    backgroundColor: "#3A4B4C",
+                    borderRadius: "16px",
+                    color: "#ffffff",
+                    boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.15)",
+                  }}
+                >
+                  <h2
+                    style={{
+                      color: "#ffffff",
+                      fontSize: "22px",
+                      fontWeight: "700",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    Customer Support
+                  </h2>
+                  <p
+                    style={{
+                      color: "#ffffff",
+                      fontSize: "14px",
+                      fontWeight: "400",
+                      opacity: "0.95",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    Our Customer Service Team are also available On.
+                  </p>
 
-                                  <Form.Control type="email" placeholder="Your Email" className="mb-4"
-                                    style={{
-                                      borderRadius : "0px",
-                                      border: "none",
-                                      borderBottom: "1px solid #000",
-                                      outline: "none",
-                                      boxShadow: "none",
-                                    }} {...register("email", {
-                                      required: "Email is required",
-                                      pattern: {
-                                        value:
-                                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                                        message: "Invalid email address",
-                                      },
-                                    })} />
+                  <hr
+                    style={{
+                      borderColor: "rgba(255, 255, 255, 0.35)",
+                      margin: "0 0 20px 0",
+                      borderTopWidth: "1px",
+                    }}
+                  />
 
-                                  {errors.email && (
-                                    <p className="text-danger w-100">{errors.email.message}</p>
-                                  )}
-
-                                  <Form.Label>Message</Form.Label>
-
-                                  <Form.Control as="textarea" rows={3} className="mb-4"
-                                    style={{
-                                      border: "1px solid #000",
-                                      outline: "none",
-                                      boxShadow: "none",
-                                      background: "transparent",
-                                    }}
-                                    {...register("message", { required: "Message is required", })}
-                                  />
-                                  {errors.message && (
-                                    <p className="text-danger w-100">{errors.message.message}</p>
-                                  )}
-
-                                  <Card className="mb-3 p-3 justify-content-between ps-0"
-                                    style={{ border: "0", padding: "10px 15px", width: "100%" }} >
-                                    <div className="d-flex justify-content-around align-items-center" 
-                                      style={{
-                                        border: "1px solid #c1c1c1",
-                                        borderRadius: "4px",
-                                        padding: "10px",
-                                        width: "60%",
-                                        background: "#fff",
-                                        boxShadow: "0px 1px 2px rgba(0,0,0,0.1)",
-                                      }} >
-                                      <div className="d-flex align-items-center" style={{ gap: "12px" }} >
-                                        <div onClick={() => {setIsRobotChecked(!isRobotChecked); setIsRobotError(false);}} 
-                                          style={{
-                                            width: "20px",
-                                            height: "20px",
-                                            borderRadius: "3px",
-                                            display: "flex",
-                                            alignItems: "center",
-                                            justifyContent: "center",
-                                            cursor: "pointer",
-                                            border: "1px solid #c1c1c1", // ✅ Border for the checkbox
-                                          }} >
-                                          {isRobotChecked && (
-                                            <span style={{ 
-                                                fontSize: "34px",
-                                                color: "#98f794", 
-                                                fontWeight: "400",
-                                                marginBottom: "10px",
-                                              }} >
-                                              ✔
-                                            </span>
-                                          )}
-                                        </div>
-                                        <span style={{ fontSize: "16px", color: "#333", fontWeight: "400" }} >
-                                          I'm not a robot
-                                        </span>
-                                      </div>
-
-                                      <div className="d-flex flex-column align-items-center" style={{ minWidth: "55px" }} >
-                                        <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" loading="lazy" alt="captcha" 
-                                          style={{ width: "40px", height: "40px" }} />
-                                        <span style={{ fontSize: "10px", color: "#999" }}>
-                                          reCAPTCHA
-                                        </span>
-                                      </div>
-                                    </div>
-                                    {isRobotError && (
-                                      <p className="text-danger w-100"> {"Please complete the CAPTCHA to submit the form"} </p>
-                                    )}
-                                  </Card>
-                                  
-                                  <Button type="submit" className="w-100"
-                                    // disabled={!isRobotChecked}
-                                    style={{
-                                      backgroundColor: "#4AEAB1",
-                                      color: "#000000",
-                                      fontSize: "18px",
-                                      fontWeight: "400",
-                                      padding: "10px 20px",
-                                      borderRadius: "25px",
-                                      border: "none",
-                                    }} >
-                                    Submit
-                                  </Button>
-                                </Form>
-                              </div>
-                          </div> */}
-              </div>
-              <div className={isMobileWidth ? "col-lg-6 col-md-6" : "col-4"}>
-                <div className="contact-support">
-                  <h2>Customer Support</h2>
-                  <p>Our Customer Service Team are also available On.</p>
-                  <div className="contact-support-in">
-                    <div className="icon">
-                      <img
-                        src="/images/contact-page/call.svg"
-                        loading="lazy"
-                        alt=""
-                      />
+                  {/* Contact Number */}
+                  <div
+                    className="d-flex align-items-center gap-3 mb-3"
+                    style={{
+                      paddingBottom: "16px",
+                      borderBottom: "1px solid rgba(255, 255, 255, 0.35)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "48px",
+                        height: "48px",
+                        minWidth: "48px",
+                        borderRadius: "50%",
+                        backgroundColor: "#ffffff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <IoCallOutline style={{ fontSize: "22px", color: "#3A4B4C" }} />
                     </div>
-                    <h3>
-                      Contact Number <br />{" "}
-                      <span>
-                        <a href="">+1(000) 000-0000</a>
-                      </span>
-                    </h3>
+                    <div>
+                      <h3
+                        style={{
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          margin: 0,
+                        }}
+                      >
+                        Contact Number
+                      </h3>
+                      <p
+                        style={{
+                          color: "#ffffff",
+                          fontSize: "15px",
+                          margin: "4px 0 0 0",
+                          fontWeight: "400",
+                        }}
+                      >
+                        <a
+                          href="tel:+(000) 000-0000"
+                          style={{ color: "#ffffff", textDecoration: "none" }}
+                        >
+                          +(000) 000-0000
+                        </a>
+                      </p>
+                    </div>
                   </div>
-                  <div className="contact-support-in">
-                    <div className="icon">
-                      <img
-                        src="/images/contact-page/mail.svg"
-                        loading="lazy"
-                        alt=""
-                      />
+
+                  {/* Email Address */}
+                  <div
+                    className="d-flex align-items-center gap-3 mb-3"
+                    style={{
+                      paddingBottom: "16px",
+                      borderBottom: "1px solid rgba(255, 255, 255, 0.35)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: "48px",
+                        height: "48px",
+                        minWidth: "48px",
+                        borderRadius: "50%",
+                        backgroundColor: "#ffffff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <IoMailOutline style={{ fontSize: "22px", color: "#3A4B4C" }} />
                     </div>
-                    <h3>
-                      Email Address <br />
-                      <span>
-                        <a href="">info@yourdomain.com</a>
-                      </span>{" "}
-                      <br />
-                      <span>
-                        <a href="">info@yourdomain.com</a>
-                      </span>
-                    </h3>
+                    <div>
+                      <h3
+                        style={{
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          margin: 0,
+                        }}
+                      >
+                        Email Address
+                      </h3>
+                      <p
+                        style={{
+                          color: "#ffffff",
+                          fontSize: "15px",
+                          margin: "4px 0 0 0",
+                          fontWeight: "400",
+                        }}
+                      >
+                        <a
+                          href="mailto:support@zyvoapp.com"
+                          style={{ color: "#ffffff", textDecoration: "none" }}
+                        >
+                          support@zyvoapp.com
+                        </a>
+                      </p>
+                    </div>
                   </div>
-                  <div className="contact-support-in">
-                    <div className="icon">
-                      <img
-                        src="/images/contact-page/location.svg"
-                        loading="lazy"
-                        alt=""
-                      />
+
+                  {/* Location */}
+                  <div className="d-flex align-items-center gap-3">
+                    <div
+                      style={{
+                        width: "48px",
+                        height: "48px",
+                        minWidth: "48px",
+                        borderRadius: "50%",
+                        backgroundColor: "#ffffff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <IoLocationOutline style={{ fontSize: "22px", color: "#3A4B4C" }} />
                     </div>
-                    <h3>
-                      Location <br />
-                      <span>Atlanta, GA, USA'</span>
-                    </h3>
+                    <div>
+                      <h3
+                        style={{
+                          color: "#ffffff",
+                          fontSize: "16px",
+                          fontWeight: "600",
+                          margin: 0,
+                        }}
+                      >
+                        Location
+                      </h3>
+                      <p
+                        style={{
+                          color: "#ffffff",
+                          fontSize: "15px",
+                          margin: "4px 0 0 0",
+                          fontWeight: "400",
+                        }}
+                      >
+                        Atlanta, Georgia, United States
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
