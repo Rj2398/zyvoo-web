@@ -7,7 +7,14 @@ import useCommon from "../hooks/useCommon";
 import { imageBase, KEYS } from "../config/Constant";
 import { IoSearchSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";
+const truncateWords = (text = '', limit = 100) => {
+  // Strip HTML tags
+  const plainText = text.replace(/<[^>]*>/g, '').trim();
+  const words = plainText.split(/\s+/);
 
+  if (words.length <= limit) return plainText;
+  return words.slice(0, limit).join(' ') + '...';
+};
 function HelpCenter() {
   const { userInfo } = useSelector(({ user }) => user);
   const location = useLocation();
@@ -22,8 +29,8 @@ function HelpCenter() {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
 
   const { helpCenter } = useCommon();
   const [helpCenterData, setHelpCenterData] = useState();
@@ -156,8 +163,8 @@ function HelpCenter() {
                     Hi&nbsp;
                     {helpCenterData?.user_fname && helpCenterData?.user_lname
                       ? helpCenterData?.user_fname +
-                        " " +
-                        helpCenterData?.user_lname
+                      " " +
+                      helpCenterData?.user_lname
                       : type || "Guest"}
                     , how can we help?
                   </h1>
@@ -402,11 +409,7 @@ function HelpCenter() {
                           </Link>
                         </Card.Title>
                         {/* <Card.Text> */}
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: article?.description,
-                          }}
-                        />
+                        <div>{truncateWords(article?.description, 24)}</div>
                         {/* </Card.Text> */}
                       </Card.Body>
                       <div
