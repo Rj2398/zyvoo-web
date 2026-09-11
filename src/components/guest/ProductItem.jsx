@@ -399,7 +399,7 @@ const ProductItem = ({
 
               {/* Hosted by {hosted_by} <br /> */}
               <span style={{ fontSize: "13px" }}>
-                {truncateText(address, 15) || "Address not available"}
+                {truncateText(address, 30) || "Address not available"}
               </span>
             </h2>
           </div>

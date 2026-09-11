@@ -120,7 +120,7 @@ const ContactUs = () => {
         {/* CONTACT-PAGE */}
         <div className="faq-wrap">
           <div className="container-fluid">
-            <div className="row justify-content-center">
+            <div className="row justify-content-center gx-lg-5 gy-4">
               <div className="col-lg-12">
                 {!isMobileWidth && (
                   <div className="faq-heading">
@@ -133,7 +133,7 @@ const ContactUs = () => {
                     style={{
                       display: "flex",
                       flexDirection: "column",
-                      alignItems: "stretch",
+                      alignItems: "center",
                     }}
                   >
                     <p
@@ -152,7 +152,7 @@ const ContactUs = () => {
                     </p>
 
                     <div
-                      className="suggested-categories-section mt-2 mb-3"
+                      className="suggested-categories-section mb-4"
                       style={{ textAlign: "left", width: "100%" }}
                     >
                       <h3
@@ -216,64 +216,63 @@ const ContactUs = () => {
                   </div>
                 </div>
               </div>
-              <div className={isMobileWidth ? "col-lg-6 col-md-6" : "col-5"}>
+              <div className={isMobileWidth ? "col-12" : "col-lg-5 col-md-6 me-lg-3"}>
                 <div className="contact-help">
-                  <div className="d-flex align-items-center gap-2 mb-3">
-                    <h2 className="mb-0" style={{ fontSize: "24px", fontWeight: "500", color: "#3a4b4c" }}>
-                      Help & Contact
-                    </h2>
-                    <OverlayTrigger
-                      trigger={["hover", "focus", "click"]}
-                      placement="bottom-start"
-                      overlay={
-                        <Popover
-                          id="contact-info-popover"
-                          style={{
-                            maxWidth: "320px",
-                            borderRadius: "12px",
-                            boxShadow: "0 4px 18px rgba(0,0,0,0.12)",
-                            border: "1px solid #c7c7c7",
-                            padding: "12px 14px",
-                            backgroundColor: "#ffffff",
-                            zIndex: 9999,
-                          }}
-                        >
-                          <Popover.Body
+                  <div className="contact-help-in" style={{ marginLeft: 0 }}>
+                    <div className="d-flex align-items-center gap-2 mb-3">
+                      <h3 className="mb-0" style={{ fontSize: "22px", fontWeight: "500", color: "#6b7879" }}>
+                        Contact Us
+                      </h3>
+                      <OverlayTrigger
+                        trigger={["hover", "focus", "click"]}
+                        placement="bottom-start"
+                        overlay={
+                          <Popover
+                            id="contact-info-popover"
                             style={{
-                              fontSize: "13px",
-                              color: "#4A4A4A",
-                              lineHeight: "1.5",
-                              padding: 0,
+                              maxWidth: "320px",
+                              borderRadius: "12px",
+                              boxShadow: "0 4px 18px rgba(0,0,0,0.12)",
+                              border: "1px solid #c7c7c7",
+                              padding: "12px 14px",
+                              backgroundColor: "#ffffff",
+                              zIndex: 9999,
                             }}
                           >
-                            Tell us what happened and include any relevant booking, listing or payment details. Please do not include full card numbers, passwords or other sensitive credentials.
-                          </Popover.Body>
-                        </Popover>
-                      }
-                    >
-                      <span
-                        style={{
-                          cursor: "pointer",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          width: "20px",
-                          height: "20px",
-                          borderRadius: "50%",
-                          backgroundColor: "#D9D9D9",
-                          color: "#555555",
-                          fontSize: "12px",
-                          fontWeight: "600",
-                          fontFamily: "sans-serif",
-                          userSelect: "none",
-                        }}
+                            <Popover.Body
+                              style={{
+                                fontSize: "13px",
+                                color: "#4A4A4A",
+                                lineHeight: "1.5",
+                                padding: 0,
+                              }}
+                            >
+                              Tell us what happened and include any relevant booking, listing or payment details. Please do not include full card numbers, passwords or other sensitive credentials.
+                            </Popover.Body>
+                          </Popover>
+                        }
                       >
-                        i
-                      </span>
-                    </OverlayTrigger>
-                  </div>
-                  <div className="contact-help-in">
-                    <h3>Contact Us</h3>
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "20px",
+                            height: "20px",
+                            borderRadius: "50%",
+                            backgroundColor: "#D9D9D9",
+                            color: "#555555",
+                            fontSize: "12px",
+                            fontWeight: "600",
+                            fontFamily: "sans-serif",
+                            userSelect: "none",
+                          }}
+                        >
+                          i
+                        </span>
+                      </OverlayTrigger>
+                    </div>
 
                     <Form onSubmit={handleSubmit(onSubmit)}>
                       <input
@@ -468,7 +467,7 @@ const ContactUs = () => {
                 </div>
               </div>
 
-              <div className={isMobileWidth ? "col-lg-6 col-md-6" : "col-5"}>
+              <div className={isMobileWidth ? "col-12" : "col-lg-5 col-md-6 ms-lg-3"}>
                 <div
                   className="customer-support-card p-4"
                   style={{
