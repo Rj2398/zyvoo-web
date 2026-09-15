@@ -34,11 +34,50 @@ const BookingExtensionModal = ({
     ...bookingDetails?.bookings?.[0],
     ...bookingDetails?.properties?.[0],
   };
+
+  // Get unique booking ID to track user modal response per booking
+  const bookingId =
+    bookingDetails?.bookings?.[0]?.booking_id ||
+    bookingDetails?.bookings?.[0]?.id ||
+    mergedBooking?.booking_id;
+
+  // Mark modal as handled in sessionStorage so it will not automatically pop up again
+  const markHandled = () => {
+    if (bookingId) {
+      sessionStorage.setItem(`booking_extension_handled_${bookingId}`, "true");
+    }
+    sessionStorage.setItem("booking_extension_handled_global", "true");
+  };
+
   if (!show) return null;
 
+  // Handle Extend button click (opens ExtendedTimeModal slider)
   const handleExtend = () => {
+    markHandled();
     setExtendedVisible(true);
     dispatch(setBookingDetailsData(mergedBooking));
+  };
+
+  // Handle top right close (&times;) button click
+  const handleCloseModal = () => {
+    markHandled();
+    if (handleClose) handleClose();
+  };
+
+  // Handle "Yes" button click: mark modal handled and extend booking
+  const handleYes = () => {
+    markHandled();
+    if (totalAmount) {
+      if (handleBook) handleBook();
+    } else {
+      handleExtend();
+    }
+  };
+
+  // Handle "No" button click: mark modal handled and close modal
+  const handleNo = () => {
+    markHandled();
+    if (handleClose) handleClose();
   };
 
   return (
@@ -56,131 +95,136 @@ const BookingExtensionModal = ({
         zIndex: 100,
       }}
     >
-      <div
-        style={{
-          backgroundColor: "white",
-          // padding: "3.5em",
-          padding: isMobileWidth ? "1.5em" : "3.5em",
-          borderRadius: "12px",
-          textAlign: "center",
-          width: "95%",
-          maxWidth: "400px",
-          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
-          position: "relative",
-        }}
-      >
-        <button
-          onClick={handleClose}
-          style={{
-            position: "absolute",
-            top: "12px",
-            right: "12px",
-            width: "20px",
-            height: "20px",
-            border: "none",
-            fontSize: "20px",
-            cursor: "pointer",
-            color: "white",
-            backgroundColor: "#3A4B4C",
-            borderRadius: "50%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          &times;
-        </button>
-
-        <h2
-          style={{ fontWeight: "600", fontSize: "1.5em", marginBottom: "10px" }}
-        >
-          {totalAmount ? "" : "Need More Time?"}
-        </h2>
-
+      {!extendedModalVisible && (
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            width: "80px",
-            height: "80px",
-            borderRadius: "50%",
-            backgroundColor: "#2ee6a8",
-            boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-            margin: "30px auto",
-          }}
-        >
-          <span
-            style={{
-              fontSize: "32px",
-              fontWeight: "bold",
-              color: "white",
-              fontFamily: "Arial, sans-serif",
-            }}
-          >
-            {totalAmount ? (
-              <img src={dollarIcon} loading="lazy" alt="dollor" />
-            ) : (
-              " i"
-            )}
-          </span>
-        </div>
-        {totalAmount ? (
-          <p style={{ fontSize: "1em", color: "black", marginBottom: "20px" }}>
-            Your new total amount is <br /> ${totalAmount}
-          </p>
-        ) : (
-          <p style={{ fontSize: "1em", color: "black", marginBottom: "20px" }}>
-            To extend your booking time, please click{" "}
-            <span style={{ fontWeight: "400" }}>"Yes"</span> below.
-          </p>
-        )}
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-            flexWrap: "wrap",
+            backgroundColor: "white",
+            // padding: "3.5em",
+            padding: isMobileWidth ? "1.5em" : "3.5em",
+            borderRadius: "12px",
+            textAlign: "center",
+            width: "95%",
+            maxWidth: "400px",
+            boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+            position: "relative",
           }}
         >
           <button
-            onClick={totalAmount ? handleBook : handleExtend}
+            onClick={handleCloseModal}
             style={{
-              backgroundColor: "#2ee6a8",
-              color: "black",
-              padding: "10px 20px",
-              fontSize: "1em",
-              borderRadius: "30px",
+              position: "absolute",
+              top: "12px",
+              right: "12px",
+              width: "20px",
+              height: "20px",
               border: "none",
+              fontSize: "20px",
               cursor: "pointer",
-              fontWeight: "500",
-              minWidth: "120px",
+              color: "white",
+              backgroundColor: "#3A4B4C",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            Yes
+            &times;
           </button>
-          {/* <button onClick={handleClose} style={{ */}
-          <button
-            onClick={() => handleClose()}
+
+          <h2
+            style={{ fontWeight: "600", fontSize: "1.5em", marginBottom: "10px" }}
+          >
+            {totalAmount ? "" : "Need More Time?"}
+          </h2>
+
+          <div
             style={{
-              backgroundColor: "white",
-              color: "black",
-              padding: "10px 20px",
-              fontSize: "1em",
-              borderRadius: "30px",
-              border: "1px solid #2ee6a8",
-              cursor: "pointer",
-              minWidth: "120px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "80px",
+              height: "80px",
+              borderRadius: "50%",
+              backgroundColor: "#2ee6a8",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+              margin: "30px auto",
             }}
           >
-            No
-          </button>
+            <span
+              style={{
+                fontSize: "32px",
+                fontWeight: "bold",
+                color: "white",
+                fontFamily: "Arial, sans-serif",
+              }}
+            >
+              {totalAmount ? (
+                <img src={dollarIcon} loading="lazy" alt="dollor" />
+              ) : (
+                " i"
+              )}
+            </span>
+          </div>
+          {totalAmount ? (
+            <p style={{ fontSize: "1em", color: "black", marginBottom: "20px" }}>
+              Your new total amount is <br /> ${totalAmount}
+            </p>
+          ) : (
+            <p style={{ fontSize: "1em", color: "black", marginBottom: "20px" }}>
+              To extend your booking time, please click{" "}
+              <span style={{ fontWeight: "400" }}>"Yes"</span> below.
+            </p>
+          )}
+
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "10px",
+              flexWrap: "wrap",
+            }}
+          >
+            <button
+              onClick={handleYes}
+              style={{
+                backgroundColor: "#2ee6a8",
+                color: "black",
+                padding: "10px 20px",
+                fontSize: "1em",
+                borderRadius: "30px",
+                border: "none",
+                cursor: "pointer",
+                fontWeight: "500",
+                minWidth: "120px",
+              }}
+            >
+              Yes
+            </button>
+            {/* <button onClick={handleClose} style={{ */}
+            <button
+              onClick={handleNo}
+              style={{
+                backgroundColor: "white",
+                color: "black",
+                padding: "10px 20px",
+                fontSize: "1em",
+                borderRadius: "30px",
+                border: "1px solid #2ee6a8",
+                cursor: "pointer",
+                minWidth: "120px",
+              }}
+            >
+              No
+            </button>
+          </div>
         </div>
-      </div>
+      )}
       <ExtendedTimeModal
         show={extendedModalVisible}
-        onHide={() => setExtendedVisible(false)}
+        onHide={() => {
+          setExtendedVisible(false);
+          if (handleClose) handleClose();
+        }}
         mergedBooking={mergedBooking}
       />
     </div>

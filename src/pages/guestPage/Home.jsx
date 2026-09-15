@@ -42,6 +42,8 @@ const Home = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
+  // Track if user clicked Yes/No or closed the extension modal to prevent automatic re-opening
+  const [hasHandledModal, setHasHandledModal] = useState(false);
 
   const [bookingDetails, setBookingDetails] = useState({});
 
@@ -289,14 +291,24 @@ const Home = () => {
     return () => clearInterval(timer);
   }, [initialTime]);
 
+  // Automatically show BookingExtensionModal at 30 minutes left ONLY if user has not already responded/dismissed it
   useEffect(() => {
     const currentTotalSeconds =
       timeLeft.hours * 3600 + timeLeft.minutes * 60 + timeLeft.seconds;
 
-    if (currentTotalSeconds === 1800) {
+    const bookingId =
+      bookingDetails?.bookings?.[0]?.booking_id ||
+      bookingDetails?.bookings?.[0]?.id;
+
+    // Check if user already acted on the modal for this booking in sessionStorage
+    const isHandled = bookingId
+      ? sessionStorage.getItem(`booking_extension_handled_${bookingId}`) === "true"
+      : sessionStorage.getItem("booking_extension_handled_global") === "true";
+
+    if (currentTotalSeconds === 1800 && !isHandled && !hasHandledModal) {
       setShowModal(true); // Show modal when exactly 30 minutes left
     }
-  }, [timeLeft]);
+  }, [timeLeft, bookingDetails, hasHandledModal]);
 
   // Calculate responsive progress ratio based on the total booking duration
   const elapsedRatio = useMemo(() => {
@@ -617,10 +629,27 @@ const Home = () => {
                             </div>
                           </button>
 
+                          {/* Render BookingExtensionModal and mark as handled on close so it will not open automatically again */}
                           {showModal && (
                             <BookingExtensionModal
                               show={showModal}
-                              handleClose={() => setShowModal(false)}
+                              handleClose={() => {
+                                setShowModal(false);
+                                setHasHandledModal(true);
+                                const bookingId =
+                                  bookingDetails?.bookings?.[0]?.booking_id ||
+                                  bookingDetails?.bookings?.[0]?.id;
+                                if (bookingId) {
+                                  sessionStorage.setItem(
+                                    `booking_extension_handled_${bookingId}`,
+                                    "true"
+                                  );
+                                }
+                                sessionStorage.setItem(
+                                  "booking_extension_handled_global",
+                                  "true"
+                                );
+                              }}
                               bookingDetails={bookingDetails}
                             />
                           )}
