@@ -62,7 +62,7 @@ function Location() {
     : null || userData?.user_id
       ? String(userData?.user_id)
       : null;
-  console.log("userData", userData);
+  // console.log("userData", userData);
 
   const [currentLocation, setCurrentLocation] = useState({
     latitude: null,
@@ -176,7 +176,7 @@ function Location() {
   //   });
   //   setPropertyDetails(result.data);
   // };
-  console.log("propertyDetails?.property_id", propertyDetails?.property_id);
+  // console.log("propertyDetails?.property_id", propertyDetails?.property_id);
   const fetchPropertyDetails = async () => {
     if (!propertyId) {
       setIsInvalidProperty(true);

@@ -283,7 +283,7 @@ const AddMoreTime = () => {
                         />
                         <div
                           className="date-in-list location-date-list add-time-dropdown"
-                          //   style="display: none;"
+                        //   style="display: none;"
                         >
                           <div className="date-in-data-in">
                             <div className="hour-slider">
@@ -325,7 +325,7 @@ const AddMoreTime = () => {
                       }}
                     >
                       {isCancellationExpanded ||
-                      CANCELLATION_POLICY_TEXT.length <= charLimit
+                        CANCELLATION_POLICY_TEXT.length <= charLimit
                         ? CANCELLATION_POLICY_TEXT
                         : `${CANCELLATION_POLICY_TEXT.slice(0, charLimit)}...`}
                     </p>

@@ -134,7 +134,7 @@ const MessageForm = ({ data, isMobileWidth }) => {
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-        {["I have a doubt", "Available days", "Other reason"].map((reason) => (
+        {["Available days", "Other reason"].map((reason) => (
           <button
             key={reason}
             style={{

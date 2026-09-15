@@ -94,7 +94,7 @@ const Checkout = ({ setExtendedTime }) => {
   const checkoutData = location.state?.objectTobeNavigated || {};
   const id = checkoutData?.property_id;
 
-  console.log(checkoutData, "checkout data********");
+  // console.log(checkoutData, "checkout data********");
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
     JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
@@ -103,7 +103,7 @@ const Checkout = ({ setExtendedTime }) => {
     : null || userData?.user_id
       ? String(userData?.user_id)
       : null;
-  console.log(userId, "user id *********");
+  // console.log(userId, "user id *********");
 
 
   useEffect(() => {
