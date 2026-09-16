@@ -1834,12 +1834,45 @@ const BookingHost = () => {
                       ? "$0.00"
                       : `$${parseFloat(rawBteAmount).toFixed(2)}`;
 
+                    const bteStatus =
+                      bteObj?.extension_status ||
+                      viewDetails?.extension_status ||
+                      "";
+
+                    const formattedBteStatus = bteStatus
+                      ? bteStatus.charAt(0).toUpperCase() + bteStatus.slice(1)
+                      : "";
+
                     return (
                       <Container
                         className="px-2 px-md-3 pb-2 mt-3"
                         style={{ fontSize: "13px" }}
                       >
-                        <h5 className="mb-3">Booking Time Extension (BTE)</h5>
+                        <div className="d-flex align-items-center justify-content-between mb-3">
+                          <h5 className="mb-0">Booking Time Extension (BTE)</h5>
+                          {formattedBteStatus && (
+                            <span
+                              className={`badge ${
+                                bteStatus.toLowerCase() === "pending"
+                                  ? "bg-warning text-dark"
+                                  : bteStatus.toLowerCase() === "accepted" ||
+                                    bteStatus.toLowerCase() === "approved" ||
+                                    bteStatus.toLowerCase() === "completed"
+                                  ? "bg-success"
+                                  : "bg-danger"
+                              }`}
+                              style={{
+                                fontSize: "12px",
+                                padding: "6px 12px",
+                                borderRadius: "12px",
+                                textTransform: "capitalize",
+                                fontWeight: "600",
+                              }}
+                            >
+                              {formattedBteStatus}
+                            </span>
+                          )}
+                        </div>
                         {isMobileWidth ? (
                           <div className="overflow-auto pb-2">
                             <div
@@ -1854,6 +1887,9 @@ const BookingHost = () => {
                                 ["time.svg", bteHours],
                                 ["time.svg", bteTimeRange],
                                 ["price.svg", bteAmountStr],
+                                ...(formattedBteStatus
+                                  ? [["time.svg", `Status: ${formattedBteStatus}`]]
+                                  : []),
                               ].map(([icon, text], i) => (
                                 <div
                                   key={i}
@@ -1884,6 +1920,9 @@ const BookingHost = () => {
                                 ["calendar-icon.svg", bteDate],
                                 ["time.svg", `${bteHours} | ${bteTimeRange}`],
                                 ["price.svg", bteAmountStr],
+                                ...(formattedBteStatus
+                                  ? [["time.svg", `Status: ${formattedBteStatus}`]]
+                                  : []),
                               ].map(([icon, text], i) => (
                                 <div
                                   key={i}
