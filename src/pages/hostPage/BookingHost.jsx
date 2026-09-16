@@ -74,7 +74,7 @@ const BookingHost = () => {
 
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [viewDetails, setViewDetails] = useState();
-  // console.log(viewDetails?.property_id, "discusss********");
+  // console.log(viewDetails, "discusss********");
 
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
@@ -1776,117 +1776,135 @@ const BookingHost = () => {
                 </Container>
                 {isMobileWidth && <hr />}
 
-                {viewDetails?.extension_details && (
-                  <Container
-                    className="px-2 px-md-3 pb-2 mt-3"
-                    style={{ fontSize: "13px" }}
-                  >
-                    <h5 className="mb-3">Booking Time Extension (BTE)</h5>
-                    {isMobileWidth ? (
-                      <div className="overflow-auto pb-2">
-                        <div
-                          className="d-inline-flex gap-2 "
-                          style={{
-                            width: "100%",
-                            flexWrap: isMobileWidth ? "wrap" : "nowrap",
-                          }}
-                        >
-                          {[
-                            [
-                              "calendar-icon.svg",
-                              viewDetails?.extension_details?.extension_date ||
-                              "date",
-                            ],
-                            [
-                              "time.svg",
-                              `${viewDetails?.extension_details
-                                ?.extension_hours || "no data"
-                              } hours`,
-                            ],
-                            [
-                              "time.svg",
-                              `From ${viewDetails?.extension_details
-                                ?.extension_start_time || "start time"
-                              } to ${viewDetails?.extension_details
-                                ?.extension_end_time || "end time"
-                              }`,
-                            ],
-                            [
-                              "price.svg",
-                              parseFloat(
-                                viewDetails?.extension_details
-                                  ?.extension_booking_amount
-                              ),
-                            ],
-                          ].map(([icon, text], i) => (
+                {(viewDetails?.is_booking_extended ||
+                  viewDetails?.pending_extendend_booking ||
+                  viewDetails?.extension_details) && (() => {
+                    const bteObj =
+                      viewDetails?.pending_extendend_booking ||
+                      viewDetails?.extension_details ||
+                      {};
+
+                    const formatBteTimeString = (timeStr) => {
+                      if (!timeStr) return null;
+                      try {
+                        const d = new Date(timeStr.includes("T") ? timeStr : timeStr.replace(" ", "T"));
+                        if (!isNaN(d.getTime())) {
+                          return d.toLocaleTimeString("en-US", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            hour12: true,
+                          });
+                        }
+                      } catch (e) { }
+                      return timeStr;
+                    };
+
+                    const bteDate =
+                      bteObj?.extension_date ||
+                      (bteObj?.extension_start
+                        ? new Date(bteObj.extension_start.replace(" ", "T")).toLocaleDateString(
+                          "en-US",
+                          { month: "long", day: "numeric", year: "numeric" }
+                        )
+                        : null) ||
+                      viewDetails?.booking_detail?.date ||
+                      "Date unavailable";
+
+                    const bteHours = bteObj?.extension_hours ? `${bteObj.extension_hours} hours` : "no data";
+
+                    const bteStartFormatted =
+                      formatBteTimeString(bteObj?.extension_start) ||
+                      bteObj?.extension_start_time ||
+                      "start time";
+
+                    const bteEndFormatted =
+                      formatBteTimeString(bteObj?.extension_end) ||
+                      bteObj?.extension_end_time ||
+                      "end time";
+
+                    const bteTimeRange = `From ${bteStartFormatted} to ${bteEndFormatted}`;
+
+                    const rawBteAmount =
+                      bteObj?.extension_booking_amount ||
+                      bteObj?.total_extension_amount ||
+                      bteObj?.total_amount ||
+                      0;
+
+                    const bteAmountStr = isNaN(parseFloat(rawBteAmount))
+                      ? "$0.00"
+                      : `$${parseFloat(rawBteAmount).toFixed(2)}`;
+
+                    return (
+                      <Container
+                        className="px-2 px-md-3 pb-2 mt-3"
+                        style={{ fontSize: "13px" }}
+                      >
+                        <h5 className="mb-3">Booking Time Extension (BTE)</h5>
+                        {isMobileWidth ? (
+                          <div className="overflow-auto pb-2">
                             <div
-                              key={i}
-                              className="d-flex align-items-center gap-2 p-2 border rounded-pill"
-                              style={{ whiteSpace: "nowrap" }}
+                              className="d-inline-flex gap-2 "
+                              style={{
+                                width: "100%",
+                                flexWrap: isMobileWidth ? "wrap" : "nowrap",
+                              }}
                             >
-                              <Image
-                                src={`/images/filters/${icon}`}
-                                loading="lazy"
-                                alt=""
-                                width="20"
-                              />
-                              <span>{text}</span>
+                              {[
+                                ["calendar-icon.svg", bteDate],
+                                ["time.svg", bteHours],
+                                ["time.svg", bteTimeRange],
+                                ["price.svg", bteAmountStr],
+                              ].map(([icon, text], i) => (
+                                <div
+                                  key={i}
+                                  className="d-flex align-items-center gap-2 p-2 border rounded-pill"
+                                  style={{ whiteSpace: "nowrap" }}
+                                >
+                                  <Image
+                                    src={`/images/filters/${icon}`}
+                                    loading="lazy"
+                                    alt=""
+                                    width="20"
+                                  />
+                                  <span>{text}</span>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="overflow-auto pb-2">
-                        <div
-                          className="d-inline-flex gap-2 "
-                          style={{
-                            width: "100%",
-                            flexWrap: isMobileWidth ? "wrap" : "nowrap",
-                          }}
-                        >
-                          {[
-                            [
-                              "calendar-icon.svg",
-                              viewDetails?.extension_details?.extension_date ||
-                              "date",
-                            ],
-                            [
-                              "time.svg",
-                              `${viewDetails?.extension_details
-                                ?.extension_hours || "no data"
-                              } hours | From ${viewDetails?.extension_details
-                                ?.extension_start_time || "start time"
-                              } to ${viewDetails?.extension_details
-                                ?.extension_end_time || "end time"
-                              }`,
-                            ],
-                            [
-                              "price.svg",
-                              parseFloat(
-                                viewDetails?.extension_details
-                                  ?.extension_booking_amount
-                              ),
-                            ],
-                          ].map(([icon, text], i) => (
+                          </div>
+                        ) : (
+                          <div className="overflow-auto pb-2">
                             <div
-                              key={i}
-                              className="d-flex align-items-center gap-2 p-2 border rounded-pill"
-                              style={{ whiteSpace: "nowrap" }}
+                              className="d-inline-flex gap-2 "
+                              style={{
+                                width: "100%",
+                                flexWrap: isMobileWidth ? "wrap" : "nowrap",
+                              }}
                             >
-                              <Image
-                                src={`/images/filters/${icon}`}
-                                loading="lazy"
-                                alt=""
-                                width="20"
-                              />
-                              <span>{text}</span>
+                              {[
+                                ["calendar-icon.svg", bteDate],
+                                ["time.svg", `${bteHours} | ${bteTimeRange}`],
+                                ["price.svg", bteAmountStr],
+                              ].map(([icon, text], i) => (
+                                <div
+                                  key={i}
+                                  className="d-flex align-items-center gap-2 p-2 border rounded-pill"
+                                  style={{ whiteSpace: "nowrap" }}
+                                >
+                                  <Image
+                                    src={`/images/filters/${icon}`}
+                                    loading="lazy"
+                                    alt=""
+                                    width="20"
+                                  />
+                                  <span>{text}</span>
+                                </div>
+                              ))}
                             </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </Container>
-                )}
+                          </div>
+                        )}
+                      </Container>
+                    );
+                  })()}
 
                 {!isMobileWidth && <hr className="property-modal-hr" />}
 
