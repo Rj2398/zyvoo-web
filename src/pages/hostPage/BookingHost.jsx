@@ -1784,31 +1784,73 @@ const BookingHost = () => {
                       viewDetails?.extension_details ||
                       {};
 
+                    const parseBteDateTime = (str) => {
+                      if (!str) return null;
+                      let cleanStr = String(str).trim().replace(/:([AP]\.?M\.?)/gi, " $1");
+
+                      const dateMatch = cleanStr.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+                      const timeMatch = cleanStr.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*([AP]\.?M\.?)?/i);
+
+                      let dateObj = null;
+                      if (dateMatch) {
+                        const [, y, m, d] = dateMatch;
+                        let hours = 0;
+                        let minutes = 0;
+                        if (timeMatch) {
+                          let [, h, min, ampm] = timeMatch;
+                          hours = parseInt(h, 10);
+                          minutes = parseInt(min, 10);
+                          if (ampm) {
+                            const isPM = ampm.toUpperCase().includes("P");
+                            if (isPM && hours < 12) hours += 12;
+                            if (!isPM && hours === 12) hours = 0;
+                          }
+                        }
+                        dateObj = new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10), hours, minutes);
+                      }
+
+                      if (!dateObj || isNaN(dateObj.getTime())) {
+                        dateObj = new Date(cleanStr.includes("T") ? cleanStr : cleanStr.replace(" ", "T"));
+                      }
+
+                      return isNaN(dateObj?.getTime()) ? null : dateObj;
+                    };
+
                     const formatBteTimeString = (timeStr) => {
                       if (!timeStr) return null;
-                      try {
-                        const d = new Date(timeStr.includes("T") ? timeStr : timeStr.replace(" ", "T"));
-                        if (!isNaN(d.getTime())) {
-                          return d.toLocaleTimeString("en-US", {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          });
+                      const d = parseBteDateTime(timeStr);
+                      if (d) {
+                        return d.toLocaleTimeString("en-US", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        });
+                      }
+                      const cleanStr = String(timeStr).trim().replace(/:([AP]\.?M\.?)/gi, " $1");
+                      const timeMatch = cleanStr.match(/(\d{1,2}):(\d{2})(?::\d{2})?\s*([AP]\.?M\.?)?/i);
+                      if (timeMatch) {
+                        let [, h, m, ampm] = timeMatch;
+                        if (ampm) {
+                          return `${h.padStart(2, "0")}:${m} ${ampm.toUpperCase().replace(/\./g, "")}`;
                         }
-                      } catch (e) { }
+                        return `${h.padStart(2, "0")}:${m}`;
+                      }
                       return timeStr;
                     };
 
-                    const bteDate =
-                      bteObj?.extension_date ||
-                      (bteObj?.extension_start
-                        ? new Date(bteObj.extension_start.replace(" ", "T")).toLocaleDateString(
-                          "en-US",
-                          { month: "long", day: "numeric", year: "numeric" }
-                        )
-                        : null) ||
-                      viewDetails?.booking_detail?.date ||
-                      "Date unavailable";
+                    const formatBteDateString = (startStr, fallbackDate) => {
+                      if (!startStr && fallbackDate) return fallbackDate;
+                      const d = parseBteDateTime(startStr);
+                      if (d) {
+                        return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+                      }
+                      return fallbackDate || startStr || "Date unavailable";
+                    };
+
+                    const bteDate = formatBteDateString(
+                      bteObj?.extension_start || bteObj?.extension_date,
+                      viewDetails?.booking_detail?.date
+                    );
 
                     const bteHours = bteObj?.extension_hours ? `${bteObj.extension_hours} hours` : "no data";
 
