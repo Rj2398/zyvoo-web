@@ -121,7 +121,7 @@ function Location() {
   const [showPropertyImages, setShowPropertyImages] = useState(false);
   const [propertyDetails, setPropertyDetails] = useState({});
 
-  // console.log("propertyDetails4333434567", propertyDetails?.reviews_total_rating);
+  // console.log("propertyDetails4333434567", propertyDetails?.property_title);
   const [showShareModal, setShowShareModal] = useState();
   const [showAddWishlistModal, setShowAddWishlistModal] = useState(false);
   const [wishlistArr, setWishlistArr] = useState([]);
@@ -1329,6 +1329,7 @@ function Location() {
                             sender_detail: {
                               ...(userInfo || userData),
                               host_id: propertyDetails?.host_id,
+                              property_title: propertyDetails?.property_title
                             },
                             property_id: propertyDetails?.property_id,
                           }}

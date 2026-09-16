@@ -2458,6 +2458,7 @@ const Checkout = ({ setExtendedTime }) => {
                             access_token: userInfo?.access_token || userData?.access_token,
                             user_id: Number(userInfo?.user_id ?? userData?.user_id),
                             host_id: Number(checkoutData?.host_id),
+                            property_title: checkoutData?.property_title
                           },
                           property_id: Number(checkoutData?.property_id),
                         }}

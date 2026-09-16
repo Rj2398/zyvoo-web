@@ -475,6 +475,7 @@ const BookingDetails = () => {
                         access_token: userInfo?.access_token || userData?.access_token,
                         user_id: Number(userInfo?.user_id ?? userData?.user_id),
                         host_id: Number(bookingDetails?.host_id),
+                        property_title: bookingDetails?.property_title
                       },
                       property_id: Number(booking?.id || bookingDetails?.property_id),
                     }}
@@ -1488,6 +1489,7 @@ const BookingDetails = () => {
                           access_token: userInfo?.access_token || userData?.access_token,
                           user_id: Number(userInfo?.user_id ?? userData?.user_id),
                           host_id: Number(bookingDetails?.host_id),
+                          property_title: bookingDetails?.property_title
                         },
                         property_id: Number(booking?.id || bookingDetails?.property_id),
                       }}

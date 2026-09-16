@@ -1519,6 +1519,7 @@ const BookingExtendedTime = () => {
                           access_token: userData?.access_token,
                           user_id: userId,
                           host_id: Number(checkoutData?.host_id),
+                          property_title: checkoutData?.property_title
                         },
                         property_id: Number(checkoutData?.property_id),
                       }}

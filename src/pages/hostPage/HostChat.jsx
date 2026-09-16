@@ -70,9 +70,16 @@ const HostChat = () => {
   const selectedMsg = location?.state?.selectedReason;
   const senderDetail =
     location?.state?.data?.sender_detail || location?.state?.sender_detail;
+
+  const propertyTitle =
+    senderDetail?.property_title ||
+    location?.state?.data?.property_title ||
+    location?.state?.property_title;
   // console.log(senderDetail, "send details", selectedMsg, "Selected Message**")
   const property_id =
     location?.state?.data?.property_id || location?.state?.property_id;
+  // console.log(property_id, "property_idproperty_idproperty_id");
+
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -120,6 +127,15 @@ const HostChat = () => {
   const [unreadStatus, setUnreadStatus] = useState({});
   const [userStatuses, setUserStatuses] = useState({});
   const [conversationTimestamps, setConversationTimestamps] = useState({});
+
+  const activePropertyTitle =
+    (selectedBooking?.group_name && lastMessages[selectedBooking.group_name]?.propertyTitle) ||
+    (selectedBooking && lastMessages[getBookingChatId(selectedBooking)]?.propertyTitle) ||
+    selectedBooking?.property_title ||
+    channel?.property_title ||
+    channel?.propertyTitle ||
+    propertyTitle ||
+    "";
 
   const scrollToBottom = () => {
     const container = messagesContainerRef.current;
@@ -426,7 +442,7 @@ const HostChat = () => {
 
       const channelKey =
         selectedBooking?.group_name ||
-        `Zyvoo_guest_${Number(guestId)}_host_${Number(hostId)}`;
+        `Zyvoo_guest_${Number(guestId)}_host_${Number(hostId)}_property_${Number(currentPropertyId || 0)}`;
 
       if (channelKey && deletedChannelsRef.current.has(channelKey)) {
         return;
@@ -679,6 +695,7 @@ const HostChat = () => {
   // Filter and sort bookings
   const filteredBookings = useMemo(() => {
     let filtered = getList || [];
+    // console.log(getList, "Get List of the data***");
 
     filtered = filtered.filter(
       (booking) => !booking?.is_deleted && booking?.is_deleted !== 1
@@ -832,6 +849,11 @@ const HostChat = () => {
               }
             }
 
+            const channelPropTitle =
+              channelData.property_title ||
+              channelData.propertyTitle ||
+              "";
+
             messagesData[channelName] = {
               body:
                 lastMsg?.body || lastMsgText || "No messages yet",
@@ -841,6 +863,7 @@ const HostChat = () => {
                   : "N/A",
               unread: isUnread,
               lastMessageDate,
+              propertyTitle: channelPropTitle,
             };
 
             unreadData[channelName] = isUnread;
@@ -1003,6 +1026,8 @@ const HostChat = () => {
       (snapshot) => {
         if (!snapshot.exists()) return;
         const channelData = snapshot.data();
+        const firestorePropTitle =
+          channelData.property_title || channelData.propertyTitle || "";
         const blockedUsers = channelData.blockedUsers || {};
         const blockedBy = channelData.blocked_by || [];
         const mutedBy = channelData.muted_by || [];
@@ -1023,6 +1048,7 @@ const HostChat = () => {
           if (!prev) return prev;
           return {
             ...prev,
+            property_title: firestorePropTitle || prev.property_title,
             is_other_block: isBlockedByOther ? 1 : 0,
             is_blocked: isBlockedByMe ? 1 : prev.is_blocked,
             is_muted: isMutedByMe ? 1 : prev.is_muted,
@@ -1044,7 +1070,8 @@ const HostChat = () => {
   // Realtime listeners for conversation list items
   const getBookingChatId = (booking) => {
     if (booking?.group_name) return booking.group_name;
-    if (!booking?.property_id) return null;
+    if (!booking?.property_id && !property_id) return null;
+    console.log(booking, "check this**");
 
     let guestId;
     let hostId;
@@ -1059,7 +1086,9 @@ const HostChat = () => {
 
     if (!guestId || !hostId) return null;
 
-    return `Zyvoo_guest_${Number(guestId)}_host_${Number(hostId)}`;
+    const propId = Number(booking?.property_id || property_id || 0);
+
+    return `Zyvoo_guest_${Number(guestId)}_host_${Number(hostId)}_property_${propId}`;
   };
 
   useEffect(() => {
@@ -1080,13 +1109,19 @@ const HostChat = () => {
         const channelName = booking.group_name || firebaseChatId;
         const msgText = data.last_message || data.lastMessage || "";
         const msgDate = data.last_message_at?.toDate?.() || data.lastMessageAt?.toDate?.() || null;
+        const propTitle =
+          data.property_title ||
+          data.propertyTitle ||
+          "";
 
         setLastMessages((prev) => ({
           ...prev,
           [channelName]: {
+            ...prev[channelName],
             body: msgText,
             timestamp: msgDate,
             lastMessageDate: msgDate,
+            propertyTitle: propTitle,
           },
         }));
 
@@ -1128,10 +1163,20 @@ const HostChat = () => {
         }
       }
 
-      // Generate unique channel key: Zyvoo_guest_{guestId}_host_{hostId}
+      const currentPropertyTitle =
+        selectedBooking?.property_title ||
+        selectedBooking?.title ||
+        location?.state?.data?.property_title ||
+        location?.state?.property_title ||
+        senderDetail?.property_title ||
+        senderDetail?.title ||
+        propertyTitle ||
+        "";
+
+      // Generate unique channel key: Zyvoo_guest_{guestId}_host_{hostId}_property_{propertyId}
       const channelName =
         selectedBooking?.group_name ||
-        `Zyvoo_guest_${Number(guestId)}_host_${Number(hostId)}`;
+        `Zyvoo_guest_${Number(guestId)}_host_${Number(hostId)}_property_${Number(propertyId || 0)}`;
 
       // Check if room document already exists in Firebase Firestore
       const channelRef = doc(db, "chat_channels", channelName);
@@ -1146,6 +1191,7 @@ const HostChat = () => {
         await setDoc(channelRef, {
           channel_name: channelName,
           property_id: String(propertyId),
+          property_title: String(currentPropertyTitle || ""),
           guest_id: String(guestId),
           host_id: String(hostId),
           participant_ids: [String(guestId), String(hostId)],
@@ -1159,11 +1205,15 @@ const HostChat = () => {
         });
       } else {
         // Room ALREADY exists: Update existing document (Prevents Duplicate Channel Creation in Firebase)
-        await updateDoc(channelRef, {
+        const updatePayload = {
           participant_ids: arrayUnion(String(guestId), String(hostId)),
           participants: arrayUnion(String(guestId), String(hostId)),
           updated_at: serverTimestamp(),
-        });
+        };
+        if (currentPropertyTitle) {
+          updatePayload.property_title = String(currentPropertyTitle);
+        }
+        await updateDoc(channelRef, updatePayload);
       }
 
       // Populate members subcollection for both participants under all doc ID formats (base64 unpadded, base64 padded, raw ID)
@@ -1233,7 +1283,7 @@ const HostChat = () => {
       initializedChannelRef.current ||
       selectedBooking?.group_name ||
       (senderDetail?.user_id && senderDetail?.host_id
-        ? `Zyvoo_guest_${Number(senderDetail.user_id)}_host_${Number(senderDetail.host_id)}`
+        ? `Zyvoo_guest_${Number(senderDetail.user_id)}_host_${Number(senderDetail.host_id)}_property_${Number(property_id || 0)}`
         : null);
 
     if (!channelName) {
@@ -2028,6 +2078,12 @@ const HostChat = () => {
                           {userTypes === "host"
                             ? booking?.sender_name
                             : booking?.receiver_name}
+                          {(lastMessages[booking.group_name]?.propertyTitle ||
+                            lastMessages[getBookingChatId(booking)]?.propertyTitle ||
+                            booking?.property_title ||
+                            booking?.title)
+                            ? ` (${lastMessages[booking.group_name]?.propertyTitle || lastMessages[getBookingChatId(booking)]?.propertyTitle || booking?.property_title || booking?.title})`
+                            : ""}
                           {isMobileWidth && <br />}
                         </Card.Title>
 
@@ -2272,6 +2328,7 @@ const HostChat = () => {
                             {userTypes === "host"
                               ? selectedBooking?.sender_name
                               : selectedBooking?.receiver_name}
+                            {activePropertyTitle ? ` (${activePropertyTitle})` : ""}
                           </h5>
                           <p
                             style={{
@@ -2936,6 +2993,7 @@ const HostChat = () => {
                             {userTypes === "host"
                               ? selectedBooking?.sender_name
                               : selectedBooking?.receiver_name}
+                            {activePropertyTitle ? ` (${activePropertyTitle})` : ""}
                           </h6>
                           <p className="chat-screen-status">
                             {targetUserStatus}
