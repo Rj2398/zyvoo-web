@@ -121,6 +121,29 @@ const HostChat = () => {
 
   const userId = currentUserIdVal ? String(currentUserIdVal) : null;
 
+  const getBookingChatId = (booking) => {
+    if (!booking) return null;
+    if (booking?.group_name) return booking.group_name;
+    if (!booking?.property_id && !property_id) return null;
+
+    let guestId;
+    let hostId;
+
+    if (userTypes === "host") {
+      guestId = booking?.sender_id;
+      hostId = userId;
+    } else {
+      guestId = userId;
+      hostId = booking?.receiver_id || booking?.host_id;
+    }
+
+    if (!guestId || !hostId) return null;
+
+    const propId = Number(booking?.property_id || property_id || 0);
+
+    return `Zyvoo_guest_${Number(guestId)}_host_${Number(hostId)}_property_${propId}`;
+  };
+
   const messagesContainerRef = useRef(null);
 
   const [lastMessages, setLastMessages] = useState({});
@@ -1068,28 +1091,6 @@ const HostChat = () => {
   }, [channel?.channelName, userId]);
 
   // Realtime listeners for conversation list items
-  const getBookingChatId = (booking) => {
-    if (booking?.group_name) return booking.group_name;
-    if (!booking?.property_id && !property_id) return null;
-    console.log(booking, "check this**");
-
-    let guestId;
-    let hostId;
-
-    if (userTypes === "host") {
-      guestId = booking?.sender_id;
-      hostId = userId;
-    } else {
-      guestId = userId;
-      hostId = booking?.receiver_id || booking?.host_id;
-    }
-
-    if (!guestId || !hostId) return null;
-
-    const propId = Number(booking?.property_id || property_id || 0);
-
-    return `Zyvoo_guest_${Number(guestId)}_host_${Number(hostId)}_property_${propId}`;
-  };
 
   useEffect(() => {
     if (!getList?.length || !userId) return;
