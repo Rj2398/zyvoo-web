@@ -109,6 +109,10 @@ const Home = () => {
         user_id: login_id || "",
         latitude: locationClear ? null : currentLocation?.latitude,
         longitude: locationClear ? null : currentLocation?.longitude,
+        is_location_filter_applied: false
+
+        // is_location_filter_applied : locationClear? true : false
+
       });
     } catch (error) {
       console.error("Error fetching guest home data:", error);

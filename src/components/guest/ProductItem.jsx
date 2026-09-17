@@ -86,6 +86,7 @@ const ProductItem = ({
         user_id: login_id ?? "",
         latitude: currentLocation?.latitude,
         longitude: currentLocation?.longitude,
+        is_location_filter_applied: false,
       });
 
       if (res) {

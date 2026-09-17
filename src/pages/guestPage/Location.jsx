@@ -3,6 +3,7 @@ import AuthModal from "../../components/guest/authModal";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useCommon from "../../hooks/useCommon";
 import LocationImagesModal from "../../components/guest/LocationImagesModal";
+import SingleImageModal from "../../components/guest/SingleImageModal";
 import { KEYS, imageBase } from "../../config/Constant";
 import LocationReviewStars from "../../components/guest/LocationReviewStars";
 import CircularSlider from "@fseehawer/react-circular-slider";
@@ -119,6 +120,7 @@ function Location() {
   }, [propertyId]);
 
   const [showPropertyImages, setShowPropertyImages] = useState(false);
+  const [selectedSingleImage, setSelectedSingleImage] = useState(null);
   const [propertyDetails, setPropertyDetails] = useState({});
 
   // console.log("propertyDetails4333434567", propertyDetails?.property_title);
@@ -739,6 +741,11 @@ function Location() {
                           height: "100%",
                           objectFit: "cover",
                           display: "block",
+                          cursor: "pointer",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedSingleImage(`https://zyvo.tgastaging.com/${propertyDetails?.images?.[0]}`);
                         }}
                       />
                     )}
@@ -746,7 +753,6 @@ function Location() {
 
                   <div
                     className="top-grid-images-right"
-                    onClick={() => setShowPropertyImages(true)}
                   >
                     {propertyDetails?.images?.slice(1, 5).map((item, index) => (
                       <img
@@ -754,6 +760,11 @@ function Location() {
                         src={`https://zyvo.tgastaging.com/${item}`}
                         loading="lazy"
                         alt="Main Property"
+                        style={{ cursor: "pointer" }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedSingleImage(`https://zyvo.tgastaging.com/${item}`);
+                        }}
                       />
                     ))}
                   </div>
@@ -2042,6 +2053,12 @@ function Location() {
         show={showPropertyImages}
         handleClose={() => setShowPropertyImages(false)}
         images={propertyDetails?.images}
+      />
+
+      <SingleImageModal
+        show={!!selectedSingleImage}
+        handleClose={() => setSelectedSingleImage(null)}
+        imageSrc={selectedSingleImage}
       />
 
       {showShareModal && (

@@ -5,7 +5,7 @@ import { KEYS } from "../../config/Constant";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
-const ReviewBookingPopup = ({ property_id, booking_id }) => {
+const ReviewBookingPopup = ({ property_id, booking_id, btnStyle }) => {
   const { reviewBooking, reviewGuestBooking, isLoading } = useBook();
   const {userInfo} = useSelector(({user})=>user)
   const userData = JSON.parse(localStorage.getItem(KEYS.USER_INFO))||JSON.parse(sessionStorage.getItem(KEYS.USER_INFO));
@@ -318,6 +318,7 @@ const ReviewBookingPopup = ({ property_id, booking_id }) => {
           width: isMobileWidth ? "auto" : "100%",
           maxWidth: isMobileWidth ? "auto" : "300px",
           height: "fit-content",
+          ...btnStyle,
         }}
       >
         {isLoading

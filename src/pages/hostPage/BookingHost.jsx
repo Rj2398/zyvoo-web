@@ -30,6 +30,7 @@ import Map from "../../components/guest/Map";
 import CancelPopup from "../../components/guest/bookingDetailsModal/CancelPopup";
 import Loader2 from "../../components/Loader2";
 import LocationImagesModal from "../../components/guest/LocationImagesModal";
+import SingleImageModal from "../../components/guest/SingleImageModal";
 import MobFooter from "../../components/MobFooter";
 import locationImg from "../../assets/locationImg.png";
 import { IoSearch } from "react-icons/io5";
@@ -66,6 +67,7 @@ const BookingHost = () => {
   const [showDiv, setShowDiv] = useState(false);
   const [isMessageClick, setIsMessageClick] = useState(false);
   const [showPropertyImages, setShowPropertyImages] = useState(false);
+  const [selectedSingleImage, setSelectedSingleImage] = useState(null);
 
   const [showCancelModal, setShowCancelModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -771,7 +773,7 @@ const BookingHost = () => {
                           height: isMobileWidth ? "80px" : "100px",
                         }}
                       >
-                        <div className="h-100 p-0 border-0 rounded-1">
+                        <div className="h-100 p-0 border-0 rounded-1 position-relative" style={{ position: "relative" }}>
                           <img
                             src={
                               userType === "host"
@@ -798,8 +800,9 @@ const BookingHost = () => {
                                   ? "50%"
                                   : "15px"
                                 : "20px",
-                              width: isMobileWidth ? "70px" : "",
-                              height: isMobileWidth ? "70px" : "",
+                              width: isMobileWidth ? "70px" : "100%",
+                              height: isMobileWidth ? "70px" : "100%",
+                              objectFit: "cover",
                             }}
                             alt={
                               userType === "host"
@@ -808,18 +811,21 @@ const BookingHost = () => {
                             }
                           />
 
-                          {booking?.extension_id && (
+                          {(booking?.extension_id || booking?.is_booking_extended || booking?.pending_extendend_booking) && (
                             <div
                               style={{
                                 position: "absolute",
-                                bottom: "0px",
-                                right: "0px",
+                                bottom: "2px",
+                                right: "2px",
                                 width: "max-content",
                                 height: "max-content",
-                                borderRadius: "50%",
-                                backgroundColor: "#4AEAB1",
-                                padding: "5px",
-                                fontSize: "12px",
+                                borderRadius: "15px",
+                                backgroundColor: "#39E7A5",
+                                color: "#000000",
+                                fontWeight: "600",
+                                padding: "2px 7px",
+                                fontSize: "11px",
+                                zIndex: 3,
                               }}
                             >
                               BTE
@@ -835,11 +841,6 @@ const BookingHost = () => {
                             marginBottom: "5px",
                             wordBreak: "break-word",
                             paddingTop: "5px",
-                            // whiteSpace: "normal",
-                            // overflow: "visible",
-                            // textOverflow: "unset",
-                            // fontWeight: "400",
-                            // color: "#000000",
                           }}
                         >
                           {userType === "host"
@@ -850,29 +851,21 @@ const BookingHost = () => {
                               15
                             ) || "No Name"}
                         </h1>
-                        <h2
-                          style={
-                            {
-                              // fontSize: "16px", color: "#A4A4A4", marginBottom: "15px", fontWeight: "400px"
-                            }
-                          }
-                        >
+                        <h2 style={{ fontSize: "14px", color: "#888888", marginBottom: "8px" }}>
                           {!isMobileWidth && (
                             <span>{booking.booking_date}</span>
                           )}
                         </h2>
                         {userType == "host" &&
                           booking.booking_status == "Pending" ? (
-                          <div style={{ display: "flex", gap: "3px" }}>
-                            {/* {booking.is_approve && ( */}
+                          <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "4px" }}>
                             <button
-                              // className="btn btn-sm btn-success "
                               style={{
-                                borderRadius: "25px",
+                                borderRadius: "20px",
                                 fontWeight: "500",
-                                padding: "5px 15px",
-                                border: "1px solid #00BF7B",
-                                color: "#00BF7B",
+                                padding: "4px 14px",
+                                border: "1.5px solid #20C997",
+                                color: "#20C997",
                                 backgroundColor: "transparent",
                                 cursor: "pointer",
                                 fontSize: "14px",
@@ -884,18 +877,16 @@ const BookingHost = () => {
                             >
                               Approve
                             </button>
-                            {/* )} */}
 
                             <button
-                              // className="btn btn-sm btn-danger"
                               style={{
-                                border: "1px solid #FF1A00",
-                                color: "#FF1A00",
+                                border: "1.5px solid #FF4D4F",
+                                color: "#FF4D4F",
                                 backgroundColor: "transparent",
                                 cursor: "pointer",
-                                borderRadius: "25px",
-                                padding: "5px 15px",
-                                fontWeight: "400",
+                                borderRadius: "20px",
+                                padding: "4px 14px",
+                                fontWeight: "500",
                                 fontSize: "14px",
                               }}
                               onClick={(e) => {
@@ -913,7 +904,7 @@ const BookingHost = () => {
                               backgroundColor:
                                 booking.booking_status?.toLowerCase() ===
                                   "confirmed"
-                                  ? "#85D6FF"
+                                  ? "#70D0FF"
                                   : booking.booking_status?.toLowerCase() ===
                                     "pending"
                                     ? "#ffc107"
@@ -924,12 +915,17 @@ const BookingHost = () => {
                                         "awaiting payment"
                                         ? "#FFF178"
                                         : "#F5F6F6",
-                              fontSize: isMobileWidth ? "12px" : "16px",
-                              // padding: "5px 15px",
-                              // borderRadius: "20px",
-                              // fontWeight: "500",
-                              // color: "#3A4B4C",
-                              // width: "fit-content",
+                              color:
+                                booking.booking_status?.toLowerCase() ===
+                                  "confirmed"
+                                  ? "#0A4E70"
+                                  : "#000000",
+                              fontSize: isMobileWidth ? "12px" : "14px",
+                              borderRadius: "20px",
+                              padding: "4px 16px",
+                              fontWeight: "500",
+                              display: "inline-block",
+                              marginTop: "4px",
                             }}
                           >
                             {booking.booking_status}
@@ -1653,6 +1649,14 @@ const BookingHost = () => {
                             height: "100%",
                             objectFit: "cover",
                             display: "block",
+                            cursor: "pointer",
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const src = userType == "host"
+                              ? (Array.isArray(viewDetails?.images) && viewDetails?.images?.[0] ? imageBase + viewDetails?.images[0] : "")
+                              : (imageBase + viewDetails?.first_property_image);
+                            if (src) setSelectedSingleImage(src);
                           }}
                         />
                       )}
@@ -1660,7 +1664,6 @@ const BookingHost = () => {
 
                   <div
                     className="top-grid-images-right"
-                    onClick={() => setShowPropertyImages(true)}
                   >
                     {userType == "host"
                       ? viewDetails?.images
@@ -1671,6 +1674,11 @@ const BookingHost = () => {
                             src={`https://zyvo.tgastaging.com/${item}`}
                             loading="lazy"
                             alt="Main Property"
+                            style={{ cursor: "pointer" }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedSingleImage(`https://zyvo.tgastaging.com/${item}`);
+                            }}
                           />
                         ))
                       : viewDetails?.property_images
@@ -1681,6 +1689,11 @@ const BookingHost = () => {
                             key={index}
                             loading="lazy"
                             alt="Main Property"
+                            style={{ cursor: "pointer" }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedSingleImage(imageBase + item);
+                            }}
                           />
                         ))}
                   </div>
@@ -1892,28 +1905,6 @@ const BookingHost = () => {
                       >
                         <div className="d-flex align-items-center justify-content-between mb-3">
                           <h5 className="mb-0">Booking Time Extension (BTE)</h5>
-                          {formattedBteStatus && (
-                            <span
-                              className={`badge ${
-                                bteStatus.toLowerCase() === "pending"
-                                  ? "bg-warning text-dark"
-                                  : bteStatus.toLowerCase() === "accepted" ||
-                                    bteStatus.toLowerCase() === "approved" ||
-                                    bteStatus.toLowerCase() === "completed"
-                                  ? "bg-success"
-                                  : "bg-danger"
-                              }`}
-                              style={{
-                                fontSize: "12px",
-                                padding: "6px 12px",
-                                borderRadius: "12px",
-                                textTransform: "capitalize",
-                                fontWeight: "600",
-                              }}
-                            >
-                              {formattedBteStatus}
-                            </span>
-                          )}
                         </div>
                         {isMobileWidth ? (
                           <div className="overflow-auto pb-2">
@@ -2411,91 +2402,206 @@ const BookingHost = () => {
                   </div>
 
                   <hr style={{ height: "auto" }} />
-                  {userType === "host" &&
-                    (selectedBooking?.booking_status === "Awaiting Payment" ||
-                      selectedBooking?.booking_status === "finished") && (
-                      <a
-                        className="review-btn"
-                        style={{
-                          padding: "10px",
-                          marginBottom: "10px",
-                          display: "block",
-                          height: "fit-content",
-                        }}
-                      >
-                        <ReviewBookingPopup
-                          booking_id={selectedBooking?.booking_id}
-                          property_id={propertyId}
-                        />
-                      </a>
-                    )}
-
-                  {userType == "guest" &&
-                    (selectedBooking?.booking_status == "Finished" ? (
-                      <a
-                        className="review-btn"
-                        style={{
-                          padding: "0",
-                          marginBottom: "10px",
-                          display: "block",
-                          height: "fit-content",
-                        }}
-                      >
-                        <ReviewBookingPopup
-                          booking_id={selectedBooking?.booking_id}
-                          property_id={propertyId}
-                        />
-                      </a>
+                  {userType === "host" ? (
+                    selectedBooking?.booking_status === "Pending" ? (
+                      <div style={{ marginTop: "15px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", width: "100%" }}>
+                        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", width: "100%" }}>
+                          <button
+                            style={{
+                              flex: "1",
+                              minWidth: "140px",
+                              backgroundColor: "#3A4B4C",
+                              color: "white",
+                              border: "none",
+                              borderRadius: "12px",
+                              padding: "8px 18px",
+                              fontWeight: "500",
+                              fontSize: "14px",
+                              cursor: "pointer",
+                              whiteSpace: "nowrap",
+                            }}
+                            onClick={() => openApproveDeclineModal("approve", selectedBooking)}
+                          >
+                            Approve Booking
+                          </button>
+                          <button
+                            style={{
+                              flex: "1",
+                              minWidth: "140px",
+                              backgroundColor: "white",
+                              color: "#3A4B4C",
+                              border: "1.5px solid #3A4B4C",
+                              borderRadius: "12px",
+                              padding: "8px 18px",
+                              fontWeight: "500",
+                              fontSize: "14px",
+                              cursor: "pointer",
+                              whiteSpace: "nowrap",
+                            }}
+                            onClick={() => openApproveDeclineModal("decline", selectedBooking)}
+                          >
+                            Decline Booking
+                          </button>
+                        </div>
+                        <div style={{ marginTop: "4px" }}>
+                          <button
+                            style={{
+                              border: "1.5px solid #3A4B4C",
+                              backgroundColor: "white",
+                              color: "#3A4B4C",
+                              borderRadius: "12px",
+                              padding: "8px 24px",
+                              fontWeight: "500",
+                              fontSize: "14px",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              propertyId
+                                ? setShowReportModal(true)
+                                : toast.error("Please select a booking first");
+                            }}
+                          >
+                            Report an Issue
+                          </button>
+                        </div>
+                      </div>
                     ) : (
-                      (viewDetails.status
-                        ? viewDetails.status
-                        : selectedBooking?.booking_status) != "Cancelled" && (
-                        <button
+                      <div style={{ marginTop: "15px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", width: "100%" }}>
+                        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", width: "100%" }}>
+                          <div style={{ flex: "1", minWidth: "140px" }}>
+                            <ReviewBookingPopup
+                              booking_id={selectedBooking?.booking_id}
+                              property_id={propertyId}
+                              btnStyle={{
+                                backgroundColor: "#3A4B4C",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "12px",
+                                padding: "8px 18px",
+                                fontWeight: "500",
+                                fontSize: "14px",
+                                cursor: "pointer",
+                                whiteSpace: "nowrap",
+                                width: "100%",
+                                maxWidth: "none",
+                              }}
+                            />
+                          </div>
+                          <div style={{ flex: "1", minWidth: "140px" }}>
+                            <MessageHost
+                              type="guest"
+                              containerStyle={{ width: "100%" }}
+                              btnStyle={{
+                                backgroundColor: "white",
+                                color: "#3A4B4C",
+                                border: "1.5px solid #3A4B4C",
+                                borderRadius: "12px",
+                                padding: "8px 18px",
+                                fontWeight: "500",
+                                fontSize: "14px",
+                                cursor: "pointer",
+                                whiteSpace: "nowrap",
+                                width: "100%",
+                                marginBottom: "0",
+                              }}
+                              data={{
+                                sender_detail: {
+                                  ...(userInfo || userData),
+                                  host_id: selectedBooking?.host_id,
+                                  property_title: selectedBooking?.property_title,
+                                },
+                                property_id: selectedBooking?.property_id,
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div style={{ marginTop: "4px" }}>
+                          <button
+                            style={{
+                              border: "1.5px solid #3A4B4C",
+                              backgroundColor: "white",
+                              color: "#3A4B4C",
+                              borderRadius: "12px",
+                              padding: "8px 24px",
+                              fontWeight: "500",
+                              fontSize: "14px",
+                              cursor: "pointer",
+                            }}
+                            onClick={() => {
+                              propertyId
+                                ? setShowReportModal(true)
+                                : toast.error("Please select a booking first");
+                            }}
+                          >
+                            Report Violation
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  ) : (
+                    <>
+                      {selectedBooking?.booking_status == "Finished" ? (
+                        <a
+                          className="review-btn"
                           style={{
-                            width: "100%",
-                            padding: "clamp(8px, 1.5vw, 10px)",
-                            borderRadius: "5px",
-                            border: "1px solid black",
-                            marginTop: "3px",
-                            backgroundColor: "white",
+                            padding: "0",
                             marginBottom: "10px",
-                            cursor: "pointer",
+                            display: "block",
+                            height: "fit-content",
                           }}
-                          onClick={handleOpenModal}
                         >
-                          Cancel Booking
-                        </button>
-                      )
-                    ))}
+                          <ReviewBookingPopup
+                            booking_id={selectedBooking?.booking_id}
+                            property_id={propertyId}
+                          />
+                        </a>
+                      ) : (
+                        (viewDetails.status
+                          ? viewDetails.status
+                          : selectedBooking?.booking_status) != "Cancelled" && (
+                          <button
+                            style={{
+                              width: "100%",
+                              padding: "clamp(8px, 1.5vw, 10px)",
+                              borderRadius: "5px",
+                              border: "1px solid black",
+                              marginTop: "3px",
+                              backgroundColor: "white",
+                              marginBottom: "10px",
+                              cursor: "pointer",
+                            }}
+                            onClick={handleOpenModal}
+                          >
+                            Cancel Booking
+                          </button>
+                        )
+                      )}
 
-                  <MessageHost
-                    type={userType === "host" ? "guest" : "host"}
-                    data={{
-                      sender_detail: {
-                        ...(userInfo || userData), // agar user info alag state mein hai, nahi toh isko bhi selectedBooking se le sakte ho
-                        host_id: selectedBooking?.host_id,
-                        property_title: selectedBooking?.property_title,
-                      },
-                      property_id: selectedBooking?.property_id, // ya selectedBooking?.booking_id agar wahi property_id hai
-                    }}
-                  // data={{
-                  //   sender_detail: selectedBooking,
-                  //   property_id: selectedBooking?.booking_id,
-                  //   property_title: selectedBooking?.property_title
-                  // }}
-                  />
+                      <MessageHost
+                        type="host"
+                        data={{
+                          sender_detail: {
+                            ...(userInfo || userData),
+                            host_id: selectedBooking?.host_id,
+                            property_title: selectedBooking?.property_title,
+                          },
+                          property_id: selectedBooking?.property_id,
+                        }}
+                      />
 
-                  <a
-                    href="#"
-                    onClick={() => {
-                      propertyId
-                        ? setShowReportModal(true)
-                        : toast.error("Please select a booking first");
-                    }}
-                    style={{ display: "block", marginBottom: "10px" }}
-                  >
-                    Report Violation
-                  </a>
+                      <a
+                        href="#"
+                        onClick={() => {
+                          propertyId
+                            ? setShowReportModal(true)
+                            : toast.error("Please select a booking first");
+                        }}
+                        style={{ display: "block", marginBottom: "10px" }}
+                      >
+                        Report Violation
+                      </a>
+                    </>
+                  )}
 
                   {showReportModal && (
                     <ReportBookingModal
@@ -2725,6 +2831,12 @@ const BookingHost = () => {
             images={viewDetails?.property_images || viewDetails?.images}
           />
         ))}
+
+      <SingleImageModal
+        show={!!selectedSingleImage}
+        handleClose={() => setSelectedSingleImage(null)}
+        imageSrc={selectedSingleImage}
+      />
 
       <AddToWishlistModal
         wishlistArr={wishlistArr}

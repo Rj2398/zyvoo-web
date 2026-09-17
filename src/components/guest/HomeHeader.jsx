@@ -768,6 +768,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
         ...(login_id ? { user_id: login_id } : {}),
         latitude: null, // 💡 Explicitly passing null to clear backend filter
         longitude: null, // 💡 Explicitly passing null to clear backend filter
+        is_location_filter_applied: false,
       });
       callback(true);
       getSearchLocation(null);
@@ -898,7 +899,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       }
       const response = await guestHomeData({
         location: selectedPlace,
-        date: selectedDate,
+        is_location_filter_applied: Boolean(selectedPlace?.trim?.() ?? selectedPlace),
         hour: hour,
         start_time: start_time,
         end_time: end_time,
@@ -1056,6 +1057,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       user_id: login_id ?? "",
       latitude: currentLocation?.latitude,
       longitude: currentLocation?.longitude,
+      is_location_filter_applied: false,
     });
     getSearchLocation(null);
     setRemoveFilter(false);

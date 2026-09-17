@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { KEYS } from "../../../config/Constant";
 import { forEach } from "rsuite/esm/internals/utils/ReactChildren";
 
-const MessageHost = ({ type, data, handleMsgClick }) => {
+const MessageHost = ({ type, data, handleMsgClick, btnStyle, containerStyle }) => {
   // console.log("******redirected data", data);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
@@ -49,6 +49,7 @@ const MessageHost = ({ type, data, handleMsgClick }) => {
         textAlign: "center",
         width: isMobileWidth ? "57%" : "100%",
         fontSize: isMobileWidth ? "14px" : "",
+        ...containerStyle,
       }}
     >
       <button
@@ -68,6 +69,7 @@ const MessageHost = ({ type, data, handleMsgClick }) => {
           marginBottom: "10px",
           width: isMobileWidth && userType ? "90%" : "100%",
           position: "relative",
+          ...btnStyle,
         }}
       >
         Message the {`${type?.charAt(0)?.toUpperCase() + type?.slice(1)}`}

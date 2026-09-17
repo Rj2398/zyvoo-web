@@ -18,7 +18,7 @@ export const commonSlice = createSlice({
   },
 });
 
-export const { 
+export const {
   setGuestHome,
   setGuestWishlistData,
 } = commonSlice.actions;
