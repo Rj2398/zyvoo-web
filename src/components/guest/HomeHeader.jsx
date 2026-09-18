@@ -503,9 +503,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
         let min = parseFloat(response.data.minimum_price);
         let max = parseFloat(response.data.maximum_price);
         if (isNaN(min)) min = 0;
-        if (isNaN(max) || max <= min) {
-          max = Math.max(2000, min + 100);
-        }
+        if (isNaN(max)) max = 0;
         setValues([min, max]);
         setRangeValue({ min: min, max: max });
       }
@@ -3652,23 +3650,26 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
 
               {(() => {
                 const safeMin = Number.isFinite(RangeValue?.min) ? RangeValue.min : 0;
-                let safeMax = Number.isFinite(RangeValue?.max) ? RangeValue.max : 2000;
-                if (safeMax <= safeMin) {
-                  safeMax = Math.max(2000, safeMin + 100);
-                }
+                const safeMax = Number.isFinite(RangeValue?.max) ? RangeValue.max : 2000;
+
+                // Internal bounds for <Range> component strictly requiring min < max
+                const rangeComponentMin = safeMin;
+                const rangeComponentMax = safeMax > safeMin ? safeMax : safeMin + 1;
+                const denominator = rangeComponentMax - rangeComponentMin;
 
                 const currentVal0 = Number.isFinite(values?.[0]) ? values[0] : safeMin;
                 const currentVal1 = Number.isFinite(values?.[1]) ? values[1] : safeMax;
 
                 const safeValues = [
-                  Math.max(safeMin, Math.min(currentVal0, safeMax)),
-                  Math.max(safeMin, Math.min(currentVal1, safeMax)),
+                  Math.max(rangeComponentMin, Math.min(currentVal0, rangeComponentMax)),
+                  Math.max(rangeComponentMin, Math.min(currentVal1, rangeComponentMax)),
                 ];
                 if (safeValues[0] > safeValues[1]) {
                   safeValues[0] = safeValues[1];
                 }
 
-                const denominator = safeMax - safeMin;
+                const displayMin = Number.isFinite(values?.[0]) ? values[0] : safeMin;
+                const displayMax = Number.isFinite(values?.[1]) ? values[1] : safeMax;
 
                 return (
                   <>
@@ -3688,7 +3689,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         <div
                           className="position-absolute top-0 start-0 h-100"
                           style={{
-                            width: `${((safeValues[0] - safeMin) / denominator) * 100}%`,
+                            width: `${((safeValues[0] - rangeComponentMin) / denominator) * 100}%`,
                             background: "#fff",
                             opacity: 0.8,
                             pointerEvents: "none",
@@ -3699,7 +3700,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         <div
                           className="position-absolute top-0 end-0 h-100"
                           style={{
-                            width: `${(1 - (safeValues[1] - safeMin) / denominator) * 100}%`,
+                            width: `${(1 - (safeValues[1] - rangeComponentMin) / denominator) * 100}%`,
                             background: "#fff",
                             opacity: 0.8,
                             pointerEvents: "none",
@@ -3710,8 +3711,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                       <div className="w-100">
                         <Range
                           step={1}
-                          min={safeMin}
-                          max={safeMax}
+                          min={rangeComponentMin}
+                          max={rangeComponentMax}
                           values={safeValues}
                           onChange={(newValues) => setValues(newValues)}
                           renderTrack={({ props, children }) => (
@@ -3722,10 +3723,10 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                                 height: "6px",
                                 borderRadius: "3px",
                                 background: `linear-gradient(to right,
-                                  #007bff ${((safeValues[0] - safeMin) / denominator) * 100}%,
-                                  #000 ${((safeValues[0] - safeMin) / denominator) * 100}%,
-                                  #000 ${((safeValues[1] - safeMin) / denominator) * 100}%,
-                                  #007bff ${((safeValues[1] - safeMin) / denominator) * 100}%
+                                  #007bff ${((safeValues[0] - rangeComponentMin) / denominator) * 100}%,
+                                  #000 ${((safeValues[0] - rangeComponentMin) / denominator) * 100}%,
+                                  #000 ${((safeValues[1] - rangeComponentMin) / denominator) * 100}%,
+                                  #007bff ${((safeValues[1] - rangeComponentMin) / denominator) * 100}%
                                 )`,
                               }}
                             >
@@ -3770,7 +3771,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                           <Form.Control
                             disabled
                             type="text"
-                            value={`$${safeValues[0]}`}
+                            value={`$${displayMin}`}
                             onChange={(e) => {
                               const val = Number(
                                 e.target.value.replace(/[^0-9]/g, "")
@@ -3812,7 +3813,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                           <Form.Control
                             disabled
                             type="text"
-                            value={`$${safeValues[1]}`}
+                            value={`$${displayMax}`}
                             onChange={(e) => {
                               const val = Number(
                                 e.target.value.replace(/[^0-9]/g, "")
