@@ -102,11 +102,11 @@ const Feedback = () => {
         <div>
           <h3 className="feedback-title">Share Feedback</h3>
 
-          {!isMobileWidth && (
+          {/* {!isMobileWidth && (
             <p style={{ fontSize: "12px", color: "gray" }}>
               Last Updated 07/04/2024
             </p>
-          )}
+          )} */}
         </div>
 
         {!isMobileWidth && (

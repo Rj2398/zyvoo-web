@@ -842,7 +842,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       return;
     }
 
-    let updatedDate = new Date(newDate); // Clone the base date
+    let updatedDate = new Date(newDate); // Clone the base date₹
 
     // Handle date rollover (if toTime is before fromTime)
     if (
