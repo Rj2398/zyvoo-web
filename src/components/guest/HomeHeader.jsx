@@ -101,7 +101,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   const [fromTime, setFromTime] = useState("");
   const [isHovered1, setIsHovered1] = useState(false);
   const [toTime, setToTime] = useState("");
-  console.log(toTime, "ToTime****", fromTime, "FromTime****");
+  // console.log(toTime, "ToTime****", fromTime, "FromTime****");
 
   const [hour, setHour] = useState("");
   const [sliderValue, setSliderValue] = useState(hour || 2);
@@ -466,10 +466,10 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [selectedValue, setSelectedValue] = useState("any_type");
   const [showMoreLanguages, setShowMoreLanguages] = useState(false);
-  const [values, setValues] = useState([]); // "Min" and Max values
+  const [values, setValues] = useState([0, 2000]); // "Min" and Max values
   const [RangeValue, setRangeValue] = useState({
-    min: null,
-    max: null,
+    min: 0,
+    max: 2000,
   });
 
   const [togglesBooking, setTogglesBooking] = useState([
@@ -500,15 +500,18 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
     try {
       const response = await getPropertyPriceRange();
       if (response.success && response.data) {
-        const min = parseFloat(response.data.minimum_price);
-        const max = parseFloat(response.data.maximum_price);
+        let min = parseFloat(response.data.minimum_price);
+        let max = parseFloat(response.data.maximum_price);
+        if (isNaN(min)) min = 0;
+        if (isNaN(max) || max <= min) {
+          max = Math.max(2000, min + 100);
+        }
         setValues([min, max]);
         setRangeValue({ min: min, max: max });
-        // setValues([0, 2000]);
-        // setRangeValue({ min: 0, max: 2000 });
       }
     } catch (error) {
       setRangeValue({ min: 0, max: 2000 });
+      setValues([0, 2000]);
       console.error("Failed to fetch price range:", error);
     }
   };
@@ -3647,220 +3650,199 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                 Hourly prices before fees and taxes
               </p>
 
-              <Container className="d-flex flex-column align-items-center w-100">
-                <div
-                  className="d-flex w-100 justify-content-center position-relative"
-                  style={{ marginBottom: "-2px" }}
-                >
-                  <Image
-                    src="/images/filters/price-range.svg"
-                    alt="Price Range"
-                    className="w-100"
-                    fluid
-                  />
+              {(() => {
+                const safeMin = Number.isFinite(RangeValue?.min) ? RangeValue.min : 0;
+                let safeMax = Number.isFinite(RangeValue?.max) ? RangeValue.max : 2000;
+                if (safeMax <= safeMin) {
+                  safeMax = Math.max(2000, safeMin + 100);
+                }
 
-                  {/* LEFT OVERLAY */}
-                  <div
-                    className="position-absolute top-0 start-0 h-100"
-                    style={{
-                      width: `${((values[0] - (RangeValue?.min ?? 0)) /
-                        ((RangeValue?.max ?? 2000) -
-                          (RangeValue?.min ?? 0))) *
-                        100
-                        }%`,
-                      background: "#fff",
-                      opacity: 0.8,
-                      pointerEvents: "none",
-                    }}
-                  />
+                const currentVal0 = Number.isFinite(values?.[0]) ? values[0] : safeMin;
+                const currentVal1 = Number.isFinite(values?.[1]) ? values[1] : safeMax;
 
-                  {/* RIGHT OVERLAY */}
-                  <div
-                    className="position-absolute top-0 end-0 h-100"
-                    style={{
-                      width: `${(1 -
-                        (values[1] - (RangeValue?.min ?? 0)) /
-                        ((RangeValue?.max ?? 2000) -
-                          (RangeValue?.min ?? 0))) *
-                        100
-                        }%`,
-                      background: "#fff",
-                      opacity: 0.8,
-                      pointerEvents: "none",
-                    }}
-                  />
-                </div>
+                const safeValues = [
+                  Math.max(safeMin, Math.min(currentVal0, safeMax)),
+                  Math.max(safeMin, Math.min(currentVal1, safeMax)),
+                ];
+                if (safeValues[0] > safeValues[1]) {
+                  safeValues[0] = safeValues[1];
+                }
 
-                <div className="w-100">
-                  <Range
-                    step={1}
-                    min={RangeValue?.min}
-                    max={RangeValue?.max}
-                    values={[
-                      values[0] >= (RangeValue?.min ?? 0)
-                        ? values[0]
-                        : RangeValue?.min ?? 0,
-                      values[1] <= (RangeValue?.max ?? 2000)
-                        ? values[1]
-                        : RangeValue?.max ?? 2000,
-                    ]}
-                    onChange={(newValues) => setValues(newValues)}
-                    renderTrack={({ props, children }) => (
+                const denominator = safeMax - safeMin;
+
+                return (
+                  <>
+                    <Container className="d-flex flex-column align-items-center w-100">
                       <div
-                        {...props}
-                        style={{
-                          ...props.style,
-                          height: "6px",
-                          borderRadius: "3px",
-                          background: `linear-gradient(to right,
-                            #007bff ${((values[0] - (RangeValue?.min ?? 0)) /
-                              ((RangeValue?.max ?? 2000) -
-                                (RangeValue?.min ?? 0))) *
-                            100
-                            }%,
-                            #000 ${((values[0] - (RangeValue?.min ?? 0)) /
-                              ((RangeValue?.max ?? 2000) -
-                                (RangeValue?.min ?? 0))) *
-                            100
-                            }%,
-                            #000 ${((values[1] - (RangeValue?.min ?? 0)) /
-                              ((RangeValue?.max ?? 2000) -
-                                (RangeValue?.min ?? 0))) *
-                            100
-                            }%,
-                            #007bff ${((values[1] - (RangeValue?.min ?? 0)) /
-                              ((RangeValue?.max ?? 2000) -
-                                (RangeValue?.min ?? 0))) *
-                            100
-                            }%
-                          )`,
-                        }}
+                        className="d-flex w-100 justify-content-center position-relative"
+                        style={{ marginBottom: "-2px" }}
                       >
-                        {children}
+                        <Image
+                          src="/images/filters/price-range.svg"
+                          alt="Price Range"
+                          className="w-100"
+                          fluid
+                        />
+
+                        {/* LEFT OVERLAY */}
+                        <div
+                          className="position-absolute top-0 start-0 h-100"
+                          style={{
+                            width: `${((safeValues[0] - safeMin) / denominator) * 100}%`,
+                            background: "#fff",
+                            opacity: 0.8,
+                            pointerEvents: "none",
+                          }}
+                        />
+
+                        {/* RIGHT OVERLAY */}
+                        <div
+                          className="position-absolute top-0 end-0 h-100"
+                          style={{
+                            width: `${(1 - (safeValues[1] - safeMin) / denominator) * 100}%`,
+                            background: "#fff",
+                            opacity: 0.8,
+                            pointerEvents: "none",
+                          }}
+                        />
                       </div>
-                    )}
-                    renderThumb={({ props }) => (
-                      <div
-                        {...props}
-                        style={{
-                          ...props.style,
-                          height: isMobileWidth ? "20px" : "30px",
-                          width: isMobileWidth ? "20px" : "30px",
-                          background: "#fff",
-                          border: "2px solid #E2E2E2",
-                          borderRadius: "50%",
-                        }}
-                      />
-                    )}
-                  />
-                </div>
-              </Container>
 
-              {/* INPUTS */}
-              <div
-                className="d-flex justify-content-between align-items-center pt-4"
-                style={{ gap: isMobileWidth && "10px" }}
-              >
-                <Form.Group className="w-50">
-                  <div
-                    style={{
-                      border: "1px solid #B1B1B1",
-                      borderRadius: "10px",
-                      padding: "3px 10px",
-                    }}
-                  >
-                    <Form.Label className="max-min-label">Minimum</Form.Label>
-                    <Form.Control
-                      disabled
-                      type="text"
-                      value={`$${values[0]}`}
-                      onChange={(e) => {
-                        const val = Number(
-                          e.target.value.replace(/[^0-9]/g, "")
-                        );
-                        setValues([
-                          Math.max(
-                            RangeValue?.min ?? 0,
-                            Math.min(val, values[1])
-                          ),
-                          values[1],
-                        ]);
-                      }}
-                      //style={{
-                      //outline: "none",
-                      //border: "none",
-                      //padding: 0,
-                      //boxShadow: "none",
-                      //color: "black",
-                      //fontSize: isMobileWidth && "15px",
-                      //}}
+                      <div className="w-100">
+                        <Range
+                          step={1}
+                          min={safeMin}
+                          max={safeMax}
+                          values={safeValues}
+                          onChange={(newValues) => setValues(newValues)}
+                          renderTrack={({ props, children }) => (
+                            <div
+                              {...props}
+                              style={{
+                                ...props.style,
+                                height: "6px",
+                                borderRadius: "3px",
+                                background: `linear-gradient(to right,
+                                  #007bff ${((safeValues[0] - safeMin) / denominator) * 100}%,
+                                  #000 ${((safeValues[0] - safeMin) / denominator) * 100}%,
+                                  #000 ${((safeValues[1] - safeMin) / denominator) * 100}%,
+                                  #007bff ${((safeValues[1] - safeMin) / denominator) * 100}%
+                                )`,
+                              }}
+                            >
+                              {children}
+                            </div>
+                          )}
+                          renderThumb={({ props }) => {
+                            const { key, ...restProps } = props;
+                            return (
+                              <div
+                                key={key}
+                                {...restProps}
+                                style={{
+                                  ...restProps.style,
+                                  height: isMobileWidth ? "20px" : "30px",
+                                  width: isMobileWidth ? "20px" : "30px",
+                                  background: "#fff",
+                                  border: "2px solid #E2E2E2",
+                                  borderRadius: "50%",
+                                }}
+                              />
+                            );
+                          }}
+                        />
+                      </div>
+                    </Container>
 
-                      style={{
-                        outline: "none",
-                        border: "none",
-                        padding: 0,
-                        boxShadow: "none",
-                        color: "black",
-                        backgroundColor: "white", // keep white background
-                        opacity: 1, // remove faded look
-                        cursor: "default",
-                        fontSize: isMobileWidth ? "15px" : undefined,
-                      }}
-                    />
-                  </div>
-                </Form.Group>
+                    {/* INPUTS */}
+                    <div
+                      className="d-flex justify-content-between align-items-center pt-4"
+                      style={{ gap: isMobileWidth && "10px" }}
+                    >
+                      <Form.Group className="w-50">
+                        <div
+                          style={{
+                            border: "1px solid #B1B1B1",
+                            borderRadius: "10px",
+                            padding: "3px 10px",
+                          }}
+                        >
+                          <Form.Label className="max-min-label">Minimum</Form.Label>
+                          <Form.Control
+                            disabled
+                            type="text"
+                            value={`$${safeValues[0]}`}
+                            onChange={(e) => {
+                              const val = Number(
+                                e.target.value.replace(/[^0-9]/g, "")
+                              );
+                              setValues([
+                                Math.max(
+                                  safeMin,
+                                  Math.min(val, safeValues[1])
+                                ),
+                                safeValues[1],
+                              ]);
+                            }}
+                            style={{
+                              outline: "none",
+                              border: "none",
+                              padding: 0,
+                              boxShadow: "none",
+                              color: "black",
+                              backgroundColor: "white",
+                              opacity: 1,
+                              cursor: "default",
+                              fontSize: isMobileWidth ? "15px" : undefined,
+                            }}
+                          />
+                        </div>
+                      </Form.Group>
 
-                {!isMobileWidth && <Form.Group className="p-3">—</Form.Group>}
+                      {!isMobileWidth && <Form.Group className="p-3">—</Form.Group>}
 
-                <Form.Group className="w-50">
-                  <div
-                    style={{
-                      border: "1px solid #B1B1B1",
-                      borderRadius: "10px",
-                      padding: "3px 10px",
-                    }}
-                  >
-                    <Form.Label className="max-min-label">Maximum</Form.Label>
-                    <Form.Control
-                      disabled
-                      type="text"
-                      value={`$${values[1]}`}
-                      onChange={(e) => {
-                        const val = Number(
-                          e.target.value.replace(/[^0-9]/g, "")
-                        );
-                        setValues([
-                          values[0],
-                          Math.min(
-                            RangeValue?.max ?? 2000,
-                            Math.max(val, values[0])
-                          ),
-                        ]);
-                      }}
-                      // style={{
-                      // outline: "none",
-                      //  border: "none",
-                      //   padding: 0,
-                      //   boxShadow: "none",
-                      //   color: "black",
-                      //   fontSize: isMobileWidth && "15px",
-                      // }}
-
-                      style={{
-                        outline: "none",
-                        border: "none",
-                        padding: 0,
-                        boxShadow: "none",
-                        color: "black",
-                        backgroundColor: "white", // keep white background
-                        opacity: 1, // remove faded look
-                        cursor: "default",
-                        fontSize: isMobileWidth ? "15px" : undefined,
-                      }}
-                    />
-                  </div>
-                </Form.Group>
-              </div>
+                      <Form.Group className="w-50">
+                        <div
+                          style={{
+                            border: "1px solid #B1B1B1",
+                            borderRadius: "10px",
+                            padding: "3px 10px",
+                          }}
+                        >
+                          <Form.Label className="max-min-label">Maximum</Form.Label>
+                          <Form.Control
+                            disabled
+                            type="text"
+                            value={`$${safeValues[1]}`}
+                            onChange={(e) => {
+                              const val = Number(
+                                e.target.value.replace(/[^0-9]/g, "")
+                              );
+                              setValues([
+                                safeValues[0],
+                                Math.min(
+                                  safeMax,
+                                  Math.max(val, safeValues[0])
+                                ),
+                              ]);
+                            }}
+                            style={{
+                              outline: "none",
+                              border: "none",
+                              padding: 0,
+                              boxShadow: "none",
+                              color: "black",
+                              backgroundColor: "white",
+                              opacity: 1,
+                              cursor: "default",
+                              fontSize: isMobileWidth ? "15px" : undefined,
+                            }}
+                          />
+                        </div>
+                      </Form.Group>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
 
             <hr className="homeHeader-modal-hr" />
@@ -3888,10 +3870,10 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                 <Autocomplete
                   apiKey={GOOGLE_KEY}
                   onPlaceSelected={(place) => {
-                    setFilterLocation(place.formatted_address);
-                    if (place.geometry?.location) {
-                      const lat = place.geometry.location.lat();
-                      const lng = place.geometry.location.lng();
+                    setFilterLocation(place?.formatted_address);
+                    if (place?.geometry?.location) {
+                      const lat = place?.geometry?.location?.lat();
+                      const lng = place?.geometry?.location?.lng();
                       setCoordinates({ lat, lng });
                     }
                   }}
