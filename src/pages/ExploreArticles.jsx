@@ -20,16 +20,18 @@ const ExploreArticles = () => {
 
   const { user_fname, user_lname } = location.state || {};
 
-  const type =
+  const [type, setType] = useState(
     location.state?.type ||
-    location.state?.useTypes ||
-    localStorage.getItem("USER_TYPE") ||
-    "guest";
+      location.state?.useTypes ||
+      localStorage.getItem("USER_TYPE") ||
+      "guest"
+  );
   const [filteredArticles1, setFilteredArticles1] = useState([]);
   const { getArticleList } = useCommon();
   const [articleArr, setArticleArr] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileWidth, setIsMobileWidth] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkWindowWidth = () => {
@@ -43,10 +45,17 @@ const ExploreArticles = () => {
   }, []);
 
   const fetchArticles = async () => {
-    const result = await getArticleList({ user_type: type });
-    setArticleArr(result?.data || []);
-    if (searchQuery === "") {
-      setFilteredArticles1(result?.data || []);
+    setLoading(true);
+    try {
+      const result = await getArticleList({ user_type: type });
+      setArticleArr(result?.data || []);
+      if (searchQuery === "") {
+        setFilteredArticles1(result?.data || []);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -482,7 +491,7 @@ const ExploreArticles = () => {
               </Col>
             </Row>
             <Row className="explore-guides-articles-inner mt-4">
-              {filteredArticles1.length > 0 ? (
+              {loading ? null : filteredArticles1.length > 0 ? (
                 filteredArticles1.map((article, index) => (
                   <Col
                     lg={3}

@@ -23,6 +23,7 @@ const ExploreGuides = () => {
   const [filteredGuides1, setFilteredGuides1] = useState([]);
 
   const [isMobileWidth, setIsMobileWidth] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkWindowWidth = () => {
@@ -40,11 +41,18 @@ const ExploreGuides = () => {
   }, [type]);
 
   const fetchGuides = async () => {
-    const result = await getGuideList({ user_type: type });
-    setGuideArr(result.data);
+    setLoading(true);
+    try {
+      const result = await getGuideList({ user_type: type });
+      setGuideArr(result?.data || []);
 
-    if (searchQuery === "") {
-      setFilteredGuides1(result?.data || []);
+      if (searchQuery === "") {
+        setFilteredGuides1(result?.data || []);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -354,7 +362,7 @@ const ExploreGuides = () => {
               </Col>
             </Row>
             <Row className="explore-guides-articles-inner mt-4 guides-container">
-              {filteredGuides1.length > 0 ? (
+              {loading ? null : filteredGuides1.length > 0 ? (
                 filteredGuides1.map((guide, index) => (
                   <>
                     <Col
