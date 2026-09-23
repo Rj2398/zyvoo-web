@@ -59,28 +59,77 @@ const Home = () => {
   // console.log(hasNoLocation, "hasl location ******");
 
   // FIX 1: Track only latitude primitive to prevent recursive evaluation loops
+  // useEffect(() => {
+  //   const getLocation = () => {
+  //     if ("geolocation" in navigator) {
+  //       navigator.geolocation.getCurrentPosition(
+  //         (position) => {
+  //           setCurrentLocation({
+  //             latitude: position.coords.latitude,
+  //             longitude: position.coords.longitude,
+  //           });
+  //         },
+  //         (error) => {
+  //           console.error(error.message);
+  //         }
+  //       );
+  //     } else {
+  //       console.error("Geolocation is not supported by your browser.");
+  //     }
+  //   };
+  //   if (!currentLocation?.latitude) {
+  //     getLocation();
+  //   }
+  // }, [currentLocation?.latitude]);
+
+  //23-09-2026
+
   useEffect(() => {
+    // 1. Pehle localStorage se instant cached location uthao (agar state me nahi hai)
+    if (!currentLocation?.latitude) {
+      const saved = localStorage.getItem("last_known_location");
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (parsed?.latitude && parsed?.longitude) {
+            setCurrentLocation(parsed);
+          }
+        } catch (e) {
+          console.error("Failed to parse cached location", e);
+        }
+      }
+    }
+
     const getLocation = () => {
       if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            setCurrentLocation({
+            const coords = {
               latitude: position.coords.latitude,
               longitude: position.coords.longitude,
-            });
+            };
+            // State update
+            setCurrentLocation(coords);
+            // LocalStorage me persist karein taaki logout/redirect me null na jaye
+            localStorage.setItem("last_known_location", JSON.stringify(coords));
           },
           (error) => {
-            console.error(error.message);
+            console.error("Location error:", error.message);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 300000, // 5 minutes ki cached location use karega (fast response milega)
           }
         );
       } else {
         console.error("Geolocation is not supported by your browser.");
       }
     };
-    if (!currentLocation?.latitude) {
-      getLocation();
-    }
-  }, [currentLocation?.latitude]);
+
+    getLocation();
+  }, []); // Empty dependency array rakhein taaki initial load pe hi execute ho jaye
+
 
   //   useEffect(() => {
   //   if (!("geolocation" in navigator)) return;
