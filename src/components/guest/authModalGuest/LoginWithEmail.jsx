@@ -128,27 +128,28 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
 
       const response = toggleModel
         ? await login_email({
-            rememberMe: rememberMe,
-            payload: { email: data?.email, password: data?.password },
-          })
+          rememberMe: rememberMe,
+          payload: { email: data?.email, password: data?.password },
+        })
         : await signup_email({
-            email: data?.email,
-            password: data?.password,
-            fcm_token: "fg446654g6fdgg",
-            device_type: "web",
-          });
+          email: data?.email,
+          password: data?.password,
+          fcm_token: "fg446654g6fdgg",
+          device_type: "web",
+        });
       if (response) {
         handleClose();
 
         if (toggleModel) {
           navigate("/");
-          window.location.href = "/";
+          // window.location.href = "/";
+          // window.location.reload();
         } else {
           setVerifyModl(true);
           setCreatePassword(data?.password);
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const passwordRegex =
@@ -313,9 +314,8 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                   <style>
                     {` input::placeholder {
                         color: #6e6464ff !important; /* gray placeholder */
-                        font-size: ${
-                          isMobileWidth ? "13px" : "14px"
-                        } !important;
+                        font-size: ${isMobileWidth ? "13px" : "14px"
+                      } !important;
                     }`}
                   </style>
 
@@ -373,9 +373,8 @@ const EmailLoginModal = ({ show, handleClose, toggleModell }) => {
                     {`
                       input::placeholder {
                         color: #6e6464ff !important; /* gray placeholder */
-                        font-size: ${
-                          isMobileWidth ? "13px" : "14px"
-                        } !important;
+                        font-size: ${isMobileWidth ? "13px" : "14px"
+                      } !important;
                       }
                     `}
                   </style>
