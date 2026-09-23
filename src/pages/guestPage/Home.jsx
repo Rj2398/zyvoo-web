@@ -107,8 +107,8 @@ const Home = () => {
     try {
       const res = await guestHomeData({
         user_id: login_id || "",
-        latitude: locationClear ? null : currentLocation?.latitude,
-        longitude: locationClear ? null : currentLocation?.longitude,
+        latitude: locationClear ? currentLocation?.latitude : currentLocation?.latitude,
+        longitude: locationClear ? currentLocation?.longitude : currentLocation?.longitude,
         is_location_filter_applied: false
 
         // is_location_filter_applied : locationClear? true : false

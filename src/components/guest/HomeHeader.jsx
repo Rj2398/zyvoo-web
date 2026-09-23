@@ -775,7 +775,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       });
       callback(true);
       getSearchLocation(null);
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error fetching filtered data:", error);
     }
