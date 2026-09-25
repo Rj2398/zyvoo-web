@@ -133,6 +133,45 @@ export default function Map({ lat, lng, locationImg, bookingData }) {
                 },
               ],
             });
+
+            markerRef.current = new maps.Marker({
+              position: markerPosition,
+              map,
+              title: "Selected Location",
+              draggable: false, // Prevents dragging
+              icon: {
+                url: locationImg || bookingData ? locationImg : markerImage,
+                scaledSize: new window.google.maps.Size(35, 40),
+              },
+            });
+
+            // Initial address fetch only
+            fetchAddress(markerPosition.lat, markerPosition.lng);
+          }}
+          yesIWantToUseGoogleMapApiInternals
+          // REMOVED onClick: now clicking the map will NOT update marker position
+        />
+        {/* <GoogleMapReact
+          bootstrapURLKeys={{ key: "AIzaSyDcDl4RoLc2oLDDpkJqdhWOWHP0B4qBEqk" }}
+          defaultCenter={defaultProps.center}
+          defaultZoom={defaultProps.zoom}
+          onGoogleApiLoaded={({ map, maps }) => {
+            mapRef.current = map;
+            map.setOptions({
+              styles: [
+                { elementType: "labels", stylers: [{ visibility: "off" }] },
+                {
+                  featureType: "road",
+                  elementType: "geometry",
+                  stylers: [{ visibility: "on" }],
+                },
+                { featureType: "poi", stylers: [{ visibility: "off" }] },
+                {
+                  featureType: "administrative",
+                  stylers: [{ visibility: "off" }],
+                },
+              ],
+            });
             markerRef.current = new maps.Marker({
               position: markerPosition,
               map,
@@ -162,7 +201,7 @@ export default function Map({ lat, lng, locationImg, bookingData }) {
               fetchAddress(lat, lng);
             }
           }}
-        />
+        /> */}
 
         {/* Address Box - kept exactly as you had it */}
         {/* code commented by Rajan Malakar 21-07-2026 */}
