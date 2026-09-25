@@ -61,8 +61,8 @@ function Location() {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-      ? String(userData?.user_id)
-      : null;
+    ? String(userData?.user_id)
+    : null;
   // console.log("userData", userData);
 
   const [currentLocation, setCurrentLocation] = useState({
@@ -309,8 +309,9 @@ function Location() {
     } else {
       const days = Math.floor(cancellationTime / 24);
       const hours = cancellationTime % 24;
-      return `Cancel for free within ${days} days${hours > 0 ? ` and ${hours} hour(s)` : ""
-        }`;
+      return `Cancel for free within ${days} days${
+        hours > 0 ? ` and ${hours} hour(s)` : ""
+      }`;
     }
   }
 
@@ -681,11 +682,11 @@ function Location() {
 
                     {(propertyDetails?.is_instant_book ||
                       propertyDetails?.is_instant_book != 0) && (
-                        <li>
-                          {" "}
-                          <i className="fa-solid fa-bolt"></i> Instant book{" "}
-                        </li>
-                      )}
+                      <li>
+                        {" "}
+                        <i className="fa-solid fa-bolt"></i> Instant book{" "}
+                      </li>
+                    )}
 
                     <li className="location-top-share">
                       <a
@@ -723,10 +724,11 @@ function Location() {
                 </div>
 
                 <div
-                  className={`top-grid-images-${propertyDetails?.images?.length > 5
-                    ? 5
-                    : propertyDetails?.images?.length
-                    }`}
+                  className={`top-grid-images-${
+                    propertyDetails?.images?.length > 5
+                      ? 5
+                      : propertyDetails?.images?.length
+                  }`}
                   onClick={() => setShowPropertyImages(true)}
                   style={{ height: isMobileWidth ? "200px" : "450px" }}
                 >
@@ -745,15 +747,15 @@ function Location() {
                         }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedSingleImage(`https://zyvo.tgastaging.com/${propertyDetails?.images?.[0]}`);
+                          setSelectedSingleImage(
+                            `https://zyvo.tgastaging.com/${propertyDetails?.images?.[0]}`
+                          );
                         }}
                       />
                     )}
                   </div>
 
-                  <div
-                    className="top-grid-images-right"
-                  >
+                  <div className="top-grid-images-right">
                     {propertyDetails?.images?.slice(1, 5).map((item, index) => (
                       <img
                         key={index}
@@ -763,7 +765,9 @@ function Location() {
                         style={{ cursor: "pointer" }}
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedSingleImage(`https://zyvo.tgastaging.com/${item}`);
+                          setSelectedSingleImage(
+                            `https://zyvo.tgastaging.com/${item}`
+                          );
                         }}
                       />
                     ))}
@@ -864,7 +868,7 @@ function Location() {
                         id="pills-hourly"
                         role="tabpanel"
                         aria-labelledby="pills-hourly-tab"
-                      // style={{ height: isMobileWidth ? "510px" : "auto" }}
+                        // style={{ height: isMobileWidth ? "510px" : "auto" }}
                       >
                         <div
                           className="hour-slider-wrap"
@@ -1156,7 +1160,7 @@ function Location() {
 
                               handleValidation();
                             }}
-                          // disabled
+                            // disabled
                           >
                             {buttonText}
                           </button>
@@ -1266,7 +1270,7 @@ function Location() {
                             justifyContent: "center",
                             gap: "10px",
                             marginBottom: "20px",
-                            marginTop: "-10px"
+                            marginTop: "-10px",
                           }}
                         >
                           <img
@@ -1296,7 +1300,8 @@ function Location() {
                           >
                             {propertyDetails?.hosted_by}
                           </h2>
-                          {Number(propertyDetails?.reviews_total_rating) > 4 && (
+                          {Number(propertyDetails?.reviews_total_rating) >
+                            4 && (
                             <img
                               className="chat-right-top-batch-image"
                               src="/images/bookings/verify-star.svg"
@@ -1340,7 +1345,7 @@ function Location() {
                             sender_detail: {
                               ...(userInfo || userData),
                               host_id: propertyDetails?.host_id,
-                              property_title: propertyDetails?.property_title
+                              property_title: propertyDetails?.property_title,
                             },
                             property_id: propertyDetails?.property_id,
                           }}
@@ -1360,8 +1365,7 @@ function Location() {
                             src="/images/guides-articles/clock.svg"
                             loading="lazy"
                             alt="Response time"
-                            style={{ marginRight: '10px' }}
-
+                            style={{ marginRight: "10px" }}
                           />
                           <p style={{ margin: 0 }}>
                             Typically respond within 1 hr
@@ -1397,20 +1401,20 @@ function Location() {
 
                     {propertyDetails?.property_description?.split(/\s+/)
                       .length > 100 && (
-                        <button
-                          onClick={() => setIsExpanded(!isExpanded)}
-                          style={{
-                            background: "none",
-                            color: "#5EE6A0",
-                            border: "none",
-                            cursor: "pointer",
-                            textDecoration: "underline",
-                            marginTop: "12px",
-                          }}
-                        >
-                          {isExpanded ? "Read Less" : "Read More"}
-                        </button>
-                      )}
+                      <button
+                        onClick={() => setIsExpanded(!isExpanded)}
+                        style={{
+                          background: "none",
+                          color: "#5EE6A0",
+                          border: "none",
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                          marginTop: "12px",
+                        }}
+                      >
+                        {isExpanded ? "Read Less" : "Read More"}
+                      </button>
+                    )}
                   </div>
 
                   <hr />
@@ -1447,8 +1451,9 @@ function Location() {
                           <div className="accordion-item border rounded mb-2">
                             <h2 className="accordion-header" id="headingOne">
                               <button
-                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"
-                                  }`}
+                                className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                                  open === "collapseOne" ? "" : "collapsed"
+                                }`}
                                 type="button"
                                 onClick={() => toggleAccordion("collapseOne")}
                                 style={{ padding: "12px" }}
@@ -1501,8 +1506,9 @@ function Location() {
                         <div className="accordion-item border rounded mb-2">
                           <h2 className="accordion-header" id="headingTwo">
                             <button
-                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
-                                }`}
+                              className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                                open === "collapseTwo" ? "" : "collapsed"
+                              }`}
                               type="button"
                               onClick={() => toggleAccordion("collapseTwo")}
                               style={{ padding: "12px" }}
@@ -1618,7 +1624,7 @@ function Location() {
                   <div className="location-left">
                     <h5>Address & Location</h5>
                     {!isMobileWidth && (
-                      <p>
+                      <p style={{ pointerEvents: "none", cursor: "default" }}>
                         {" "}
                         <u>{formatAddress(propertyDetails?.address)}</u>{" "}
                       </p>
@@ -1748,8 +1754,8 @@ function Location() {
                             <img
                               src={
                                 item?.profile_image &&
-                                  item?.profile_image !== "undefined" &&
-                                  item?.profile_image !== "null"
+                                item?.profile_image !== "undefined" &&
+                                item?.profile_image !== "null"
                                   ? `${imageBase}${item?.profile_image}`
                                   : defaultContact
                               }
@@ -1883,8 +1889,8 @@ function Location() {
                             <img
                               src={
                                 item?.profile_image &&
-                                  item?.profile_image !== "undefined" &&
-                                  item?.profile_image !== "null"
+                                item?.profile_image !== "undefined" &&
+                                item?.profile_image !== "null"
                                   ? `${imageBase}${item?.profile_image}`
                                   : defaultContact
                               }

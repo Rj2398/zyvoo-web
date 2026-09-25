@@ -1,7 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import markerImage from "../../assets/marker.png";
+const formatAddress = (fullAddress) => {
+  if (!fullAddress) return "";
 
+  // 1. Extract 6-digit PIN code (e.g. 201305)
+  const pinMatch = fullAddress.match(/\b\d{6}\b/);
+  const pin = pinMatch ? pinMatch[0] : "";
+
+  // 2. Remove PIN code and split into parts
+  const cleanAddress = fullAddress.replace(/\b\d{6}\b/, "");
+  const parts = cleanAddress
+    .split(",")
+    .map((p) => p.trim())
+    .filter(
+      (p) =>
+        p.length > 0 &&
+        !/^sector\b/i.test(p) && // Remove Sector
+        p.toLowerCase() !== "india" // Remove country
+    );
+
+  // 3. Take the last two remaining parts (State and City)
+  if (parts.length >= 2) {
+    const state = parts[parts.length - 1];
+    const city = parts[parts.length - 2];
+    return `${city}, ${state}${pin ? ` ${pin}` : ""}`;
+  }
+
+  // Fallback if only 1 part remains
+  if (parts.length === 1) {
+    return `${parts[0]}${pin ? ` ${pin}` : ""}`;
+  }
+
+  return fullAddress;
+};
 export default function Map({ lat, lng, locationImg, bookingData }) {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
@@ -62,11 +94,13 @@ export default function Map({ lat, lng, locationImg, bookingData }) {
           style={{
             marginBottom: "10px",
             textDecoration: "underline",
-            cursor: "pointer",
+            // cursor: "pointer",
+            pointerEvents: "none",
+            cursor: "default",
           }}
           onClick={openGoogleMaps}
         >
-          {address} <br />
+          {formatAddress(address)} <br />
         </div>
       )}
 
