@@ -132,7 +132,6 @@
 
 /* Mobile styles for ArticleDetails */
 @media (max-width: 991px) {
-
   /* Header section */
   .explore-title {
     font-size: 24px !important;
@@ -338,8 +337,8 @@
   }
 
   /* Create a horizontal container for author and share sections */
-  .row>.author-section,
-  .row>.share-section {
+  .row > .author-section,
+  .row > .share-section {
     inline-size: 50% !important;
     max-inline-size: 50% !important;
     flex: 0 0 50% !important;
@@ -830,7 +829,7 @@
   }
 
   /* Fix navigation buttons position */
-  .mob-payment-host .col-lg-3.col-md-6>div {
+  .mob-payment-host .col-lg-3.col-md-6 > div {
     margin-inline-start: 0 !important;
     margin-inline-end: 0 !important;
   }
@@ -1177,6 +1176,20 @@
     margin-right: 10px;
     position: relative;
   }
+}
+
+/* Hide Google Maps logo */
+a[href^="http://maps.google.com/maps"],
+a[href^="https://maps.google.com/maps"],
+a[target="_blank"][href*="google.com/maps"],
+.gm-style-cc {
+  display: none !important;
+}
+
+/* Fallback for the image logo container */
+div[style*="z-index: 1000001"],
+div[aria-label="Google"] {
+  display: none !important;
 }
 
 .text-card {
