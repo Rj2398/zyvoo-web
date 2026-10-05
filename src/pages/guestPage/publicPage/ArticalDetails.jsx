@@ -724,7 +724,11 @@ function GuideDetails() {
             </Row>
 
             {showShareModal && (
-              <ShareModal onClose={() => setShowShareModal(false)} />
+              <ShareModal
+                onClose={() => setShowShareModal(false)}
+                property_id_Share={location.pathname}
+                id={id}
+              />
             )}
           </Container>
         </div>

@@ -1,8 +1,8 @@
 import React from "react";
 import { toast } from "react-toastify";
 
-const ShareModal = ({ onClose, property_id_Share }) => {
-  // console.log(property_id_Share, "property share idddd***");
+const ShareModal = ({ onClose, property_id_Share, id }) => {
+  // console.log(property_id_Share, "property share idddd***", id);
   const backdropStyle = {
     position: "fixed",
     top: 0,
@@ -73,8 +73,8 @@ const ShareModal = ({ onClose, property_id_Share }) => {
 
   const currentUrl = window.location.href;
   // const encodedUrl = encodeURIComponent(currentUrl);
-  const shareUrl = `${window.location.origin}/location/${property_id_Share}`;
-
+  // const shareUrl = `${window.location.origin}/location/${property_id_Share}`;
+  const shareUrl = `${window.location.origin}${property_id_Share}`;
   const icons = [
     {
       label: "Copy Link",
