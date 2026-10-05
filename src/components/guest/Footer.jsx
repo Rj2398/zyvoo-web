@@ -215,10 +215,10 @@ const Footer = () => {
                   }
                 /> */}
 
-                <FooterItem
+                {/* <FooterItem
                   title="Resources"
                   links={[
-                    !userId ? (
+                    false ? (
                       <Link onClick={() => handleModalToggle("register", true)}>
                         Blog Articles
                       </Link>
@@ -237,6 +237,32 @@ const Footer = () => {
                           top: 0,
                           left: 0,
                           behavior: "smooth", // ya "instant"
+                        });
+                      }}
+                    >
+                      Explore Now
+                    </Link>,
+                  ]}
+                /> */}
+
+                <FooterItem
+                  title="Resources"
+                  links={[
+                    <Link
+                      key="blog-articles"
+                      to="/exploreArticles"
+                      state={{ useType, searchText: "Search blogs" }}
+                    >
+                      Blog Articles
+                    </Link>,
+                    <Link
+                      key="explore-now"
+                      to="/homeGuest"
+                      onClick={() => {
+                        window.scrollTo({
+                          top: 0,
+                          left: 0,
+                          behavior: "smooth",
                         });
                       }}
                     >
