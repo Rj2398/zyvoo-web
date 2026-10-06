@@ -1467,7 +1467,7 @@ const BookingHost = () => {
 
                             {hostDiscount > 0 && (
                               <li>
-                                discount
+                                Discount
                                 <span>
                                   -${formatCurrency(hostDiscount)}
                                 </span>
@@ -1544,7 +1544,7 @@ const BookingHost = () => {
 
                             {guestDiscount > 0 && (
                               <li>
-                                discount
+                                Discount
                                 <span>
                                   -$
                                   {formatCurrency(guestDiscount)}
@@ -2844,7 +2844,7 @@ const BookingHost = () => {
 
                       {hostDiscount > 0 && (
                         <li>
-                          discount
+                          Discount
                           <span>-${formatCurrency(hostDiscount)}</span>
                         </li>
                       )}
@@ -2908,7 +2908,7 @@ const BookingHost = () => {
                       )}
                       {guestDiscount > 0 && (
                         <li>
-                          discount
+                          Discount
                           <span>
                             -${formatCurrency(guestDiscount)}
                           </span>

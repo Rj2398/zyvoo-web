@@ -89,8 +89,8 @@ const BookingDetails = () => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
 
   const bookingDetails = details ?? checkoutData;
   const { discount_amountValue } = bookingDetails;
@@ -391,8 +391,8 @@ const BookingDetails = () => {
                       className="chat-right-top-profile-image"
                       src={
                         bookingDetails?.host_profile_image &&
-                        bookingDetails?.host_profile_image !== "undefined" &&
-                        bookingDetails?.host_profile_image !== "null"
+                          bookingDetails?.host_profile_image !== "undefined" &&
+                          bookingDetails?.host_profile_image !== "null"
                           ? imageBase + bookingDetails?.host_profile_image
                           : defaultContact
                       }
@@ -660,7 +660,7 @@ const BookingDetails = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      discount
+                      Discount
                       <span>- ${formatCurrency(discount_amount)}</span>
                     </li>
                   )}
@@ -953,24 +953,24 @@ const BookingDetails = () => {
                   style={
                     isMobileWidth
                       ? {
-                          position: "fixed",
-                          top: 0,
-                          left: 0,
-                          width: "100vw",
-                          height: "100vh",
-                          backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
-                          zIndex: 9998,
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          borderRadius: "10px",
-                        }
+                        position: "fixed",
+                        top: 0,
+                        left: 0,
+                        width: "100vw",
+                        height: "100vh",
+                        backgroundColor: "rgba(0, 0, 0, 0.3)", // ✅ full-page overlay with shadow effect
+                        zIndex: 9998,
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: "10px",
+                      }
                       : {
-                          position: "absolute",
-                          zIndex: 9999,
-                          right: "31%",
-                          top: "55%",
-                        }
+                        position: "absolute",
+                        zIndex: 9999,
+                        right: "31%",
+                        top: "55%",
+                      }
                   }
                 >
                   <div style={{ position: "relative" }}>
@@ -1030,9 +1030,8 @@ const BookingDetails = () => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingOne">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseOne" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion("collapseOne")}
                           style={{
@@ -1094,9 +1093,8 @@ const BookingDetails = () => {
                   <div className="accordion-item border rounded mb-2">
                     <h2 className="accordion-header" id="headingTwo">
                       <button
-                        className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                          open === "collapseTwo" ? "" : "collapsed"
-                        }`}
+                        className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                          }`}
                         type="button"
                         onClick={() => toggleAccordion2("collapseTwo")}
                         style={{
@@ -1292,7 +1290,7 @@ const BookingDetails = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      discount
+                      Discount
                       <span>- ${formatCurrency(discount_amount)}</span>
                     </li>
                   )}
@@ -1427,8 +1425,8 @@ const BookingDetails = () => {
                         className="chat-right-top-profile-image"
                         src={
                           bookingDetails?.host_profile_image &&
-                          bookingDetails?.host_profile_image !== "undefined" &&
-                          bookingDetails?.host_profile_image !== "null"
+                            bookingDetails?.host_profile_image !== "undefined" &&
+                            bookingDetails?.host_profile_image !== "null"
                             ? imageBase + bookingDetails?.host_profile_image
                             : defaultContact
                         }
