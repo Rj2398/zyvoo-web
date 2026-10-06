@@ -76,7 +76,7 @@ const BookingHost = () => {
 
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [viewDetails, setViewDetails] = useState();
-  console.log(viewDetails?.charges, "discusss********");
+  // console.log(viewDetails?.charges, "discusss********");
 
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
@@ -382,60 +382,60 @@ const BookingHost = () => {
   }
 
   const hostBookingAmount =
-    parseFloat(viewDetails?.booking_amount || viewDetails?.charges?.booking_amount) || 0;
+    parseFloat(viewDetails?.charges?.booking_amount ?? viewDetails?.booking_amount) || 0;
   const hostBookingHours =
     Number(
-      viewDetails?.booking_hour ||
-      viewDetails?.booking_hours ||
-      viewDetails?.charges?.booking_hours
+      viewDetails?.charges?.booking_hours ??
+      viewDetails?.booking_hour ??
+      viewDetails?.booking_hours
     ) || 0;
   const hostBulkHours =
     Number(
-      viewDetails?.bulk_discount_hours ||
-      viewDetails?.bulk_discount_hour ||
-      viewDetails?.charges?.bulk_discount_hours ||
-      viewDetails?.charges?.bulk_discount_hour
+      viewDetails?.charges?.bulk_discount_hours ??
+      viewDetails?.charges?.bulk_discount_hour ??
+      viewDetails?.bulk_discount_hours ??
+      viewDetails?.bulk_discount_hour
     ) || 0;
   const hostBulkRate =
     Number(
-      viewDetails?.bulk_discount_rate ||
-      viewDetails?.charges?.bulk_discount_rate
+      viewDetails?.charges?.bulk_discount_rate ??
+      viewDetails?.bulk_discount_rate
     ) || 0;
 
   const hostDiscount =
     hostBulkRate > 0 &&
       (hostBulkHours === 0 || hostBookingHours >= hostBulkHours)
       ? (hostBulkRate / 100) * hostBookingAmount
-      : 0;
+      : (parseFloat(viewDetails?.charges?.discount ?? viewDetails?.discount) || 0);
 
   const hostTotal = Math.max(
     0,
     hostBookingAmount +
-    (parseFloat(viewDetails?.cleaning_fee) || 0) +
-    (parseFloat(viewDetails?.service_fee) || 0) +
-    (parseFloat(viewDetails?.tax) || 0) +
-    (parseFloat(viewDetails?.add_on_total) || 0) -
+    (parseFloat(viewDetails?.charges?.cleaning_fee ?? viewDetails?.cleaning_fee) || 0) +
+    (parseFloat(viewDetails?.charges?.zyvo_service_fee ?? viewDetails?.service_fee) || 0) +
+    (parseFloat(viewDetails?.charges?.taxes ?? viewDetails?.tax) || 0) +
+    (parseFloat(viewDetails?.charges?.add_on_price ?? viewDetails?.add_on_total) || 0) -
     hostDiscount
   );
 
   const guestBookingAmount =
-    parseFloat(viewDetails?.charges?.booking_amount || viewDetails?.booking_amount) || 0;
+    parseFloat(viewDetails?.charges?.booking_amount ?? viewDetails?.booking_amount) || 0;
   const guestBookingHours =
     Number(
-      viewDetails?.charges?.booking_hours ||
-      viewDetails?.booking_hour ||
+      viewDetails?.charges?.booking_hours ??
+      viewDetails?.booking_hour ??
       viewDetails?.booking_hours
     ) || 0;
   const guestBulkHours =
     Number(
-      viewDetails?.charges?.bulk_discount_hours ||
-      viewDetails?.charges?.bulk_discount_hour ||
-      viewDetails?.bulk_discount_hours ||
+      viewDetails?.charges?.bulk_discount_hours ??
+      viewDetails?.charges?.bulk_discount_hour ??
+      viewDetails?.bulk_discount_hours ??
       viewDetails?.bulk_discount_hour
     ) || 0;
   const guestBulkRate =
     Number(
-      viewDetails?.charges?.bulk_discount_rate ||
+      viewDetails?.charges?.bulk_discount_rate ??
       viewDetails?.bulk_discount_rate
     ) || 0;
 
@@ -443,15 +443,15 @@ const BookingHost = () => {
     guestBulkRate > 0 &&
       (guestBulkHours === 0 || guestBookingHours >= guestBulkHours)
       ? (guestBulkRate / 100) * guestBookingAmount
-      : 0;
+      : (parseFloat(viewDetails?.charges?.discount ?? viewDetails?.discount) || 0);
 
   const guestTotal = Math.max(
     0,
     guestBookingAmount +
-    (parseFloat(viewDetails?.charges?.cleaning_fee) || 0) +
-    (parseFloat(viewDetails?.charges?.zyvo_service_fee) || 0) +
-    (parseFloat(viewDetails?.charges?.taxes) || 0) +
-    (parseFloat(viewDetails?.charges?.add_on_price) || 0) -
+    (parseFloat(viewDetails?.charges?.cleaning_fee ?? viewDetails?.cleaning_fee) || 0) +
+    (parseFloat(viewDetails?.charges?.zyvo_service_fee ?? viewDetails?.service_fee) || 0) +
+    (parseFloat(viewDetails?.charges?.taxes ?? viewDetails?.tax) || 0) +
+    (parseFloat(viewDetails?.charges?.add_on_price ?? viewDetails?.add_on_total) || 0) -
     guestDiscount
   );
 
@@ -1461,53 +1461,78 @@ const BookingHost = () => {
                         {userType == "host" ? (
                           <ul style={{ padding: "10px" }}>
                             <li>
-                              {viewDetails?.booking_hour} hours
+                              {viewDetails?.charges?.booking_hours ??
+                                viewDetails?.booking_hour ??
+                                viewDetails?.booking_hours}{" "}
+                              hours
                               <span>
                                 {" "}
                                 ${formatCurrency(
-                                  viewDetails?.booking_amount
+                                  viewDetails?.charges?.booking_amount ??
+                                    viewDetails?.booking_amount
                                 )}{" "}
                               </span>
                             </li>
-                            {viewDetails?.cleaning_fee > 0 && (
+                            {(parseFloat(
+                              viewDetails?.charges?.cleaning_fee ??
+                                viewDetails?.cleaning_fee
+                            ) || 0) > 0 && (
                               <li>
                                 {" "}
                                 Cleaning Fee
                                 <span>
                                   {" "}
                                   ${formatCurrency(
-                                    viewDetails?.cleaning_fee
+                                    viewDetails?.charges?.cleaning_fee ??
+                                      viewDetails?.cleaning_fee
                                   )}{" "}
                                 </span>
                               </li>
                             )}
 
-                            {viewDetails?.service_fee > 0 && (
+                            {(parseFloat(
+                              viewDetails?.charges?.zyvo_service_fee ??
+                                viewDetails?.service_fee
+                            ) || 0) > 0 && (
                               <li>
                                 Zyvo Service Fee
                                 <span>
                                   {" "}
                                   ${formatCurrency(
-                                    viewDetails?.service_fee
+                                    viewDetails?.charges?.zyvo_service_fee ??
+                                      viewDetails?.service_fee
                                   )}{" "}
                                 </span>
                               </li>
                             )}
 
-                            {viewDetails?.tax > 0 && (
+                            {(parseFloat(
+                              viewDetails?.charges?.taxes ??
+                                viewDetails?.tax
+                            ) || 0) > 0 && (
                               <li>
                                 Taxes{" "}
-                                <span>${formatCurrency(viewDetails?.tax)}</span>
+                                <span>
+                                  $
+                                  {formatCurrency(
+                                    viewDetails?.charges?.taxes ??
+                                      viewDetails?.tax
+                                  )}
+                                </span>
                               </li>
                             )}
 
-                            {viewDetails?.add_on_total > 0 && (
+                            {(parseFloat(
+                              viewDetails?.charges?.add_on_price ??
+                                viewDetails?.add_on_total
+                            ) || 0) > 0 && (
                               <li>
                                 Add-on
                                 <span>
                                   {" "}
                                   ${formatCurrency(
-                                    viewDetails?.add_on_total
+                                    viewDetails?.charges?.add_on_price ??
+                                      viewDetails?.add_on_total
                                   )}{" "}
                                 </span>
                               </li>
@@ -2843,40 +2868,78 @@ const BookingHost = () => {
                   {userType == "host" ? (
                     <ul>
                       <li>
-                        {viewDetails?.booking_hour} hours
+                        {viewDetails?.charges?.booking_hours ??
+                          viewDetails?.booking_hour ??
+                          viewDetails?.booking_hours}{" "}
+                        hours
                         <span>
-                          ${formatCurrency(viewDetails?.booking_amount)}
+                          $
+                          {formatCurrency(
+                            viewDetails?.charges?.booking_amount ??
+                              viewDetails?.booking_amount
+                          )}
                         </span>
                       </li>
-                      {viewDetails?.cleaning_fee > 0 && (
+                      {(parseFloat(
+                        viewDetails?.charges?.cleaning_fee ??
+                          viewDetails?.cleaning_fee
+                      ) || 0) > 0 && (
                         <li>
                           Cleaning Fee
                           <span>
-                            ${formatCurrency(viewDetails?.cleaning_fee)}
+                            $
+                            {formatCurrency(
+                              viewDetails?.charges?.cleaning_fee ??
+                                viewDetails?.cleaning_fee
+                            )}
                           </span>
                         </li>
                       )}
 
-                      {viewDetails?.service_fee > 0 && (
+                      {(parseFloat(
+                        viewDetails?.charges?.zyvo_service_fee ??
+                          viewDetails?.service_fee
+                      ) || 0) > 0 && (
                         <li>
                           Zyvo Service Fee
                           <span>
-                            ${formatCurrency(viewDetails?.service_fee)}
+                            $
+                            {formatCurrency(
+                              viewDetails?.charges?.zyvo_service_fee ??
+                                viewDetails?.service_fee
+                            )}
                           </span>
                         </li>
                       )}
 
-                      {viewDetails?.tax > 0 && (
+                      {(parseFloat(
+                        viewDetails?.charges?.taxes ??
+                          viewDetails?.tax
+                      ) || 0) > 0 && (
                         <li>
-                          Taxes <span>${formatCurrency(viewDetails?.tax)}</span>
+                          Taxes{" "}
+                          <span>
+                            $
+                            {formatCurrency(
+                              viewDetails?.charges?.taxes ??
+                                viewDetails?.tax
+                            )}
+                          </span>
                         </li>
                       )}
 
-                      {viewDetails?.add_on_total > 0 && (
+                      {(parseFloat(
+                        viewDetails?.charges?.add_on_price ??
+                          viewDetails?.add_on_total
+                      ) || 0) > 0 && (
                         <li>
                           Add-on
                           <span>
-                            ${formatCurrency(viewDetails?.add_on_total)}
+                            $
+                            {formatCurrency(
+                              viewDetails?.charges?.add_on_price ??
+                                viewDetails?.add_on_total
+                            )}
                           </span>
                         </li>
                       )}
