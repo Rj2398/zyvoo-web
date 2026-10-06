@@ -381,6 +381,16 @@ const BookingHost = () => {
     num.toFixed(1);
   }
 
+  const hostDiscount =
+    parseFloat(viewDetails?.discount) > 0
+      ? parseFloat(viewDetails?.discount)
+      : (parseFloat(viewDetails?.booking_amount) || 0) * 0.2;
+
+  const guestDiscount =
+    parseFloat(viewDetails?.charges?.discount) > 0
+      ? parseFloat(viewDetails?.charges?.discount)
+      : (parseFloat(viewDetails?.charges?.booking_amount) || 0) * 0.2;
+
   const [approveDeclineModal, setApproveDeclineModal] = useState({
     show: false,
     status: null,
@@ -1440,28 +1450,14 @@ const BookingHost = () => {
                               </li>
                             )}
 
-                            {/* {viewDetails?.discount > 0 && (
+                            {hostDiscount > 0 && (
                               <li>
                                 discount
                                 <span>
-                                  {" "}
-                                  -${formatCurrency(viewDetails?.discount)}{" "}
+                                  -${formatCurrency(hostDiscount)}
                                 </span>
                               </li>
-                            )} */}
-
-                            {viewDetails?.charges?.booking_hours > 2 &&
-                              viewDetails?.charges?.discount > 0 && (
-                                <li>
-                                  discount
-                                  <span>
-                                    -$
-                                    {formatCurrency(
-                                      viewDetails?.charges?.discount || 0
-                                    )}
-                                  </span>
-                                </li>
-                              )}
+                            )}
 
                             <li className="total-cost">
                               Total
@@ -1469,7 +1465,12 @@ const BookingHost = () => {
                                 {" "}
                                 ${" "}
                                 {formatCurrency(
-                                  viewDetails?.booking_total_amount
+                                  Math.max(
+                                    0,
+                                    (parseFloat(
+                                      viewDetails?.booking_total_amount
+                                    ) || 0) - hostDiscount
+                                  )
                                 )}{" "}
                               </span>
                             </li>
@@ -1533,30 +1534,26 @@ const BookingHost = () => {
                             {/* )} */}
                             {/* {viewDetails?.charges?.discount > 0 && ( */}
 
-                            {viewDetails?.charges?.discount > 0 && (
+                            {guestDiscount > 0 && (
                               <li>
                                 discount
                                 <span>
                                   -$
-                                  {formatCurrency(
-                                    viewDetails?.charges?.discount || 0
-                                  )}
+                                  {formatCurrency(guestDiscount)}
                                 </span>
                               </li>
                             )}
-                            {/* )} */}
 
                             <li className="total-cost">
-                              11 Total
+                              Total
                               <span>
-                                {/* ${formatCurrency(viewDetails?.charges?.total)} */}
                                 $
                                 {formatCurrency(
-                                  (parseFloat(viewDetails?.charges?.total) ||
-                                    0) -
-                                    (parseFloat(
-                                      viewDetails?.charges?.discount
-                                    ) || 0)
+                                  Math.max(
+                                    0,
+                                    (parseFloat(viewDetails?.charges?.total) ||
+                                      0) - guestDiscount
+                                  )
                                 )}
                               </span>
                             </li>
@@ -2843,28 +2840,24 @@ const BookingHost = () => {
                         </li>
                       )}
 
-                      {viewDetails?.discount == 0 ? (
+                      {hostDiscount > 0 && (
                         <li>
                           discount
-                          <span>-${formatCurrency(viewDetails?.discount)}</span>
-                        </li>
-                      ) : (
-                        <li>
-                          discount
-                          <span>-${formatCurrency(viewDetails?.discount)}</span>
+                          <span>-${formatCurrency(hostDiscount)}</span>
                         </li>
                       )}
 
                       <li className="total-cost">
                         Total
                         <span>
-                          {/* ${formatCurrency(viewDetails?.booking_total_amount)}
-                          
-                          */}
                           $
                           {formatCurrency(
-                            (parseFloat(viewDetails?.booking_total_amount) ||
-                              0) - (parseFloat(viewDetails?.discount) || 0)
+                            Math.max(
+                              0,
+                              (parseFloat(
+                                viewDetails?.booking_total_amount
+                              ) || 0) - hostDiscount
+                            )
                           )}
                         </span>
                       </li>
@@ -2918,21 +2911,11 @@ const BookingHost = () => {
                           </span>
                         </li>
                       )}
-                      {/* {viewDetails?.charges?.booking_hours > 2 &&
-                        viewDetails?.charges?.discount > 0 && (
-                          <li>
-                            discount
-                            <span>
-                              -${formatCurrency(viewDetails?.charges?.discount)}
-                            </span>
-                          </li>
-                        )} */}
-
-                      {Number(viewDetails?.charges?.discount) > 0 && (
+                      {guestDiscount > 0 && (
                         <li>
                           discount
                           <span>
-                            -${formatCurrency(viewDetails?.charges?.discount)}
+                            -${formatCurrency(guestDiscount)}
                           </span>
                         </li>
                       )}
@@ -2942,8 +2925,11 @@ const BookingHost = () => {
                         <span>
                           $
                           {formatCurrency(
-                            (parseFloat(viewDetails?.charges?.total) || 0) -
-                              (parseFloat(viewDetails?.charges?.discount) || 0)
+                            Math.max(
+                              0,
+                              (parseFloat(viewDetails?.charges?.total) || 0) -
+                                guestDiscount
+                            )
                           )}
                         </span>
                       </li>
