@@ -633,11 +633,11 @@ const BookingDetails = () => {
                   >
                     Zyvo Service Fee <span>${formatCurrency(service_fee)}</span>
                   </li>
-                  <li
+                  {/* <li
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     Taxes <span>${formatCurrency(tax)}</span>
-                  </li>
+                  </li> */}
                   {addONs > 0 && (
                     <li
                       style={{
@@ -1263,11 +1263,11 @@ const BookingDetails = () => {
                   >
                     Zyvo Service Fee <span>${formatCurrency(service_fee)}</span>
                   </li>
-                  <li
+                  {/* <li
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     Taxes <span>${formatCurrency(tax)}</span>
-                  </li>
+                  </li> */}
                   {addONs > 0 && (
                     <li
                       style={{

@@ -102,8 +102,8 @@ const Checkout = ({ setExtendedTime }) => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-    ? String(userData?.user_id)
-    : null;
+      ? String(userData?.user_id)
+      : null;
   // console.log(userId, "user id *********");
 
   useEffect(() => {
@@ -511,7 +511,7 @@ const Checkout = ({ setExtendedTime }) => {
     Number(booking_amount || 0) +
     Number(cleaningFee || 0) +
     Number(service_fee || 0) +
-    Number(tax || 0) +
+    // Number(tax || 0) +
     Number(addONs || 0) -
     Number(discount_amount || 0);
 
@@ -894,7 +894,7 @@ const Checkout = ({ setExtendedTime }) => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                  // style={{ minWidth: "320px " }}
+                // style={{ minWidth: "320px " }}
                 >
                   <div
                     style={{
@@ -925,8 +925,8 @@ const Checkout = ({ setExtendedTime }) => {
                         className="chat-right-top-profile-image"
                         src={
                           checkoutData?.host_profile_image &&
-                          checkoutData?.host_profile_image !== "undefined" &&
-                          checkoutData?.host_profile_image !== "null"
+                            checkoutData?.host_profile_image !== "undefined" &&
+                            checkoutData?.host_profile_image !== "null"
                             ? imageBase + checkoutData?.host_profile_image
                             : defaultContact
                         }
@@ -1076,12 +1076,12 @@ const Checkout = ({ setExtendedTime }) => {
                               ${formatCurrency(checkoutData?.service_fee) || 0}
                             </span>
                           </li>
-                          <li>
+                          {/* <li>
                             Taxes{" "}
                             <span>
                               ${formatCurrency(checkoutData?.tax) || 0}
                             </span>
-                          </li>
+                          </li> */}
                           {selectedAddonsPrice > 0 && (
                             <li>
                               Add-on{" "}
@@ -1992,9 +1992,8 @@ const Checkout = ({ setExtendedTime }) => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                              open === "collapseOne" ? "" : " "
-                            }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
+                              }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -2057,9 +2056,8 @@ const Checkout = ({ setExtendedTime }) => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                            open === "collapseTwo" ? "" : "collapsed"
-                          }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
+                            }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
@@ -2199,10 +2197,10 @@ const Checkout = ({ setExtendedTime }) => {
                             ${formatCurrency(checkoutData?.service_fee) || 0}
                           </span>
                         </li>
-                        <li>
+                        {/* <li>
                           Taxes{" "}
                           <span>${formatCurrency(checkoutData?.tax) || 0}</span>
-                        </li>
+                        </li> */}
                         {selectedAddonsPrice > 0 && (
                           <li>
                             Add-on{" "}
@@ -2379,8 +2377,8 @@ const Checkout = ({ setExtendedTime }) => {
                           className="chat-right-top-profile-image"
                           src={
                             checkoutData?.host_profile_image &&
-                            checkoutData?.host_profile_image !== "undefined" &&
-                            checkoutData?.host_profile_image !== "null"
+                              checkoutData?.host_profile_image !== "undefined" &&
+                              checkoutData?.host_profile_image !== "null"
                               ? imageBase + checkoutData?.host_profile_image
                               : defaultContact
                           }
@@ -2520,8 +2518,8 @@ const Checkout = ({ setExtendedTime }) => {
                           className="chat-right-top-profile-image"
                           src={
                             checkoutData?.host_profile_image &&
-                            checkoutData?.host_profile_image !== "undefined" &&
-                            checkoutData?.host_profile_image !== "null"
+                              checkoutData?.host_profile_image !== "undefined" &&
+                              checkoutData?.host_profile_image !== "null"
                               ? imageBase + checkoutData?.host_profile_image
                               : defaultContact
                           }
