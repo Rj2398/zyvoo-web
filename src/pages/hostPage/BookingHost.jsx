@@ -381,15 +381,30 @@ const BookingHost = () => {
     num.toFixed(1);
   }
 
-  const hostDiscount =
-    parseFloat(viewDetails?.discount) > 0
-      ? parseFloat(viewDetails?.discount)
-      : (parseFloat(viewDetails?.booking_amount) || 0) * 0.2;
+  const hostBookingAmount = parseFloat(viewDetails?.booking_amount) || 0;
+  const hostDiscount = hostBookingAmount * 0.2;
+  const hostTotal = Math.max(
+    0,
+    hostBookingAmount +
+      (parseFloat(viewDetails?.cleaning_fee) || 0) +
+      (parseFloat(viewDetails?.service_fee) || 0) +
+      (parseFloat(viewDetails?.tax) || 0) +
+      (parseFloat(viewDetails?.add_on_total) || 0) -
+      hostDiscount
+  );
 
-  const guestDiscount =
-    parseFloat(viewDetails?.charges?.discount) > 0
-      ? parseFloat(viewDetails?.charges?.discount)
-      : (parseFloat(viewDetails?.charges?.booking_amount) || 0) * 0.2;
+  const guestBookingAmount =
+    parseFloat(viewDetails?.charges?.booking_amount) || 0;
+  const guestDiscount = guestBookingAmount * 0.2;
+  const guestTotal = Math.max(
+    0,
+    guestBookingAmount +
+      (parseFloat(viewDetails?.charges?.cleaning_fee) || 0) +
+      (parseFloat(viewDetails?.charges?.zyvo_service_fee) || 0) +
+      (parseFloat(viewDetails?.charges?.taxes) || 0) +
+      (parseFloat(viewDetails?.charges?.add_on_price) || 0) -
+      guestDiscount
+  );
 
   const [approveDeclineModal, setApproveDeclineModal] = useState({
     show: false,
@@ -1464,14 +1479,7 @@ const BookingHost = () => {
                               <span>
                                 {" "}
                                 ${" "}
-                                {formatCurrency(
-                                  Math.max(
-                                    0,
-                                    (parseFloat(
-                                      viewDetails?.booking_total_amount
-                                    ) || 0) - hostDiscount
-                                  )
-                                )}{" "}
+                                {formatCurrency(hostTotal)}{" "}
                               </span>
                             </li>
                           </ul>
@@ -1548,13 +1556,7 @@ const BookingHost = () => {
                               Total
                               <span>
                                 $
-                                {formatCurrency(
-                                  Math.max(
-                                    0,
-                                    (parseFloat(viewDetails?.charges?.total) ||
-                                      0) - guestDiscount
-                                  )
-                                )}
+                                {formatCurrency(guestTotal)}
                               </span>
                             </li>
                           </ul>
@@ -2851,14 +2853,7 @@ const BookingHost = () => {
                         Total
                         <span>
                           $
-                          {formatCurrency(
-                            Math.max(
-                              0,
-                              (parseFloat(
-                                viewDetails?.booking_total_amount
-                              ) || 0) - hostDiscount
-                            )
-                          )}
+                          {formatCurrency(hostTotal)}
                         </span>
                       </li>
                     </ul>
@@ -2924,13 +2919,7 @@ const BookingHost = () => {
                         Total
                         <span>
                           $
-                          {formatCurrency(
-                            Math.max(
-                              0,
-                              (parseFloat(viewDetails?.charges?.total) || 0) -
-                                guestDiscount
-                            )
-                          )}
+                          {formatCurrency(guestTotal)}
                         </span>
                       </li>
                     </ul>
