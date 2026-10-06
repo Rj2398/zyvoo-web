@@ -344,10 +344,17 @@ function Location() {
   const booking_amount = totalPrice; // Assuming totalPrice is the booking amount
   const service_fee = (13 / 100) * totalPrice;
   const tax = (5 / 100) * totalPrice;
+  // const discount_amount =
+  //   hoursValue > propertyDetails?.bulk_discount_hour
+  //     ? (propertyDetails?.bulk_discount_rate / 100) * totalPrice
+  //     : 0;
   const discount_amount =
-    hoursValue > propertyDetails?.bulk_discount_hour
-      ? (propertyDetails?.bulk_discount_rate / 100) * totalPrice
+    Number(propertyDetails?.bulk_discount_hour) > 0 &&
+    Number(hoursValue) >= Number(propertyDetails?.bulk_discount_hour)
+      ? ((Number(propertyDetails?.bulk_discount_rate) || 0) / 100) *
+        (Number(totalPrice) || 0)
       : 0;
+  // console.log(discount_amount, "discont value**");
   const addONs = addOnprice;
   const cleaningFee = parseInt(propertyDetails?.cleaning_fee);
 
@@ -394,6 +401,7 @@ function Location() {
     addOnprice: addOnprice,
     ttlCalPrice: ttlCalPrice,
     distance_miles: propertyDetails?.distance_miles,
+    discount_amountValue: discount_amount,
   };
 
   const handleValidation = async () => {

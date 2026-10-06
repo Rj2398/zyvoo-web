@@ -93,6 +93,7 @@ const Checkout = ({ setExtendedTime }) => {
   const propertyDetails = location.state?.propertyDetails;
   const checkoutData = location.state?.objectTobeNavigated || {};
   const id = checkoutData?.property_id;
+  const { discount_amountValue } = location?.state.objectTobeNavigated;
 
   // console.log(checkoutData, "checkout data********");
   const userData =
@@ -101,10 +102,9 @@ const Checkout = ({ setExtendedTime }) => {
   const userId = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || userData?.user_id
-      ? String(userData?.user_id)
-      : null;
+    ? String(userData?.user_id)
+    : null;
   // console.log(userId, "user id *********");
-
 
   useEffect(() => {
     if (!id) {
@@ -497,7 +497,13 @@ const Checkout = ({ setExtendedTime }) => {
   const booking_amount = Number(checkoutData?.totalPrice);
   const service_fee = checkoutData?.service_fee?.toFixed(2);
   const tax = Number(checkoutData?.tax);
-  const discount_amount = Number(checkoutData?.bulk_discount_rate);
+  // const discount_amount = Number(checkoutData?.bulk_discount_rate);
+
+  const rawDiscount = Number(checkoutData?.bulk_discount_rate);
+
+  const discount_amount =
+    rawDiscount === 0 ? discount_amountValue : rawDiscount;
+  // console.log(discount_amount, "Discount amoutn****", discount_amountValue);
   const addONs = Number(selectedAddonsPrice);
   const cleaningFee = Number(parseInt(checkoutData?.cleaning_fee));
 
@@ -886,10 +892,8 @@ const Checkout = ({ setExtendedTime }) => {
               {isMobileWidth && (
                 <div
                   className="chat-right-bottom bg-white"
-                // style={{ minWidth: "320px " }}
+                  // style={{ minWidth: "320px " }}
                 >
-
-
                   <div
                     style={{
                       display: "flex",
@@ -919,8 +923,8 @@ const Checkout = ({ setExtendedTime }) => {
                         className="chat-right-top-profile-image"
                         src={
                           checkoutData?.host_profile_image &&
-                            checkoutData?.host_profile_image !== "undefined" &&
-                            checkoutData?.host_profile_image !== "null"
+                          checkoutData?.host_profile_image !== "undefined" &&
+                          checkoutData?.host_profile_image !== "null"
                             ? imageBase + checkoutData?.host_profile_image
                             : defaultContact
                         }
@@ -1986,8 +1990,9 @@ const Checkout = ({ setExtendedTime }) => {
                       <div className="accordion-item border rounded mb-2">
                         <h2 className="accordion-header" id="headingOne">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseOne" ? "" : " "
-                              }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                              open === "collapseOne" ? "" : " "
+                            }`}
                             type="button"
                             onClick={() => toggleAccordion("collapseOne")}
                             style={{ padding: "12px" }}
@@ -2050,8 +2055,9 @@ const Checkout = ({ setExtendedTime }) => {
                     <div className="accordion-item border rounded mb-2">
                       <h2 className="accordion-header" id="headingTwo">
                         <button
-                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === "collapseTwo" ? "" : "collapsed"
-                            }`}
+                          className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
+                            open === "collapseTwo" ? "" : "collapsed"
+                          }`}
                           type="button"
                           onClick={() => toggleAccordion2("collapseTwo")}
                           style={{ padding: "12px" }}
@@ -2371,8 +2377,8 @@ const Checkout = ({ setExtendedTime }) => {
                           className="chat-right-top-profile-image"
                           src={
                             checkoutData?.host_profile_image &&
-                              checkoutData?.host_profile_image !== "undefined" &&
-                              checkoutData?.host_profile_image !== "null"
+                            checkoutData?.host_profile_image !== "undefined" &&
+                            checkoutData?.host_profile_image !== "null"
                               ? imageBase + checkoutData?.host_profile_image
                               : defaultContact
                           }
@@ -2455,10 +2461,13 @@ const Checkout = ({ setExtendedTime }) => {
                         style={{ width: "100%", marginBottom: "10px" }}
                         data={{
                           sender_detail: {
-                            access_token: userInfo?.access_token || userData?.access_token,
-                            user_id: Number(userInfo?.user_id ?? userData?.user_id),
+                            access_token:
+                              userInfo?.access_token || userData?.access_token,
+                            user_id: Number(
+                              userInfo?.user_id ?? userData?.user_id
+                            ),
                             host_id: Number(checkoutData?.host_id),
-                            property_title: checkoutData?.property_title
+                            property_title: checkoutData?.property_title,
                           },
                           property_id: Number(checkoutData?.property_id),
                         }}
@@ -2509,8 +2518,8 @@ const Checkout = ({ setExtendedTime }) => {
                           className="chat-right-top-profile-image"
                           src={
                             checkoutData?.host_profile_image &&
-                              checkoutData?.host_profile_image !== "undefined" &&
-                              checkoutData?.host_profile_image !== "null"
+                            checkoutData?.host_profile_image !== "undefined" &&
+                            checkoutData?.host_profile_image !== "null"
                               ? imageBase + checkoutData?.host_profile_image
                               : defaultContact
                           }
@@ -2576,8 +2585,11 @@ const Checkout = ({ setExtendedTime }) => {
                         style={{ width: "100%", marginBottom: "10px" }}
                         data={{
                           sender_detail: {
-                            access_token: userInfo?.access_token || userData?.access_token,
-                            user_id: Number(userInfo?.user_id ?? userData?.user_id),
+                            access_token:
+                              userInfo?.access_token || userData?.access_token,
+                            user_id: Number(
+                              userInfo?.user_id ?? userData?.user_id
+                            ),
                             host_id: Number(checkoutData?.host_id),
                           },
                           property_id: Number(checkoutData?.property_id),
