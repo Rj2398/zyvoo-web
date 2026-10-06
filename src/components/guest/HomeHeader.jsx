@@ -1025,6 +1025,12 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       // ...(coordinates?.lng != null ? {longitude: coordinates?.lng} : {longitude: currentLocation?.longitude}),
       // ...(values[0] != RangeValue?.min && {minimum_price: values[0]}),
       // ...(values[1] != RangeValue?.max && {maximum_price: values[1]}),
+      current_latitude: locationClear
+        ? currentLocation?.latitude
+        : currentLocation?.latitude,
+      current_longitude: locationClear
+        ? currentLocation?.longitude
+        : currentLocation?.longitude,
       user_id: userId,
       ...(selectedValue != "any_type" &&
         selectedValue != "" &&
