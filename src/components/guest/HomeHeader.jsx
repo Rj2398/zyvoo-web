@@ -7,7 +7,11 @@ import Autocomplete from "react-google-autocomplete";
 import { db } from "../../config/firebase";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { GOOGLE_KEY, imageBase, KEYS } from "../../config/Constant";
-import { clearUser, setUserType, setLoginModal } from "../../store/slices/userSlice";
+import {
+  clearUser,
+  setUserType,
+  setLoginModal,
+} from "../../store/slices/userSlice";
 import Constant from "../../config/Constant";
 import Home from "../../pages/guestPage/Home";
 import {
@@ -83,8 +87,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   const login_id = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || localSaved?.user_id
-      ? String(localSaved?.user_id)
-      : null;
+    ? String(localSaved?.user_id)
+    : null;
 
   // const access_token = localSaved?.access_token;
   const access_token = localSaved?.access_token;
@@ -255,7 +259,6 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
     // 2. Saare Auth & User Data storage se saaf
     localStorage.removeItem("SocialLogin");
 
-
     if (KEYS?.USER_INFO) {
       localStorage.removeItem(KEYS.USER_INFO);
       sessionStorage.removeItem(KEYS.USER_INFO);
@@ -372,8 +375,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
             const lastMessageDate = channelData.lastMessageAt?.toDate
               ? channelData.lastMessageAt.toDate()
               : channelData.lastMessageAt
-                ? new Date(channelData.lastMessageAt)
-                : null;
+              ? new Date(channelData.lastMessageAt)
+              : null;
 
             if (!myLastRead) {
               totalUnread++;
@@ -445,7 +448,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
   ];
 
   // Search Query
-  const handleSearchQuery = () => { };
+  const handleSearchQuery = () => {};
 
   const [showMore, setShowMore] = useState(false);
   const [isCleaned, setIsCleaned] = useState(false);
@@ -772,6 +775,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
         latitude: null, // 💡 Explicitly passing null to clear backend filter
         longitude: null, // 💡 Explicitly passing null to clear backend filter
         is_location_filter_applied: false,
+        current_latitude: currentLocation?.latitude,
+        current_longitude: currentLocation?.longitude,
       });
       callback(true);
       getSearchLocation(null);
@@ -867,7 +872,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
 
     // Update display value
     setFlexibleDate(
-      `${formattedDate} | ${updatedFromTime || "Not Selected"} - ${updatedToTime || "Not Selected"
+      `${formattedDate} | ${updatedFromTime || "Not Selected"} - ${
+        updatedToTime || "Not Selected"
       }`
     );
 
@@ -903,7 +909,9 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       }
       const response = await guestHomeData({
         location: selectedPlace,
-        is_location_filter_applied: Boolean(selectedPlace?.trim?.() ?? selectedPlace),
+        is_location_filter_applied: Boolean(
+          selectedPlace?.trim?.() ?? selectedPlace
+        ),
         hour: hour,
         start_time: start_time,
         end_time: end_time || toTime,
@@ -912,6 +920,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
         latitude: coordinates?.lat,
         longitude: coordinates?.lng,
         property_price: filterPrice,
+        current_latitude: currentLocation?.latitude,
+        current_longitude: currentLocation?.longitude,
       });
 
       getSearchLocation(coordinates);
@@ -1019,8 +1029,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       ...(selectedValue != "any_type" &&
         selectedValue != "" &&
         selectedValue != 1 && {
-        place_type: selectedValue == "any_type" ? "" : selectedValue,
-      }),
+          place_type: selectedValue == "any_type" ? "" : selectedValue,
+        }),
       minimum_price: values[0],
       ...(values[1] != RangeValue?.max && { maximum_price: values[1] }),
 
@@ -1062,6 +1072,8 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
       latitude: currentLocation?.latitude,
       longitude: currentLocation?.longitude,
       is_location_filter_applied: false,
+      current_latitude: currentLocation?.latitude,
+      current_longitude: currentLocation?.longitude,
     });
     getSearchLocation(null);
     setRemoveFilter(false);
@@ -1649,7 +1661,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
 
                                           setSelectedPlace(
                                             place.formatted_address ||
-                                            place.name
+                                              place.name
                                           );
 
                                           setCoordinates({ lat, lng });
@@ -1714,7 +1726,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                                   fontWeight: "400",
                                 }}
                                 onClick={handleShow}
-                              // onClick={(e) => e.currentTarget.nextSibling.classList.toggle("show"),} // Open dropdown on click
+                                // onClick={(e) => e.currentTarget.nextSibling.classList.toggle("show"),} // Open dropdown on click
                               >
                                 {"Time"}
                               </Button>
@@ -1881,7 +1893,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                     >
                       <ul
                         className="list-unstyled d-flex mb-0"
-                      // style={{ padding: "10px" }}
+                        // style={{ padding: "10px" }}
                       >
                         <li className="me-3">
                           <Link
@@ -2336,14 +2348,16 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                               src={
                                 profileData?.profileData?.profile_image
                                   ? typeof profileData?.profileData
-                                    ?.profile_image === "object"
-                                    ? `${imageBase +
-                                    profileData?.profileData?.profile_image
-                                      ?.profile_image_url
-                                    }`
-                                    : `${imageBase +
-                                    profileData?.profileData?.profile_image
-                                    }`
+                                      ?.profile_image === "object"
+                                    ? `${
+                                        imageBase +
+                                        profileData?.profileData?.profile_image
+                                          ?.profile_image_url
+                                      }`
+                                    : `${
+                                        imageBase +
+                                        profileData?.profileData?.profile_image
+                                      }`
                                   : "/images/nav-section/user-profile1.png"
                               }
                               alt="User Profile"
@@ -2687,7 +2701,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
     <!-- MAP-BUTTON --> */}
         <div
           className="mob-show-map animate__animated animate__backInUp animate__delay-1s"
-        // onClick={handleShowMap}
+          // onClick={handleShowMap}
         ></div>
         {/* <!-- MAP-BUTTON --> */}
       </header>
@@ -3195,8 +3209,9 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                             transform: "translate3d(0, 0, 0)",
                             backfaceVisibility: "hidden",
                           }}
-                          className={`hide-slider-pulse ${!hasChanged || hour === 0 ? "range-ss" : ""
-                            }`}
+                          className={`hide-slider-pulse ${
+                            !hasChanged || hour === 0 ? "range-ss" : ""
+                          }`}
                           onClick={(e) => {
                             if (
                               e.target.tagName === "circle" &&
@@ -3650,27 +3665,46 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
               </p>
 
               {(() => {
-                const safeMin = Number.isFinite(RangeValue?.min) ? RangeValue.min : 0;
-                const safeMax = Number.isFinite(RangeValue?.max) ? RangeValue.max : 2000;
+                const safeMin = Number.isFinite(RangeValue?.min)
+                  ? RangeValue.min
+                  : 0;
+                const safeMax = Number.isFinite(RangeValue?.max)
+                  ? RangeValue.max
+                  : 2000;
 
                 // Internal bounds for <Range> component strictly requiring min < max
                 const rangeComponentMin = safeMin;
-                const rangeComponentMax = safeMax > safeMin ? safeMax : safeMin + 1;
+                const rangeComponentMax =
+                  safeMax > safeMin ? safeMax : safeMin + 1;
                 const denominator = rangeComponentMax - rangeComponentMin;
 
-                const currentVal0 = Number.isFinite(values?.[0]) ? values[0] : safeMin;
-                const currentVal1 = Number.isFinite(values?.[1]) ? values[1] : safeMax;
+                const currentVal0 = Number.isFinite(values?.[0])
+                  ? values[0]
+                  : safeMin;
+                const currentVal1 = Number.isFinite(values?.[1])
+                  ? values[1]
+                  : safeMax;
 
                 const safeValues = [
-                  Math.max(rangeComponentMin, Math.min(currentVal0, rangeComponentMax)),
-                  Math.max(rangeComponentMin, Math.min(currentVal1, rangeComponentMax)),
+                  Math.max(
+                    rangeComponentMin,
+                    Math.min(currentVal0, rangeComponentMax)
+                  ),
+                  Math.max(
+                    rangeComponentMin,
+                    Math.min(currentVal1, rangeComponentMax)
+                  ),
                 ];
                 if (safeValues[0] > safeValues[1]) {
                   safeValues[0] = safeValues[1];
                 }
 
-                const displayMin = Number.isFinite(values?.[0]) ? values[0] : safeMin;
-                const displayMax = Number.isFinite(values?.[1]) ? values[1] : safeMax;
+                const displayMin = Number.isFinite(values?.[0])
+                  ? values[0]
+                  : safeMin;
+                const displayMax = Number.isFinite(values?.[1])
+                  ? values[1]
+                  : safeMax;
 
                 return (
                   <>
@@ -3690,7 +3724,11 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         <div
                           className="position-absolute top-0 start-0 h-100"
                           style={{
-                            width: `${((safeValues[0] - rangeComponentMin) / denominator) * 100}%`,
+                            width: `${
+                              ((safeValues[0] - rangeComponentMin) /
+                                denominator) *
+                              100
+                            }%`,
                             background: "#fff",
                             opacity: 0.8,
                             pointerEvents: "none",
@@ -3701,7 +3739,12 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         <div
                           className="position-absolute top-0 end-0 h-100"
                           style={{
-                            width: `${(1 - (safeValues[1] - rangeComponentMin) / denominator) * 100}%`,
+                            width: `${
+                              (1 -
+                                (safeValues[1] - rangeComponentMin) /
+                                  denominator) *
+                              100
+                            }%`,
                             background: "#fff",
                             opacity: 0.8,
                             pointerEvents: "none",
@@ -3724,10 +3767,26 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                                 height: "6px",
                                 borderRadius: "3px",
                                 background: `linear-gradient(to right,
-                                  #007bff ${((safeValues[0] - rangeComponentMin) / denominator) * 100}%,
-                                  #000 ${((safeValues[0] - rangeComponentMin) / denominator) * 100}%,
-                                  #000 ${((safeValues[1] - rangeComponentMin) / denominator) * 100}%,
-                                  #007bff ${((safeValues[1] - rangeComponentMin) / denominator) * 100}%
+                                  #007bff ${
+                                    ((safeValues[0] - rangeComponentMin) /
+                                      denominator) *
+                                    100
+                                  }%,
+                                  #000 ${
+                                    ((safeValues[0] - rangeComponentMin) /
+                                      denominator) *
+                                    100
+                                  }%,
+                                  #000 ${
+                                    ((safeValues[1] - rangeComponentMin) /
+                                      denominator) *
+                                    100
+                                  }%,
+                                  #007bff ${
+                                    ((safeValues[1] - rangeComponentMin) /
+                                      denominator) *
+                                    100
+                                  }%
                                 )`,
                               }}
                             >
@@ -3768,7 +3827,9 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                             padding: "3px 10px",
                           }}
                         >
-                          <Form.Label className="max-min-label">Minimum</Form.Label>
+                          <Form.Label className="max-min-label">
+                            Minimum
+                          </Form.Label>
                           <Form.Control
                             disabled
                             type="text"
@@ -3778,10 +3839,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                                 e.target.value.replace(/[^0-9]/g, "")
                               );
                               setValues([
-                                Math.max(
-                                  safeMin,
-                                  Math.min(val, safeValues[1])
-                                ),
+                                Math.max(safeMin, Math.min(val, safeValues[1])),
                                 safeValues[1],
                               ]);
                             }}
@@ -3800,7 +3858,9 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         </div>
                       </Form.Group>
 
-                      {!isMobileWidth && <Form.Group className="p-3">—</Form.Group>}
+                      {!isMobileWidth && (
+                        <Form.Group className="p-3">—</Form.Group>
+                      )}
 
                       <Form.Group className="w-50">
                         <div
@@ -3810,7 +3870,9 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                             padding: "3px 10px",
                           }}
                         >
-                          <Form.Label className="max-min-label">Maximum</Form.Label>
+                          <Form.Label className="max-min-label">
+                            Maximum
+                          </Form.Label>
                           <Form.Control
                             disabled
                             type="text"
@@ -3821,10 +3883,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                               );
                               setValues([
                                 safeValues[0],
-                                Math.min(
-                                  safeMax,
-                                  Math.max(val, safeValues[0])
-                                ),
+                                Math.min(safeMax, Math.max(val, safeValues[0])),
                               ]);
                             }}
                             style={{
@@ -4150,7 +4209,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         className="d-flex flex-wrap filter-radio-custum-text"
                         // Add this - START
                         disabled={isDisabled}
-                      // Add this - END
+                        // Add this - END
                       >
                         {section.options.map((option, idx) => (
                           <ToggleButton
@@ -4172,7 +4231,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                             }}
                             // Add this - START
                             disabled={isDisabled}
-                          // Add this - END
+                            // Add this - END
                           >
                             {option}
                           </ToggleButton>
@@ -4415,7 +4474,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                         : "white",
                       border:
                         selectedActivitiesFilter.includes(activity.name) &&
-                          isMobileWidth
+                        isMobileWidth
                           ? "1px solid blue"
                           : "1px solid #ccc",
                       borderRadius: "12px",
@@ -4507,7 +4566,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                           : "white",
                         border:
                           selectedActivitiesFilter.includes(activity.name) &&
-                            isMobileWidth
+                          isMobileWidth
                             ? "1px solid blue"
                             : "1px solid #ccc",
                         padding: isMobileWidth ? "10px" : "20px",

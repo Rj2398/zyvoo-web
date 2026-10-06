@@ -34,8 +34,8 @@ const Home = () => {
   const login_id = userInfo?.user_id
     ? String(userInfo?.user_id)
     : null || localSaved?.user_id
-      ? String(localSaved?.user_id)
-      : null;
+    ? String(localSaved?.user_id)
+    : null;
   const [useTypes, setUserTypes] = useState(
     localStorage.getItem(KEYS.USER_TYPE)
   );
@@ -130,7 +130,6 @@ const Home = () => {
     getLocation();
   }, []); // Empty dependency array rakhein taaki initial load pe hi execute ho jaye
 
-
   //   useEffect(() => {
   //   if (!("geolocation" in navigator)) return;
 
@@ -156,12 +155,21 @@ const Home = () => {
     try {
       const res = await guestHomeData({
         user_id: login_id || "",
-        latitude: locationClear ? currentLocation?.latitude : currentLocation?.latitude,
-        longitude: locationClear ? currentLocation?.longitude : currentLocation?.longitude,
-        is_location_filter_applied: false
+        latitude: locationClear
+          ? currentLocation?.latitude
+          : currentLocation?.latitude,
+        longitude: locationClear
+          ? currentLocation?.longitude
+          : currentLocation?.longitude,
+        current_latitude: locationClear
+          ? currentLocation?.latitude
+          : currentLocation?.latitude,
+        current_longitude: locationClear
+          ? currentLocation?.longitude
+          : currentLocation?.longitude,
+        is_location_filter_applied: false,
 
         // is_location_filter_applied : locationClear? true : false
-
       });
     } catch (error) {
       console.error("Error fetching guest home data:", error);
@@ -355,7 +363,8 @@ const Home = () => {
 
     // Check if user already acted on the modal for this booking in sessionStorage
     const isHandled = bookingId
-      ? sessionStorage.getItem(`booking_extension_handled_${bookingId}`) === "true"
+      ? sessionStorage.getItem(`booking_extension_handled_${bookingId}`) ===
+        "true"
       : sessionStorage.getItem("booking_extension_handled_global") === "true";
 
     if (currentTotalSeconds === 1800 && !isHandled && !hasHandledModal) {
@@ -394,9 +403,9 @@ const Home = () => {
   const paginatedData = isMobileWidth
     ? localHomeList
     : localHomeList?.slice(
-      (currentPage - 1) * itemsPerPage,
-      currentPage * itemsPerPage
-    );
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+      );
 
   useEffect(() => {
     const checkWindowWidth = () => {
