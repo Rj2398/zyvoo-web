@@ -1533,24 +1533,31 @@ const BookingHost = () => {
                             {/* )} */}
                             {/* {viewDetails?.charges?.discount > 0 && ( */}
 
-                            {viewDetails?.charges?.booking_hours > 2 &&
-                              viewDetails?.charges?.discount > 0 && (
-                                <li>
-                                  discount
-                                  <span>
-                                    -$
-                                    {formatCurrency(
-                                      viewDetails?.charges?.discount || 0
-                                    )}
-                                  </span>
-                                </li>
-                              )}
+                            {viewDetails?.charges?.discount > 0 && (
+                              <li>
+                                discount
+                                <span>
+                                  -$
+                                  {formatCurrency(
+                                    viewDetails?.charges?.discount || 0
+                                  )}
+                                </span>
+                              </li>
+                            )}
                             {/* )} */}
 
                             <li className="total-cost">
                               Total
                               <span>
-                                ${formatCurrency(viewDetails?.charges?.total)}
+                                {/* ${formatCurrency(viewDetails?.charges?.total)} */}
+                                $
+                                {formatCurrency(
+                                  (parseFloat(viewDetails?.charges?.total) ||
+                                    0) -
+                                    (parseFloat(
+                                      viewDetails?.charges?.discount
+                                    ) || 0)
+                                )}
                               </span>
                             </li>
                           </ul>
