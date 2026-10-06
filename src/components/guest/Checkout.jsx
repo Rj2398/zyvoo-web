@@ -654,6 +654,7 @@ const Checkout = ({ setExtendedTime }) => {
               startTime: start_time,
               endTime: end_time,
               checkoutData,
+              discount_amountValue,
             },
           });
         } else {
@@ -753,6 +754,7 @@ const Checkout = ({ setExtendedTime }) => {
               startTime: start_time,
               endTime: end_time,
               checkoutData,
+              discount_amountValue,
             },
           });
 
