@@ -76,7 +76,7 @@ const BookingHost = () => {
 
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [viewDetails, setViewDetails] = useState();
-  // console.log(viewDetails, "discusss********");
+  console.log(viewDetails?.charges, "discusss********");
 
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
@@ -236,23 +236,23 @@ const BookingHost = () => {
   const filteredBookings = useMemo(() => {
     return userType == "host"
       ? getList?.filter((booking) => {
-          const matchesName = booking?.guest_name
-            ?.toLowerCase()
-            .includes(searchQuery?.toLowerCase());
-          const matchesStatus = selectedStatus
-            ? booking?.booking_status == selectedStatus
-            : true;
-          return matchesName && matchesStatus;
-        })
+        const matchesName = booking?.guest_name
+          ?.toLowerCase()
+          .includes(searchQuery?.toLowerCase());
+        const matchesStatus = selectedStatus
+          ? booking?.booking_status == selectedStatus
+          : true;
+        return matchesName && matchesStatus;
+      })
       : getList?.filter((booking) => {
-          const matchesName = booking?.property_name
-            ?.toLowerCase()
-            .includes(searchQuery?.toLowerCase());
-          const matchesStatus = selectedStatus
-            ? booking?.booking_status == selectedStatus
-            : true;
-          return matchesName && matchesStatus;
-        });
+        const matchesName = booking?.property_name
+          ?.toLowerCase()
+          .includes(searchQuery?.toLowerCase());
+        const matchesStatus = selectedStatus
+          ? booking?.booking_status == selectedStatus
+          : true;
+        return matchesName && matchesStatus;
+      });
   }, [getList, searchQuery, selectedStatus, userType]);
 
   const fetchDetailsData = async (bookingData) => {
@@ -369,9 +369,9 @@ const BookingHost = () => {
     return number % 1 === 0
       ? number.toLocaleString("en-IN", { maximumFractionDigits: 0 }) // Integer
       : number.toLocaleString("en-IN", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }); // Decimal
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }); // Decimal
   }
 
   function formatReview(value) {
@@ -381,29 +381,78 @@ const BookingHost = () => {
     num.toFixed(1);
   }
 
-  const hostBookingAmount = parseFloat(viewDetails?.booking_amount) || 0;
-  const hostDiscount = hostBookingAmount * 0.2;
+  const hostBookingAmount =
+    parseFloat(viewDetails?.booking_amount || viewDetails?.charges?.booking_amount) || 0;
+  const hostBookingHours =
+    Number(
+      viewDetails?.booking_hour ||
+      viewDetails?.booking_hours ||
+      viewDetails?.charges?.booking_hours
+    ) || 0;
+  const hostBulkHours =
+    Number(
+      viewDetails?.bulk_discount_hours ||
+      viewDetails?.bulk_discount_hour ||
+      viewDetails?.charges?.bulk_discount_hours ||
+      viewDetails?.charges?.bulk_discount_hour
+    ) || 0;
+  const hostBulkRate =
+    Number(
+      viewDetails?.bulk_discount_rate ||
+      viewDetails?.charges?.bulk_discount_rate
+    ) || 0;
+
+  const hostDiscount =
+    hostBulkRate > 0 &&
+      (hostBulkHours === 0 || hostBookingHours >= hostBulkHours)
+      ? (hostBulkRate / 100) * hostBookingAmount
+      : 0;
+
   const hostTotal = Math.max(
     0,
     hostBookingAmount +
-      (parseFloat(viewDetails?.cleaning_fee) || 0) +
-      (parseFloat(viewDetails?.service_fee) || 0) +
-      (parseFloat(viewDetails?.tax) || 0) +
-      (parseFloat(viewDetails?.add_on_total) || 0) -
-      hostDiscount
+    (parseFloat(viewDetails?.cleaning_fee) || 0) +
+    (parseFloat(viewDetails?.service_fee) || 0) +
+    (parseFloat(viewDetails?.tax) || 0) +
+    (parseFloat(viewDetails?.add_on_total) || 0) -
+    hostDiscount
   );
 
   const guestBookingAmount =
-    parseFloat(viewDetails?.charges?.booking_amount) || 0;
-  const guestDiscount = guestBookingAmount * 0.2;
+    parseFloat(viewDetails?.charges?.booking_amount || viewDetails?.booking_amount) || 0;
+  const guestBookingHours =
+    Number(
+      viewDetails?.charges?.booking_hours ||
+      viewDetails?.booking_hour ||
+      viewDetails?.booking_hours
+    ) || 0;
+  const guestBulkHours =
+    Number(
+      viewDetails?.charges?.bulk_discount_hours ||
+      viewDetails?.charges?.bulk_discount_hour ||
+      viewDetails?.bulk_discount_hours ||
+      viewDetails?.bulk_discount_hour
+    ) || 0;
+  const guestBulkRate =
+    Number(
+      viewDetails?.charges?.bulk_discount_rate ||
+      viewDetails?.bulk_discount_rate
+    ) || 0;
+
+  const guestDiscount =
+    guestBulkRate > 0 &&
+      (guestBulkHours === 0 || guestBookingHours >= guestBulkHours)
+      ? (guestBulkRate / 100) * guestBookingAmount
+      : 0;
+
   const guestTotal = Math.max(
     0,
     guestBookingAmount +
-      (parseFloat(viewDetails?.charges?.cleaning_fee) || 0) +
-      (parseFloat(viewDetails?.charges?.zyvo_service_fee) || 0) +
-      (parseFloat(viewDetails?.charges?.taxes) || 0) +
-      (parseFloat(viewDetails?.charges?.add_on_price) || 0) -
-      guestDiscount
+    (parseFloat(viewDetails?.charges?.cleaning_fee) || 0) +
+    (parseFloat(viewDetails?.charges?.zyvo_service_fee) || 0) +
+    (parseFloat(viewDetails?.charges?.taxes) || 0) +
+    (parseFloat(viewDetails?.charges?.add_on_price) || 0) -
+    guestDiscount
   );
 
   const [approveDeclineModal, setApproveDeclineModal] = useState({
@@ -461,17 +510,17 @@ const BookingHost = () => {
           {/* First Row */}
           <div
             className="mb-4 booking-left-sid-box"
-            // style={{
-            //   width: "100%",
-            //   minWidth: "300px",
-            //   boxSizing: "border-box",
-            //   overflowY: !isMobileWidth &&"auto",
-            //   padding: isMobileWidth ? "0px" : "10px",
-            //   maxWidth: isMobileWidth ? undefined : "380px",
-            //   maxHeight: isMobileWidth ? undefined : "calc(110vh)",
-            //   marginBottom: isMobileWidth ? "0px" : "20px",
-            //   flex: isMobileWidth ? "1 0 100%" : "1 0 400px",
-            //   }}
+          // style={{
+          //   width: "100%",
+          //   minWidth: "300px",
+          //   boxSizing: "border-box",
+          //   overflowY: !isMobileWidth &&"auto",
+          //   padding: isMobileWidth ? "0px" : "10px",
+          //   maxWidth: isMobileWidth ? undefined : "380px",
+          //   maxHeight: isMobileWidth ? undefined : "calc(110vh)",
+          //   marginBottom: isMobileWidth ? "0px" : "20px",
+          //   flex: isMobileWidth ? "1 0 100%" : "1 0 400px",
+          //   }}
           >
             {!isMobileWidth && (
               <>
@@ -750,21 +799,20 @@ const BookingHost = () => {
                       boxSizing: "border-box",
                       backgroundColor:
                         selectedBooking?.booking_id === booking.booking_id &&
-                        selectedBooking?.extension_id == booking?.extension_id
+                          selectedBooking?.extension_id == booking?.extension_id
                           ? "#f0f0f0"
                           : "white",
                       borderColor:
                         selectedBooking?.booking_id === booking.booking_id &&
-                        selectedBooking?.extension_id == booking?.extension_id
+                          selectedBooking?.extension_id == booking?.extension_id
                           ? "#3A4B4C"
                           : "#E4E4E4",
                     }}
-                    className={`chat-list-in nav-link2 ${
-                      selectedBooking?.booking_id === booking.booking_id &&
+                    className={`chat-list-in nav-link2 ${selectedBooking?.booking_id === booking.booking_id &&
                       selectedBooking?.extension_id == booking?.extension_id
-                        ? "active"
-                        : ""
-                    }`}
+                      ? "active"
+                      : ""
+                      }`}
                     id={`v-pills-${index}-tab`}
                     data-bs-toggle="pill"
                     type="button"
@@ -810,8 +858,8 @@ const BookingHost = () => {
                                   ? `${imageBase}${booking.guest_avatar}`
                                   : "https://cvhrma.org/wp-content/uploads/2015/07/default-profile-photo.jpg"
                                 : booking?.property_image
-                                ? `${imageBase}${booking.property_image}`
-                                : "https://he.cecollaboratory.com/public/layouts/images/community-default-logo.png"
+                                  ? `${imageBase}${booking.property_image}`
+                                  : "https://he.cecollaboratory.com/public/layouts/images/community-default-logo.png"
                             }
                             style={{
                               border: isMobileWidth
@@ -843,25 +891,25 @@ const BookingHost = () => {
                           {(booking?.extension_id ||
                             booking?.is_booking_extended ||
                             booking?.pending_extendend_booking) && (
-                            <div
-                              style={{
-                                position: "absolute",
-                                bottom: "2px",
-                                right: "2px",
-                                width: "max-content",
-                                height: "max-content",
-                                borderRadius: "15px",
-                                backgroundColor: "#39E7A5",
-                                color: "#000000",
-                                fontWeight: "600",
-                                padding: "2px 7px",
-                                fontSize: "11px",
-                                zIndex: 3,
-                              }}
-                            >
-                              BTE
-                            </div>
-                          )}
+                              <div
+                                style={{
+                                  position: "absolute",
+                                  bottom: "2px",
+                                  right: "2px",
+                                  width: "max-content",
+                                  height: "max-content",
+                                  borderRadius: "15px",
+                                  backgroundColor: "#39E7A5",
+                                  color: "#000000",
+                                  fontWeight: "600",
+                                  padding: "2px 7px",
+                                  fontSize: "11px",
+                                  zIndex: 3,
+                                }}
+                              >
+                                BTE
+                              </div>
+                            )}
                         </div>
                       </div>
 
@@ -876,11 +924,11 @@ const BookingHost = () => {
                         >
                           {userType === "host"
                             ? truncateText(booking.guest_name?.trim(), 15) ||
-                              "No Name"
+                            "No Name"
                             : truncateText(
-                                booking?.property_name?.trim(),
-                                15
-                              ) || "No Name"}
+                              booking?.property_name?.trim(),
+                              15
+                            ) || "No Name"}
                         </h1>
                         <h2
                           style={{
@@ -894,7 +942,7 @@ const BookingHost = () => {
                           )}
                         </h2>
                         {userType == "host" &&
-                        booking.booking_status == "Pending" ? (
+                          booking.booking_status == "Pending" ? (
                           <div
                             style={{
                               display: "flex",
@@ -947,21 +995,21 @@ const BookingHost = () => {
                             style={{
                               backgroundColor:
                                 booking.booking_status?.toLowerCase() ===
-                                "confirmed"
+                                  "confirmed"
                                   ? "#70D0FF"
                                   : booking.booking_status?.toLowerCase() ===
                                     "pending"
-                                  ? "#ffc107"
-                                  : booking.booking_status?.toLowerCase() ===
-                                    "finished"
-                                  ? "#4AEAB1"
-                                  : booking.booking_status?.toLowerCase() ===
-                                    "awaiting payment"
-                                  ? "#FFF178"
-                                  : "#F5F6F6",
+                                    ? "#ffc107"
+                                    : booking.booking_status?.toLowerCase() ===
+                                      "finished"
+                                      ? "#4AEAB1"
+                                      : booking.booking_status?.toLowerCase() ===
+                                        "awaiting payment"
+                                        ? "#FFF178"
+                                        : "#F5F6F6",
                               color:
                                 booking.booking_status?.toLowerCase() ===
-                                "confirmed"
+                                  "confirmed"
                                   ? "#0A4E70"
                                   : "#000000",
                               fontSize: isMobileWidth ? "12px" : "14px",
@@ -1092,8 +1140,8 @@ const BookingHost = () => {
                                   ? `${imageBase}${selectedBooking?.guest_avatar}`
                                   : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                                 : selectedBooking?.host_image
-                                ? `${imageBase}${selectedBooking?.host_image}`
-                                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                  ? `${imageBase}${selectedBooking?.host_image}`
+                                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                             }
                             loading="lazy"
                             alt="Profile"
@@ -1113,11 +1161,11 @@ const BookingHost = () => {
                           >
                             {userType === "host"
                               ? selectedBooking?.guest_name
-                                  ?.trim()
-                                  .split(" ")[0] + ".." || "No Name"
+                                ?.trim()
+                                .split(" ")[0] + ".." || "No Name"
                               : selectedBooking?.host_name
-                                  ?.trim()
-                                  .split(" ")[0] + ".."}
+                                ?.trim()
+                                .split(" ")[0] + ".."}
                           </h2>
 
                           {userType === "host" ? (
@@ -1197,7 +1245,7 @@ const BookingHost = () => {
                             (selectedBooking?.booking_status ===
                               "Awaiting Payment" ||
                               selectedBooking?.booking_status ===
-                                "finished") && (
+                              "finished") && (
                               <a
                                 className="review-btn"
                                 style={{
@@ -1233,7 +1281,7 @@ const BookingHost = () => {
                             (viewDetails.status
                               ? viewDetails.status
                               : selectedBooking?.booking_status) !=
-                              "Cancelled" && (
+                            "Cancelled" && (
                               <button
                                 style={{
                                   width: "auto",
@@ -1254,7 +1302,7 @@ const BookingHost = () => {
                           ))}
 
                         {selectedBooking?.booking_status === "Cancelled" &&
-                        userType != "host" ? (
+                          userType != "host" ? (
                           <button
                             style={{
                               // width: "70%",
@@ -1266,7 +1314,7 @@ const BookingHost = () => {
                               cursor: "pointer",
                               height: "fit-content",
                             }}
-                            // disabled
+                          // disabled
                           >
                             Cancelled
                           </button>
@@ -1315,8 +1363,8 @@ const BookingHost = () => {
                                 propertyId
                                   ? setShowReportModal(true)
                                   : toast.error(
-                                      "Please select a booking first"
-                                    );
+                                    "Please select a booking first"
+                                  );
                               }}
                               style={{
                                 width: "120%",
@@ -1366,9 +1414,9 @@ const BookingHost = () => {
                                     ? imageBase + viewDetails?.images?.[0]
                                     : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                                   : viewDetails?.first_property_image
-                                  ? imageBase +
+                                    ? imageBase +
                                     viewDetails?.first_property_image
-                                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                               }
                               loading="lazy"
                               alt="property"
@@ -1388,9 +1436,9 @@ const BookingHost = () => {
                             >
                               {userType == "host"
                                 ? viewDetails?.property_title ||
-                                  "Cabin in Peshastin"
+                                "Cabin in Peshastin"
                                 : viewDetails?.property_name ||
-                                  "Cabin in Peshastin"}
+                                "Cabin in Peshastin"}
                             </h1>
                             <p>
                               <FaStar
@@ -1581,18 +1629,18 @@ const BookingHost = () => {
                             : viewDetails?.status) == "Confirmed"
                             ? "#85D6FF"
                             : (userType == "host"
-                                ? viewDetails?.booking_status
-                                : viewDetails?.status) == "Pending"
-                            ? "#ffc107"
-                            : (userType == "host"
+                              ? viewDetails?.booking_status
+                              : viewDetails?.status) == "Pending"
+                              ? "#ffc107"
+                              : (userType == "host"
                                 ? viewDetails?.booking_status
                                 : viewDetails?.status) == "Finished"
-                            ? "#4AEAB1"
-                            : (userType == "host"
-                                ? viewDetails?.booking_status
-                                : viewDetails?.status) == "Waiting_payment"
-                            ? "#FFF178"
-                            : "#ebe1e1",
+                                ? "#4AEAB1"
+                                : (userType == "host"
+                                  ? viewDetails?.booking_status
+                                  : viewDetails?.status) == "Waiting_payment"
+                                  ? "#FFF178"
+                                  : "#ebe1e1",
                         color: "black",
                       }}
                     >
@@ -1623,13 +1671,12 @@ const BookingHost = () => {
                       <li>
                         <Link to="#" onClick={handleWishlistClick}>
                           <i
-                            className={`fa-solid fa-heart me-1 ${
-                              userType == "host"
-                                ? viewDetails?.wishlist
-                                : viewDetails?.is_in_wishlist
+                            className={`fa-solid fa-heart me-1 ${userType == "host"
+                              ? viewDetails?.wishlist
+                              : viewDetails?.is_in_wishlist
                                 ? "text-danger"
                                 : "light-gray"
-                            }`}
+                              }`}
                           ></i>
                           Favorite
                         </Link>
@@ -1645,98 +1692,97 @@ const BookingHost = () => {
                 </div>
                 {/* <div className={`top-grid-bookinghost-h top-grid-images-${viewDetails?.images?.length <5 ? 5 : viewDetails?.images?.length || viewDetails?.property_images?.length >5 ? 5 : viewDetails?.property_images?.length}`}> */}
                 <div
-                  className={`top-grid-bookinghost-h px-3 top-grid-images-${
-                    userType === "host"
-                      ? viewDetails?.images?.length < 3 &&
-                        viewDetails?.images?.length < 3
-                        ? viewDetails?.images?.length
-                        : 3
-                      : viewDetails?.property_images?.length &&
-                        viewDetails?.property_images?.length < 3
+                  className={`top-grid-bookinghost-h px-3 top-grid-images-${userType === "host"
+                    ? viewDetails?.images?.length < 3 &&
+                      viewDetails?.images?.length < 3
+                      ? viewDetails?.images?.length
+                      : 3
+                    : viewDetails?.property_images?.length &&
+                      viewDetails?.property_images?.length < 3
                       ? viewDetails?.property_images?.length
                       : 3
-                  }`}
+                    }`}
                   onClick={() => setShowPropertyImages(true)}
                 >
                   <div className="top-grid-images-left">
                     {(viewDetails?.images?.[0] ||
                       viewDetails?.first_property_image?.[0]) && (
-                      <img
-                        src={
-                          userType == "host"
-                            ? Array.isArray(viewDetails?.images) &&
-                              imageBase + viewDetails?.images[0] &&
-                              imageBase + viewDetails?.images?.[0]
-                            : imageBase + viewDetails?.first_property_image
-                        }
-                        loading="lazy"
-                        alt="Main Property"
-                        style={{
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                          display: "block",
-                          cursor: "pointer",
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          const src =
+                        <img
+                          src={
                             userType == "host"
                               ? Array.isArray(viewDetails?.images) &&
-                                viewDetails?.images?.[0]
-                                ? imageBase + viewDetails?.images[0]
-                                : ""
-                              : imageBase + viewDetails?.first_property_image;
-                          if (src) setSelectedSingleImage(src);
-                        }}
-                      />
-                    )}
+                              imageBase + viewDetails?.images[0] &&
+                              imageBase + viewDetails?.images?.[0]
+                              : imageBase + viewDetails?.first_property_image
+                          }
+                          loading="lazy"
+                          alt="Main Property"
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            display: "block",
+                            cursor: "pointer",
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const src =
+                              userType == "host"
+                                ? Array.isArray(viewDetails?.images) &&
+                                  viewDetails?.images?.[0]
+                                  ? imageBase + viewDetails?.images[0]
+                                  : ""
+                                : imageBase + viewDetails?.first_property_image;
+                            if (src) setSelectedSingleImage(src);
+                          }}
+                        />
+                      )}
                   </div>
 
                   <div className="top-grid-images-right">
                     {userType == "host"
                       ? viewDetails?.images?.slice(1, 3).map((item, index) => (
+                        <img
+                          key={index}
+                          src={`https://zyvo.tgastaging.com/${item}`}
+                          loading="lazy"
+                          alt="Main Property"
+                          style={{ cursor: "pointer" }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedSingleImage(
+                              `https://zyvo.tgastaging.com/${item}`
+                            );
+                          }}
+                        />
+                      ))
+                      : viewDetails?.property_images
+                        ?.slice(1, 3)
+                        .map((item, index) => (
                           <img
+                            src={imageBase + item}
                             key={index}
-                            src={`https://zyvo.tgastaging.com/${item}`}
                             loading="lazy"
                             alt="Main Property"
                             style={{ cursor: "pointer" }}
                             onClick={(e) => {
                               e.stopPropagation();
-                              setSelectedSingleImage(
-                                `https://zyvo.tgastaging.com/${item}`
-                              );
+                              setSelectedSingleImage(imageBase + item);
                             }}
                           />
-                        ))
-                      : viewDetails?.property_images
-                          ?.slice(1, 3)
-                          .map((item, index) => (
-                            <img
-                              src={imageBase + item}
-                              key={index}
-                              loading="lazy"
-                              alt="Main Property"
-                              style={{ cursor: "pointer" }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedSingleImage(imageBase + item);
-                              }}
-                            />
-                          ))}
+                        ))}
                   </div>
                 </div>
                 {(viewDetails?.property_images?.length >= 3 ||
                   viewDetails?.images?.length >= 3) && (
-                  <div
-                    className=" px-3 "
-                    style={{ textAlign: "right", cursor: "pointer" }}
-                    onClick={() => setShowPropertyImages(true)}
-                  >
-                    See more
-                  </div>
-                )}
+                    <div
+                      className=" px-3 "
+                      style={{ textAlign: "right", cursor: "pointer" }}
+                      onClick={() => setShowPropertyImages(true)}
+                    >
+                      See more
+                    </div>
+                  )}
 
                 <hr className="property-modal-hr" />
 
@@ -1767,32 +1813,26 @@ const BookingHost = () => {
                         [
                           "time.svg",
                           userType == "host"
-                            ? `${
-                                Number(viewDetails?.original_booking_hour) ||
-                                "no data"
-                              } hours `
-                            : `${
-                                viewDetails?.booking_detail?.time || "no data"
-                              }  `,
+                            ? `${Number(viewDetails?.original_booking_hour) ||
+                            "no data"
+                            } hours `
+                            : `${viewDetails?.booking_detail?.time || "no data"
+                            }  `,
                         ],
                         [
                           "time.svg",
                           userType == "host"
-                            ? ` From ${
-                                viewDetails?.booking_start_time || "start time"
-                              } to ${
-                                viewDetails?.booking_end_time || "end time"
-                              }`
+                            ? ` From ${viewDetails?.booking_start_time || "start time"
+                            } to ${viewDetails?.booking_end_time || "end time"
+                            }`
                             : `
-                          ${
-                            (!isMobileWidth &&
+                          ${(!isMobileWidth &&
                               viewDetails?.booking_detail?.time) ||
                             " "
-                          } ${!isMobileWidth ? "|" : ""}
-                          ${
-                            viewDetails?.booking_detail?.start_end_time ||
+                            } ${!isMobileWidth ? "|" : ""}
+                          ${viewDetails?.booking_detail?.start_end_time ||
                             "start time"
-                          }`,
+                            }`,
                         ],
                         [
                           "price.svg",
@@ -1986,11 +2026,11 @@ const BookingHost = () => {
                                 ["price.svg", bteAmountStr],
                                 ...(formattedBteStatus
                                   ? [
-                                      [
-                                        "time.svg",
-                                        `Status: ${formattedBteStatus}`,
-                                      ],
-                                    ]
+                                    [
+                                      "time.svg",
+                                      `Status: ${formattedBteStatus}`,
+                                    ],
+                                  ]
                                   : []),
                               ].map(([icon, text], i) => (
                                 <div
@@ -2024,11 +2064,11 @@ const BookingHost = () => {
                                 ["price.svg", bteAmountStr],
                                 ...(formattedBteStatus
                                   ? [
-                                      [
-                                        "time.svg",
-                                        `Status: ${formattedBteStatus}`,
-                                      ],
-                                    ]
+                                    [
+                                      "time.svg",
+                                      `Status: ${formattedBteStatus}`,
+                                    ],
+                                  ]
                                   : []),
                               ].map(([icon, text], i) => (
                                 <div
@@ -2125,9 +2165,8 @@ const BookingHost = () => {
                       >
                         <h2 className="accordion-header">
                           <button
-                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${
-                              open === id ? "" : "collapsed"
-                            }`}
+                            className={`accordion-button d-flex align-items-center bg-white shadow-none rounded ${open === id ? "" : "collapsed"
+                              }`}
                             type="button"
                             onClick={() => toggleAccordion(id)}
                             style={{ padding: "12px" }}
@@ -2423,8 +2462,8 @@ const BookingHost = () => {
                             ? `${imageBase}${selectedBooking?.guest_avatar}`
                             : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                           : selectedBooking?.host_image
-                          ? `${imageBase}${selectedBooking?.host_image}`
-                          : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                            ? `${imageBase}${selectedBooking?.host_image}`
+                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                       }
                       loading="lazy"
                       alt="Profile"
@@ -2763,8 +2802,8 @@ const BookingHost = () => {
                               ? imageBase + viewDetails?.images?.[0]
                               : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                             : viewDetails?.first_property_image
-                            ? imageBase + viewDetails?.first_property_image
-                            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
+                              ? imageBase + viewDetails?.first_property_image
+                              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJbTOxk5mr0FZbuyX9htlwSpsdBPz-32lyXQ&s"
                         }
                         loading="lazy"
                         alt="property"
@@ -3039,11 +3078,10 @@ const ApproveDeclineModal = ({ show, status, data, onClose, onSubmit }) => {
                   <button
                     key={reason}
                     type="button"
-                    className={`btn ${
-                      selectedReason === reason
-                        ? "primary-color"
-                        : "btn-outline-secondary"
-                    }`}
+                    className={`btn ${selectedReason === reason
+                      ? "primary-color"
+                      : "btn-outline-secondary"
+                      }`}
                     onClick={() =>
                       setSelectedReason(selectedReason === reason ? "" : reason)
                     }
