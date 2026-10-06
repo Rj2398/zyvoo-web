@@ -267,7 +267,7 @@ const BookingHost = () => {
       });
       if (response) {
         let view_details = response?.data;
-        console.log("HOST BOOKING DETAILS API RESPONSE (complete object):", view_details);
+        // console.log("HOST BOOKING DETAILS API RESPONSE (complete object):", view_details);
         let property_id = view_details?.property_id;
         setViewDetails(view_details);
         setPropertyId(property_id);
