@@ -415,7 +415,7 @@ const BookingHost = () => {
     hostBookingAmount +
     (parseFloat(viewDetails?.charges?.cleaning_fee ?? viewDetails?.cleaning_fee) || 0) +
     (parseFloat(viewDetails?.charges?.zyvo_service_fee ?? viewDetails?.service_fee) || 0) +
-    (parseFloat(viewDetails?.charges?.taxes ?? viewDetails?.tax) || 0) +
+    // (parseFloat(viewDetails?.charges?.taxes ?? viewDetails?.tax) || 0) +
     (parseFloat(viewDetails?.charges?.add_on_price ?? viewDetails?.add_on_total) || 0) -
     hostDiscount
   );
