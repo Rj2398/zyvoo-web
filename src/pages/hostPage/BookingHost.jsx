@@ -76,7 +76,7 @@ const BookingHost = () => {
 
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [viewDetails, setViewDetails] = useState();
-  // console.log(viewDetails?.charges, "discusss********");
+  console.log("COMPLETE BOOKING DETAILS OBJECT (viewDetails):", viewDetails);
 
   const userData =
     JSON.parse(localStorage.getItem(KEYS.USER_INFO)) ||
@@ -267,6 +267,7 @@ const BookingHost = () => {
       });
       if (response) {
         let view_details = response?.data;
+        console.log("HOST BOOKING DETAILS API RESPONSE (complete object):", view_details);
         let property_id = view_details?.property_id;
         setViewDetails(view_details);
         setPropertyId(property_id);
@@ -297,6 +298,7 @@ const BookingHost = () => {
       if (!response) return;
 
       const view_details = response?.data;
+      console.log("GUEST BOOKING DETAILS API RESPONSE (complete object):", view_details);
       const property_id = view_details?.property_id;
 
       setViewDetails(view_details);
