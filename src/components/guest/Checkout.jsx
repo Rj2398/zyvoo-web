@@ -503,7 +503,7 @@ const Checkout = ({ setExtendedTime }) => {
 
   const discount_amount =
     rawDiscount === 0 ? discount_amountValue : rawDiscount;
-  // console.log(discount_amount, "Discount amoutn****", discount_amountValue);
+  console.log(discount_amount, "Discount amoutn****", discount_amountValue);
   const addONs = Number(selectedAddonsPrice);
   const cleaningFee = Number(parseInt(checkoutData?.cleaning_fee));
 
@@ -621,7 +621,7 @@ const Checkout = ({ setExtendedTime }) => {
             total_amount: totalAmnt,
             service_fee: checkoutData?.service_fee.toString(),
             tax: checkoutData?.tax.toString(),
-            discount_amount: discount_amount,
+            discount_amount: discount_amountValue.toString(),
             addons: selectedAddons,
           }),
         });
@@ -738,7 +738,7 @@ const Checkout = ({ setExtendedTime }) => {
           card_id: card_id,
           service_fee: checkoutData?.service_fee.toString(),
           tax: checkoutData?.tax.toString(),
-          discount_amount: checkoutData?.bulk_discount_hour.toString(),
+          discount_amount: discount_amountValue.toString(),
           addons: selectedAddons,
         };
 
