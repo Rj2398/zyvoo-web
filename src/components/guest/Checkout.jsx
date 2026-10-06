@@ -621,7 +621,7 @@ const Checkout = ({ setExtendedTime }) => {
             total_amount: totalAmnt,
             service_fee: checkoutData?.service_fee.toString(),
             tax: checkoutData?.tax.toString(),
-            discount_amount: checkoutData?.bulk_discount_hour.toString(),
+            discount_amount: discount_amount,
             addons: selectedAddons,
           }),
         });
