@@ -3921,7 +3921,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                   alignItems: "center",
                   gap: "8px",
                   border: "1px solid #ddd",
-                  width: isMobileWidth ? "100%" : "22%",
+                  width: isMobileWidth ? "100%" : "30%",
                   marginBottom: isMobileWidth ? "10px" : "",
                 }}
               >
@@ -3945,8 +3945,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                   placeholder={filterLocation || "Location"}
                   className="google-autocomplete"
                   style={{
-                    minWidth: "90%",
-                    maxWidth: "100%",
+                    width: "100%",
                     border: "none",
                     outline: "none",
                     fontSize: isMobileWidth ? "13px" : "1.1rem",
@@ -3955,7 +3954,7 @@ const HomeHeader = ({ showMap, setShowMap, callback, getSearchLocation }) => {
                 />
               </div>
 
-              <Dropdown className="p-lg-2">
+              <Dropdown className="p-lg-2" style={{ marginLeft: 20 }}>
                 <Dropdown.Toggle
                   variant="light"
                   id="dropdown-basic"
