@@ -201,7 +201,7 @@ function MyPlacesHost() {
     >
       <Popover.Body style={{ color: "black" }}>
         <p style={{ marginBottom: "10px" }}>
-          <strong>Total earnings - </strong> This is calculated by aggregating
+          <strong>Total Earnings - </strong> This is calculated by aggregating
           all earnings since the host signed up on Zyvo till the date shown
           (Dynamic Real-Time Updates are expected).
         </p>
@@ -418,22 +418,22 @@ function MyPlacesHost() {
                         )
                         .join(" ").length > 15
                         ? item?.title
-                          ?.toLowerCase()
-                          ?.split(" ")
-                          .map(
-                            (word) =>
-                              word.charAt(0).toUpperCase() + word.slice(1)
-                          )
-                          .join(" ")
-                          ?.slice(0, 15) + "..."
+                            ?.toLowerCase()
+                            ?.split(" ")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ")
+                            ?.slice(0, 15) + "..."
                         : item?.title
-                          ?.toLowerCase()
-                          ?.split(" ")
-                          .map(
-                            (word) =>
-                              word.charAt(0).toUpperCase() + word.slice(1)
-                          )
-                          .join(" ")}
+                            ?.toLowerCase()
+                            ?.split(" ")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join(" ")}
                     </h1>
                     <p>
                       <i className="fa-solid fa-clock"></i>{" "}
