@@ -286,7 +286,8 @@ const ContactUs = () => {
                           outline: "none",
                           boxShadow: "none",
                           fontSize: "13px",
-                          color: "#6B7879",
+                          // color: "#6B7879",
+                           color: "black",
                         }}
                         {...register("name", { required: "Name is required" })}
                       />
