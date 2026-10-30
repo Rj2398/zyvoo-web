@@ -586,7 +586,7 @@ function PaymentHost({ getStripId, getcard_id }) {
 
                           </td>
                           <td style={{
-                            padding: "15px 0", textAlign: "center", width: '25%', textAlign: 'left'
+                            padding: "15px 0", textAlign: "center", width: '25%',
                             // display: "flex", alignItems: "center", justifyContent: "center",
                           }} >
                             <div style={{
